@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Support interactif de formation Fondamentaux Réseaux : 06 — Services réseau essentiels">
+<title>06 — Services réseau</title>
+<style>
+:root{--bg:#0f1117;--surface:#1a1d27;--surface2:#232635;--border:#2e3148;--accent:#60a5fa;--accent2:#93c5fd;--warn:#f0a500;--danger:#e05c5c;--success:#4caf82;--text:#d4d8f0;--text-dim:#7880a0;--code-bg:#12141f;--radius:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.7}
+header{background:linear-gradient(135deg,#080e1a,#0d1220);border-bottom:1px solid var(--border);padding:2.5rem 2rem 1.5rem;text-align:center}
+.badge{display:inline-block;background:var(--accent);color:#0a0e1a;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:.7rem}
+header h1{font-size:1.8rem;font-weight:700;color:#fff;line-height:1.2}header p{color:var(--text-dim);margin-top:.4rem;font-size:.95rem}
+nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);display:flex;justify-content:center;flex-wrap:wrap;gap:.25rem;padding:.5rem 1rem}
+nav button{background:none;border:none;color:var(--text-dim);padding:.85rem 1.1rem;font-size:.88rem;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+nav button:hover{color:var(--text)}nav button.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-content{display:none;padding:2rem;max-width:900px;margin:0 auto}.tab-content.active{display:block}
+h2{font-size:1.25rem;color:var(--accent2);margin:1.8rem 0 .8rem;border-left:3px solid var(--accent);padding-left:.75rem}h2:first-child{margin-top:0}
+h3{font-size:1.05rem;color:var(--text);margin:1.4rem 0 .6rem}p{margin-bottom:.9rem}ul,ol{padding-left:1.4rem;margin-bottom:.9rem}li{margin-bottom:.35rem}
+.callout{border-radius:var(--radius);padding:.9rem 1.1rem;margin:1.2rem 0;border-left:4px solid}
+.callout.note{background:#1a2035;border-color:var(--accent)}.callout.tip{background:#0e2018;border-color:var(--success)}.callout.warn{background:#1e1800;border-color:var(--warn)}
+.callout-title{font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem}
+.callout.note .callout-title{color:var(--accent)}.callout.tip .callout-title{color:var(--success)}.callout.warn .callout-title{color:var(--warn)}
+.table-wrap{overflow-x:auto;margin:1rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}
+th{background:var(--surface2);color:var(--accent2);text-align:left;padding:.6rem .9rem;font-weight:600;border:1px solid var(--border)}
+td{padding:.55rem .9rem;border:1px solid var(--border);vertical-align:top}tr:hover td{background:var(--surface2)}
+code{font-family:'Consolas','Cascadia Code',monospace;font-size:.88rem;color:#a8d8ff;background:var(--code-bg);padding:.15rem .4rem;border-radius:4px}
+.code-block{position:relative;margin:1rem 0}pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem;overflow-x:auto}pre code{background:none;padding:0}
+.copy-btn{position:absolute;top:.5rem;right:.5rem;background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);padding:.25rem .6rem;font-size:.75rem;border-radius:5px;cursor:pointer;transition:all .2s}.copy-btn:hover{background:var(--accent);color:#000}.copy-btn.copied{background:var(--success);color:#000}
+.video-wrap{position:relative;padding-bottom:56.25%;height:0;margin:1.2rem 0;border-radius:var(--radius);overflow:hidden}.video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+
+/* ── DORA / HANDSHAKE DIAGRAM ── */
+.seq-diagram{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem;margin:1.5rem 0}
+.seq-diagram svg{width:100%;height:auto;display:block}
+.seq-controls{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem;justify-content:center}
+.seq-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:.45rem 1rem;border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .2s}
+.seq-btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}.seq-btn.active{background:var(--accent);color:#000;font-weight:600}
+.seq-msg{font-size:.88rem;color:var(--text);margin-top:.8rem;padding:.6rem;background:var(--code-bg);border-radius:6px;min-height:2.5rem}
+
+/* ── DNS HIERARCHY ── */
+.dns-tree{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin:1.5rem 0}
+.dns-tree svg{width:100%;height:auto;display:block}
+
+/* ── CARDS ── */
+.cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin:1.2rem 0}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;cursor:pointer;transition:all .25s}
+.card:hover,.card.selected{border-color:var(--accent);background:var(--surface2)}
+.card h4{color:var(--accent);margin-bottom:.3rem;font-size:1rem}.card .tag{font-size:.75rem;color:var(--text-dim)}
+.card-detail{display:none;background:var(--surface2);border:1px solid var(--accent);border-radius:var(--radius);padding:1rem;margin-top:.8rem;font-size:.9rem;line-height:1.6}.card-detail.visible{display:block}
+
+/* ── HTTP CODES ── */
+.http-codes{display:flex;gap:.8rem;flex-wrap:wrap;margin:1.2rem 0}
+.http-code{padding:.5rem .9rem;border-radius:8px;font-family:'Consolas',monospace;font-size:.95rem;font-weight:700;cursor:pointer;transition:all .25s;border:1px solid}
+.http-code:hover{transform:translateY(-2px)}
+.http-code.c2xx{background:rgba(76,175,130,.15);border-color:#4caf82;color:#6ee7b7}
+.http-code.c3xx{background:rgba(96,165,250,.15);border-color:#60a5fa;color:#93c5fd}
+.http-code.c4xx{background:rgba(240,165,0,.15);border-color:#f0a500;color:#fbbf24}
+.http-code.c5xx{background:rgba(224,92,92,.15);border-color:#e05c5c;color:#fca5a5}
+.http-detail{display:none;background:var(--surface2);border:1px solid var(--accent);border-radius:var(--radius);padding:.8rem 1rem;margin-top:.6rem;font-size:.88rem}.http-detail.visible{display:block}
+
+/* ── RECAP / QUIZ ── */
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.filter-btn{background:var(--surface);border:1px solid var(--border);color:var(--text-dim);padding:.35rem .85rem;border-radius:20px;font-size:.82rem;cursor:pointer;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
+.recap-row.hidden{display:none}
+.quiz-question{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;margin-bottom:1.2rem}
+.quiz-question h4{color:var(--accent2);margin-bottom:.9rem;font-size:.98rem}
+.quiz-options{display:flex;flex-direction:column;gap:.5rem}
+.quiz-option{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.6rem .9rem;cursor:pointer;font-size:.9rem;transition:all .2s;text-align:left;color:var(--text)}
+.quiz-option:hover:not(:disabled){border-color:var(--accent)}.quiz-option.correct{background:#0d2e1e;border-color:var(--success);color:var(--success)}.quiz-option.wrong{background:#2e0d0d;border-color:var(--danger);color:var(--danger)}.quiz-option:disabled{cursor:default}
+.quiz-feedback{margin-top:.6rem;font-size:.87rem;color:var(--text-dim);font-style:italic}
+.quiz-score{background:var(--surface2);border:1px solid var(--accent);border-radius:var(--radius);padding:1.5rem;text-align:center;margin-top:1.5rem;display:none}
+.quiz-score .score-num{font-size:2.5rem;font-weight:700;color:var(--accent)}.quiz-score p{color:var(--text-dim);margin-top:.4rem}
+.btn-restart{background:var(--accent);color:#000;border:none;padding:.6rem 1.4rem;border-radius:8px;font-weight:700;cursor:pointer;margin-top:1rem;font-size:.9rem}.btn-restart:hover{background:var(--accent2)}
+@media(max-width:600px){.cards-grid{grid-template-columns:1fr 1fr}.http-codes{gap:.5rem}}
+</style>
+<link rel="stylesheet" href="../../Ressources/html-assets/course-common.css">
+<script src="../../Ressources/html-assets/course-common.js" defer></script>
+</head>
+<body>
+
+<header>
+  <div class="badge">Fondamentaux Réseaux</div>
+  <h1>06 — Services réseau essentiels</h1>
+  <p>DHCP, DNS, HTTP/HTTPS et les protocoles applicatifs du quotidien.</p>
+</header>
+
+<nav id="main-nav">
+  <button class="active" onclick="showTab('dhcp')">DHCP</button>
+  <button onclick="showTab('dns')">DNS</button>
+  <button onclick="showTab('http')">HTTP / HTTPS</button>
+  <button onclick="showTab('autres')">Autres protocoles</button>
+  <button onclick="showTab('recap')">Récapitulatif</button>
+  <button onclick="showTab('quiz')">Quiz</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 1 : DHCP                                                              -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-dhcp" class="tab-content active">
+
+  <h2>Couches hautes — rappel rapide</h2>
+  <p>Dans le modèle OSI, les couches 5 (Session), 6 (Présentation) et 7 (Application) sont souvent regroupées sous le terme <strong>couche Application</strong> dans le modèle TCP/IP. C'est ici que vivent les services du quotidien.</p>
+
+  <h2>DHCP — Attribution automatique de la configuration IP</h2>
+
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/yH9UvkeAz-I?si=RToBx2HcZQl-35zg" title="YouTube video player" allowfullscreen></iframe>
+  </div>
+
+  <p><strong>DHCP</strong> (Dynamic Host Configuration Protocol) attribue automatiquement à chaque appareil :</p>
+  <ul>
+    <li>une <strong>adresse IP</strong></li>
+    <li>le <strong>masque</strong> de sous-réseau</li>
+    <li>la <strong>passerelle par défaut</strong></li>
+    <li>les <strong>serveurs DNS</strong></li>
+    <li>une <strong>durée de bail</strong> (lease)</li>
+  </ul>
+
+  <h3>Processus DORA — étape par étape</h3>
+  <p>Cliquez sur chaque étape pour voir le détail :</p>
+
+  <div class="seq-diagram">
+    <svg viewBox="0 0 500 300" xmlns="http://www.w3.org/2000/svg">
+      <line x1="120" y1="30" x2="120" y2="290" stroke="#3b82f6" stroke-width="2"/>
+      <line x1="380" y1="30" x2="380" y2="290" stroke="#059669" stroke-width="2"/>
+      <rect x="70" y="10" width="100" height="28" rx="6" fill="#1d4ed8" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="120" y="29" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">Client</text>
+      <rect x="320" y="10" width="120" height="28" rx="6" fill="#064e3b" stroke="#059669" stroke-width="1.5"/>
+      <text x="380" y="29" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">Serveur DHCP</text>
+
+      <g id="dora-1" opacity=".2">
+        <line x1="125" y1="65" x2="375" y2="80" stroke="#ef4444" stroke-width="2.5"/>
+        <polygon points="370,76 375,80 367,83" fill="#ef4444"/>
+        <rect x="180" y="58" width="140" height="20" rx="5" fill="#12141f" stroke="#ef4444" stroke-width="1"/>
+        <text x="250" y="72" fill="#fca5a5" font-size="10" font-weight="700" text-anchor="middle">DISCOVER (broadcast)</text>
+      </g>
+      <g id="dora-2" opacity=".2">
+        <line x1="375" y1="115" x2="125" y2="130" stroke="#f59e0b" stroke-width="2.5"/>
+        <polygon points="130,126 125,130 133,133" fill="#f59e0b"/>
+        <rect x="175" y="106" width="150" height="20" rx="5" fill="#12141f" stroke="#f59e0b" stroke-width="1"/>
+        <text x="250" y="120" fill="#fbbf24" font-size="10" font-weight="700" text-anchor="middle">OFFER (IP proposée)</text>
+      </g>
+      <g id="dora-3" opacity=".2">
+        <line x1="125" y1="165" x2="375" y2="180" stroke="#3b82f6" stroke-width="2.5"/>
+        <polygon points="370,176 375,180 367,183" fill="#3b82f6"/>
+        <rect x="175" y="158" width="150" height="20" rx="5" fill="#12141f" stroke="#3b82f6" stroke-width="1"/>
+        <text x="250" y="172" fill="#93c5fd" font-size="10" font-weight="700" text-anchor="middle">REQUEST (j'accepte)</text>
+      </g>
+      <g id="dora-4" opacity=".2">
+        <line x1="375" y1="215" x2="125" y2="230" stroke="#4caf82" stroke-width="2.5"/>
+        <polygon points="130,226 125,230 133,233" fill="#4caf82"/>
+        <rect x="175" y="208" width="150" height="20" rx="5" fill="#12141f" stroke="#4caf82" stroke-width="1"/>
+        <text x="250" y="222" fill="#6ee7b7" font-size="10" font-weight="700" text-anchor="middle">ACK (confirmé !)</text>
+      </g>
+      <g id="dora-done" opacity="0">
+        <rect x="140" y="255" width="220" height="24" rx="6" fill="rgba(76,175,130,.15)" stroke="#4caf82" stroke-width="1.5"/>
+        <text x="250" y="271" fill="#6ee7b7" font-size="10" font-weight="700" text-anchor="middle">CLIENT CONFIGURÉ</text>
+      </g>
+    </svg>
+    <div class="seq-controls">
+      <button class="seq-btn" onclick="doraStep(1)">D — Discover</button>
+      <button class="seq-btn" onclick="doraStep(2)">O — Offer</button>
+      <button class="seq-btn" onclick="doraStep(3)">R — Request</button>
+      <button class="seq-btn" onclick="doraStep(4)">A — Ack</button>
+    </div>
+    <div class="seq-msg" id="dora-msg">Cliquez sur chaque étape du processus DORA.</div>
+  </div>
+
+  <div class="callout note">
+    <div class="callout-title">APIPA</div>
+    Si aucun serveur DHCP ne répond, un poste Windows s'attribue une adresse <strong>APIPA</strong> en <code>169.254.x.x</code>. Communication locale possible, mais pas d'accès Internet.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 2 : DNS                                                               -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-dns" class="tab-content">
+
+  <h2>DNS — Résolution de noms</h2>
+
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/qzWdzAvfBoo?si=DHf9vBPBi0BpvlW0" title="YouTube video player" allowfullscreen></iframe>
+  </div>
+
+  <p>Le <strong>DNS</strong> (Domain Name System) traduit un <strong>nom de domaine</strong> en <strong>adresse IP</strong> :</p>
+  <p><code>www.google.com</code> → <code>142.250.74.46</code></p>
+
+  <h3>Hiérarchie DNS</h3>
+
+  <div class="dns-tree">
+    <svg viewBox="0 0 600 260" xmlns="http://www.w3.org/2000/svg">
+      <line x1="300" y1="45" x2="120" y2="100" stroke="#7880a0" stroke-width="1.5"/>
+      <line x1="300" y1="45" x2="300" y2="100" stroke="#7880a0" stroke-width="1.5"/>
+      <line x1="300" y1="45" x2="480" y2="100" stroke="#7880a0" stroke-width="1.5"/>
+      <line x1="120" y1="130" x2="70" y2="180" stroke="#7880a0" stroke-width="1.5"/>
+      <line x1="120" y1="130" x2="170" y2="180" stroke="#7880a0" stroke-width="1.5"/>
+      <line x1="300" y1="130" x2="260" y2="180" stroke="#7880a0" stroke-width="1.5"/>
+      <line x1="300" y1="130" x2="340" y2="180" stroke="#7880a0" stroke-width="1.5"/>
+
+      <rect x="265" y="18" width="70" height="30" rx="8" fill="#7f1d1d" stroke="#dc2626" stroke-width="1.5"/>
+      <text x="300" y="38" fill="#fca5a5" font-size="11" font-weight="700" text-anchor="middle">. (racine)</text>
+
+      <rect x="80" y="100" width="80" height="30" rx="8" fill="#78350f" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="120" y="120" fill="#fbbf24" font-size="11" font-weight="700" text-anchor="middle">.com</text>
+      <rect x="260" y="100" width="80" height="30" rx="8" fill="#78350f" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="300" y="120" fill="#fbbf24" font-size="11" font-weight="700" text-anchor="middle">.fr</text>
+      <rect x="440" y="100" width="80" height="30" rx="8" fill="#78350f" stroke="#f59e0b" stroke-width="1.5"/>
+      <text x="480" y="120" fill="#fbbf24" font-size="11" font-weight="700" text-anchor="middle">.org</text>
+
+      <rect x="22" y="180" width="96" height="30" rx="8" fill="#064e3b" stroke="#059669" stroke-width="1.5"/>
+      <text x="70" y="200" fill="#6ee7b7" font-size="10" font-weight="700" text-anchor="middle">google.com</text>
+      <rect x="122" y="180" width="96" height="30" rx="8" fill="#064e3b" stroke="#059669" stroke-width="1.5"/>
+      <text x="170" y="200" fill="#6ee7b7" font-size="10" font-weight="700" text-anchor="middle">example.com</text>
+      <rect x="212" y="180" width="96" height="30" rx="8" fill="#064e3b" stroke="#059669" stroke-width="1.5"/>
+      <text x="260" y="200" fill="#6ee7b7" font-size="10" font-weight="700" text-anchor="middle">dawan.fr</text>
+      <rect x="292" y="180" width="96" height="30" rx="8" fill="#064e3b" stroke="#059669" stroke-width="1.5"/>
+      <text x="340" y="200" fill="#6ee7b7" font-size="10" font-weight="700" text-anchor="middle">gouv.fr</text>
+
+      <text x="300" y="245" fill="#7880a0" font-size="9" text-anchor="middle">Serveurs racine → TLD (.com, .fr…) → Serveur autoritaire du domaine</text>
+    </svg>
+  </div>
+
+  <h3>Enregistrements DNS</h3>
+  <p>Cliquez sur un type d'enregistrement :</p>
+
+  <div class="cards-grid">
+    <div class="card" onclick="toggleCard('a')"><h4>A</h4><span class="tag">Nom → IPv4</span></div>
+    <div class="card" onclick="toggleCard('aaaa')"><h4>AAAA</h4><span class="tag">Nom → IPv6</span></div>
+    <div class="card" onclick="toggleCard('mx')"><h4>MX</h4><span class="tag">Serveur mail</span></div>
+    <div class="card" onclick="toggleCard('cname')"><h4>CNAME</h4><span class="tag">Alias</span></div>
+    <div class="card" onclick="toggleCard('ptr')"><h4>PTR</h4><span class="tag">IP → Nom</span></div>
+  </div>
+  <div id="detail-a" class="card-detail"><strong>A</strong> — Associe un nom de domaine à une adresse <strong>IPv4</strong>. Ex : <code>example.com → 93.184.216.34</code>. C'est l'enregistrement le plus courant.</div>
+  <div id="detail-aaaa" class="card-detail"><strong>AAAA</strong> — Associe un nom à une adresse <strong>IPv6</strong>. Ex : <code>example.com → 2606:2800::1</code>. Même rôle que A, mais pour IPv6.</div>
+  <div id="detail-mx" class="card-detail"><strong>MX</strong> (Mail Exchanger) — Indique quel serveur gère les e-mails d'un domaine. Ex : les mails pour <code>@example.com</code> sont envoyés à <code>mail.example.com</code>.</div>
+  <div id="detail-cname" class="card-detail"><strong>CNAME</strong> (Canonical Name) — Crée un <strong>alias</strong>. Ex : <code>www.example.com</code> est un alias vers <code>example.com</code>. Utile pour pointer plusieurs noms vers le même serveur.</div>
+  <div id="detail-ptr" class="card-detail"><strong>PTR</strong> (Pointer) — Résolution <strong>inverse</strong> : traduit une IP en nom. Ex : <code>93.184.216.34 → example.com</code>. Utilisé pour la vérification anti-spam des serveurs mail.</div>
+
+  <h3>Commandes de diagnostic DNS</h3>
+  <div class="code-block"><pre><code>nslookup google.com       # Résolution simple
+dig google.com            # Résolution détaillée (Linux)
+dig -x 8.8.8.8            # Résolution inverse (PTR)</code></pre><button class="copy-btn" onclick="copyCode(this)">Copier</button></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 3 : HTTP / HTTPS                                                      -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-http" class="tab-content">
+
+  <h2>HTTP — Le protocole du web</h2>
+
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/WGdOWtKL5nA?si=nTf1mIx7M3n4Fs2w" title="YouTube video player" allowfullscreen></iframe>
+  </div>
+
+  <p>HTTP suit une logique <strong>requête / réponse</strong> :</p>
+
+  <div class="seq-diagram">
+    <svg viewBox="0 0 500 180" xmlns="http://www.w3.org/2000/svg">
+      <line x1="120" y1="30" x2="120" y2="170" stroke="#3b82f6" stroke-width="2"/>
+      <line x1="380" y1="30" x2="380" y2="170" stroke="#059669" stroke-width="2"/>
+      <rect x="70" y="10" width="100" height="28" rx="6" fill="#1d4ed8" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="120" y="29" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">Navigateur</text>
+      <rect x="320" y="10" width="120" height="28" rx="6" fill="#064e3b" stroke="#059669" stroke-width="1.5"/>
+      <text x="380" y="29" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">Serveur Web</text>
+
+      <line x1="125" y1="65" x2="375" y2="80" stroke="#60a5fa" stroke-width="2.5"/>
+      <polygon points="370,76 375,80 367,83" fill="#60a5fa"/>
+      <rect x="165" y="56" width="170" height="20" rx="5" fill="#12141f" stroke="#60a5fa" stroke-width="1"/>
+      <text x="250" y="70" fill="#93c5fd" font-size="9" font-weight="600" text-anchor="middle">GET / HTTP/1.1  Host: example.com</text>
+
+      <line x1="375" y1="120" x2="125" y2="135" stroke="#4caf82" stroke-width="2.5"/>
+      <polygon points="130,131 125,135 133,138" fill="#4caf82"/>
+      <rect x="165" y="112" width="170" height="20" rx="5" fill="#12141f" stroke="#4caf82" stroke-width="1"/>
+      <text x="250" y="126" fill="#6ee7b7" font-size="9" font-weight="600" text-anchor="middle">HTTP/1.1 200 OK  + page HTML</text>
+
+      <text x="250" y="165" fill="#7880a0" font-size="9" text-anchor="middle">Le navigateur affiche la page reçue</text>
+    </svg>
+  </div>
+
+  <h3>Codes de réponse HTTP</h3>
+  <p>Cliquez sur un code :</p>
+
+  <div class="http-codes">
+    <div class="http-code c2xx" onclick="showHttpCode('200')">200</div>
+    <div class="http-code c3xx" onclick="showHttpCode('301')">301</div>
+    <div class="http-code c3xx" onclick="showHttpCode('304')">304</div>
+    <div class="http-code c4xx" onclick="showHttpCode('403')">403</div>
+    <div class="http-code c4xx" onclick="showHttpCode('404')">404</div>
+    <div class="http-code c5xx" onclick="showHttpCode('500')">500</div>
+    <div class="http-code c5xx" onclick="showHttpCode('502')">502</div>
+  </div>
+  <div class="http-detail" id="hc-200"><strong>200 OK</strong> — La requête a réussi. Le serveur renvoie le contenu demandé (page HTML, image, API…).</div>
+  <div class="http-detail" id="hc-301"><strong>301 Moved Permanently</strong> — La ressource a changé d'adresse définitivement. Le navigateur est redirigé vers la nouvelle URL.</div>
+  <div class="http-detail" id="hc-304"><strong>304 Not Modified</strong> — Le contenu n'a pas changé depuis la dernière visite. Le navigateur utilise sa version en cache.</div>
+  <div class="http-detail" id="hc-403"><strong>403 Forbidden</strong> — Le serveur a compris la requête mais <strong>refuse</strong> l'accès. Problème de permissions.</div>
+  <div class="http-detail" id="hc-404"><strong>404 Not Found</strong> — La page demandée <strong>n'existe pas</strong> sur le serveur. URL incorrecte ou page supprimée.</div>
+  <div class="http-detail" id="hc-500"><strong>500 Internal Server Error</strong> — Le serveur a rencontré une <strong>erreur interne</strong>. Bug dans l'application, config cassée.</div>
+  <div class="http-detail" id="hc-502"><strong>502 Bad Gateway</strong> — Le serveur agit comme proxy et a reçu une <strong>réponse invalide</strong> du serveur en amont.</div>
+
+  <h2>HTTPS = HTTP + TLS</h2>
+  <p><strong>TLS</strong> (Transport Layer Security) ajoute :</p>
+  <ul>
+    <li><strong>Chiffrement</strong> — les données sont illisibles en transit</li>
+    <li><strong>Authentification</strong> — le serveur prouve son identité via un certificat</li>
+    <li><strong>Intégrité</strong> — les données ne peuvent pas être modifiées en route</li>
+  </ul>
+
+  <div class="callout warn">
+    <div class="callout-title">Important</div>
+    Sur un réseau non fiable, HTTP en clair est <strong>lisible par quiconque intercepte le trafic</strong>. HTTPS est devenu la norme. Les navigateurs marquent les sites HTTP comme "Non sécurisé".
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 4 : Autres protocoles                                                 -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-autres" class="tab-content">
+
+  <h2>Protocoles applicatifs courants</h2>
+  <p>Tous ces services reposent sur les couches vues dans les chapitres précédents (transport, réseau, liaison, physique).</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Protocole</th><th>Rôle</th><th>Port</th><th>Transport</th></tr></thead>
+      <tbody>
+        <tr><td><strong>SMTP</strong></td><td>Envoi d'e-mails</td><td>25 / 587</td><td>TCP</td></tr>
+        <tr><td><strong>IMAP</strong></td><td>Lecture et synchronisation des mails</td><td>143 / 993</td><td>TCP</td></tr>
+        <tr><td><strong>POP3</strong></td><td>Téléchargement des mails</td><td>110 / 995</td><td>TCP</td></tr>
+        <tr><td><strong>FTP</strong></td><td>Transfert de fichiers</td><td>21</td><td>TCP</td></tr>
+        <tr><td><strong>SFTP</strong></td><td>Transfert via SSH (chiffré)</td><td>22</td><td>TCP</td></tr>
+        <tr><td><strong>SSH</strong></td><td>Accès distant sécurisé</td><td>22</td><td>TCP</td></tr>
+        <tr><td><strong>RDP</strong></td><td>Bureau à distance Windows</td><td>3389</td><td>TCP</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">Vue d'ensemble</div>
+    L'empilement complet pour accéder à un site web :<br>
+    <code>Navigateur → HTTP → TLS → TCP → IP → Ethernet → signal physique</code><br>
+    Chaque couche fait son travail, indépendamment des autres.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 5 : Récapitulatif                                                     -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-recap" class="tab-content">
+  <h2>Récapitulatif — Services réseau</h2>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterRecap('all',this)">Tout</button>
+    <button class="filter-btn" onclick="filterRecap('dhcp',this)">DHCP</button>
+    <button class="filter-btn" onclick="filterRecap('dns',this)">DNS</button>
+    <button class="filter-btn" onclick="filterRecap('http',this)">HTTP</button>
+    <button class="filter-btn" onclick="filterRecap('proto',this)">Protocoles</button>
+  </div>
+  <div class="table-wrap"><table><thead><tr><th>Notion</th><th>Définition</th><th>Catégorie</th></tr></thead><tbody>
+    <tr class="recap-row" data-cat="dhcp"><td><strong>DHCP</strong></td><td>Attribue automatiquement IP, masque, passerelle, DNS — ports 67/68 UDP</td><td>DHCP</td></tr>
+    <tr class="recap-row" data-cat="dhcp"><td><strong>DORA</strong></td><td>Discover → Offer → Request → Ack — les 4 étapes DHCP</td><td>DHCP</td></tr>
+    <tr class="recap-row" data-cat="dhcp"><td><strong>Bail (Lease)</strong></td><td>Durée de validité de l'adresse IP attribuée par DHCP</td><td>DHCP</td></tr>
+    <tr class="recap-row" data-cat="dhcp"><td><strong>APIPA</strong></td><td>169.254.x.x — adresse auto-attribuée si pas de DHCP</td><td>DHCP</td></tr>
+    <tr class="recap-row" data-cat="dns"><td><strong>DNS</strong></td><td>Traduit un nom de domaine en adresse IP — port 53</td><td>DNS</td></tr>
+    <tr class="recap-row" data-cat="dns"><td><strong>Enregistrement A</strong></td><td>Nom → IPv4 (le plus courant)</td><td>DNS</td></tr>
+    <tr class="recap-row" data-cat="dns"><td><strong>Enregistrement MX</strong></td><td>Indique le serveur mail d'un domaine</td><td>DNS</td></tr>
+    <tr class="recap-row" data-cat="dns"><td><strong>CNAME</strong></td><td>Alias d'un nom vers un autre nom</td><td>DNS</td></tr>
+    <tr class="recap-row" data-cat="dns"><td><strong>PTR</strong></td><td>Résolution inverse : IP → nom</td><td>DNS</td></tr>
+    <tr class="recap-row" data-cat="http"><td><strong>HTTP</strong></td><td>Protocole requête/réponse du web — port 80</td><td>HTTP</td></tr>
+    <tr class="recap-row" data-cat="http"><td><strong>HTTPS</strong></td><td>HTTP + TLS (chiffrement, certificat) — port 443</td><td>HTTP</td></tr>
+    <tr class="recap-row" data-cat="http"><td><strong>200 / 404 / 500</strong></td><td>Codes HTTP : succès / introuvable / erreur serveur</td><td>HTTP</td></tr>
+    <tr class="recap-row" data-cat="proto"><td><strong>SMTP</strong></td><td>Envoi de mails — port 25/587</td><td>Protocoles</td></tr>
+    <tr class="recap-row" data-cat="proto"><td><strong>IMAP</strong></td><td>Lecture/synchronisation mails — port 143/993</td><td>Protocoles</td></tr>
+    <tr class="recap-row" data-cat="proto"><td><strong>SSH</strong></td><td>Accès distant sécurisé — port 22</td><td>Protocoles</td></tr>
+    <tr class="recap-row" data-cat="proto"><td><strong>RDP</strong></td><td>Bureau à distance Windows — port 3389</td><td>Protocoles</td></tr>
+  </tbody></table></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 6 : Quiz                                                              -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-quiz" class="tab-content">
+  <h2>Quiz — Services réseau</h2>
+  <p style="color:var(--text-dim);margin-bottom:1.5rem;">8 questions pour valider vos acquis.</p>
+  <div id="quiz-container">
+    <div class="quiz-question" id="q1"><h4>Question 1 — Quelles sont les 4 étapes du processus DHCP ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(1,'a')">a) SYN, SYN-ACK, ACK, DATA</button><button class="quiz-option" onclick="answer(1,'b')">b) Discover, Offer, Request, Ack</button><button class="quiz-option" onclick="answer(1,'c')">c) Connect, Send, Receive, Close</button><button class="quiz-option" onclick="answer(1,'d')">d) Query, Response, Confirm, Done</button>
+    </div><div class="quiz-feedback" id="fb1"></div></div>
+
+    <div class="quiz-question" id="q2"><h4>Question 2 — Que se passe-t-il si aucun serveur DHCP ne répond ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(2,'a')">a) Le PC se connecte quand même à Internet</button><button class="quiz-option" onclick="answer(2,'b')">b) Le PC reçoit une adresse APIPA (169.254.x.x)</button><button class="quiz-option" onclick="answer(2,'c')">c) Le PC redémarre automatiquement</button><button class="quiz-option" onclick="answer(2,'d')">d) Le réseau entier tombe en panne</button>
+    </div><div class="quiz-feedback" id="fb2"></div></div>
+
+    <div class="quiz-question" id="q3"><h4>Question 3 — Quel enregistrement DNS associe un nom à une adresse IPv4 ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(3,'a')">a) A</button><button class="quiz-option" onclick="answer(3,'b')">b) MX</button><button class="quiz-option" onclick="answer(3,'c')">c) CNAME</button><button class="quiz-option" onclick="answer(3,'d')">d) PTR</button>
+    </div><div class="quiz-feedback" id="fb3"></div></div>
+
+    <div class="quiz-question" id="q4"><h4>Question 4 — Quel enregistrement DNS indique le serveur mail d'un domaine ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(4,'a')">a) A</button><button class="quiz-option" onclick="answer(4,'b')">b) MX</button><button class="quiz-option" onclick="answer(4,'c')">c) AAAA</button><button class="quiz-option" onclick="answer(4,'d')">d) PTR</button>
+    </div><div class="quiz-feedback" id="fb4"></div></div>
+
+    <div class="quiz-question" id="q5"><h4>Question 5 — Que signifie le code HTTP 404 ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(5,'a')">a) Succès</button><button class="quiz-option" onclick="answer(5,'b')">b) Redirection</button><button class="quiz-option" onclick="answer(5,'c')">c) Page introuvable</button><button class="quiz-option" onclick="answer(5,'d')">d) Erreur serveur</button>
+    </div><div class="quiz-feedback" id="fb5"></div></div>
+
+    <div class="quiz-question" id="q6"><h4>Question 6 — Que fait TLS dans HTTPS ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(6,'a')">a) Il accélère le chargement des pages</button><button class="quiz-option" onclick="answer(6,'b')">b) Il chiffre les échanges et authentifie le serveur</button><button class="quiz-option" onclick="answer(6,'c')">c) Il compresse les images</button><button class="quiz-option" onclick="answer(6,'d')">d) Il attribue une adresse IP</button>
+    </div><div class="quiz-feedback" id="fb6"></div></div>
+
+    <div class="quiz-question" id="q7"><h4>Question 7 — Quel protocole utilise-t-on pour se connecter à distance en ligne de commande de façon sécurisée ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(7,'a')">a) FTP</button><button class="quiz-option" onclick="answer(7,'b')">b) RDP</button><button class="quiz-option" onclick="answer(7,'c')">c) SSH</button><button class="quiz-option" onclick="answer(7,'d')">d) SMTP</button>
+    </div><div class="quiz-feedback" id="fb7"></div></div>
+
+    <div class="quiz-question" id="q8"><h4>Question 8 — Quel port est utilisé par le DNS ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(8,'a')">a) 80</button><button class="quiz-option" onclick="answer(8,'b')">b) 22</button><button class="quiz-option" onclick="answer(8,'c')">c) 53</button><button class="quiz-option" onclick="answer(8,'d')">d) 443</button>
+    </div><div class="quiz-feedback" id="fb8"></div></div>
+  </div>
+  <div class="quiz-score" id="quiz-score"><div class="score-num" id="score-display">0 / 8</div><p id="score-msg"></p><button class="btn-restart" onclick="restartQuiz()">Recommencer</button></div>
+</div>
+
+<script>
+function showTab(id){document.querySelectorAll('.tab-content').forEach(function(e){e.classList.remove('active')});document.querySelectorAll('nav button').forEach(function(e){e.classList.remove('active')});document.getElementById('tab-'+id).classList.add('active');event.target.classList.add('active')}
+function copyCode(btn){var pre=btn.previousElementSibling;navigator.clipboard.writeText(pre.textContent).then(function(){btn.textContent='Copié !';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copier';btn.classList.remove('copied')},2000)})}
+
+// ─── DORA ───────────────────────────────────────────────────────────────────
+var doraMessages={
+  1:'<strong>D — DISCOVER :</strong> Le client n\'a pas d\'IP. Il envoie un message en <strong>broadcast</strong> (255.255.255.255) : "Y a-t-il un serveur DHCP sur ce réseau ?"',
+  2:'<strong>O — OFFER :</strong> Le serveur DHCP répond : "Voici une IP disponible (<strong>192.168.1.42</strong>), avec le masque, la passerelle et le DNS."',
+  3:'<strong>R — REQUEST :</strong> Le client accepte l\'offre : "OK, je prends cette adresse. Confirme-moi le bail."',
+  4:'<strong>A — ACK :</strong> Le serveur confirme : "C\'est validé, tu as l\'IP <strong>192.168.1.42</strong> pour <strong>8 heures</strong> (durée du bail)."'
+};
+function doraStep(step){
+  document.querySelectorAll('.seq-btn').forEach(function(b){b.classList.remove('active')});
+  event.currentTarget.classList.add('active');
+  for(var i=1;i<=4;i++){document.getElementById('dora-'+i).setAttribute('opacity',i<=step?'1':'.2')}
+  document.getElementById('dora-done').setAttribute('opacity',step>=4?'1':'0');
+  document.getElementById('dora-msg').innerHTML=doraMessages[step];
+}
+
+// ─── CARDS ──────────────────────────────────────────────────────────────────
+function toggleCard(id){var d=document.getElementById('detail-'+id);var v=d.classList.contains('visible');document.querySelectorAll('.card-detail').forEach(function(x){x.classList.remove('visible')});document.querySelectorAll('.card').forEach(function(x){x.classList.remove('selected')});if(!v){d.classList.add('visible');event.currentTarget.classList.add('selected')}}
+
+// ─── HTTP CODES ─────────────────────────────────────────────────────────────
+function showHttpCode(code){var d=document.getElementById('hc-'+code);var v=d.classList.contains('visible');document.querySelectorAll('.http-detail').forEach(function(x){x.classList.remove('visible')});if(!v){d.classList.add('visible')}}
+
+// ─── RECAP ──────────────────────────────────────────────────────────────────
+function filterRecap(cat,btn){document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');document.querySelectorAll('.recap-row').forEach(function(r){if(cat==='all'||r.dataset.cat===cat)r.classList.remove('hidden');else r.classList.add('hidden')})}
+
+// ─── QUIZ ───────────────────────────────────────────────────────────────────
+var TOTAL_Q=8;
+var correctAnswers={1:'b',2:'b',3:'a',4:'b',5:'c',6:'b',7:'c',8:'c'};
+var feedbacks={
+  1:{b:"Exact ! DORA = Discover, Offer, Request, Ack. SYN/SYN-ACK/ACK c'est le handshake TCP.",wrong:"Non. Les 4 étapes DHCP sont DORA : Discover → Offer → Request → Ack."},
+  2:{b:"Correct ! Sans DHCP, Windows attribue une adresse APIPA (169.254.x.x). Communication locale possible, pas d'Internet.",wrong:"Non. Sans serveur DHCP, le PC reçoit une adresse APIPA (169.254.x.x) et ne peut pas accéder à Internet."},
+  3:{a:"Exact ! L'enregistrement A associe un nom à une IPv4. AAAA pour IPv6.",wrong:"Non. L'enregistrement A associe un nom à une adresse IPv4. MX = mail, CNAME = alias, PTR = inverse."},
+  4:{b:"Correct ! MX (Mail Exchanger) indique quel serveur gère les e-mails d'un domaine.",wrong:"Non. C'est l'enregistrement MX (Mail Exchanger) qui indique le serveur mail."},
+  5:{c:"Exact ! 404 = Not Found. La page demandée n'existe pas sur le serveur.",wrong:"Non. 404 = Page introuvable. 200 = succès, 301 = redirection, 500 = erreur serveur."},
+  6:{b:"Correct ! TLS chiffre les échanges, authentifie le serveur par certificat et protège l'intégrité.",wrong:"Non. TLS (dans HTTPS) chiffre les échanges et authentifie le serveur via un certificat."},
+  7:{c:"Exact ! SSH (port 22) permet un accès distant sécurisé en ligne de commande.",wrong:"Non. SSH (Secure Shell, port 22) est le protocole d'accès distant sécurisé en CLI. RDP = bureau graphique Windows."},
+  8:{c:"Correct ! DNS utilise le port 53 (UDP principalement, TCP pour les transferts de zone).",wrong:"Non. DNS = port 53. HTTP = 80, SSH = 22, HTTPS = 443."}
+};
+var score=0,answered={};
+function answer(q,c){if(answered[q])return;answered[q]=true;score+=(c===correctAnswers[q])?1:0;var el=document.getElementById('q'+q);el.querySelectorAll('.quiz-option').forEach(function(b){b.disabled=true;var l=b.textContent.trim()[0].toLowerCase();if(l===correctAnswers[q])b.classList.add('correct');else if(l===c)b.classList.add('wrong')});document.getElementById('fb'+q).textContent=feedbacks[q][c]||feedbacks[q].wrong;if(Object.keys(answered).length===TOTAL_Q)showScore()}
+function showScore(){document.getElementById('quiz-score').style.display='block';document.getElementById('score-display').textContent=score+' / '+TOTAL_Q;var p=score/TOTAL_Q;var m;if(p<.3)m='Revoyez le cours.';else if(p<.5)m='Plusieurs notions à revoir.';else if(p<.7)m='Pas mal !';else if(p<1)m='Très bien !';else m='Parfait !';document.getElementById('score-msg').textContent=m}
+function restartQuiz(){score=0;answered={};document.getElementById('quiz-score').style.display='none';document.querySelectorAll('.quiz-option').forEach(function(b){b.disabled=false;b.classList.remove('correct','wrong')});document.querySelectorAll('.quiz-feedback').forEach(function(f){f.textContent=''})}
+</script>
+</body>
+</html>

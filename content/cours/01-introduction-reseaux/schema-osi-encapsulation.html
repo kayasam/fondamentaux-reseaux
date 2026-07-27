@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Schéma OSI — Encapsulation complète</title>
+<style>
+:root{--bg:#0f1117;--surface:#1a1d27;--surface2:#232635;--border:#2e3148;--accent:#60a5fa;--accent2:#93c5fd;--text:#d4d8f0;--text-dim:#7880a0;--code-bg:#12141f;--radius:10px;
+  --l7:#7c3aed;--l4:#1d4ed8;--l3:#059669;--l2:#b45309;--l1:#dc2626}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.7}
+header{background:linear-gradient(135deg,#080e1a,#0d1220);border-bottom:1px solid var(--border);padding:2rem;text-align:center}
+header h1{font-size:1.6rem;font-weight:700;color:#fff}.badge{display:inline-block;background:var(--accent);color:#0a0e1a;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:.5rem}
+header p{color:var(--text-dim);font-size:.9rem;margin-top:.3rem}
+.container{max-width:1000px;margin:0 auto;padding:1.5rem}
+
+/* ── TOPOLOGY ── */
+.topo{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-bottom:1.5rem}
+.topo svg{width:100%;height:auto;display:block}
+.topo svg text{font-family:'Segoe UI',system-ui,sans-serif}
+.dev-group{transition:opacity .4s}.dev-group.dimmed{opacity:.25}.dev-group.active{opacity:1}
+
+/* ── STEP NAV ── */
+.step-nav{display:flex;align-items:center;justify-content:center;gap:.6rem;margin-bottom:1.5rem;flex-wrap:wrap}
+.step-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:.5rem 1.2rem;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600;transition:all .2s}
+.step-btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}
+.step-btn:disabled{opacity:.3;cursor:default;background:var(--surface2);color:var(--text-dim);border-color:var(--border)}
+.step-counter{font-size:.9rem;color:var(--text-dim);font-weight:600;min-width:80px;text-align:center}
+.step-dots{display:flex;gap:.35rem;justify-content:center;margin-bottom:1.2rem}
+.step-dot{width:10px;height:10px;border-radius:50%;background:var(--border);transition:all .3s}
+.step-dot.active{background:var(--accent);transform:scale(1.3)}.step-dot.done{background:var(--l3)}
+
+/* ── MAIN CONTENT AREA ── */
+.step-content{display:grid;grid-template-columns:200px 1fr;gap:1.5rem;margin-bottom:1.5rem}
+@media(max-width:700px){.step-content{grid-template-columns:1fr}}
+
+/* ── OSI STACK ── */
+.osi-stack{display:flex;flex-direction:column;gap:0}
+.osi-layer-bar{padding:.45rem .7rem;font-size:.78rem;font-weight:600;border:1px solid rgba(255,255,255,.08);text-align:center;transition:all .4s;opacity:.2;position:relative}
+.osi-layer-bar:first-child{border-radius:var(--radius) var(--radius) 0 0}
+.osi-layer-bar:last-child{border-radius:0 0 var(--radius) var(--radius)}
+.osi-layer-bar+.osi-layer-bar{border-top:none}
+.osi-layer-bar.active{opacity:1;transform:scale(1.03);z-index:1;box-shadow:0 0 12px rgba(255,255,255,.08)}
+.osi-layer-bar.processed{opacity:.6}
+.ol7{background:linear-gradient(135deg,#4c1d95,#5b21b6);color:#e9d5ff}
+.ol6{background:linear-gradient(135deg,#5b21b6,#6d28d9);color:#e9d5ff}
+.ol5{background:linear-gradient(135deg,#6d28d9,#7c3aed);color:#e9d5ff}
+.ol4{background:linear-gradient(135deg,#1e3a5f,#1d4ed8);color:#bdd5fc}
+.ol3{background:linear-gradient(135deg,#064e3b,#059669);color:#a7f3d0}
+.ol2{background:linear-gradient(135deg,#78350f,#b45309);color:#fde68a}
+.ol1{background:linear-gradient(135deg,#7f1d1d,#dc2626);color:#fca5a5}
+.osi-layer-bar .layer-label{font-size:.65rem;opacity:.7;display:block}
+
+/* ── PDU VISUAL ── */
+.pdu-area{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem}
+.pdu-title{font-size:.82rem;color:var(--text-dim);font-weight:600;text-transform:uppercase;letter-spacing:.06em;margin-bottom:.8rem}
+.pdu-blocks{display:flex;gap:0;margin:.8rem 0;flex-wrap:nowrap;overflow-x:auto}
+.pdu-block{padding:.6rem .7rem;text-align:center;border:2px solid;font-size:.78rem;font-weight:600;transition:all .5s;min-width:0;flex-shrink:0}
+.pdu-block:first-child{border-radius:8px 0 0 8px}.pdu-block:last-child{border-radius:0 8px 8px 0}
+.pdu-block .blk-label{font-size:.6rem;opacity:.6;display:block;margin-top:.15rem;font-weight:400}
+.pdu-block.b-eth{background:rgba(180,83,9,.15);border-color:#b45309;color:#fde68a;min-width:90px}
+.pdu-block.b-ip{background:rgba(5,150,105,.15);border-color:#059669;color:#a7f3d0;min-width:90px}
+.pdu-block.b-tcp{background:rgba(29,78,216,.15);border-color:#1d4ed8;color:#bdd5fc;min-width:80px}
+.pdu-block.b-data{background:rgba(124,58,237,.12);border-color:#7c3aed;color:#d8b4fe;min-width:100px;flex-grow:1}
+.pdu-block.b-bits{background:rgba(220,38,38,.12);border-color:#dc2626;color:#fca5a5;min-width:60px}
+.pdu-block.b-new{animation:slideIn .5s ease}
+@keyframes slideIn{from{opacity:0;transform:translateX(-15px)}to{opacity:1;transform:translateX(0)}}
+
+/* ── DETAIL BOX ── */
+.detail-box{background:var(--code-bg);border:1px solid var(--border);border-radius:var(--radius);padding:1rem;margin-top:1rem;font-size:.88rem;line-height:1.7}
+.detail-box strong{color:var(--accent2)}
+.detail-box code{font-family:'Consolas',monospace;font-size:.82rem;color:#a8d8ff;background:rgba(96,165,250,.1);padding:.1rem .35rem;border-radius:3px}
+
+/* ── ADDR TABLE ── */
+.addr-table{margin-top:.8rem;font-size:.82rem}
+.addr-table td,.addr-table th{padding:.3rem .6rem;border:1px solid var(--border)}
+.addr-table th{background:var(--surface2);color:var(--accent2);font-weight:600;font-size:.75rem}
+.addr-table .changed{color:#fbbf24;font-weight:700}
+.addr-table .same{color:#6ee7b7}
+
+/* ── EXPLANATION BANNER ── */
+.explanation{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem;font-size:.92rem;line-height:1.7}
+.explanation .step-title{font-size:1.05rem;font-weight:700;color:var(--accent2);margin-bottom:.5rem}
+</style>
+<link rel="stylesheet" href="../../Ressources/html-assets/course-common.css">
+<script src="../../Ressources/html-assets/course-common.js" defer></script>
+</head>
+<body>
+
+<header>
+  <div class="badge">Fondamentaux Réseaux</div>
+  <h1>Parcours d'un message à travers le modèle OSI</h1>
+  <p>Encapsulation, décapsulation et rôle de chaque équipement — étape par étape</p>
+</header>
+
+<div class="container">
+
+  <!-- ══ TOPOLOGY ══ -->
+  <div class="topo">
+    <svg viewBox="0 0 900 370" xmlns="http://www.w3.org/2000/svg">
+      <style>
+        @keyframes envMove{0%{opacity:1}50%{opacity:.6}100%{opacity:1}}
+        .envelope{transition:all .6s ease}
+      </style>
+      <defs>
+        <g id="ico-pc"><rect x="-18" y="-16" width="36" height="24" rx="3" fill="#1a1d27" stroke-width="1.5"/><rect x="-14" y="-12" width="28" height="16" rx="1" fill="#0a0e1a"/><rect x="-3" y="8" width="6" height="5" stroke="none"/><rect x="-8" y="13" width="16" height="3" rx="1.5" stroke="none"/></g>
+        <g id="ico-sw"><rect x="-28" y="-11" width="56" height="22" rx="4" fill="#1d4ed8" stroke="#3b82f6" stroke-width="1.3"/><rect x="-18" y="-4" width="5" height="6" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".5"/><rect x="-10" y="-4" width="5" height="6" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".5"/><rect x="-2" y="-4" width="5" height="6" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".5"/><rect x="6" y="-4" width="5" height="6" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".5"/><rect x="14" y="-4" width="5" height="6" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".5"/></g>
+        <g id="ico-rt"><circle cx="0" cy="0" r="16" fill="#064e3b" stroke="#059669" stroke-width="1.5"/><polygon points="0,-11 3,-6 -3,-6" fill="#6ee7b7"/><polygon points="0,11 3,6 -3,6" fill="#6ee7b7"/><polygon points="-11,0 -6,-3 -6,3" fill="#6ee7b7"/><polygon points="11,0 6,-3 6,3" fill="#6ee7b7"/></g>
+        <!-- Envelope icon -->
+        <g id="ico-env"><rect x="-10" y="-7" width="20" height="14" rx="2" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.2"/><path d="M -10,-7 L 0,2 L 10,-7" stroke="#f59e0b" stroke-width="1.2" fill="none"/></g>
+      </defs>
+
+      <!-- ══════ DEVICE ICONS + LABELS (above stacks) ══════ -->
+      <g transform="translate(75,22)"><use href="#ico-pc" stroke="#60a5fa" fill="#60a5fa"/></g>
+      <text x="75" y="48" fill="#93c5fd" font-size="10" font-weight="700" text-anchor="middle">PC1</text>
+      <text x="75" y="60" fill="#7880a0" font-size="7" text-anchor="middle">192.168.1.42 — MAC AA:11</text>
+
+      <g transform="translate(235,178)"><use href="#ico-sw"/></g>
+      <text x="235" y="199" fill="#93c5fd" font-size="10" font-weight="700" text-anchor="middle">Switch1</text>
+
+      <g transform="translate(395,138)"><use href="#ico-rt"/></g>
+      <text x="395" y="162" fill="#6ee7b7" font-size="10" font-weight="700" text-anchor="middle">Routeur1</text>
+      <text x="395" y="173" fill="#7880a0" font-size="6.5" text-anchor="middle">BB:11 | BB:22</text>
+
+      <g transform="translate(505,138)"><use href="#ico-rt"/></g>
+      <text x="505" y="162" fill="#6ee7b7" font-size="10" font-weight="700" text-anchor="middle">Routeur2</text>
+      <text x="505" y="173" fill="#7880a0" font-size="6.5" text-anchor="middle">CC:11 | CC:22</text>
+
+      <g transform="translate(665,178)"><use href="#ico-sw"/></g>
+      <text x="665" y="199" fill="#93c5fd" font-size="10" font-weight="700" text-anchor="middle">Switch2</text>
+
+      <g transform="translate(825,22)"><use href="#ico-pc" stroke="#a855f7" fill="#a855f7"/></g>
+      <text x="825" y="48" fill="#d8b4fe" font-size="10" font-weight="700" text-anchor="middle">PC2</text>
+      <text x="825" y="60" fill="#7880a0" font-size="7" text-anchor="middle">10.0.0.50 — MAC DD:11</text>
+
+      <!-- ══════ PC1 LAYER STACK (7 layers) ══════ -->
+      <g id="dev-pc1">
+        <rect id="pc1-l7" x="35" y="68" width="80" height="26" rx="4" fill="#4c1d95" stroke="#7c3aed" stroke-width="1" opacity=".2"/>
+        <text id="pc1-t7" x="75" y="83" fill="#e9d5ff" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">7 Application</text>
+        <text x="75" y="91" fill="#e9d5ff" font-size="5.5" text-anchor="middle" opacity=".15">HTTP, DNS</text>
+
+        <rect id="pc1-l6" x="35" y="96" width="80" height="26" rx="4" fill="#5b21b6" stroke="#6d28d9" stroke-width="1" opacity=".2"/>
+        <text id="pc1-t6" x="75" y="111" fill="#e9d5ff" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">6 Présentation</text>
+        <text x="75" y="119" fill="#e9d5ff" font-size="5.5" text-anchor="middle" opacity=".15">TLS, encodage</text>
+
+        <rect id="pc1-l5" x="35" y="124" width="80" height="26" rx="4" fill="#6d28d9" stroke="#7c3aed" stroke-width="1" opacity=".2"/>
+        <text id="pc1-t5" x="75" y="139" fill="#e9d5ff" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">5 Session</text>
+        <text x="75" y="147" fill="#e9d5ff" font-size="5.5" text-anchor="middle" opacity=".15">Connexion TLS</text>
+
+        <rect id="pc1-l4" x="35" y="152" width="80" height="26" rx="4" fill="#1e3a5f" stroke="#1d4ed8" stroke-width="1" opacity=".2"/>
+        <text id="pc1-t4" x="75" y="168" fill="#bdd5fc" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">4 Transport</text>
+        <text x="75" y="176" fill="#bdd5fc" font-size="5.5" text-anchor="middle" opacity=".15">TCP / UDP</text>
+
+        <rect id="pc1-l3" x="35" y="180" width="80" height="26" rx="4" fill="#064e3b" stroke="#059669" stroke-width="1" opacity=".2"/>
+        <text id="pc1-t3" x="75" y="196" fill="#a7f3d0" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">3 Réseau</text>
+        <text x="75" y="204" fill="#a7f3d0" font-size="5.5" text-anchor="middle" opacity=".15">IP</text>
+
+        <rect id="pc1-l2" x="35" y="208" width="80" height="26" rx="4" fill="#78350f" stroke="#b45309" stroke-width="1" opacity=".2"/>
+        <text id="pc1-t2" x="75" y="224" fill="#fde68a" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">2 Liaison</text>
+        <text x="75" y="232" fill="#fde68a" font-size="5.5" text-anchor="middle" opacity=".15">Ethernet / MAC</text>
+
+        <rect id="pc1-l1" x="35" y="236" width="80" height="26" rx="4" fill="#7f1d1d" stroke="#dc2626" stroke-width="1" opacity=".2"/>
+        <text id="pc1-t1" x="75" y="252" fill="#fca5a5" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">1 Physique</text>
+        <text x="75" y="260" fill="#fca5a5" font-size="5.5" text-anchor="middle" opacity=".15">Signal élect.</text>
+      </g>
+
+      <!-- ══════ SWITCH1 LAYER STACK (2 layers) ══════ -->
+      <g id="dev-sw1">
+        <rect id="sw1-l2" x="195" y="208" width="80" height="26" rx="4" fill="#78350f" stroke="#b45309" stroke-width="1" opacity=".2"/>
+        <text id="sw1-t2" x="235" y="224" fill="#fde68a" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">2 Liaison</text>
+
+        <rect id="sw1-l1" x="195" y="236" width="80" height="26" rx="4" fill="#7f1d1d" stroke="#dc2626" stroke-width="1" opacity=".2"/>
+        <text id="sw1-t1" x="235" y="252" fill="#fca5a5" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">1 Physique</text>
+      </g>
+
+      <!-- ══════ ROUTEUR1 LAYER STACK (3 layers) ══════ -->
+      <g id="dev-r1">
+        <rect id="r1-l3" x="355" y="180" width="80" height="26" rx="4" fill="#064e3b" stroke="#059669" stroke-width="1" opacity=".2"/>
+        <text id="r1-t3" x="395" y="196" fill="#a7f3d0" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">3 Réseau</text>
+
+        <rect id="r1-l2" x="355" y="208" width="80" height="26" rx="4" fill="#78350f" stroke="#b45309" stroke-width="1" opacity=".2"/>
+        <text id="r1-t2" x="395" y="224" fill="#fde68a" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">2 Liaison</text>
+
+        <rect id="r1-l1" x="355" y="236" width="80" height="26" rx="4" fill="#7f1d1d" stroke="#dc2626" stroke-width="1" opacity=".2"/>
+        <text id="r1-t1" x="395" y="252" fill="#fca5a5" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">1 Physique</text>
+      </g>
+
+      <!-- ══════ ROUTEUR2 LAYER STACK (3 layers) ══════ -->
+      <g id="dev-r2">
+        <rect id="r2-l3" x="465" y="180" width="80" height="26" rx="4" fill="#064e3b" stroke="#059669" stroke-width="1" opacity=".2"/>
+        <text id="r2-t3" x="505" y="196" fill="#a7f3d0" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">3 Réseau</text>
+
+        <rect id="r2-l2" x="465" y="208" width="80" height="26" rx="4" fill="#78350f" stroke="#b45309" stroke-width="1" opacity=".2"/>
+        <text id="r2-t2" x="505" y="224" fill="#fde68a" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">2 Liaison</text>
+
+        <rect id="r2-l1" x="465" y="236" width="80" height="26" rx="4" fill="#7f1d1d" stroke="#dc2626" stroke-width="1" opacity=".2"/>
+        <text id="r2-t1" x="505" y="252" fill="#fca5a5" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">1 Physique</text>
+      </g>
+
+      <!-- ══════ SWITCH2 LAYER STACK (2 layers) ══════ -->
+      <g id="dev-sw2">
+        <rect id="sw2-l2" x="625" y="208" width="80" height="26" rx="4" fill="#78350f" stroke="#b45309" stroke-width="1" opacity=".2"/>
+        <text id="sw2-t2" x="665" y="224" fill="#fde68a" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">2 Liaison</text>
+
+        <rect id="sw2-l1" x="625" y="236" width="80" height="26" rx="4" fill="#7f1d1d" stroke="#dc2626" stroke-width="1" opacity=".2"/>
+        <text id="sw2-t1" x="665" y="252" fill="#fca5a5" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">1 Physique</text>
+      </g>
+
+      <!-- ══════ PC2 LAYER STACK (7 layers) ══════ -->
+      <g id="dev-pc2">
+        <rect id="pc2-l7" x="785" y="68" width="80" height="26" rx="4" fill="#4c1d95" stroke="#7c3aed" stroke-width="1" opacity=".2"/>
+        <text id="pc2-t7" x="825" y="83" fill="#e9d5ff" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">7 Application</text>
+        <text x="825" y="91" fill="#e9d5ff" font-size="5.5" text-anchor="middle" opacity=".15">HTTP, DNS</text>
+
+        <rect id="pc2-l6" x="785" y="96" width="80" height="26" rx="4" fill="#5b21b6" stroke="#6d28d9" stroke-width="1" opacity=".2"/>
+        <text id="pc2-t6" x="825" y="111" fill="#e9d5ff" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">6 Présentation</text>
+
+        <rect id="pc2-l5" x="785" y="124" width="80" height="26" rx="4" fill="#6d28d9" stroke="#7c3aed" stroke-width="1" opacity=".2"/>
+        <text id="pc2-t5" x="825" y="139" fill="#e9d5ff" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">5 Session</text>
+
+        <rect id="pc2-l4" x="785" y="152" width="80" height="26" rx="4" fill="#1e3a5f" stroke="#1d4ed8" stroke-width="1" opacity=".2"/>
+        <text id="pc2-t4" x="825" y="168" fill="#bdd5fc" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">4 Transport</text>
+
+        <rect id="pc2-l3" x="785" y="180" width="80" height="26" rx="4" fill="#064e3b" stroke="#059669" stroke-width="1" opacity=".2"/>
+        <text id="pc2-t3" x="825" y="196" fill="#a7f3d0" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">3 Réseau</text>
+
+        <rect id="pc2-l2" x="785" y="208" width="80" height="26" rx="4" fill="#78350f" stroke="#b45309" stroke-width="1" opacity=".2"/>
+        <text id="pc2-t2" x="825" y="224" fill="#fde68a" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">2 Liaison</text>
+
+        <rect id="pc2-l1" x="785" y="236" width="80" height="26" rx="4" fill="#7f1d1d" stroke="#dc2626" stroke-width="1" opacity=".2"/>
+        <text id="pc2-t1" x="825" y="252" fill="#fca5a5" font-size="7.5" text-anchor="middle" font-weight="600" opacity=".2">1 Physique</text>
+      </g>
+
+      <!-- ══════ CONNECTION LINES (Physical layer center y=249) ══════ -->
+      <line x1="115" y1="249" x2="195" y2="249" stroke="#7880a0" stroke-width="2" stroke-dasharray="4 3" opacity=".3"/>
+      <line x1="275" y1="249" x2="355" y2="249" stroke="#7880a0" stroke-width="2" stroke-dasharray="4 3" opacity=".3"/>
+      <line x1="435" y1="249" x2="465" y2="249" stroke="#7880a0" stroke-width="2" stroke-dasharray="4 3" opacity=".3"/>
+      <line x1="545" y1="249" x2="625" y2="249" stroke="#7880a0" stroke-width="2" stroke-dasharray="4 3" opacity=".3"/>
+      <line x1="705" y1="249" x2="785" y2="249" stroke="#7880a0" stroke-width="2" stroke-dasharray="4 3" opacity=".3"/>
+
+      <text x="155" y="272" fill="#7880a0" font-size="6.5" text-anchor="middle">câble</text>
+      <text x="315" y="272" fill="#7880a0" font-size="6.5" text-anchor="middle">câble</text>
+      <text x="450" y="272" fill="#7880a0" font-size="6.5" text-anchor="middle">lien WAN</text>
+      <text x="585" y="272" fill="#7880a0" font-size="6.5" text-anchor="middle">câble</text>
+      <text x="745" y="272" fill="#7880a0" font-size="6.5" text-anchor="middle">câble</text>
+
+      <!-- ══════ ANIMATED ENVELOPE (moves between devices) ══════ -->
+      <g id="envelope" class="envelope" transform="translate(75,290)" opacity="0">
+        <use href="#ico-env"/>
+      </g>
+
+      <!-- ══════ PACKET DOT ══════ -->
+      <circle id="packet-dot" r="5" fill="#fbbf24" stroke="#f59e0b" stroke-width="1.5" cx="75" cy="249" opacity="0"/>
+
+      <!-- Legend -->
+      <text x="450" y="310" fill="#7880a0" font-size="8" text-anchor="middle" font-style="italic">Les couches actives s'allument — l'enveloppe montre la position du message dans le réseau</text>
+      <rect x="410" y="320" width="16" height="10" rx="2" fill="#fbbf24" stroke="#f59e0b" stroke-width=".8"/>
+      <path d="M 410,320 L 418,326 L 426,320" stroke="#f59e0b" stroke-width=".8" fill="none"/>
+      <text x="435" y="329" fill="#fbbf24" font-size="7.5" font-weight="600">= message en transit</text>
+    </svg>
+  </div>
+
+  <!-- ══ STEP NAV ══ -->
+  <div class="step-nav">
+    <button class="step-btn" id="btn-prev" onclick="goStep(-1)" disabled>&#9664; Précédent</button>
+    <span class="step-counter" id="step-counter">Étape 1 / 12</span>
+    <button class="step-btn" id="btn-next" onclick="goStep(1)">Suivant &#9654;</button>
+  </div>
+  <div class="step-dots" id="step-dots"></div>
+
+  <!-- ══ STEP CONTENT ══ -->
+  <div class="step-content">
+    <div class="osi-stack" id="osi-stack">
+      <div class="osi-layer-bar ol7">7 Application<span class="layer-label">HTTP, DNS…</span></div>
+      <div class="osi-layer-bar ol6">6 Présentation<span class="layer-label">TLS, encodage</span></div>
+      <div class="osi-layer-bar ol5">5 Session<span class="layer-label">Dialogue</span></div>
+      <div class="osi-layer-bar ol4">4 Transport<span class="layer-label">TCP / UDP</span></div>
+      <div class="osi-layer-bar ol3">3 Réseau<span class="layer-label">IP</span></div>
+      <div class="osi-layer-bar ol2">2 Liaison<span class="layer-label">Ethernet / MAC</span></div>
+      <div class="osi-layer-bar ol1">1 Physique<span class="layer-label">Bits / signal</span></div>
+    </div>
+    <div>
+      <div class="pdu-area">
+        <div class="pdu-title" id="pdu-title">PDU en cours de construction</div>
+        <div class="pdu-blocks" id="pdu-blocks"></div>
+        <div class="addr-table" id="addr-info"></div>
+      </div>
+      <div class="detail-box" id="detail-box"></div>
+    </div>
+  </div>
+
+  <div class="explanation" id="explanation"></div>
+
+</div>
+
+<script>
+var DEVICES = ['dev-pc1','dev-sw1','dev-r1','dev-r2','dev-sw2','dev-pc2'];
+var DEVICE_X = [75, 235, 395, 505, 665, 825];
+var ENV_Y = {0:80,1:108,2:136,3:164,4:192,5:220,6:249};
+var TOPO_PREFIX = {'dev-pc1':'pc1','dev-sw1':'sw1','dev-r1':'r1','dev-r2':'r2','dev-sw2':'sw2','dev-pc2':'pc2'};
+var TOPO_LAYERS = {'pc1':[7,6,5,4,3,2,1],'sw1':[2,1],'r1':[3,2,1],'r2':[3,2,1],'sw2':[2,1],'pc2':[7,6,5,4,3,2,1]};
+
+var STEPS = [
+  {
+    device: 'dev-pc1', layers: [0,1,2], packetX: 70,
+    title: 'PC1 — Couches 7-5 : Création du message',
+    pdu: [{cls:'b-data',label:'Données',text:'Hello !'}],
+    addr: '',
+    detail: "L'utilisateur sur PC1 veut envoyer <strong>\"Hello !\"</strong> au serveur PC2. L'application (couche 7) crée le message. Les couches 6 (présentation) et 5 (session) préparent le format et le dialogue.<br><br>À ce stade, les données sont <strong>brutes</strong> — aucun en-tête réseau n'a encore été ajouté."
+  },
+  {
+    device: 'dev-pc1', layers: [3], packetX: 70,
+    title: 'PC1 — Couche 4 : Ajout de l\'en-tête TCP → Segment',
+    pdu: [{cls:'b-tcp b-new',label:'TCP',text:'Src:51230 Dst:80'},{cls:'b-data',label:'Données',text:'Hello !'}],
+    addr: '',
+    detail: "La couche Transport ajoute l'en-tête <strong>TCP</strong> avec le <strong>port source</strong> (51230, dynamique) et le <strong>port destination</strong> (80, HTTP). Le PDU s'appelle maintenant un <strong>segment</strong>.<br><br>TCP ajoute aussi les numéros de séquence et flags (SYN, ACK…) pour la fiabilité."
+  },
+  {
+    device: 'dev-pc1', layers: [4], packetX: 70,
+    title: 'PC1 — Couche 3 : Ajout de l\'en-tête IP → Paquet',
+    pdu: [{cls:'b-ip b-new',label:'IP',text:'Src:.1.42 Dst:.0.50'},{cls:'b-tcp',label:'TCP',text:'51230→80'},{cls:'b-data',label:'Données',text:'Hello !'}],
+    addr: '<table><tr><th>Champ</th><th>Valeur</th><th>Change en route ?</th></tr><tr><td>IP Source</td><td class="same">192.168.1.42</td><td class="same">NON — fixe</td></tr><tr><td>IP Destination</td><td class="same">10.0.0.50</td><td class="same">NON — fixe</td></tr></table>',
+    detail: "La couche Réseau ajoute l'en-tête <strong>IP</strong> avec l'<strong>IP source</strong> (192.168.1.42) et l'<strong>IP destination</strong> (10.0.0.50). Le PDU est maintenant un <strong>paquet</strong>.<br><br>Point crucial : les adresses IP <strong>ne changent jamais</strong> durant tout le trajet. Elles identifient la source et la destination finales."
+  },
+  {
+    device: 'dev-pc1', layers: [5], packetX: 70,
+    title: 'PC1 — Couche 2 : Ajout de l\'en-tête Ethernet → Trame',
+    pdu: [{cls:'b-eth b-new',label:'Ethernet',text:'AA:11→BB:11'},{cls:'b-ip',label:'IP',text:'.1.42→.0.50'},{cls:'b-tcp',label:'TCP',text:'51230→80'},{cls:'b-data',label:'Données',text:'Hello !'}],
+    addr: '<table><tr><th>Champ</th><th>Valeur</th><th>Change en route ?</th></tr><tr><td>MAC Source</td><td class="changed">AA:11 (PC1)</td><td class="changed">OUI — à chaque saut</td></tr><tr><td>MAC Destination</td><td class="changed">BB:11 (Routeur1)</td><td class="changed">OUI — à chaque saut</td></tr><tr><td>IP Source</td><td class="same">192.168.1.42</td><td class="same">NON</td></tr><tr><td>IP Destination</td><td class="same">10.0.0.50</td><td class="same">NON</td></tr></table>',
+    detail: "La couche Liaison ajoute l'en-tête <strong>Ethernet</strong>. La MAC destination n'est <strong>pas celle de PC2</strong> (qui est sur un autre réseau) mais celle du <strong>Routeur1</strong> (BB:11) — le prochain saut.<br><br>PC1 a utilisé <strong>ARP</strong> pour trouver la MAC du routeur. Le PDU est maintenant une <strong>trame</strong>."
+  },
+  {
+    device: 'dev-pc1', layers: [6], packetX: 70,
+    title: 'PC1 — Couche 1 : Signal physique → Switch1',
+    pdu: [{cls:'b-bits b-new',label:'Signal',text:'0110…'},{cls:'b-eth',label:'Eth',text:'AA:11→BB:11'},{cls:'b-ip',label:'IP',text:'.1.42→.0.50'},{cls:'b-tcp',label:'TCP',text:'51230→80'},{cls:'b-data',label:'Données',text:'Hello !'}],
+    addr: '',
+    detail: "La couche Physique convertit la trame en <strong>signal électrique</strong> (cuivre) ou lumineux (fibre) et l'envoie sur le câble.<br><br>Le signal arrive au <strong>Switch1</strong>."
+  },
+  {
+    device: 'dev-sw1', layers: [5,6], packetX: 255,
+    title: 'Switch1 — Couche 2 uniquement : Lecture MAC et transfert',
+    pdu: [{cls:'b-eth',label:'Ethernet',text:'AA:11→BB:11'},{cls:'b-ip',label:'IP',text:'.1.42→.0.50'},{cls:'b-tcp',label:'TCP',text:'51230→80'},{cls:'b-data',label:'Données',text:'Hello !'}],
+    addr: '',
+    detail: "Le switch opère en <strong>couche 2 uniquement</strong>. Il lit la <strong>MAC destination</strong> (BB:11 = Routeur1), consulte sa <strong>table MAC</strong> et transfère la trame sur le bon port.<br><br>Le switch <strong>ne modifie rien</strong> dans la trame. Il ne regarde ni l'IP, ni le port, ni les données. La trame arrive identique au Routeur1."
+  },
+  {
+    device: 'dev-r1', layers: [4,5,6], packetX: 405,
+    title: 'Routeur1 — Décapsulation L2, lecture L3, ré-encapsulation L2',
+    pdu: [{cls:'b-eth b-new',label:'Ethernet',text:'BB:22→CC:11'},{cls:'b-ip',label:'IP',text:'.1.42→.0.50'},{cls:'b-tcp',label:'TCP',text:'51230→80'},{cls:'b-data',label:'Données',text:'Hello !'}],
+    addr: '<table><tr><th>Champ</th><th>Avant (entrant)</th><th>Après (sortant)</th></tr><tr><td>MAC Source</td><td>AA:11 (PC1)</td><td class="changed">BB:22 (R1 eth1)</td></tr><tr><td>MAC Destination</td><td>BB:11 (R1 eth0)</td><td class="changed">CC:11 (R2 eth0)</td></tr><tr><td>IP Source</td><td class="same">192.168.1.42</td><td class="same">192.168.1.42</td></tr><tr><td>IP Destination</td><td class="same">10.0.0.50</td><td class="same">10.0.0.50</td></tr></table>',
+    detail: "Le routeur monte jusqu'à la <strong>couche 3</strong> :<br>1. Il <strong>retire</strong> l'en-tête Ethernet entrant (décapsulation L2)<br>2. Il lit l'<strong>IP destination</strong> (10.0.0.50) et consulte sa table de routage<br>3. Il crée un <strong>nouvel en-tête Ethernet</strong> avec ses propres MAC comme source<br><br>Les <strong>MAC changent</strong> (BB:22 → CC:11), mais les <strong>IP restent identiques</strong>. C'est la différence fondamentale entre L2 (local) et L3 (bout en bout)."
+  },
+  {
+    device: 'dev-r2', layers: [4,5,6], packetX: 505,
+    title: 'Routeur2 — Même processus : décapsulation L2, ré-encapsulation L2',
+    pdu: [{cls:'b-eth b-new',label:'Ethernet',text:'CC:22→DD:11'},{cls:'b-ip',label:'IP',text:'.1.42→.0.50'},{cls:'b-tcp',label:'TCP',text:'51230→80'},{cls:'b-data',label:'Données',text:'Hello !'}],
+    addr: '<table><tr><th>Champ</th><th>Avant (entrant)</th><th>Après (sortant)</th></tr><tr><td>MAC Source</td><td>BB:22 (R1)</td><td class="changed">CC:22 (R2 eth1)</td></tr><tr><td>MAC Destination</td><td>CC:11 (R2 eth0)</td><td class="changed">DD:11 (PC2)</td></tr><tr><td>IP Source</td><td class="same">192.168.1.42</td><td class="same">192.168.1.42</td></tr><tr><td>IP Destination</td><td class="same">10.0.0.50</td><td class="same">10.0.0.50</td></tr></table>',
+    detail: "Routeur2 fait exactement la même chose que Routeur1 :<br>1. Retire l'en-tête Ethernet entrant<br>2. Lit l'IP destination → 10.0.0.50 est sur son réseau local (eth1)<br>3. Crée un nouvel en-tête Ethernet avec <strong>MAC dst = DD:11</strong> (la MAC de PC2)<br><br>Cette fois, la MAC destination est celle de <strong>PC2 directement</strong>, car le routeur et PC2 sont sur le même LAN."
+  },
+  {
+    device: 'dev-sw2', layers: [5,6], packetX: 645,
+    title: 'Switch2 — Couche 2 : Transfert vers PC2',
+    pdu: [{cls:'b-eth',label:'Ethernet',text:'CC:22→DD:11'},{cls:'b-ip',label:'IP',text:'.1.42→.0.50'},{cls:'b-tcp',label:'TCP',text:'51230→80'},{cls:'b-data',label:'Données',text:'Hello !'}],
+    addr: '',
+    detail: "Switch2 lit la MAC destination <strong>DD:11</strong> (PC2), trouve le bon port dans sa table MAC et transfère la trame.<br><br>Comme Switch1, il ne modifie rien et ne regarde que la couche 2."
+  },
+  {
+    device: 'dev-pc2', layers: [5], packetX: 830,
+    title: 'PC2 — Couche 2 : Retrait de l\'en-tête Ethernet → Paquet',
+    pdu: [{cls:'b-ip',label:'IP',text:'.1.42→.0.50'},{cls:'b-tcp',label:'TCP',text:'51230→80'},{cls:'b-data',label:'Données',text:'Hello !'}],
+    addr: '',
+    detail: "PC2 reçoit la trame. La couche 2 vérifie que la <strong>MAC destination</strong> (DD:11) correspond bien à la sienne → OK. Elle <strong>retire l'en-tête Ethernet</strong> et passe le paquet IP à la couche 3.<br><br>C'est le début de la <strong>décapsulation</strong>."
+  },
+  {
+    device: 'dev-pc2', layers: [4], packetX: 830,
+    title: 'PC2 — Couche 3 : Retrait de l\'en-tête IP → Segment',
+    pdu: [{cls:'b-tcp',label:'TCP',text:'51230→80'},{cls:'b-data',label:'Données',text:'Hello !'}],
+    addr: '',
+    detail: "La couche Réseau vérifie l'<strong>IP destination</strong> (10.0.0.50 = la sienne) → OK. Elle <strong>retire l'en-tête IP</strong> et passe le segment TCP à la couche 4."
+  },
+  {
+    device: 'dev-pc2', layers: [0,1,2,3], packetX: 830,
+    title: 'PC2 — Couches 4 à 7 : Livraison du message à l\'application',
+    pdu: [{cls:'b-data',label:'Application',text:'Hello !'}],
+    addr: '',
+    detail: "La couche Transport lit le <strong>port destination</strong> (80 = serveur HTTP) et livre les données à l'application correspondante. Elle retire l'en-tête TCP.<br><br>Les couches 5-6-7 traitent le message et l'<strong>application reçoit \"Hello !\"</strong>.<br><br>Le message a traversé <strong>6 équipements</strong>, les adresses MAC ont changé <strong>3 fois</strong>, mais les adresses IP sont restées <strong>identiques</strong> de bout en bout."
+  }
+];
+
+var currentStep = 0;
+
+function renderStep() {
+  var s = STEPS[currentStep];
+
+  // Update counter
+  document.getElementById('step-counter').textContent = 'Étape ' + (currentStep + 1) + ' / ' + STEPS.length;
+  document.getElementById('btn-prev').disabled = currentStep === 0;
+  document.getElementById('btn-next').disabled = currentStep === STEPS.length - 1;
+
+  // Update dots
+  var dots = document.querySelectorAll('.step-dot');
+  dots.forEach(function(d, i) {
+    d.className = 'step-dot';
+    if (i < currentStep) d.classList.add('done');
+    else if (i === currentStep) d.classList.add('active');
+  });
+
+  // Reset all topo layers
+  Object.keys(TOPO_LAYERS).forEach(function(dev) {
+    TOPO_LAYERS[dev].forEach(function(l) {
+      var r = document.getElementById(dev+'-l'+l);
+      var t = document.getElementById(dev+'-t'+l);
+      if(r) r.setAttribute('opacity','.2');
+      if(t) t.setAttribute('opacity','.2');
+    });
+  });
+
+  // Highlight active layers in topology
+  var prefix = TOPO_PREFIX[s.device];
+  if(prefix){
+    s.layers.forEach(function(idx){
+      var ln = 7 - idx;
+      var r = document.getElementById(prefix+'-l'+ln);
+      var t = document.getElementById(prefix+'-t'+ln);
+      if(r){r.setAttribute('opacity','1');r.style.filter='drop-shadow(0 0 6px rgba(255,255,255,.3))';}
+      if(t) t.setAttribute('opacity','1');
+    });
+    // Dim glow on inactive layers of same device
+    TOPO_LAYERS[prefix].forEach(function(l){
+      var r = document.getElementById(prefix+'-l'+l);
+      if(r && r.getAttribute('opacity')!=='1'){r.setAttribute('opacity','.35');r.style.filter='none';}
+    });
+  }
+
+  // Move packet dot at Physical layer level
+  var dot = document.getElementById('packet-dot');
+  dot.setAttribute('cx', s.packetX);
+  dot.setAttribute('cy', '249');
+  dot.setAttribute('opacity', '1');
+
+  // Move envelope to the active layer height
+  var env = document.getElementById('envelope');
+  var topLayer = Math.min.apply(null, s.layers);
+  var envY = ENV_Y[topLayer] || 249;
+  env.setAttribute('transform', 'translate(' + s.packetX + ',' + envY + ')');
+  env.setAttribute('opacity', '1');
+  env.style.animation = 'envMove 1.5s ease infinite';
+
+  // OSI layers
+  var bars = document.querySelectorAll('.osi-layer-bar');
+  bars.forEach(function(bar, i) {
+    bar.classList.remove('active', 'processed');
+    if (s.layers.indexOf(i) !== -1) bar.classList.add('active');
+  });
+
+  // PDU blocks
+  var pduHtml = '';
+  s.pdu.forEach(function(b) {
+    pduHtml += '<div class="pdu-block ' + b.cls + '">' + b.text + '<span class="blk-label">' + b.label + '</span></div>';
+  });
+  document.getElementById('pdu-blocks').innerHTML = pduHtml;
+
+  // PDU title
+  var pduNames = {1:'Données',2:'Segment',3:'Paquet',4:'Trame',5:'Signal'};
+  var lastBlock = s.pdu[0];
+  var pduName = lastBlock.cls.indexOf('b-bits') !== -1 ? 'Signal (bits)' :
+                lastBlock.cls.indexOf('b-eth') !== -1 ? 'Trame Ethernet' :
+                lastBlock.cls.indexOf('b-ip') !== -1 ? 'Paquet IP' :
+                lastBlock.cls.indexOf('b-tcp') !== -1 ? 'Segment TCP' : 'Données applicatives';
+  document.getElementById('pdu-title').textContent = 'PDU actuel : ' + pduName;
+
+  // Address table
+  document.getElementById('addr-info').innerHTML = s.addr;
+
+  // Detail
+  document.getElementById('detail-box').innerHTML = s.detail;
+
+  // Explanation
+  document.getElementById('explanation').innerHTML = '<div class="step-title">' + s.title + '</div>';
+}
+
+function goStep(dir) {
+  currentStep = Math.max(0, Math.min(STEPS.length - 1, currentStep + dir));
+  renderStep();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  var dotsEl = document.getElementById('step-dots');
+  for (var i = 0; i < STEPS.length; i++) {
+    var dot = document.createElement('span');
+    dot.className = 'step-dot' + (i === 0 ? ' active' : '');
+    dotsEl.appendChild(dot);
+  }
+  renderStep();
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); goStep(1); }
+    else if (e.key === 'ArrowLeft') { e.preventDefault(); goStep(-1); }
+  });
+});
+</script>
+</body>
+</html>
