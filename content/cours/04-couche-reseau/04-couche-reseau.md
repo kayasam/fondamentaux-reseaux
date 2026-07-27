@@ -1,5 +1,5 @@
 ---
-title: "Couche réseau : adressage et routage"
+title: "04 — Couche réseau : adressage et routage"
 ---
 
 # Chapitre 4 — Couche 3 : adressage et routage

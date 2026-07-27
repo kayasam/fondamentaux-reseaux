@@ -97,16 +97,20 @@ Get-ChildItem -LiteralPath $destinationCourses -Recurse -File -Filter "*.md" | F
   }
 }
 
-Write-Host "4/5 - Masquage des corrections non publiées..."
-$hiddenCorrections = 0
-Get-ChildItem -LiteralPath $destinationCourses -Recurse -File -Filter "*correction*.md" | ForEach-Object {
-  $correctionContent = [IO.File]::ReadAllText($_.FullName)
-  if ($correctionContent -notmatch '(?m)^publier:\s*true\s*$') {
+Write-Host "4/5 - Masquage des documents privés et des corrections non publiées..."
+$hiddenDocuments = 0
+Get-ChildItem -LiteralPath $destinationCourses -Recurse -File -Filter "*.md" | ForEach-Object {
+  $documentContent = [IO.File]::ReadAllText($_.FullName)
+  $isCorrection = $_.Name -like "*correction*.md"
+  $isExplicitlyPublic = $documentContent -match '(?m)^publier:\s*true\s*$'
+  $isExplicitlyPrivate = $documentContent -match '(?m)^publier:\s*false\s*$'
+
+  if ($isExplicitlyPrivate -or ($isCorrection -and -not $isExplicitlyPublic)) {
     [IO.File]::Delete($_.FullName)
-    $hiddenCorrections++
+    $hiddenDocuments++
   }
 }
-Write-Host "$hiddenCorrections correction(s) conservée(s) uniquement dans le coffre."
+Write-Host "$hiddenDocuments document(s) conservé(s) uniquement dans le coffre."
 
 Push-Location $projectRoot
 try {

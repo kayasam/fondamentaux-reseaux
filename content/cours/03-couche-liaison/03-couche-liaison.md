@@ -1,5 +1,5 @@
 ---
-title: Couche liaison
+title: 03 — Couche liaison
 ---
 
 # Chapitre 3 — Couche 2 : la liaison de données

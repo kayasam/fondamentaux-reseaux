@@ -1,5 +1,5 @@
 ---
-title: Couche physique
+title: 02 — Couche physique
 ---
 
 # Chapitre 2 — Couche 1 : la couche physique

@@ -1,5 +1,5 @@
 ---
-title: Services réseau
+title: 06 — Services réseau
 ---
 
 # Chapitre 6 — Services réseau essentiels
