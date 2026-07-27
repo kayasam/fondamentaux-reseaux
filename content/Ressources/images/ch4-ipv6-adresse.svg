@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter><marker id="g" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#0f8a5f"/></marker></defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="34" font-weight="800" fill="#08285f">IPv6 — 128 BITS EN HUIT GROUPES</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">Chaque groupe contient 16 bits et s'écrit en hexadécimal</text>
+  <rect x="30" y="125" width="1140" height="205" rx="16" fill="#fff" stroke="#c4b5fd" filter="url(#s)"/>
+  <rect x="48" y="107" width="230" height="40" rx="11" fill="#7c3aed"/><text x="163" y="134" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">1. FORME COMPLÈTE</text>
+  <g font-family="Arial" text-anchor="middle" font-weight="800">
+    <rect x="65" y="190" width="120" height="65" rx="9" fill="#ede9fe" stroke="#7c3aed"/><text x="125" y="230" font-size="21" fill="#5620bb">2001</text>
+    <rect x="200" y="190" width="120" height="65" rx="9" fill="#ede9fe" stroke="#7c3aed"/><text x="260" y="230" font-size="21" fill="#5620bb">0db8</text>
+    <rect x="335" y="190" width="120" height="65" rx="9" fill="#eff6ff" stroke="#93c5fd"/><text x="395" y="230" font-size="21" fill="#123c8c">0000</text>
+    <rect x="470" y="190" width="120" height="65" rx="9" fill="#eff6ff" stroke="#93c5fd"/><text x="530" y="230" font-size="21" fill="#123c8c">0000</text>
+    <rect x="605" y="190" width="120" height="65" rx="9" fill="#eff6ff" stroke="#93c5fd"/><text x="665" y="230" font-size="21" fill="#123c8c">0000</text>
+    <rect x="740" y="190" width="120" height="65" rx="9" fill="#eff6ff" stroke="#93c5fd"/><text x="800" y="230" font-size="21" fill="#123c8c">0000</text>
+    <rect x="875" y="190" width="120" height="65" rx="9" fill="#eff6ff" stroke="#93c5fd"/><text x="935" y="230" font-size="21" fill="#123c8c">0000</text>
+    <rect x="1010" y="190" width="120" height="65" rx="9" fill="#d1fae5" stroke="#10b981"/><text x="1070" y="230" font-size="21" fill="#06633f">0001</text>
+  </g>
+  <text x="600" y="292" text-anchor="middle" font-family="Arial" font-size="16" fill="#526581">Les « : » séparent les groupes</text>
+  <rect x="30" y="385" width="1140" height="205" rx="16" fill="#fff" stroke="#6ee7b7" filter="url(#s)"/>
+  <rect x="48" y="367" width="260" height="40" rx="11" fill="#0f8a5f"/><text x="178" y="394" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">2. SIMPLIFIER EN DEUX RÈGLES</text>
+  <g font-family="Arial">
+    <rect x="70" y="445" width="465" height="95" rx="12" fill="#eff6ff" stroke="#93c5fd"/><text x="95" y="478" font-size="17" font-weight="700" fill="#123c8c">① Retirer les zéros en tête</text><text x="95" y="513" font-size="19" fill="#526581">0db8 → db8   •   0001 → 1</text>
+    <rect x="665" y="445" width="465" height="95" rx="12" fill="#ecfdf5" stroke="#6ee7b7"/><text x="690" y="478" font-size="17" font-weight="700" fill="#06633f">② Remplacer une suite de 0000</text><text x="690" y="513" font-size="19" fill="#526581">une seule fois par ::</text>
+    <path d="M535 493H655" stroke="#0f8a5f" stroke-width="5" marker-end="url(#g)"/>
+    <text x="600" y="574" text-anchor="middle" font-size="25" font-weight="800" fill="#0f8a5f">2001:db8::1</text>
+  </g>
+  <text x="600" y="625" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#9a3f00">Impossible d'utiliser :: deux fois : la forme ne serait plus unique</text>
+</svg>

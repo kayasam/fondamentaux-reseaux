@@ -1,0 +1,50 @@
+<svg viewBox="0 0 660 220" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,sans-serif">
+
+<rect width="660" height="220" fill="#F8FAFC" rx="10"/>
+<text x="330" y="27" text-anchor="middle" font-size="15" font-weight="600" fill="#1E293B">Structure d'une adresse IPv4 avec masque /24</text>
+
+<!-- === Octets — ligne principale === -->
+<!-- Octet 1: 192 (réseau) -->
+<rect x="40"  y="48" width="130" height="56" rx="6" fill="#3B82F6"/>
+<text x="105" y="73" text-anchor="middle" font-size="28" font-weight="700" fill="white">192</text>
+<text x="105" y="93" text-anchor="middle" font-size="11" fill="#BFDBFE">1er octet</text>
+
+<!-- Octet 2: 168 (réseau) -->
+<rect x="180" y="48" width="130" height="56" rx="6" fill="#3B82F6"/>
+<text x="245" y="73" text-anchor="middle" font-size="28" font-weight="700" fill="white">168</text>
+<text x="245" y="93" text-anchor="middle" font-size="11" fill="#BFDBFE">2e octet</text>
+
+<!-- Octet 3: 1 (réseau) -->
+<rect x="320" y="48" width="130" height="56" rx="6" fill="#3B82F6"/>
+<text x="385" y="73" text-anchor="middle" font-size="28" font-weight="700" fill="white">1</text>
+<text x="385" y="93" text-anchor="middle" font-size="11" fill="#BFDBFE">3e octet</text>
+
+<!-- Octet 4: 42 (hôte) -->
+<rect x="460" y="48" width="160" height="56" rx="6" fill="#10B981"/>
+<text x="540" y="73" text-anchor="middle" font-size="28" font-weight="700" fill="white">42</text>
+<text x="540" y="93" text-anchor="middle" font-size="11" fill="#D1FAE5">4e octet</text>
+
+<!-- Points séparateurs -->
+<text x="171" y="80" text-anchor="middle" font-size="24" font-weight="700" fill="#94A3B8">.</text>
+<text x="311" y="80" text-anchor="middle" font-size="24" font-weight="700" fill="#94A3B8">.</text>
+<text x="451" y="80" text-anchor="middle" font-size="24" font-weight="700" fill="#94A3B8">.</text>
+
+<!-- === Accolades / annotations === -->
+<!-- Barre réseau (bleu) -->
+<rect x="40" y="116" width="410" height="6" rx="3" fill="#3B82F6"/>
+<line x1="40"  y1="116" x2="40"  y2="104" stroke="#3B82F6" stroke-width="1.5"/>
+<line x1="450" y1="116" x2="450" y2="104" stroke="#3B82F6" stroke-width="1.5"/>
+<text x="245" y="140" text-anchor="middle" font-size="13" font-weight="600" fill="#3B82F6">Partie réseau — 24 bits (3 octets)</text>
+<text x="245" y="156" text-anchor="middle" font-size="11" fill="#64748B">Identifie le réseau : tous les appareils partagent ce préfixe</text>
+
+<!-- Barre hôte (vert) -->
+<rect x="460" y="116" width="160" height="6" rx="3" fill="#10B981"/>
+<line x1="460" y1="116" x2="460" y2="104" stroke="#10B981" stroke-width="1.5"/>
+<line x1="620" y1="116" x2="620" y2="104" stroke="#10B981" stroke-width="1.5"/>
+<text x="540" y="140" text-anchor="middle" font-size="13" font-weight="600" fill="#10B981">Partie hôte — 8 bits</text>
+<text x="540" y="156" text-anchor="middle" font-size="11" fill="#64748B">Identifie la machine</text>
+
+<!-- Notation CIDR -->
+<rect x="180" y="178" width="300" height="32" rx="6" fill="#EFF6FF"/>
+<text x="330" y="199" text-anchor="middle" font-size="13" fill="#1E40AF">192.168.1.42 / 24   →   masque 255.255.255.0</text>
+</svg>

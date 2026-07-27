@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="610" viewBox="0 0 1200 610">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter></defs>
+  <rect width="1200" height="610" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="34" font-weight="800" fill="#08285f">ANATOMIE UTILE D'UN PAQUET IPv4</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">Le routeur lit surtout la destination et décrémente le TTL</text>
+  <rect x="30" y="125" width="1140" height="250" rx="16" fill="#fff" stroke="#93c5fd" filter="url(#s)"/>
+  <rect x="48" y="107" width="220" height="40" rx="11" fill="#0b5bd3"/><text x="158" y="134" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">1. LES CHAMPS</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="70" y="205" width="115" height="95" rx="9" fill="#e2e8f0"/><text x="127" y="244" font-size="17" font-weight="700" fill="#334155">Version</text><text x="127" y="271" font-size="14" fill="#526581">IPv4</text>
+    <rect x="185" y="205" width="205" height="95" fill="#dbeafe"/><text x="287" y="244" font-size="17" font-weight="700" fill="#123c8c">IP source</text><text x="287" y="271" font-size="14" fill="#526581">192.168.1.42</text>
+    <rect x="390" y="205" width="220" height="95" fill="#bfdbfe"/><text x="500" y="244" font-size="17" font-weight="700" fill="#123c8c">IP destination</text><text x="500" y="271" font-size="14" fill="#526581">203.0.113.20</text>
+    <rect x="610" y="205" width="120" height="95" fill="#fff1d6"/><text x="670" y="244" font-size="17" font-weight="700" fill="#9a3f00">TTL</text><text x="670" y="271" font-size="14" fill="#526581">64</text>
+    <rect x="730" y="205" width="150" height="95" fill="#ede9fe"/><text x="805" y="244" font-size="17" font-weight="700" fill="#5620bb">Protocole</text><text x="805" y="271" font-size="14" fill="#526581">TCP / UDP / ICMP</text>
+    <rect x="880" y="205" width="250" height="95" rx="9" fill="#d1fae5"/><text x="1005" y="244" font-size="17" font-weight="700" fill="#06633f">Données</text><text x="1005" y="271" font-size="14" fill="#526581">contenu encapsulé</text>
+  </g>
+  <text x="500" y="337" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="#0b5bd3">Destination : choix de route</text><text x="670" y="337" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="#c65b00">TTL : −1 par saut</text>
+  <g font-family="Arial">
+    <rect x="30" y="425" width="550" height="125" rx="15" fill="#fff" stroke="#6ee7b7" filter="url(#s)"/><rect x="48" y="407" width="235" height="40" rx="11" fill="#0f8a5f"/><text x="165" y="434" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">2. RESTE IDENTIQUE</text><text x="65" y="488" font-size="18" font-weight="700" fill="#06633f">IP source et IP destination</text><text x="65" y="520" font-size="15" fill="#526581">Elles désignent normalement les deux extrémités.</text>
+    <rect x="620" y="425" width="550" height="125" rx="15" fill="#fff" stroke="#fdba74" filter="url(#s)"/><rect x="638" y="407" width="235" height="40" rx="11" fill="#f59e0b"/><text x="755" y="434" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">3. CHANGE EN ROUTE</text><text x="655" y="488" font-size="18" font-weight="700" fill="#9a3f00">TTL et en-tête de la trame</text><text x="655" y="520" font-size="15" fill="#526581">Le TTL baisse ; les MAC changent à chaque liaison.</text>
+  </g>
+</svg>

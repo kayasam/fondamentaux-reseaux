@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter><marker id="g" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#0f8a5f"/></marker></defs>
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="34" font-weight="800" fill="#08285f">MPLS — FAIRE SUIVRE UN CHEMIN AVEC DES LABELS</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">Le cœur opérateur examine un label local plutôt que toute la destination IP à chaque saut</text>
+  <rect x="30" y="125" width="1140" height="350" rx="16" fill="#fff" stroke="#c4b5fd" filter="url(#s)"/>
+  <rect x="48" y="107" width="290" height="40" rx="11" fill="#7c3aed"/><text x="193" y="134" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">1. LABEL SWITCHED PATH</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="65" y="240" width="150" height="80" rx="11" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="140" y="271" font-size="18" font-weight="700" fill="#123c8c">SITE A</text><text x="140" y="298" font-size="14" fill="#526581">paquet IP</text>
+    <circle cx="355" cy="280" r="62" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/><text x="355" y="272" font-size="18" font-weight="700" fill="#5620bb">ENTRÉE</text><text x="355" y="299" font-size="15" fill="#526581">PUSH 100</text>
+    <circle cx="600" cy="280" r="62" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/><text x="600" y="272" font-size="18" font-weight="700" fill="#5620bb">CŒUR</text><text x="600" y="299" font-size="15" fill="#526581">SWAP 100→240</text>
+    <circle cx="845" cy="280" r="62" fill="#ede9fe" stroke="#7c3aed" stroke-width="3"/><text x="845" y="272" font-size="18" font-weight="700" fill="#5620bb">SORTIE</text><text x="845" y="299" font-size="15" fill="#526581">POP 240</text>
+    <rect x="1010" y="240" width="150" height="80" rx="11" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="1085" y="271" font-size="18" font-weight="700" fill="#06633f">SITE B</text><text x="1085" y="298" font-size="14" fill="#526581">paquet IP</text>
+    <path d="M215 280H285M418 280H530M663 280H775M908 280H1002" stroke="#0f8a5f" stroke-width="6" marker-end="url(#g)"/>
+    <rect x="435" y="370" width="330" height="55" rx="11" fill="#f5f3ff" stroke="#c4b5fd"/><text x="600" y="405" font-size="18" font-weight="800" fill="#5620bb">LSP : chemin suivi dans le réseau MPLS</text>
+  </g>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="30" y="525" width="350" height="60" rx="11" fill="#eff6ff" stroke="#93c5fd"/><text x="205" y="551" font-size="16" font-weight="700" fill="#123c8c">PUSH</text><text x="205" y="574" font-size="14" fill="#526581">ajouter un label</text>
+    <rect x="425" y="525" width="350" height="60" rx="11" fill="#f5f3ff" stroke="#c4b5fd"/><text x="600" y="551" font-size="16" font-weight="700" fill="#5620bb">SWAP</text><text x="600" y="574" font-size="14" fill="#526581">remplacer le label</text>
+    <rect x="820" y="525" width="350" height="60" rx="11" fill="#ecfdf5" stroke="#6ee7b7"/><text x="995" y="551" font-size="16" font-weight="700" fill="#06633f">POP</text><text x="995" y="574" font-size="14" fill="#526581">retirer le label</text>
+  </g>
+</svg>

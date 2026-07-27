@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 410" font-family="'Segoe UI', Arial, sans-serif">
+  <!-- Background -->
+  <rect width="660" height="410" fill="#F8FAFC" rx="8"/>
+
+  <!-- Title -->
+  <text x="330" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#0F172A">Topologies réseau</text>
+
+  <!-- Grid dividers -->
+  <line x1="330" y1="32" x2="330" y2="410" stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="0"   y1="215" x2="660" y2="215" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- Cell backgrounds -->
+  <rect x="1"   y="33"  width="328" height="181" fill="#FEFEFE" rx="0"/>
+  <rect x="331" y="33"  width="328" height="181" fill="#FEFEFE" rx="0"/>
+  <rect x="1"   y="216" width="328" height="193" fill="#FEFEFE" rx="0"/>
+  <rect x="331" y="216" width="328" height="193" fill="#FEFEFE" rx="0"/>
+
+  <!-- ====================== -->
+  <!-- BUS (top-left) -->
+  <!-- ====================== -->
+  <text x="165" y="52" text-anchor="middle" font-size="13" font-weight="bold" fill="#1E293B">Bus</text>
+  <text x="165" y="66" text-anchor="middle" font-size="10" fill="#64748B">Câble partagé — collision possible</text>
+
+  <!-- Bus line -->
+  <line x1="38" y1="120" x2="292" y2="120" stroke="#94A3B8" stroke-width="3" stroke-linecap="round"/>
+  <!-- Terminators -->
+  <rect x="30" y="113" width="10" height="14" fill="#475569" rx="2"/>
+  <rect x="290" y="113" width="10" height="14" fill="#475569" rx="2"/>
+  <!-- Drop lines -->
+  <line x1="82"  y1="120" x2="82"  y2="138" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="145" y1="120" x2="145" y2="138" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="208" y1="120" x2="208" y2="138" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="271" y1="120" x2="271" y2="138" stroke="#94A3B8" stroke-width="2"/>
+  <!-- Nodes -->
+  <circle cx="82"  cy="152" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="145" cy="152" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="208" cy="152" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="271" cy="152" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <!-- Node icons (simple monitor) -->
+  <text x="82"  y="157" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="145" y="157" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="208" y="157" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="271" y="157" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+
+  <!-- ====================== -->
+  <!-- ANNEAU (top-right) -->
+  <!-- ====================== -->
+  <text x="495" y="52" text-anchor="middle" font-size="13" font-weight="bold" fill="#1E293B">Anneau</text>
+  <text x="495" y="66" text-anchor="middle" font-size="10" fill="#64748B">Transmission dans un seul sens</text>
+
+  <!-- Ring connections (draw before nodes) -->
+  <!-- 5 nodes at r=65 from center (495,128) starting from top, clockwise every 72° -->
+  <!-- n1=(495,63) n2=(557,108) n3=(533,181) n4=(457,181) n5=(433,108) -->
+  <line x1="495" y1="63"  x2="557" y2="108" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="557" y1="108" x2="533" y2="181" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="533" y1="181" x2="457" y2="181" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="457" y1="181" x2="433" y2="108" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="433" y1="108" x2="495" y2="63"  stroke="#94A3B8" stroke-width="2"/>
+  <!-- Direction arrow on one segment -->
+  <polygon points="527,140 521,134 534,133" fill="#94A3B8"/>
+  <!-- Ring nodes -->
+  <circle cx="495" cy="63"  r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="557" cy="108" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="533" cy="181" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="457" cy="181" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="433" cy="108" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="495" y="68"  text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="557" y="113" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="533" y="186" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="457" y="186" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="433" y="113" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+
+  <!-- ====================== -->
+  <!-- ÉTOILE (bottom-left) -->
+  <!-- ====================== -->
+  <text x="165" y="234" text-anchor="middle" font-size="13" font-weight="bold" fill="#1E293B">Étoile</text>
+  <text x="165" y="248" text-anchor="middle" font-size="10" fill="#64748B">Topologie standard aujourd'hui</text>
+
+  <!-- Lines from switch to nodes (draw before nodes) -->
+  <!-- Switch at (165,320) — 5 nodes at r=70 -->
+  <!-- n1=(165,250) n2=(232,301) n3=(206,381) n4=(124,381) n5=(98,301) -->
+  <line x1="165" y1="320" x2="165" y2="250" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="165" y1="320" x2="232" y2="301" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="165" y1="320" x2="206" y2="375" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="165" y1="320" x2="124" y2="375" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="165" y1="320" x2="98"  y2="301" stroke="#94A3B8" stroke-width="2"/>
+  <!-- Switch -->
+  <rect x="148" y="310" width="34" height="22" fill="#DBEAFE" stroke="#1D4ED8" stroke-width="2" rx="4"/>
+  <text x="165" y="326" text-anchor="middle" font-size="9" font-weight="bold" fill="#1D4ED8">SW</text>
+  <!-- Client nodes -->
+  <circle cx="165" cy="250" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="232" cy="301" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="206" cy="375" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="124" cy="375" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="98"  cy="301" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="165" y="255" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="232" y="306" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="206" y="380" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="124" y="380" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="98"  y="306" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+
+  <!-- ====================== -->
+  <!-- MAILLÉE (bottom-right) -->
+  <!-- ====================== -->
+  <text x="495" y="234" text-anchor="middle" font-size="13" font-weight="bold" fill="#1E293B">Maillée</text>
+  <text x="495" y="248" text-anchor="middle" font-size="10" fill="#64748B">Redondance maximale</text>
+
+  <!-- Mesh connections — all 10 pairs from 5 nodes at r=70 center (495,315) -->
+  <!-- n1=(495,245) n2=(561,293) n3=(534,378) n4=(456,378) n5=(429,293) -->
+  <line x1="495" y1="245" x2="561" y2="293" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="495" y1="245" x2="534" y2="378" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="495" y1="245" x2="456" y2="378" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="495" y1="245" x2="429" y2="293" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="561" y1="293" x2="534" y2="378" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="561" y1="293" x2="456" y2="378" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="561" y1="293" x2="429" y2="293" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="534" y1="378" x2="456" y2="378" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="534" y1="378" x2="429" y2="293" stroke="#94A3B8" stroke-width="2"/>
+  <line x1="456" y1="378" x2="429" y2="293" stroke="#94A3B8" stroke-width="2"/>
+  <!-- Mesh nodes -->
+  <circle cx="495" cy="245" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="561" cy="293" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="534" cy="378" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="456" cy="378" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <circle cx="429" cy="293" r="14" fill="#EFF6FF" stroke="#3B82F6" stroke-width="2"/>
+  <text x="495" y="250" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="561" y="298" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="534" y="383" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="456" y="383" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+  <text x="429" y="298" text-anchor="middle" font-size="12" fill="#3B82F6">▣</text>
+
+  <!-- Outer border -->
+  <rect x="1" y="33" width="658" height="376" fill="none" stroke="#CBD5E1" stroke-width="1" rx="4"/>
+</svg>

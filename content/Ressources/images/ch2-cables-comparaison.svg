@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" font-family="Segoe UI,Arial,sans-serif">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".14"/></filter></defs>
+  <rect width="1200" height="680" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-size="34" font-weight="800" fill="#0b1f4d">CÂBLES ETHERNET EN CUIVRE</text>
+  <text x="600" y="78" text-anchor="middle" font-size="18" font-weight="600" fill="#64748b">Catégorie, débit, distance et blindage</text>
+
+  <rect x="30" y="110" width="760" height="445" rx="16" fill="#fff" stroke="#b9d2ff" filter="url(#s)"/>
+  <rect x="48" y="94" width="300" height="38" rx="10" fill="#0755c9"/>
+  <text x="198" y="120" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">1. DÉBIT SELON LA DISTANCE</text>
+  <text x="88" y="165" font-size="14" font-weight="700" fill="#64748b">CAT.</text>
+  <text x="258" y="165" font-size="14" font-weight="700" fill="#64748b">0 m</text>
+  <text x="438" y="165" font-size="14" font-weight="700" fill="#64748b">30 m</text>
+  <text x="586" y="165" font-size="14" font-weight="700" fill="#64748b">55 m</text>
+  <text x="738" y="165" text-anchor="end" font-size="14" font-weight="700" fill="#64748b">100 m</text>
+  <g stroke="#dbe3ef" stroke-dasharray="5 5"><path d="M255 175v344M438 175v344M586 175v344M740 175v344"/></g>
+
+  <g font-size="19" font-weight="800" text-anchor="middle">
+    <rect x="55" y="190" width="86" height="52" rx="10" fill="#dbeafe"/><text x="98" y="223" fill="#1e3a8a">5e</text>
+    <rect x="55" y="257" width="86" height="52" rx="10" fill="#bfdbfe"/><text x="98" y="290" fill="#1e3a8a">6</text>
+    <rect x="55" y="324" width="86" height="52" rx="10" fill="#93c5fd"/><text x="98" y="357" fill="#1e3a8a">6a</text>
+    <rect x="55" y="391" width="86" height="52" rx="10" fill="#60a5fa"/><text x="98" y="424" fill="#172554">7</text>
+    <rect x="55" y="458" width="86" height="52" rx="10" fill="#fde68a"/><text x="98" y="491" fill="#92400e">8</text>
+  </g>
+  <rect x="255" y="198" width="485" height="36" rx="8" fill="#93c5fd"/><text x="497" y="222" text-anchor="middle" font-size="17" font-weight="700" fill="#1e3a8a">1 Gbit/s • 100 m</text>
+  <rect x="255" y="265" width="331" height="36" rx="8" fill="#2563eb"/><rect x="586" y="265" width="154" height="36" rx="8" fill="#bfdbfe"/>
+  <text x="420" y="289" text-anchor="middle" font-size="16" font-weight="700" fill="#fff">10 Gbit/s • ≈ 55 m</text><text x="663" y="289" text-anchor="middle" font-size="14" font-weight="700" fill="#1e3a8a">1 Gbit/s</text>
+  <rect x="255" y="332" width="485" height="36" rx="8" fill="#1d4ed8"/><text x="497" y="356" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">10 Gbit/s • 100 m</text>
+  <rect x="255" y="399" width="485" height="36" rx="8" fill="#1e40af"/><text x="497" y="423" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">10 Gbit/s • 100 m • norme ISO/IEC</text>
+  <rect x="255" y="466" width="183" height="36" rx="8" fill="#f59e0b"/><text x="346" y="490" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">25–40 Gbit/s</text>
+  <text x="458" y="490" font-size="16" font-weight="700" fill="#92400e">30 m seulement</text>
+
+  <rect x="825" y="110" width="345" height="445" rx="16" fill="#fff" stroke="#8dd3c7" filter="url(#s)"/>
+  <rect x="843" y="94" width="235" height="38" rx="10" fill="#0f8a5f"/>
+  <text x="960" y="120" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">2. BLINDAGE</text>
+  <g>
+    <rect x="850" y="158" width="295" height="72" rx="10" fill="#f0fdf4" stroke="#86efac"/><text x="870" y="184" font-size="20" font-weight="800" fill="#166534">U/UTP</text><text x="870" y="210" font-size="15" fill="#475569">Aucun blindage • bureaux</text>
+    <rect x="850" y="243" width="295" height="72" rx="10" fill="#eff6ff" stroke="#93c5fd"/><text x="870" y="269" font-size="20" font-weight="800" fill="#1d4ed8">F/UTP</text><text x="870" y="295" font-size="15" fill="#475569">Feuille autour des 4 paires</text>
+    <rect x="850" y="328" width="295" height="72" rx="10" fill="#f5f3ff" stroke="#c4b5fd"/><text x="870" y="354" font-size="20" font-weight="800" fill="#6d28d9">U/FTP</text><text x="870" y="380" font-size="15" fill="#475569">Blindage de chaque paire</text>
+    <rect x="850" y="413" width="295" height="98" rx="10" fill="#fff7ed" stroke="#fdba74"/><text x="870" y="440" font-size="20" font-weight="800" fill="#c2410c">S/FTP</text><text x="870" y="466" font-size="15" fill="#475569">Tresse générale + paires blindées</text><text x="870" y="490" font-size="15" font-weight="700" fill="#15803d">Protection la plus élevée</text>
+  </g>
+
+  <rect x="30" y="586" width="1140" height="66" rx="14" fill="#fff7ed" stroke="#fdba74"/>
+  <circle cx="70" cy="619" r="21" fill="#f59e0b"/><text x="70" y="627" text-anchor="middle" font-size="25" font-weight="800" fill="#fff">!</text>
+  <text x="106" y="614" font-size="18" font-weight="800" fill="#9a3412">À retenir</text>
+  <text x="106" y="638" font-size="16" fill="#7c2d12">Le débit dépend du câble ET des équipements. Un blindage exige une installation correctement mise à la terre.</text>
+</svg>

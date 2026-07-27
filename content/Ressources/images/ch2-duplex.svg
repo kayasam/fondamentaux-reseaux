@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 640" font-family="Segoe UI,Arial,sans-serif">
+  <defs>
+    <filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter>
+    <marker id="b" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#2563eb"/></marker>
+    <marker id="g" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#0f8a5f"/></marker>
+  </defs>
+  <rect width="1200" height="640" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-size="34" font-weight="800" fill="#0b1f4d">HALF-DUPLEX OU FULL-DUPLEX ?</text>
+  <text x="600" y="78" text-anchor="middle" font-size="18" font-weight="600" fill="#64748b">La différence tient au sens de communication disponible au même instant</text>
+
+  <rect x="30" y="115" width="555" height="390" rx="16" fill="#fff" stroke="#fdba74" filter="url(#s)"/>
+  <rect x="48" y="98" width="230" height="38" rx="10" fill="#f59e0b"/><text x="163" y="124" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">1. HALF-DUPLEX</text>
+  <rect x="615" y="115" width="555" height="390" rx="16" fill="#fff" stroke="#86efac" filter="url(#s)"/>
+  <rect x="633" y="98" width="225" height="38" rx="10" fill="#0f8a5f"/><text x="745" y="124" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">2. FULL-DUPLEX</text>
+
+  <g text-anchor="middle">
+    <circle cx="132" cy="270" r="55" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><text x="132" y="277" font-size="24" font-weight="800" fill="#1e3a8a">A</text>
+    <circle cx="483" cy="270" r="55" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><text x="483" y="277" font-size="24" font-weight="800" fill="#1e3a8a">B</text>
+    <path d="M198 245H413" stroke="#2563eb" stroke-width="7" marker-end="url(#b)"/>
+    <path d="M417 298H202" stroke="#94a3b8" stroke-width="7" stroke-dasharray="10 8"/>
+    <text x="307" y="198" font-size="21" font-weight="800" fill="#92400e">UN SEUL SENS À LA FOIS</text>
+    <text x="307" y="348" font-size="17" fill="#475569">A émet, B doit attendre.</text>
+    <rect x="104" y="390" width="406" height="72" rx="12" fill="#fff7ed" stroke="#fdba74"/>
+    <text x="307" y="419" font-size="18" font-weight="800" fill="#92400e">Exemples</text><text x="307" y="445" font-size="16" fill="#64748b">talkie-walkie • Ethernet avec hub</text>
+
+    <circle cx="717" cy="270" r="55" fill="#d1fae5" stroke="#10b981" stroke-width="3"/><text x="717" y="277" font-size="24" font-weight="800" fill="#065f46">A</text>
+    <circle cx="1068" cy="270" r="55" fill="#d1fae5" stroke="#10b981" stroke-width="3"/><text x="1068" y="277" font-size="24" font-weight="800" fill="#065f46">B</text>
+    <path d="M783 245H998" stroke="#2563eb" stroke-width="7" marker-end="url(#b)"/>
+    <path d="M1002 298H787" stroke="#0f8a5f" stroke-width="7" marker-end="url(#g)"/>
+    <text x="892" y="198" font-size="21" font-weight="800" fill="#166534">DEUX SENS SIMULTANÉS</text>
+    <text x="892" y="348" font-size="17" fill="#475569">A et B émettent en même temps.</text>
+    <rect x="689" y="390" width="406" height="72" rx="12" fill="#ecfdf5" stroke="#86efac"/>
+    <text x="892" y="419" font-size="18" font-weight="800" fill="#166534">Exemple</text><text x="892" y="445" font-size="16" fill="#64748b">Ethernet moderne avec switch</text>
+  </g>
+
+  <rect x="30" y="545" width="1140" height="65" rx="14" fill="#eff6ff" stroke="#93c5fd"/>
+  <text x="600" y="573" text-anchor="middle" font-size="18" font-weight="800" fill="#1e3a8a">Conséquence pratique</text>
+  <text x="600" y="597" text-anchor="middle" font-size="16" fill="#334155">En full-duplex, il n'y a pas de collision : CSMA/CD devient inutile.</text>
+</svg>

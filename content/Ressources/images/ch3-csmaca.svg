@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 570" font-family="Segoe UI,Arial,sans-serif">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter><marker id="b" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#2563eb"/></marker></defs>
+  <rect width="1200" height="570" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-size="34" font-weight="800" fill="#0b1f4d">CSMA/CA — ÉVITER LES COLLISIONS EN WI-FI</text>
+  <text x="600" y="80" text-anchor="middle" font-size="18" font-weight="600" fill="#64748b">Une station radio ne peut pas détecter correctement une collision pendant qu'elle émet</text>
+
+  <rect x="30" y="120" width="1140" height="300" rx="16" fill="#fff" stroke="#b9d2ff" filter="url(#s)"/>
+  <rect x="48" y="103" width="285" height="38" rx="10" fill="#0755c9"/>
+  <text x="190" y="129" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">1. CINQ ÉTAPES</text>
+  <line x1="115" y1="285" x2="1085" y2="285" stroke="#cbd5e1" stroke-width="4"/>
+  <g text-anchor="middle">
+    <circle cx="115" cy="285" r="28" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><text x="115" y="293" font-size="21" font-weight="800" fill="#1e3a8a">1</text>
+    <text x="115" y="190" font-size="18" font-weight="800" fill="#1d4ed8">ÉCOUTER</text><text x="115" y="220" font-size="15" fill="#64748b">Le canal est-il libre ?</text>
+    <path d="M95 252q20-20 40 0M102 260q13-13 26 0" fill="none" stroke="#2563eb" stroke-width="3" stroke-linecap="round"/>
+
+    <circle cx="355" cy="285" r="28" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/><text x="355" y="293" font-size="21" font-weight="800" fill="#92400e">2</text>
+    <text x="355" y="190" font-size="18" font-weight="800" fill="#92400e">ATTENDRE</text><text x="355" y="220" font-size="15" fill="#64748b">Délai aléatoire</text>
+    <circle cx="355" cy="254" r="17" fill="none" stroke="#f59e0b" stroke-width="3"/><path d="M355 254v-10M355 254l8 5" stroke="#92400e" stroke-width="2.5" stroke-linecap="round"/>
+
+    <circle cx="600" cy="285" r="28" fill="#dbeafe" stroke="#2563eb" stroke-width="3"/><text x="600" y="293" font-size="21" font-weight="800" fill="#1e3a8a">3</text>
+    <text x="600" y="190" font-size="18" font-weight="800" fill="#1d4ed8">ÉMETTRE</text><text x="600" y="220" font-size="15" fill="#64748b">Une station utilise le canal</text>
+    <path d="M580 254h40" stroke="#2563eb" stroke-width="4" marker-end="url(#b)"/>
+
+    <circle cx="845" cy="285" r="28" fill="#dcfce7" stroke="#10b981" stroke-width="3"/><text x="845" y="293" font-size="21" font-weight="800" fill="#065f46">4</text>
+    <text x="845" y="190" font-size="18" font-weight="800" fill="#15803d">ACQUITTER</text><text x="845" y="220" font-size="15" fill="#64748b">Le destinataire renvoie ACK</text>
+    <path d="M833 253l9 9 17-20" fill="none" stroke="#15803d" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+
+    <circle cx="1085" cy="285" r="28" fill="#f1f5f9" stroke="#94a3b8" stroke-width="3"/><text x="1085" y="293" font-size="21" font-weight="800" fill="#475569">5</text>
+    <text x="1085" y="190" font-size="18" font-weight="800" fill="#475569">RECOMMENCER</text><text x="1085" y="220" font-size="15" fill="#64748b">La station suivante tente</text>
+    <path d="M1070 254h30" stroke="#94a3b8" stroke-width="3" stroke-dasharray="5 4"/>
+  </g>
+  <path d="M143 285H318M383 285H563M628 285H808M873 285H1048" stroke="#94a3b8" stroke-width="3" marker-end="url(#b)"/>
+  <rect x="80" y="340" width="1040" height="52" rx="12" fill="#fff7ed" stroke="#fdba74"/>
+  <text x="600" y="372" text-anchor="middle" font-size="16" font-weight="700" fill="#9a3412">Pas d'ACK ? La station suppose une perte ou une collision, attend un nouveau délai, puis réessaie.</text>
+
+  <rect x="30" y="465" width="555" height="75" rx="14" fill="#fef2f2" stroke="#fca5a5"/>
+  <text x="307" y="493" text-anchor="middle" font-size="17" font-weight="800" fill="#b91c1c">ETHERNET PARTAGÉ : CSMA/CD</text>
+  <text x="307" y="520" text-anchor="middle" font-size="15" fill="#7f1d1d">Détecter la collision après avoir commencé à émettre</text>
+  <rect x="615" y="465" width="555" height="75" rx="14" fill="#ecfdf5" stroke="#86efac"/>
+  <text x="892" y="493" text-anchor="middle" font-size="17" font-weight="800" fill="#166534">WI-FI : CSMA/CA</text>
+  <text x="892" y="520" text-anchor="middle" font-size="15" fill="#14532d">Réduire le risque de collision avant d'émettre</text>
+</svg>

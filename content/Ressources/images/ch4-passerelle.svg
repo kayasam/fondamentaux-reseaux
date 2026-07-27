@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter><marker id="b" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#2563eb"/></marker><marker id="g" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#0f8a5f"/></marker></defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="34" font-weight="800" fill="#08285f">DESTINATION LOCALE OU DISTANTE ?</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">Le poste utilise son préfixe avant de décider à quelle MAC livrer la trame</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="30" y="130" width="550" height="430" rx="16" fill="#fff" stroke="#93c5fd" filter="url(#s)"/><rect x="48" y="112" width="250" height="40" rx="11" fill="#0b5bd3"/><text x="173" y="139" font-size="17" font-weight="700" fill="#fff">1. MÊME RÉSEAU /24</text>
+    <rect x="75" y="220" width="150" height="80" rx="11" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="150" y="251" font-size="18" font-weight="700" fill="#123c8c">PC A</text><text x="150" y="278" font-size="14" fill="#526581">192.168.1.42</text>
+    <rect x="385" y="220" width="150" height="80" rx="11" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="460" y="251" font-size="18" font-weight="700" fill="#06633f">PC B</text><text x="460" y="278" font-size="14" fill="#526581">192.168.1.20</text>
+    <path d="M225 260H377" stroke="#2563eb" stroke-width="5" marker-end="url(#b)"/><text x="302" y="238" font-size="15" font-weight="700" fill="#0b5bd3">directement</text>
+    <rect x="80" y="350" width="450" height="110" rx="12" fill="#eff6ff" stroke="#93c5fd"/><text x="305" y="384" font-size="18" font-weight="700" fill="#123c8c">ARP recherche la MAC de PC B</text><text x="305" y="418" font-size="16" fill="#526581">IP destination : 192.168.1.20</text><text x="305" y="445" font-size="16" font-weight="700" fill="#0b5bd3">MAC destination : MAC de PC B</text>
+    <rect x="620" y="130" width="550" height="430" rx="16" fill="#fff" stroke="#6ee7b7" filter="url(#s)"/><rect x="638" y="112" width="265" height="40" rx="11" fill="#0f8a5f"/><text x="770" y="139" font-size="17" font-weight="700" fill="#fff">2. AUTRE RÉSEAU</text>
+    <rect x="655" y="220" width="135" height="80" rx="11" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="722" y="251" font-size="18" font-weight="700" fill="#123c8c">PC A</text><text x="722" y="278" font-size="14" fill="#526581">192.168.1.42</text>
+    <circle cx="910" cy="260" r="62" fill="#d1fae5" stroke="#10b981" stroke-width="3"/><text x="910" y="252" font-size="18" font-weight="700" fill="#06633f">PASSERELLE</text><text x="910" y="279" font-size="14" fill="#526581">192.168.1.1</text>
+    <ellipse cx="1090" cy="260" rx="62" ry="45" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/><text x="1090" y="253" font-size="16" font-weight="700" fill="#5620bb">INTERNET</text><text x="1090" y="278" font-size="13" fill="#526581">203.0.113.20</text>
+    <path d="M790 260H839M972 260H1020" stroke="#0f8a5f" stroke-width="5" marker-end="url(#g)"/>
+    <rect x="665" y="350" width="460" height="110" rx="12" fill="#ecfdf5" stroke="#6ee7b7"/><text x="895" y="384" font-size="18" font-weight="700" fill="#06633f">ARP recherche la MAC de la passerelle</text><text x="895" y="418" font-size="16" fill="#526581">IP destination : 203.0.113.20</text><text x="895" y="445" font-size="16" font-weight="700" fill="#0f8a5f">MAC destination : MAC de la passerelle</text>
+  </g>
+  <rect x="150" y="590" width="900" height="42" rx="10" fill="#fff7ed" stroke="#fdba74"/><text x="600" y="617" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#9a3f00">L'IP vise la destination finale ; la MAC vise le prochain saut local</text>
+</svg>

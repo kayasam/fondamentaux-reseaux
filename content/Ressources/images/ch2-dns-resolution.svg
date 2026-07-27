@@ -1,0 +1,72 @@
+<svg viewBox="0 0 660 215" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,sans-serif">
+<defs>
+  <marker id="mr" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+    <polygon points="0 0,8 4,0 8" fill="#3B82F6"/>
+  </marker>
+  <marker id="mg" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+    <polygon points="0 0,8 4,0 8" fill="#10B981"/>
+  </marker>
+</defs>
+
+<rect width="660" height="215" fill="#F8FAFC" rx="10"/>
+<text x="330" y="26" text-anchor="middle" font-size="15" font-weight="600" fill="#1E293B">Résolution DNS — Comment « google.com » devient une adresse IP</text>
+
+<!-- === Boîtes (top row) === -->
+<!-- Navigateur -->
+<rect x="14"  y="45" width="100" height="48" rx="6" fill="#6366F1"/>
+<text x="64"  y="66" text-anchor="middle" font-size="12" font-weight="600" fill="white">Navigateur</text>
+<text x="64"  y="82" text-anchor="middle" font-size="11" fill="#C7D2FE">Chrome / Firefox</text>
+
+<!-- Résolveur DNS -->
+<rect x="140" y="45" width="110" height="48" rx="6" fill="#3B82F6"/>
+<text x="195" y="66" text-anchor="middle" font-size="12" font-weight="600" fill="white">Résolveur</text>
+<text x="195" y="82" text-anchor="middle" font-size="11" fill="#BFDBFE">DNS (ta box)</text>
+
+<!-- Racine -->
+<rect x="278" y="45" width="92" height="48" rx="6" fill="#F59E0B"/>
+<text x="324" y="66" text-anchor="middle" font-size="12" font-weight="600" fill="white">Racine (.)</text>
+<text x="324" y="82" text-anchor="middle" font-size="11" fill="#FEF3C7">13 serveurs</text>
+
+<!-- TLD -->
+<rect x="396" y="45" width="92" height="48" rx="6" fill="#F59E0B"/>
+<text x="442" y="66" text-anchor="middle" font-size="12" font-weight="600" fill="white">TLD .com</text>
+<text x="442" y="82" text-anchor="middle" font-size="11" fill="#FEF3C7">Registre</text>
+
+<!-- Autoritaire -->
+<rect x="514" y="45" width="130" height="48" rx="6" fill="#10B981"/>
+<text x="579" y="62" text-anchor="middle" font-size="12" font-weight="600" fill="white">ns1.google.com</text>
+<text x="579" y="78" text-anchor="middle" font-size="11" fill="#D1FAE5">Serveur</text>
+<text x="579" y="91" text-anchor="middle" font-size="11" fill="#D1FAE5">autoritaire</text>
+
+<!-- === Flèches requêtes (vers la droite) === -->
+<line x1="114" y1="62" x2="138" y2="62" stroke="#3B82F6" stroke-width="2" marker-end="url(#mr)"/>
+<text x="126" y="56" text-anchor="middle" font-size="9" fill="#3B82F6">①</text>
+
+<line x1="250" y1="62" x2="276" y2="62" stroke="#F59E0B" stroke-width="2" marker-end="url(#mr)" stroke="url(none)" style="stroke:#F59E0B"/>
+<text x="263" y="56" text-anchor="middle" font-size="9" fill="#F59E0B">②</text>
+
+<line x1="370" y1="62" x2="394" y2="62" stroke="#F59E0B" stroke-width="2" marker-end="url(#mr)" style="stroke:#F59E0B"/>
+<text x="382" y="56" text-anchor="middle" font-size="9" fill="#F59E0B">③</text>
+
+<line x1="488" y1="62" x2="512" y2="62" stroke="#10B981" stroke-width="2" marker-end="url(#mg)"/>
+<text x="500" y="56" text-anchor="middle" font-size="9" fill="#10B981">④</text>
+
+<!-- Petites étiquettes requêtes -->
+<text x="126" y="107" text-anchor="middle" font-size="10" fill="#64748B">google.com ?</text>
+<text x="263" y="107" text-anchor="middle" font-size="10" fill="#64748B">google.com ?</text>
+<text x="382" y="107" text-anchor="middle" font-size="10" fill="#64748B">google.com ?</text>
+<text x="500" y="107" text-anchor="middle" font-size="10" fill="#64748B">google.com ?</text>
+
+<!-- === Flèche retour longue (vers la gauche) === -->
+<line x1="579" y1="135" x2="579" y2="148" stroke="#10B981" stroke-width="1.5"/>
+<line x1="14" y1="148" x2="645" y2="148" stroke="#10B981" stroke-width="2"/>
+<line x1="14" y1="148" x2="14" y2="135" stroke="#10B981" stroke-width="1.5"/>
+<polygon points="14,135 10,143 18,143" fill="#10B981"/>
+
+<!-- Label retour -->
+<text x="330" y="143" text-anchor="middle" font-size="12" font-weight="600" fill="#065F46">Réponse : 142.250.74.46</text>
+
+<!-- Note finale -->
+<text x="330" y="175" text-anchor="middle" font-size="11" fill="#64748B">Le résolveur met en cache la réponse — les requêtes suivantes sont immédiates (TTL)</text>
+<text x="330" y="195" text-anchor="middle" font-size="11" fill="#64748B">② ③ ④ se font uniquement si la réponse n'est pas déjà en cache</text>
+</svg>

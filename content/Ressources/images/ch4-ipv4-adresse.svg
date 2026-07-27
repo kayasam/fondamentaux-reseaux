@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter></defs>
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="34" font-weight="800" fill="#08285f">LIRE UNE ADRESSE IPv4</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">L'adresse contient 32 bits ; le préfixe sépare le réseau de l'hôte</text>
+  <rect x="30" y="120" width="1140" height="260" rx="16" fill="#fff" stroke="#c4b5fd" filter="url(#s)"/>
+  <rect x="48" y="102" width="260" height="40" rx="11" fill="#7c3aed"/><text x="178" y="129" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">1. EXEMPLE EN /24</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="95" y="180" width="220" height="92" rx="12" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/><text x="205" y="220" font-size="30" font-weight="800" fill="#5620bb">192 . 168 . 1</text><text x="205" y="250" font-size="15" fill="#6d4dc2">24 bits réseau</text>
+    <rect x="315" y="180" width="155" height="92" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="392" y="220" font-size="30" font-weight="800" fill="#123c8c">. 42</text><text x="392" y="250" font-size="15" fill="#526581">8 bits hôte</text>
+    <text x="520" y="226" font-size="34" font-weight="800" fill="#0b5bd3">/24</text>
+    <rect x="620" y="160" width="470" height="145" rx="14" fill="#eff6ff" stroke="#93c5fd"/>
+    <text x="855" y="197" font-size="20" font-weight="700" fill="#123c8c">Réseau calculé</text><text x="855" y="237" font-size="28" font-weight="800" fill="#0b5bd3">192.168.1.0/24</text><text x="855" y="271" font-size="16" fill="#526581">La machine 42 appartient à ce réseau</text>
+  </g>
+  <path d="M95 312H470M95 312v-15M470 312v-15" stroke="#7c3aed" stroke-width="3"/><text x="282" y="342" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#5620bb">Même préfixe réseau pour tous les hôtes du LAN</text>
+  <rect x="30" y="430" width="1140" height="135" rx="16" fill="#fff" stroke="#93c5fd" filter="url(#s)"/>
+  <rect x="48" y="412" width="260" height="40" rx="11" fill="#0b5bd3"/><text x="178" y="439" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">2. PLAGES PRIVÉES</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="85" y="477" width="300" height="55" rx="11" fill="#dbeafe" stroke="#60a5fa"/><text x="235" y="511" font-size="22" font-weight="700" fill="#123c8c">10.0.0.0/8</text>
+    <rect x="450" y="477" width="300" height="55" rx="11" fill="#ede9fe" stroke="#a78bfa"/><text x="600" y="511" font-size="22" font-weight="700" fill="#5620bb">172.16.0.0/12</text>
+    <rect x="815" y="477" width="300" height="55" rx="11" fill="#d1fae5" stroke="#34d399"/><text x="965" y="511" font-size="22" font-weight="700" fill="#06633f">192.168.0.0/16</text>
+    <text x="600" y="553" font-size="14" fill="#526581">Réutilisables en interne • non annoncées directement sur Internet</text>
+  </g>
+</svg>

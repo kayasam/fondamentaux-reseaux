@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" font-family="Segoe UI,Arial,sans-serif">
+  <defs>
+    <filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter>
+    <marker id="blue" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#2563eb"/></marker>
+    <marker id="grey" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#94a3b8"/></marker>
+  </defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-size="34" font-weight="800" fill="#0b1f4d">LE HUB : UN RÉPÉTEUR MULTIPORT</text>
+  <text x="600" y="78" text-anchor="middle" font-size="18" font-weight="600" fill="#64748b">Il répète les bits partout et crée un seul domaine de collision</text>
+
+  <rect x="30" y="112" width="555" height="435" rx="16" fill="#fff" stroke="#b9d2ff" filter="url(#s)"/>
+  <rect x="48" y="95" width="285" height="38" rx="10" fill="#0755c9"/><text x="190" y="121" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">1. DIFFUSION SUR LES PORTS</text>
+  <rect x="615" y="112" width="555" height="435" rx="16" fill="#fff" stroke="#fecaca" filter="url(#s)"/>
+  <rect x="633" y="95" width="270" height="38" rx="10" fill="#dc2626"/><text x="768" y="121" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">2. COLLISION POSSIBLE</text>
+
+  <g stroke-linecap="round">
+    <path d="M307 213V276" stroke="#2563eb" stroke-width="5" marker-end="url(#blue)"/>
+    <path d="M270 335L158 423M307 345V438M344 335l112 88" stroke="#94a3b8" stroke-width="5" stroke-dasharray="9 7" marker-end="url(#grey)"/>
+  </g>
+  <rect x="245" y="280" width="124" height="68" rx="12" fill="#334155"/><g fill="#86efac"><circle cx="265" cy="301" r="5"/><circle cx="283" cy="301" r="5"/><circle cx="301" cy="301" r="5"/></g><text x="307" y="329" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">HUB</text>
+  <g text-anchor="middle" font-size="17" font-weight="700">
+    <rect x="242" y="162" width="130" height="52" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="307" y="194" fill="#1e3a8a">PC A émet</text>
+    <rect x="78" y="424" width="130" height="52" rx="10" fill="#f1f5f9" stroke="#94a3b8"/><text x="143" y="456" fill="#334155">PC B reçoit</text>
+    <rect x="242" y="438" width="130" height="52" rx="10" fill="#f1f5f9" stroke="#94a3b8"/><text x="307" y="470" fill="#334155">PC C reçoit</text>
+    <rect x="406" y="424" width="130" height="52" rx="10" fill="#f1f5f9" stroke="#94a3b8"/><text x="471" y="456" fill="#334155">PC D reçoit</text>
+  </g>
+  <text x="307" y="519" text-anchor="middle" font-size="16" font-weight="700" fill="#64748b">Le hub ne sait pas qui est le destinataire.</text>
+
+  <rect x="660" y="170" width="135" height="56" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="727" y="204" text-anchor="middle" font-size="18" font-weight="700" fill="#1e3a8a">PC A émet</text>
+  <rect x="990" y="170" width="135" height="56" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="1057" y="204" text-anchor="middle" font-size="18" font-weight="700" fill="#1e3a8a">PC B émet</text>
+  <path d="M795 198H870M990 198H915" stroke="#dc2626" stroke-width="6"/>
+  <polygon points="893,155 905,183 936,175 919,202 942,223 911,220 905,251 889,224 861,239 870,209 839,198 870,186 860,157 889,174" fill="#fee2e2" stroke="#dc2626" stroke-width="3"/>
+  <text x="892" y="204" text-anchor="middle" font-size="18" font-weight="800" fill="#b91c1c">!</text>
+  <text x="892" y="286" text-anchor="middle" font-size="24" font-weight="800" fill="#dc2626">COLLISION</text>
+  <rect x="680" y="325" width="425" height="154" rx="12" fill="#fef2f2" stroke="#fca5a5"/>
+  <g font-size="17" fill="#475569">
+    <circle cx="715" cy="360" r="14" fill="#fee2e2"/><text x="715" y="366" text-anchor="middle" font-weight="800" fill="#dc2626">1</text><text x="745" y="366">Les signaux se mélangent.</text>
+    <circle cx="715" cy="402" r="14" fill="#fee2e2"/><text x="715" y="408" text-anchor="middle" font-weight="800" fill="#dc2626">2</text><text x="745" y="408">Les machines arrêtent d'émettre.</text>
+    <circle cx="715" cy="444" r="14" fill="#fee2e2"/><text x="715" y="450" text-anchor="middle" font-weight="800" fill="#dc2626">3</text><text x="745" y="450">Chacune attend un délai aléatoire.</text>
+  </g>
+  <text x="892" y="519" text-anchor="middle" font-size="16" font-weight="700" fill="#b91c1c">Un seul appareil peut émettre à la fois.</text>
+
+  <rect x="30" y="578" width="1140" height="46" rx="12" fill="#ecfdf5" stroke="#86efac"/>
+  <text x="600" y="607" text-anchor="middle" font-size="17" font-weight="700" fill="#166534">Le switch remplace le hub : un lien dédié par port, full-duplex et aucune collision.</text>
+</svg>

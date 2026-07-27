@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 265" font-family="'Segoe UI', Arial, sans-serif">
+  <!-- Background -->
+  <rect width="660" height="265" fill="#F8FAFC" rx="8"/>
+
+  <!-- Title -->
+  <text x="330" y="24" text-anchor="middle" font-size="15" font-weight="bold" fill="#0F172A">Étendues des réseaux</text>
+
+  <!-- Column headers -->
+  <text x="55"  y="44" text-anchor="middle" font-size="10" font-weight="bold" fill="#94A3B8">TYPE</text>
+  <text x="140" y="44" text-anchor="middle" font-size="10" font-weight="bold" fill="#94A3B8">PORTÉE</text>
+  <text x="330" y="44" text-anchor="middle" font-size="10" font-weight="bold" fill="#94A3B8">ÉTENDUE RELATIVE</text>
+  <text x="590" y="44" text-anchor="middle" font-size="10" font-weight="bold" fill="#94A3B8">EXEMPLE</text>
+  <line x1="15" y1="48" x2="645" y2="48" stroke="#E2E8F0" stroke-width="1"/>
+
+  <!-- ===== ROW 1 — PAN ===== -->
+  <rect x="15"  y="53" width="630" height="48" fill="#FFFBEB" rx="3"/>
+  <!-- Type badge -->
+  <rect x="20"  y="58" width="48" height="36" fill="#FDE68A" rx="4"/>
+  <text x="44"  y="73" text-anchor="middle" font-size="13" font-weight="bold" fill="#92400E">PAN</text>
+  <text x="44"  y="87" text-anchor="middle" font-size="9"  fill="#B45309">Personal</text>
+  <!-- Range text -->
+  <text x="140" y="82" text-anchor="middle" font-size="11" fill="#78350F">1 cm – 10 m</text>
+  <!-- Bar -->
+  <rect x="195" y="63" width="42" height="28" fill="#FCD34D" rx="3"/>
+  <text x="216" y="81" text-anchor="middle" font-size="9" fill="#78350F" font-weight="bold">~10 m</text>
+  <!-- Example -->
+  <text x="490" y="78" text-anchor="start" font-size="11" fill="#78350F">Bluetooth, liaison USB, NFC</text>
+
+  <!-- ===== ROW 2 — LAN ===== -->
+  <rect x="15"  y="105" width="630" height="48" fill="#F0FDF4" rx="3"/>
+  <rect x="20"  y="110" width="48" height="36" fill="#86EFAC" rx="4"/>
+  <text x="44"  y="125" text-anchor="middle" font-size="13" font-weight="bold" fill="#14532D">LAN</text>
+  <text x="44"  y="139" text-anchor="middle" font-size="9"  fill="#166534">Local</text>
+  <text x="140" y="134" text-anchor="middle" font-size="11" fill="#166534">10 m – 1 km</text>
+  <rect x="195" y="115" width="120" height="28" fill="#4ADE80" rx="3"/>
+  <text x="255" y="133" text-anchor="middle" font-size="9" fill="#14532D" font-weight="bold">~1 km</text>
+  <text x="490" y="130" text-anchor="start" font-size="11" fill="#166534">Réseau d'entreprise, Wi-Fi domestique</text>
+
+  <!-- ===== ROW 3 — MAN ===== -->
+  <rect x="15"  y="157" width="630" height="48" fill="#EFF6FF" rx="3"/>
+  <rect x="20"  y="162" width="48" height="36" fill="#93C5FD" rx="4"/>
+  <text x="44"  y="177" text-anchor="middle" font-size="13" font-weight="bold" fill="#1E3A8A">MAN</text>
+  <text x="44"  y="191" text-anchor="middle" font-size="9"  fill="#1D4ED8">Metro</text>
+  <text x="140" y="186" text-anchor="middle" font-size="11" fill="#1E40AF">1 km – 50 km</text>
+  <rect x="195" y="167" width="230" height="28" fill="#60A5FA" rx="3"/>
+  <text x="310" y="185" text-anchor="middle" font-size="9" fill="#1E3A8A" font-weight="bold">~50 km</text>
+  <text x="490" y="182" text-anchor="start" font-size="11" fill="#1E40AF">Réseau d'une ville, campus</text>
+
+  <!-- ===== ROW 4 — WAN ===== -->
+  <rect x="15"  y="209" width="630" height="48" fill="#F5F3FF" rx="3"/>
+  <rect x="20"  y="214" width="48" height="36" fill="#C4B5FD" rx="4"/>
+  <text x="44"  y="229" text-anchor="middle" font-size="13" font-weight="bold" fill="#4C1D95">WAN</text>
+  <text x="44"  y="243" text-anchor="middle" font-size="9"  fill="#6D28D9">Wide</text>
+  <text x="140" y="238" text-anchor="middle" font-size="11" fill="#4C1D95">Pays → Planète</text>
+  <rect x="195" y="219" width="380" height="28" fill="#A78BFA" rx="3"/>
+  <text x="385" y="237" text-anchor="middle" font-size="9" fill="#4C1D95" font-weight="bold">Planète</text>
+  <!-- Internet label at end of bar -->
+  <text x="580" y="237" text-anchor="middle" font-size="11" font-weight="bold" fill="#4C1D95">Internet</text>
+
+  <!-- Scale arrow at bottom -->
+  <line x1="195" y1="258" x2="645" y2="258" stroke="#CBD5E1" stroke-width="1.5" marker-end="url(#arrowGray)"/>
+  <text x="415" y="263" text-anchor="middle" font-size="9" fill="#94A3B8">Portée croissante →</text>
+
+  <!-- Arrow marker -->
+  <defs>
+    <marker id="arrowGray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#CBD5E1"/>
+    </marker>
+  </defs>
+
+  <!-- Outer border -->
+  <rect x="15" y="50" width="630" height="207" fill="none" stroke="#CBD5E1" stroke-width="1" rx="3"/>
+</svg>

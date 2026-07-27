@@ -1,0 +1,45 @@
+<svg viewBox="0 0 660 160" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,sans-serif">
+
+<rect width="660" height="160" fill="#F8FAFC" rx="10"/>
+<text x="330" y="28" text-anchor="middle" font-size="15" font-weight="600" fill="#1E293B">Structure d'une trame Ethernet</text>
+
+<!-- Préambule -->
+<rect x="20" y="48" width="65" height="48" rx="4" fill="#94A3B8"/>
+<text x="52" y="70" text-anchor="middle" font-size="11" font-weight="600" fill="white">Préam-</text>
+<text x="52" y="84" text-anchor="middle" font-size="11" font-weight="600" fill="white">bule</text>
+
+<!-- MAC destination -->
+<rect x="87" y="48" width="90" height="48" rx="4" fill="#3B82F6"/>
+<text x="132" y="70" text-anchor="middle" font-size="11" font-weight="600" fill="white">MAC</text>
+<text x="132" y="84" text-anchor="middle" font-size="11" font-weight="600" fill="white">destination</text>
+
+<!-- MAC source -->
+<rect x="179" y="48" width="90" height="48" rx="4" fill="#60A5FA"/>
+<text x="224" y="70" text-anchor="middle" font-size="11" font-weight="600" fill="white">MAC</text>
+<text x="224" y="84" text-anchor="middle" font-size="11" font-weight="600" fill="white">source</text>
+
+<!-- EtherType -->
+<rect x="271" y="48" width="56" height="48" rx="4" fill="#F59E0B"/>
+<text x="299" y="70" text-anchor="middle" font-size="11" font-weight="600" fill="white">Ether-</text>
+<text x="299" y="84" text-anchor="middle" font-size="11" font-weight="600" fill="white">Type</text>
+
+<!-- Données -->
+<rect x="329" y="48" width="246" height="48" rx="4" fill="#10B981"/>
+<text x="452" y="76" text-anchor="middle" font-size="13" font-weight="600" fill="white">Données (paquet IP)</text>
+
+<!-- FCS/CRC -->
+<rect x="577" y="48" width="63" height="48" rx="4" fill="#64748B"/>
+<text x="608" y="70" text-anchor="middle" font-size="11" font-weight="600" fill="white">FCS</text>
+<text x="608" y="84" text-anchor="middle" font-size="11" font-weight="600" fill="white">CRC</text>
+
+<!-- Sizes -->
+<text x="52"  y="113" text-anchor="middle" font-size="10" fill="#64748B">8 octets</text>
+<text x="132" y="113" text-anchor="middle" font-size="10" fill="#64748B">6 octets</text>
+<text x="224" y="113" text-anchor="middle" font-size="10" fill="#64748B">6 octets</text>
+<text x="299" y="113" text-anchor="middle" font-size="10" fill="#64748B">2 octets</text>
+<text x="452" y="113" text-anchor="middle" font-size="10" fill="#64748B">46 – 1500 octets</text>
+<text x="608" y="113" text-anchor="middle" font-size="10" fill="#64748B">4 octets</text>
+
+<!-- Legend -->
+<text x="330" y="145" text-anchor="middle" font-size="11" fill="#94A3B8">Taille min. 64 octets · Taille max. 1518 octets (hors tag VLAN)</text>
+</svg>

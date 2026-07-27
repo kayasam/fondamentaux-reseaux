@@ -1,0 +1,60 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 570" font-family="Segoe UI,Arial,sans-serif">
+  <defs>
+    <filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter>
+    <marker id="b" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#2563eb"/></marker>
+    <marker id="g" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#0f8a5f"/></marker>
+  </defs>
+  <rect width="1200" height="570" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-size="34" font-weight="800" fill="#0b1f4d">QUELLE ADRESSE MAC UTILISER ?</text>
+  <text x="600" y="80" text-anchor="middle" font-size="18" font-weight="600" fill="#64748b">ARP découvre la MAC locale ; la passerelle prend le relais pour un autre réseau</text>
+
+  <!-- Cas local -->
+  <rect x="30" y="120" width="555" height="365" rx="16" fill="#fff" stroke="#93c5fd" filter="url(#s)"/>
+  <rect x="48" y="103" width="285" height="38" rx="10" fill="#0755c9"/>
+  <text x="190" y="129" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">1. DESTINATION LOCALE</text>
+
+  <rect x="70" y="185" width="145" height="82" rx="11" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="142" y="212" text-anchor="middle" font-size="17" font-weight="800" fill="#1e3a8a">PC A</text>
+  <text x="142" y="237" text-anchor="middle" font-size="13" fill="#475569">IP 192.168.1.10</text>
+  <text x="142" y="257" text-anchor="middle" font-size="13" fill="#475569">MAC AA</text>
+  <rect x="400" y="185" width="145" height="82" rx="11" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="472" y="212" text-anchor="middle" font-size="17" font-weight="800" fill="#065f46">PC B</text>
+  <text x="472" y="237" text-anchor="middle" font-size="13" fill="#475569">IP 192.168.1.20</text>
+  <text x="472" y="257" text-anchor="middle" font-size="13" fill="#475569">MAC BB</text>
+  <path d="M215 207H390" stroke="#2563eb" stroke-width="5" marker-end="url(#b)"/>
+  <path d="M400 246H225" stroke="#0f8a5f" stroke-width="5" marker-end="url(#g)"/>
+  <text x="307" y="187" text-anchor="middle" font-size="14" font-weight="700" fill="#1d4ed8">ARP : « Qui possède .20 ? »</text>
+  <text x="307" y="284" text-anchor="middle" font-size="14" font-weight="700" fill="#15803d">« .20 est à la MAC BB »</text>
+
+  <rect x="75" y="325" width="465" height="105" rx="11" fill="#eff6ff" stroke="#93c5fd"/>
+  <text x="307" y="355" text-anchor="middle" font-size="17" font-weight="800" fill="#1e3a8a">TRAME ENVOYÉE</text>
+  <text x="307" y="385" text-anchor="middle" font-size="15" fill="#475569">IP destination : 192.168.1.20</text>
+  <text x="307" y="412" text-anchor="middle" font-size="16" font-weight="800" fill="#1d4ed8">MAC destination : BB</text>
+  <text x="307" y="463" text-anchor="middle" font-size="15" font-weight="700" fill="#64748b">Même réseau → MAC du destinataire final</text>
+
+  <!-- Cas distant -->
+  <rect x="615" y="120" width="555" height="365" rx="16" fill="#fff" stroke="#86efac" filter="url(#s)"/>
+  <rect x="633" y="103" width="300" height="38" rx="10" fill="#0f8a5f"/>
+  <text x="783" y="129" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">2. DESTINATION DISTANTE</text>
+
+  <rect x="650" y="190" width="120" height="74" rx="11" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+  <text x="710" y="220" text-anchor="middle" font-size="17" font-weight="800" fill="#1e3a8a">PC A</text>
+  <text x="710" y="245" text-anchor="middle" font-size="13" fill="#475569">MAC AA</text>
+  <rect x="825" y="175" width="145" height="105" rx="12" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+  <text x="897" y="208" text-anchor="middle" font-size="16" font-weight="800" fill="#065f46">PASSERELLE</text>
+  <text x="897" y="235" text-anchor="middle" font-size="13" fill="#475569">192.168.1.1</text>
+  <text x="897" y="258" text-anchor="middle" font-size="13" fill="#475569">MAC GG</text>
+  <circle cx="1080" cy="227" r="48" fill="#e2e8f0" stroke="#64748b" stroke-width="2"/>
+  <text x="1080" y="221" text-anchor="middle" font-size="16" font-weight="800" fill="#334155">AUTRE</text>
+  <text x="1080" y="244" text-anchor="middle" font-size="16" font-weight="800" fill="#334155">RÉSEAU</text>
+  <path d="M770 227H815M970 227H1022" stroke="#0f8a5f" stroke-width="6" marker-end="url(#g)"/>
+
+  <rect x="660" y="325" width="465" height="105" rx="11" fill="#ecfdf5" stroke="#86efac"/>
+  <text x="892" y="355" text-anchor="middle" font-size="17" font-weight="800" fill="#166534">PREMIÈRE TRAME ENVOYÉE</text>
+  <text x="892" y="385" text-anchor="middle" font-size="15" fill="#475569">IP destination : serveur distant</text>
+  <text x="892" y="412" text-anchor="middle" font-size="16" font-weight="800" fill="#15803d">MAC destination : GG, la passerelle</text>
+  <text x="892" y="463" text-anchor="middle" font-size="15" font-weight="700" fill="#64748b">Autre réseau → MAC du prochain saut</text>
+
+  <rect x="30" y="520" width="1140" height="35" rx="10" fill="#fff7ed" stroke="#fdba74"/>
+  <text x="600" y="543" text-anchor="middle" font-size="15" font-weight="700" fill="#9a3412">L'adresse IP reste celle de la destination finale ; la MAC change à chaque liaison traversée.</text>
+</svg>

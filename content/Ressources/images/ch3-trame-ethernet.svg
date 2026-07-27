@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" font-family="Segoe UI,Arial,sans-serif">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter></defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-size="34" font-weight="800" fill="#0b1f4d">ANATOMIE D'UNE TRAME ETHERNET</text>
+  <text x="600" y="80" text-anchor="middle" font-size="18" font-weight="600" fill="#64748b">Les champs nécessaires pour livrer et contrôler les données sur un LAN</text>
+
+  <rect x="30" y="120" width="1140" height="230" rx="16" fill="#fff" stroke="#b9d2ff" filter="url(#s)"/>
+  <rect x="48" y="103" width="255" height="38" rx="10" fill="#0755c9"/><text x="175" y="129" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">1. LES CHAMPS</text>
+  <g text-anchor="middle" font-weight="700">
+    <rect x="60" y="176" width="125" height="82" rx="9" fill="#e2e8f0"/><text x="122" y="209" font-size="16" fill="#334155">Préambule</text><text x="122" y="233" font-size="14" fill="#64748b">+ SFD</text>
+    <rect x="185" y="176" width="165" height="82" fill="#dbeafe"/><text x="267" y="209" font-size="16" fill="#1e3a8a">MAC</text><text x="267" y="233" font-size="14" fill="#1e3a8a">destination</text>
+    <rect x="350" y="176" width="155" height="82" fill="#bfdbfe"/><text x="427" y="209" font-size="16" fill="#1e3a8a">MAC</text><text x="427" y="233" font-size="14" fill="#1e3a8a">source</text>
+    <rect x="505" y="176" width="120" height="82" fill="#ede9fe"/><text x="565" y="221" font-size="15" fill="#6d28d9">EtherType</text>
+    <rect x="625" y="176" width="390" height="82" fill="#dcfce7"/><text x="820" y="211" font-size="17" fill="#166534">DONNÉES</text><text x="820" y="236" font-size="14" fill="#166534">paquet IPv4, IPv6, ARP…</text>
+    <rect x="1015" y="176" width="125" height="82" rx="9" fill="#fef3c7"/><text x="1077" y="221" font-size="17" fill="#92400e">FCS</text>
+  </g>
+  <g text-anchor="middle" font-size="15" font-weight="700" fill="#475569">
+    <text x="122" y="290">8 octets</text><text x="267" y="290">6 octets</text><text x="427" y="290">6 octets</text><text x="565" y="290">2 octets</text><text x="820" y="290">46 à 1 500 octets</text><text x="1077" y="290">4 octets</text>
+  </g>
+  <text x="122" y="325" text-anchor="middle" font-size="14" fill="#64748b">hors taille de trame</text>
+  <path d="M185 306v15H1140v-15" fill="none" stroke="#2563eb" stroke-width="3"/>
+  <text x="662" y="339" text-anchor="middle" font-size="15" font-weight="800" fill="#1d4ed8">64 à 1 518 octets, de MAC destination au FCS</text>
+
+  <rect x="30" y="395" width="555" height="180" rx="16" fill="#fff" stroke="#86efac" filter="url(#s)"/>
+  <rect x="48" y="378" width="245" height="38" rx="10" fill="#0f8a5f"/><text x="170" y="404" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">2. LIVRER</text>
+  <text x="65" y="452" font-size="17" font-weight="800" fill="#166534">MAC destination</text><text x="225" y="452" font-size="16" fill="#475569">→ où doit aller la trame ?</text>
+  <text x="65" y="490" font-size="17" font-weight="800" fill="#166534">MAC source</text><text x="225" y="490" font-size="16" fill="#475569">→ qui a envoyé la trame ?</text>
+  <text x="65" y="528" font-size="17" font-weight="800" fill="#166534">EtherType</text><text x="225" y="528" font-size="16" fill="#475569">→ quel protocole doit recevoir les données ?</text>
+  <rect x="615" y="395" width="555" height="180" rx="16" fill="#fff" stroke="#fdba74" filter="url(#s)"/>
+  <rect x="633" y="378" width="270" height="38" rx="10" fill="#f59e0b"/><text x="768" y="404" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">3. CONTRÔLER</text>
+  <circle cx="705" cy="482" r="42" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/><text x="705" y="490" text-anchor="middle" font-size="22" font-weight="800" fill="#92400e">CRC</text>
+  <text x="775" y="457" font-size="17" font-weight="800" fill="#92400e">FCS différent ?</text>
+  <text x="775" y="485" font-size="16" fill="#475569">La trame a été altérée.</text>
+  <text x="775" y="513" font-size="16" fill="#475569">Elle est supprimée, pas réparée.</text>
+  <text x="775" y="541" font-size="15" font-weight="700" fill="#dc2626">Ethernet ne retransmet pas lui-même.</text>
+
+  <rect x="30" y="603" width="1140" height="30" rx="10" fill="#eff6ff" stroke="#93c5fd"/>
+  <text x="600" y="624" text-anchor="middle" font-size="15" font-weight="700" fill="#1e3a8a">Tag VLAN 802.1Q : + 4 octets insérés entre la MAC source et l'EtherType.</text>
+</svg>

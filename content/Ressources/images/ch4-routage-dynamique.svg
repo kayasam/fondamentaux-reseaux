@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter><marker id="b" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#2563eb"/></marker><marker id="g" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#0f8a5f"/></marker></defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="34" font-weight="800" fill="#08285f">ROUTAGE DYNAMIQUE — APPRENDRE ET S'ADAPTER</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">Les routeurs échangent des informations puis installent les meilleurs chemins</text>
+  <rect x="30" y="125" width="1140" height="330" rx="16" fill="#fff" stroke="#93c5fd" filter="url(#s)"/>
+  <rect x="48" y="107" width="300" height="40" rx="11" fill="#0b5bd3"/><text x="198" y="134" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">1. ÉCHANGER DES ROUTES</text>
+  <g font-family="Arial" text-anchor="middle">
+    <circle cx="170" cy="260" r="62" fill="#d1fae5" stroke="#10b981" stroke-width="3"/><text x="170" y="254" font-size="20" font-weight="700" fill="#06633f">R1</text><text x="170" y="280" font-size="14" fill="#526581">LAN A</text>
+    <circle cx="460" cy="260" r="62" fill="#d1fae5" stroke="#10b981" stroke-width="3"/><text x="460" y="254" font-size="20" font-weight="700" fill="#06633f">R2</text><text x="460" y="280" font-size="14" fill="#526581">transit</text>
+    <circle cx="750" cy="260" r="62" fill="#d1fae5" stroke="#10b981" stroke-width="3"/><text x="750" y="254" font-size="20" font-weight="700" fill="#06633f">R3</text><text x="750" y="280" font-size="14" fill="#526581">transit</text>
+    <circle cx="1030" cy="260" r="62" fill="#d1fae5" stroke="#10b981" stroke-width="3"/><text x="1030" y="254" font-size="20" font-weight="700" fill="#06633f">R4</text><text x="1030" y="280" font-size="14" fill="#526581">LAN B</text>
+    <path d="M235 245H394M525 245H684M815 245H964" stroke="#2563eb" stroke-width="4" marker-end="url(#b)"/>
+    <path d="M395 280H236M685 280H526M965 280H816" stroke="#0f8a5f" stroke-width="4" marker-end="url(#g)"/>
+    <text x="315" y="220" font-size="14" font-weight="700" fill="#0b5bd3">annonces</text><text x="605" y="220" font-size="14" font-weight="700" fill="#0b5bd3">annonces</text><text x="890" y="220" font-size="14" font-weight="700" fill="#0b5bd3">annonces</text>
+    <rect x="160" y="360" width="880" height="55" rx="11" fill="#eff6ff" stroke="#93c5fd"/><text x="600" y="394" font-size="18" font-weight="700" fill="#123c8c">Chaque routeur construit sa table à partir des informations reçues</text>
+  </g>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="30" y="505" width="350" height="105" rx="15" fill="#fff" stroke="#fdba74" filter="url(#s)"/><rect x="48" y="487" width="120" height="38" rx="10" fill="#f59e0b"/><text x="108" y="513" font-size="16" font-weight="700" fill="#fff">RIP</text><text x="205" y="558" font-size="18" font-weight="700" fill="#9a3f00">Compte les sauts</text><text x="205" y="586" font-size="14" fill="#526581">simple, mais limité</text>
+    <rect x="425" y="505" width="350" height="105" rx="15" fill="#fff" stroke="#6ee7b7" filter="url(#s)"/><rect x="443" y="487" width="120" height="38" rx="10" fill="#0f8a5f"/><text x="503" y="513" font-size="16" font-weight="700" fill="#fff">OSPF</text><text x="600" y="558" font-size="18" font-weight="700" fill="#06633f">Calcule un coût</text><text x="600" y="586" font-size="14" fill="#526581">réseau interne</text>
+    <rect x="820" y="505" width="350" height="105" rx="15" fill="#fff" stroke="#c4b5fd" filter="url(#s)"/><rect x="838" y="487" width="120" height="38" rx="10" fill="#7c3aed"/><text x="898" y="513" font-size="16" font-weight="700" fill="#fff">BGP</text><text x="995" y="558" font-size="18" font-weight="700" fill="#5620bb">Applique des politiques</text><text x="995" y="586" font-size="14" fill="#526581">entre organisations</text>
+  </g>
+</svg>

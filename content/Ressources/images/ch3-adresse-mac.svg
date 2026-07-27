@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 470" font-family="Segoe UI,Arial,sans-serif">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter></defs>
+  <rect width="1200" height="470" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-size="34" font-weight="800" fill="#0b1f4d">ANATOMIE D'UNE ADRESSE MAC</text>
+  <text x="600" y="80" text-anchor="middle" font-size="18" font-weight="600" fill="#64748b">48 bits • 6 octets • une écriture hexadécimale</text>
+
+  <rect x="80" y="120" width="1040" height="240" rx="16" fill="#fff" stroke="#c4b5fd" filter="url(#s)"/>
+  <rect x="98" y="103" width="275" height="38" rx="10" fill="#7c3aed"/>
+  <text x="235" y="129" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">1. LES SIX OCTETS</text>
+
+  <!-- Six octets parfaitement centrés -->
+  <g text-anchor="middle" font-size="30" font-weight="800">
+    <rect x="180" y="175" width="125" height="72" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/><text x="242" y="221" fill="#6d28d9">C8</text>
+    <text x="320" y="221" fill="#64748b">:</text>
+    <rect x="335" y="175" width="125" height="72" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/><text x="397" y="221" fill="#6d28d9">5A</text>
+    <text x="475" y="221" fill="#64748b">:</text>
+    <rect x="490" y="175" width="125" height="72" rx="10" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/><text x="552" y="221" fill="#6d28d9">CF</text>
+    <text x="630" y="221" fill="#64748b">:</text>
+    <rect x="645" y="175" width="125" height="72" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="707" y="221" fill="#1e3a8a">06</text>
+    <text x="785" y="221" fill="#64748b">:</text>
+    <rect x="800" y="175" width="125" height="72" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="862" y="221" fill="#1e3a8a">8C</text>
+    <text x="940" y="221" fill="#64748b">:</text>
+    <rect x="955" y="175" width="125" height="72" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="1017" y="221" fill="#1e3a8a">67</text>
+  </g>
+
+  <path d="M180 270v18h435v-18M645 270v18h435v-18" fill="none" stroke="#7c3aed" stroke-width="3"/>
+  <text x="397" y="317" text-anchor="middle" font-size="21" font-weight="800" fill="#6d28d9">OUI — CONSTRUCTEUR</text>
+  <text x="862" y="317" text-anchor="middle" font-size="21" font-weight="800" fill="#1d4ed8">NIC — INTERFACE</text>
+  <text x="397" y="342" text-anchor="middle" font-size="15" fill="#64748b">3 premiers octets</text>
+  <text x="862" y="342" text-anchor="middle" font-size="15" fill="#64748b">3 derniers octets</text>
+
+  <rect x="80" y="400" width="1040" height="45" rx="12" fill="#fff7ed" stroke="#fdba74"/>
+  <text x="600" y="420" text-anchor="middle" font-size="16" font-weight="800" fill="#92400e">Une adresse MAC peut être modifiée, virtualisée ou usurpée.</text>
+  <text x="600" y="439" text-anchor="middle" font-size="14" fill="#7c2d12">C'est une adresse de livraison locale, pas une preuve d'identité.</text>
+</svg>

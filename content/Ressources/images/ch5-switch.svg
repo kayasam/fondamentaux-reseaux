@@ -1,0 +1,62 @@
+<svg viewBox="0 0 660 295" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,sans-serif">
+<defs>
+  <marker id="mb" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+    <polygon points="0 0,8 4,0 8" fill="#3B82F6"/>
+  </marker>
+</defs>
+
+<rect width="660" height="295" fill="#F8FAFC" rx="10"/>
+<text x="330" y="27" text-anchor="middle" font-size="15" font-weight="600" fill="#1E293B">Le switch — apprentissage et transmission ciblée</text>
+
+<!-- === Switch central === -->
+<rect x="240" y="110" width="180" height="70" rx="8" fill="#334155"/>
+<text x="330" y="148" text-anchor="middle" font-size="14" font-weight="600" fill="white">Switch</text>
+<text x="330" y="165" text-anchor="middle" font-size="11" fill="#94A3B8">Table MAC en mémoire</text>
+
+<!-- Port labels sur le switch -->
+<text x="258" y="128" text-anchor="middle" font-size="9" fill="#60A5FA">P1</text>
+<text x="290" y="128" text-anchor="middle" font-size="9" fill="#60A5FA">P2</text>
+<text x="370" y="128" text-anchor="middle" font-size="9" fill="#60A5FA">P3</text>
+<text x="402" y="128" text-anchor="middle" font-size="9" fill="#94A3B8">P8</text>
+
+<!-- === PC1 (haut gauche) === -->
+<rect x="30" y="48" width="100" height="44" rx="6" fill="#3B82F6"/>
+<text x="80" y="67" text-anchor="middle" font-size="12" font-weight="600" fill="white">PC 1</text>
+<text x="80" y="82" text-anchor="middle" font-size="10" fill="#BFDBFE">C8:5A:CF:11</text>
+<line x1="130" y1="70" x2="255" y2="130" stroke="#64748B" stroke-width="1.5"/>
+
+<!-- === PC2 (milieu gauche) === -->
+<rect x="30" y="125" width="100" height="44" rx="6" fill="#6366F1"/>
+<text x="80" y="144" text-anchor="middle" font-size="12" font-weight="600" fill="white">PC 2</text>
+<text x="80" y="159" text-anchor="middle" font-size="10" fill="#C7D2FE">B4:2E:99:44</text>
+<line x1="130" y1="147" x2="240" y2="147" stroke="#64748B" stroke-width="1.5"/>
+
+<!-- === PC3 (bas gauche) === -->
+<rect x="30" y="202" width="100" height="44" rx="6" fill="#8B5CF6"/>
+<text x="80" y="221" text-anchor="middle" font-size="12" font-weight="600" fill="white">PC 3</text>
+<text x="80" y="236" text-anchor="middle" font-size="10" fill="#DDD6FE">AA:BB:CC:22</text>
+<line x1="130" y1="224" x2="255" y2="168" stroke="#64748B" stroke-width="1.5"/>
+
+<!-- === Serveur (droite) === -->
+<rect x="530" y="110" width="110" height="70" rx="6" fill="#10B981"/>
+<text x="585" y="143" text-anchor="middle" font-size="13" font-weight="600" fill="white">Serveur</text>
+<text x="585" y="160" text-anchor="middle" font-size="10" fill="#D1FAE5">00:11:22:33</text>
+<line x1="420" y1="145" x2="530" y2="145" stroke="#64748B" stroke-width="1.5"/>
+
+<!-- === Flèche trafic PC1 → Serveur (mise en évidence) === -->
+<line x1="130" y1="62" x2="528" y2="140" stroke="#3B82F6" stroke-width="2.5" stroke-dasharray="7,4" marker-end="url(#mb)"/>
+<rect x="230" y="76" width="200" height="22" rx="4" fill="#EFF6FF"/>
+<text x="330" y="91" text-anchor="middle" font-size="11" font-weight="600" fill="#1D4ED8">PC1 → Serveur : trame ciblée</text>
+
+<!-- === Table MAC (bas) === -->
+<rect x="190" y="205" width="280" height="80" rx="6" fill="white" stroke="#E2E8F0" stroke-width="1.5"/>
+<text x="330" y="222" text-anchor="middle" font-size="12" font-weight="600" fill="#1E293B">Table MAC du switch</text>
+<line x1="190" y1="228" x2="470" y2="228" stroke="#E2E8F0" stroke-width="1"/>
+<text x="230" y="243" text-anchor="middle" font-size="10" font-weight="600" fill="#64748B">Port</text>
+<text x="390" y="243" text-anchor="middle" font-size="10" font-weight="600" fill="#64748B">Adresse MAC</text>
+<line x1="190" y1="248" x2="470" y2="248" stroke="#E2E8F0" stroke-width="1"/>
+<text x="230" y="261" text-anchor="middle" font-size="11" fill="#3B82F6">P1</text>
+<text x="390" y="261" text-anchor="middle" font-size="11" fill="#3B82F6">C8:5A:CF:11</text>
+<text x="230" y="274" text-anchor="middle" font-size="11" fill="#6366F1">P2</text>
+<text x="390" y="274" text-anchor="middle" font-size="11" fill="#6366F1">B4:2E:99:44</text>
+</svg>

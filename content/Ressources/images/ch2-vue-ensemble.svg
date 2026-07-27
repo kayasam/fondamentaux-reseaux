@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 650" font-family="Segoe UI,Arial,sans-serif">
+  <defs>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="130%"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-color="#0f172a" flood-opacity=".12"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#2563eb"/></marker>
+  </defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="600" y="52" text-anchor="middle" font-size="36" font-weight="800" fill="#0b1f4d">COUCHE 1 — TRANSPORTER LES BITS</text>
+  <text x="600" y="82" text-anchor="middle" font-size="18" font-weight="600" fill="#64748b">Un même message, trois formes de signal physique</text>
+
+  <rect x="35" y="105" width="1130" height="78" rx="14" fill="#fff" stroke="#b9d2ff" filter="url(#shadow)"/>
+  <rect x="52" y="119" width="280" height="34" rx="9" fill="#0755c9"/>
+  <text x="192" y="142" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">1. Les bits à transmettre</text>
+  <g font-size="25" font-weight="700" text-anchor="middle">
+    <rect x="420" y="122" width="46" height="42" rx="8" fill="#dbeafe"/><text x="443" y="151" fill="#0755c9">1</text>
+    <rect x="475" y="122" width="46" height="42" rx="8" fill="#e2e8f0"/><text x="498" y="151" fill="#334155">0</text>
+    <rect x="530" y="122" width="46" height="42" rx="8" fill="#dbeafe"/><text x="553" y="151" fill="#0755c9">1</text>
+    <rect x="585" y="122" width="46" height="42" rx="8" fill="#dbeafe"/><text x="608" y="151" fill="#0755c9">1</text>
+    <rect x="640" y="122" width="46" height="42" rx="8" fill="#e2e8f0"/><text x="663" y="151" fill="#334155">0</text>
+    <rect x="695" y="122" width="46" height="42" rx="8" fill="#e2e8f0"/><text x="718" y="151" fill="#334155">0</text>
+  </g>
+  <text x="930" y="139" text-anchor="middle" font-size="17" font-weight="700" fill="#334155">La couche 1 ne lit pas le message :</text>
+  <text x="930" y="161" text-anchor="middle" font-size="16" fill="#64748b">elle transporte uniquement des 0 et des 1.</text>
+
+  <g filter="url(#shadow)">
+    <rect x="35" y="215" width="350" height="300" rx="16" fill="#fff" stroke="#f4b942" stroke-width="2"/>
+    <rect x="50" y="198" width="170" height="38" rx="10" fill="#f59e0b"/><text x="135" y="224" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">2A. CUIVRE</text>
+    <rect x="425" y="215" width="350" height="300" rx="16" fill="#fff" stroke="#8b5cf6" stroke-width="2"/>
+    <rect x="440" y="198" width="170" height="38" rx="10" fill="#7c3aed"/><text x="525" y="224" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">2B. FIBRE</text>
+    <rect x="815" y="215" width="350" height="300" rx="16" fill="#fff" stroke="#22a6b3" stroke-width="2"/>
+    <rect x="830" y="198" width="190" height="38" rx="10" fill="#0891b2"/><text x="925" y="224" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">2C. SANS FIL</text>
+  </g>
+
+  <text x="210" y="272" text-anchor="middle" font-size="22" font-weight="750" fill="#92400e">Signal électrique</text>
+  <path d="M75 342h35l18-50 34 102 33-102 34 102 33-102 18 50h65" fill="none" stroke="#f59e0b" stroke-width="6" stroke-linejoin="round"/>
+  <rect x="88" y="420" width="244" height="24" rx="12" fill="#e2e8f0"/><path d="M102 432c28-20 52 20 80 0s52 20 80 0 45 12 56 0" fill="none" stroke="#f59e0b" stroke-width="5"/>
+  <text x="210" y="473" text-anchor="middle" font-size="16" fill="#475569">4 paires torsadées • connecteur 8P8C</text>
+  <text x="210" y="497" text-anchor="middle" font-size="16" font-weight="700" fill="#15803d">Simple • PoE • jusqu'à 100 m</text>
+
+  <text x="600" y="272" text-anchor="middle" font-size="22" font-weight="750" fill="#5b21b6">Impulsions lumineuses</text>
+  <path d="M470 366C520 292 568 422 620 334S704 373 730 316" fill="none" stroke="#8b5cf6" stroke-width="8"/>
+  <circle cx="480" cy="354" r="9" fill="#c4b5fd"/><circle cx="535" cy="350" r="9" fill="#a78bfa"/><circle cx="600" cy="365" r="9" fill="#8b5cf6"/><circle cx="675" cy="345" r="9" fill="#7c3aed"/>
+  <rect x="465" y="420" width="270" height="26" rx="13" fill="#ede9fe"/><rect x="480" y="426" width="240" height="14" rx="7" fill="#8b5cf6"/>
+  <text x="600" y="473" text-anchor="middle" font-size="16" fill="#475569">Cœur de verre • modules optiques</text>
+  <text x="600" y="497" text-anchor="middle" font-size="16" font-weight="700" fill="#15803d">Longue distance • insensible aux EMI</text>
+
+  <text x="990" y="272" text-anchor="middle" font-size="22" font-weight="750" fill="#0e7490">Ondes radio</text>
+  <circle cx="990" cy="375" r="16" fill="#0891b2"/>
+  <path d="M954 350a48 48 0 0 0 0 50M1026 350a48 48 0 0 1 0 50M925 326a82 82 0 0 0 0 98M1055 326a82 82 0 0 1 0 98" fill="none" stroke="#22a6b3" stroke-width="7" stroke-linecap="round"/>
+  <rect x="945" y="414" width="90" height="38" rx="8" fill="#cffafe" stroke="#0891b2"/><text x="990" y="439" text-anchor="middle" font-size="16" font-weight="700" fill="#0e7490">Wi-Fi</text>
+  <text x="990" y="473" text-anchor="middle" font-size="16" fill="#475569">Antennes • fréquences • canaux</text>
+  <text x="990" y="497" text-anchor="middle" font-size="16" font-weight="700" fill="#15803d">Mobilité • débit partagé</text>
+
+  <rect x="35" y="548" width="1130" height="72" rx="14" fill="#fff7ed" stroke="#fdba74"/>
+  <circle cx="77" cy="584" r="23" fill="#f59e0b"/><text x="77" y="592" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">!</text>
+  <text x="115" y="578" font-size="18" font-weight="800" fill="#9a3412">À retenir</text>
+  <text x="115" y="603" font-size="17" fill="#7c2d12">Changer de support change la forme du signal, pas les bits transportés.</text>
+</svg>

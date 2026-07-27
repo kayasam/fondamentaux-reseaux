@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter></defs>
+  <rect width="1200" height="630" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="34" font-weight="800" fill="#08285f">VLSM — DONNER À CHAQUE RÉSEAU LA BONNE TAILLE</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">On attribue d'abord les plus grands blocs, puis les plus petits</text>
+  <rect x="30" y="120" width="1140" height="390" rx="16" fill="#fff" stroke="#c4b5fd" filter="url(#s)"/>
+  <rect x="48" y="102" width="330" height="40" rx="11" fill="#7c3aed"/><text x="213" y="129" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">192.168.50.0/24 — 256 ADRESSES</text>
+  <g font-family="Arial">
+    <text x="70" y="183" font-size="17" font-weight="700" fill="#526581">0</text><text x="1110" y="183" font-size="17" font-weight="700" fill="#526581">255</text>
+    <rect x="70" y="205" width="1040" height="92" rx="10" fill="#f1f5f9" stroke="#94a3b8"/>
+    <rect x="70" y="205" width="260" height="92" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="200" y="242" text-anchor="middle" font-size="20" font-weight="800" fill="#123c8c">UTILISATEURS /26</text><text x="200" y="271" text-anchor="middle" font-size="15" fill="#526581">.0 à .63 • 62 hôtes</text>
+    <rect x="330" y="205" width="130" height="92" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/><text x="395" y="240" text-anchor="middle" font-size="16" font-weight="800" fill="#5620bb">ADMIN /27</text><text x="395" y="269" text-anchor="middle" font-size="14" fill="#526581">.64 à .95</text>
+    <rect x="460" y="205" width="65" height="92" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="492" y="239" text-anchor="middle" font-size="13" font-weight="800" fill="#06633f">SRV</text><text x="492" y="261" text-anchor="middle" font-size="13" font-weight="800" fill="#06633f">/28</text><text x="492" y="282" text-anchor="middle" font-size="11" fill="#526581">.96-.111</text>
+    <rect x="525" y="205" width="25" height="92" fill="#fff1d6" stroke="#f59e0b" stroke-width="2"/><text x="538" y="320" text-anchor="middle" font-size="13" font-weight="700" fill="#9a3f00">/30</text><text x="538" y="340" text-anchor="middle" font-size="12" fill="#526581">.112–.115</text>
+    <rect x="550" y="205" width="560" height="92" fill="#f8fafc" stroke="#cbd5e1"/><text x="830" y="245" text-anchor="middle" font-size="19" font-weight="700" fill="#64748b">ESPACE DISPONIBLE</text><text x="830" y="273" text-anchor="middle" font-size="15" fill="#64748b">pour les futurs besoins</text>
+  </g>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="75" y="365" width="240" height="90" rx="12" fill="#eff6ff" stroke="#93c5fd"/><text x="195" y="397" font-size="17" font-weight="700" fill="#123c8c">1. Classer</text><text x="195" y="428" font-size="15" fill="#526581">60 → 28 → 12 → 2</text>
+    <rect x="350" y="365" width="240" height="90" rx="12" fill="#f5f3ff" stroke="#c4b5fd"/><text x="470" y="397" font-size="17" font-weight="700" fill="#5620bb">2. Dimensionner</text><text x="470" y="428" font-size="15" fill="#526581">/26 → /27 → /28 → /30</text>
+    <rect x="625" y="365" width="240" height="90" rx="12" fill="#ecfdf5" stroke="#6ee7b7"/><text x="745" y="397" font-size="17" font-weight="700" fill="#06633f">3. Placer</text><text x="745" y="428" font-size="15" fill="#526581">sans chevauchement</text>
+    <rect x="900" y="365" width="225" height="90" rx="12" fill="#fff7ed" stroke="#fdba74"/><text x="1012" y="397" font-size="17" font-weight="700" fill="#9a3f00">4. Vérifier</text><text x="1012" y="428" font-size="15" fill="#526581">réseau et broadcast</text>
+  </g>
+  <rect x="145" y="545" width="910" height="48" rx="10" fill="#fff7ed" stroke="#fdba74"/><text x="600" y="576" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700" fill="#9a3f00">Règle d'or : commencer par le plus grand besoin</text>
+</svg>

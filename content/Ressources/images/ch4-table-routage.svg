@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter><marker id="g" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#0f8a5f"/></marker></defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="34" font-weight="800" fill="#08285f">TABLE DE ROUTAGE — LA ROUTE LA PLUS PRÉCISE GAGNE</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">Destination du paquet : 10.20.30.42</text>
+  <rect x="30" y="125" width="710" height="420" rx="16" fill="#fff" stroke="#93c5fd" filter="url(#s)"/>
+  <rect x="48" y="107" width="260" height="40" rx="11" fill="#0b5bd3"/><text x="178" y="134" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">1. ROUTES COMPATIBLES</text>
+  <g font-family="Arial">
+    <text x="75" y="190" font-size="16" font-weight="700" fill="#526581">DESTINATION</text><text x="365" y="190" font-size="16" font-weight="700" fill="#526581">PROCHAIN SAUT</text><text x="610" y="190" font-size="16" font-weight="700" fill="#526581">RÉSULTAT</text>
+    <line x1="70" y1="205" x2="700" y2="205" stroke="#cbd5e1"/>
+    <rect x="60" y="220" width="650" height="70" rx="10" fill="#f8fafc"/><text x="80" y="262" font-size="20" font-weight="700" fill="#64748b">0.0.0.0/0</text><text x="365" y="262" font-size="18" fill="#526581">192.168.1.1</text><text x="610" y="262" font-size="18" fill="#526581">correspond</text>
+    <rect x="60" y="300" width="650" height="70" rx="10" fill="#f5f3ff"/><text x="80" y="342" font-size="20" font-weight="700" fill="#5620bb">10.20.0.0/16</text><text x="365" y="342" font-size="18" fill="#526581">192.168.1.254</text><text x="610" y="342" font-size="18" fill="#5620bb">correspond</text>
+    <rect x="60" y="380" width="650" height="82" rx="10" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="80" y="428" font-size="22" font-weight="800" fill="#06633f">10.20.30.0/24</text><text x="365" y="428" font-size="18" font-weight="700" fill="#06633f">192.168.1.253</text><text x="610" y="428" font-size="18" font-weight="800" fill="#0f8a5f">CHOISIE</text>
+    <text x="385" y="502" text-anchor="middle" font-size="17" font-weight="700" fill="#0f8a5f">/24 est plus précis que /16 et /0</text>
+  </g>
+  <rect x="780" y="125" width="390" height="420" rx="16" fill="#fff" stroke="#6ee7b7" filter="url(#s)"/>
+  <rect x="798" y="107" width="250" height="40" rx="11" fill="#0f8a5f"/><text x="923" y="134" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">2. TRANSMETTRE</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="835" y="190" width="280" height="78" rx="12" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="975" y="220" font-size="18" font-weight="700" fill="#123c8c">PAQUET</text><text x="975" y="247" font-size="15" fill="#526581">vers 10.20.30.42</text>
+    <path d="M975 270V337" stroke="#0f8a5f" stroke-width="5" marker-end="url(#g)"/>
+    <circle cx="975" cy="405" r="62" fill="#d1fae5" stroke="#10b981" stroke-width="3"/><text x="975" y="397" font-size="18" font-weight="700" fill="#06633f">NEXT HOP</text><text x="975" y="425" font-size="15" fill="#526581">192.168.1.253</text>
+    <text x="975" y="500" font-size="16" font-weight="700" fill="#0f8a5f">puis nouvelle décision au routeur suivant</text>
+  </g>
+  <rect x="145" y="585" width="910" height="42" rx="10" fill="#fff7ed" stroke="#fdba74"/><text x="600" y="612" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#9a3f00">0.0.0.0/0 est le filet de sécurité, jamais le premier choix si une route plus précise existe</text>
+</svg>

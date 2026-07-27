@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 367" font-family="'Segoe UI', Arial, sans-serif">
+  <!-- Background -->
+  <rect width="660" height="367" fill="#F8FAFC" rx="8"/>
+
+  <!-- Title -->
+  <text x="330" y="25" text-anchor="middle" font-size="15" font-weight="bold" fill="#0F172A">Modèle OSI — Les 7 couches</text>
+
+  <!-- Header -->
+  <rect x="15" y="34" width="630" height="29" fill="#1E293B" rx="3"/>
+  <text x="47"  y="53" text-anchor="middle" font-size="11" font-weight="bold" fill="#94A3B8">N°</text>
+  <text x="157" y="53" text-anchor="middle" font-size="11" font-weight="bold" fill="#94A3B8">Couche</text>
+  <text x="390" y="53" text-anchor="middle" font-size="11" font-weight="bold" fill="#94A3B8">Rôle</text>
+  <text x="607" y="53" text-anchor="middle" font-size="11" font-weight="bold" fill="#94A3B8">PDU</text>
+  <line x1="80"  y1="34" x2="80"  y2="63" stroke="#475569" stroke-width="1"/>
+  <line x1="235" y1="34" x2="235" y2="63" stroke="#475569" stroke-width="1"/>
+  <line x1="558" y1="34" x2="558" y2="63" stroke="#475569" stroke-width="1"/>
+
+  <!-- Layer 7 — Application -->
+  <rect x="15" y="65" width="630" height="40" fill="#EFF6FF" rx="2"/>
+  <rect x="15" y="65" width="65"  height="40" fill="#1D4ED8" rx="2"/>
+  <text x="47"  y="91" text-anchor="middle" font-size="20" font-weight="bold" fill="white">7</text>
+  <text x="157" y="81" text-anchor="middle" font-size="12" font-weight="bold" fill="#1E3A8A">Application</text>
+  <text x="157" y="96" text-anchor="middle" font-size="10" fill="#3B82F6">Interface logicielle</text>
+  <text x="390" y="89" text-anchor="middle" font-size="11" fill="#1E40AF">HTTP, HTTPS, DNS, SMTP, FTP…</text>
+  <text x="607" y="89" text-anchor="middle" font-size="11" font-weight="bold" fill="#1E3A8A">Données</text>
+  <line x1="80"  y1="65" x2="80"  y2="105" stroke="#BFDBFE" stroke-width="1"/>
+  <line x1="235" y1="65" x2="235" y2="105" stroke="#BFDBFE" stroke-width="1"/>
+  <line x1="558" y1="65" x2="558" y2="105" stroke="#BFDBFE" stroke-width="1"/>
+
+  <!-- Layer 6 — Présentation -->
+  <rect x="15" y="106" width="630" height="40" fill="#EEF2FF" rx="2"/>
+  <rect x="15" y="106" width="65"  height="40" fill="#4338CA" rx="2"/>
+  <text x="47"  y="132" text-anchor="middle" font-size="20" font-weight="bold" fill="white">6</text>
+  <text x="157" y="122" text-anchor="middle" font-size="12" font-weight="bold" fill="#312E81">Présentation</text>
+  <text x="157" y="137" text-anchor="middle" font-size="10" fill="#6366F1">Format et chiffrement</text>
+  <text x="390" y="130" text-anchor="middle" font-size="11" fill="#3730A3">Encodage (UTF-8), compression, TLS/SSL</text>
+  <text x="607" y="130" text-anchor="middle" font-size="11" font-weight="bold" fill="#312E81">Données</text>
+  <line x1="80"  y1="106" x2="80"  y2="146" stroke="#C7D2FE" stroke-width="1"/>
+  <line x1="235" y1="106" x2="235" y2="146" stroke="#C7D2FE" stroke-width="1"/>
+  <line x1="558" y1="106" x2="558" y2="146" stroke="#C7D2FE" stroke-width="1"/>
+
+  <!-- Layer 5 — Session -->
+  <rect x="15" y="147" width="630" height="40" fill="#F5F3FF" rx="2"/>
+  <rect x="15" y="147" width="65"  height="40" fill="#6D28D9" rx="2"/>
+  <text x="47"  y="173" text-anchor="middle" font-size="20" font-weight="bold" fill="white">5</text>
+  <text x="157" y="163" text-anchor="middle" font-size="12" font-weight="bold" fill="#4C1D95">Session</text>
+  <text x="157" y="178" text-anchor="middle" font-size="10" fill="#7C3AED">Dialogue applicatif</text>
+  <text x="390" y="171" text-anchor="middle" font-size="11" fill="#4C1D95">Ouverture, maintien et fermeture de session</text>
+  <text x="607" y="171" text-anchor="middle" font-size="11" font-weight="bold" fill="#4C1D95">Données</text>
+  <line x1="80"  y1="147" x2="80"  y2="187" stroke="#DDD6FE" stroke-width="1"/>
+  <line x1="235" y1="147" x2="235" y2="187" stroke="#DDD6FE" stroke-width="1"/>
+  <line x1="558" y1="147" x2="558" y2="187" stroke="#DDD6FE" stroke-width="1"/>
+
+  <!-- Layer 4 — Transport -->
+  <rect x="15" y="188" width="630" height="40" fill="#ECFDF5" rx="2"/>
+  <rect x="15" y="188" width="65"  height="40" fill="#047857" rx="2"/>
+  <text x="47"  y="214" text-anchor="middle" font-size="20" font-weight="bold" fill="white">4</text>
+  <text x="157" y="204" text-anchor="middle" font-size="12" font-weight="bold" fill="#064E3B">Transport</text>
+  <text x="157" y="219" text-anchor="middle" font-size="10" fill="#059669">Fiabilité + ports</text>
+  <text x="390" y="212" text-anchor="middle" font-size="11" fill="#065F46">TCP (fiable, orienté connexion) / UDP (rapide)</text>
+  <text x="607" y="212" text-anchor="middle" font-size="11" font-weight="bold" fill="#064E3B">Segment</text>
+  <line x1="80"  y1="188" x2="80"  y2="228" stroke="#A7F3D0" stroke-width="1"/>
+  <line x1="235" y1="188" x2="235" y2="228" stroke="#A7F3D0" stroke-width="1"/>
+  <line x1="558" y1="188" x2="558" y2="228" stroke="#A7F3D0" stroke-width="1"/>
+
+  <!-- Layer 3 — Réseau -->
+  <rect x="15" y="229" width="630" height="40" fill="#FFFBEB" rx="2"/>
+  <rect x="15" y="229" width="65"  height="40" fill="#B45309" rx="2"/>
+  <text x="47"  y="255" text-anchor="middle" font-size="20" font-weight="bold" fill="white">3</text>
+  <text x="157" y="245" text-anchor="middle" font-size="12" font-weight="bold" fill="#78350F">Réseau</text>
+  <text x="157" y="260" text-anchor="middle" font-size="10" fill="#D97706">Routage IP</text>
+  <text x="390" y="253" text-anchor="middle" font-size="11" fill="#78350F">Routage des paquets IP entre différents réseaux</text>
+  <text x="607" y="253" text-anchor="middle" font-size="11" font-weight="bold" fill="#78350F">Paquet</text>
+  <line x1="80"  y1="229" x2="80"  y2="269" stroke="#FDE68A" stroke-width="1"/>
+  <line x1="235" y1="229" x2="235" y2="269" stroke="#FDE68A" stroke-width="1"/>
+  <line x1="558" y1="229" x2="558" y2="269" stroke="#FDE68A" stroke-width="1"/>
+
+  <!-- Layer 2 — Liaison -->
+  <rect x="15" y="270" width="630" height="40" fill="#FEF2F2" rx="2"/>
+  <rect x="15" y="270" width="65"  height="40" fill="#B91C1C" rx="2"/>
+  <text x="47"  y="296" text-anchor="middle" font-size="20" font-weight="bold" fill="white">2</text>
+  <text x="157" y="286" text-anchor="middle" font-size="12" font-weight="bold" fill="#7F1D1D">Liaison</text>
+  <text x="157" y="301" text-anchor="middle" font-size="10" fill="#DC2626">Trames + MAC</text>
+  <text x="390" y="294" text-anchor="middle" font-size="11" fill="#7F1D1D">Ethernet, adresses MAC, switch (réseau local)</text>
+  <text x="607" y="294" text-anchor="middle" font-size="11" font-weight="bold" fill="#7F1D1D">Trame</text>
+  <line x1="80"  y1="270" x2="80"  y2="310" stroke="#FECACA" stroke-width="1"/>
+  <line x1="235" y1="270" x2="235" y2="310" stroke="#FECACA" stroke-width="1"/>
+  <line x1="558" y1="270" x2="558" y2="310" stroke="#FECACA" stroke-width="1"/>
+
+  <!-- Layer 1 — Physique -->
+  <rect x="15" y="311" width="630" height="40" fill="#F1F5F9" rx="2"/>
+  <rect x="15" y="311" width="65"  height="40" fill="#475569" rx="2"/>
+  <text x="47"  y="337" text-anchor="middle" font-size="20" font-weight="bold" fill="white">1</text>
+  <text x="157" y="327" text-anchor="middle" font-size="12" font-weight="bold" fill="#1E293B">Physique</text>
+  <text x="157" y="342" text-anchor="middle" font-size="10" fill="#64748B">Signal et support</text>
+  <text x="390" y="335" text-anchor="middle" font-size="11" fill="#334155">Câbles, ondes radio, signaux électriques ou optiques</text>
+  <text x="607" y="335" text-anchor="middle" font-size="11" font-weight="bold" fill="#1E293B">Bits</text>
+  <line x1="80"  y1="311" x2="80"  y2="351" stroke="#CBD5E1" stroke-width="1"/>
+  <line x1="235" y1="311" x2="235" y2="351" stroke="#CBD5E1" stroke-width="1"/>
+  <line x1="558" y1="311" x2="558" y2="351" stroke="#CBD5E1" stroke-width="1"/>
+
+  <!-- Outer border -->
+  <rect x="15" y="34" width="630" height="317" fill="none" stroke="#CBD5E1" stroke-width="1.5" rx="3"/>
+
+  <!-- Row separators -->
+  <line x1="15" y1="105"  x2="645" y2="105"  stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="15" y1="146"  x2="645" y2="146"  stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="15" y1="187"  x2="645" y2="187"  stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="15" y1="228"  x2="645" y2="228"  stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="15" y1="269"  x2="645" y2="269"  stroke="#E2E8F0" stroke-width="1"/>
+  <line x1="15" y1="310"  x2="645" y2="310"  stroke="#E2E8F0" stroke-width="1"/>
+</svg>

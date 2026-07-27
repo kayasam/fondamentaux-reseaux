@@ -1,0 +1,51 @@
+<svg viewBox="0 0 660 315" xmlns="http://www.w3.org/2000/svg" font-family="system-ui,-apple-system,sans-serif">
+<defs>
+  <marker id="mb" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+    <polygon points="0 0,8 4,0 8" fill="#3B82F6"/>
+  </marker>
+  <marker id="mg" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+    <polygon points="0 0,8 4,0 8" fill="#10B981"/>
+  </marker>
+  <marker id="ma" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+    <polygon points="0 0,8 4,0 8" fill="#F59E0B"/>
+  </marker>
+  <marker id="mp" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto">
+    <polygon points="0 0,8 4,0 8" fill="#8B5CF6"/>
+  </marker>
+</defs>
+
+<rect width="660" height="315" fill="#F8FAFC" rx="10"/>
+<text x="330" y="28" text-anchor="middle" font-size="15" font-weight="600" fill="#1E293B">Processus DORA — Attribution automatique d'adresse IP</text>
+
+<!-- Client -->
+<rect x="20" y="48" width="130" height="38" rx="6" fill="#3B82F6"/>
+<text x="85" y="72" text-anchor="middle" font-size="14" font-weight="600" fill="white">Client PC</text>
+
+<!-- Serveur -->
+<rect x="510" y="48" width="130" height="38" rx="6" fill="#10B981"/>
+<text x="575" y="72" text-anchor="middle" font-size="13" font-weight="600" fill="white">Serveur DHCP</text>
+
+<!-- Lifelines -->
+<line x1="85" y1="86" x2="85" y2="304" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="5,4"/>
+<line x1="575" y1="86" x2="575" y2="304" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="5,4"/>
+
+<!-- D — DISCOVER → -->
+<line x1="150" y1="122" x2="507" y2="122" stroke="#3B82F6" stroke-width="2" marker-end="url(#mb)"/>
+<text x="330" y="115" text-anchor="middle" font-size="13" font-weight="700" fill="#3B82F6">D — DISCOVER</text>
+<text x="330" y="138" text-anchor="middle" font-size="11" fill="#64748B">« Il y a un serveur DHCP ici ? »  (broadcast)</text>
+
+<!-- O — OFFER ← -->
+<line x1="510" y1="178" x2="153" y2="178" stroke="#10B981" stroke-width="2" marker-end="url(#mg)"/>
+<text x="330" y="171" text-anchor="middle" font-size="13" font-weight="700" fill="#10B981">O — OFFER</text>
+<text x="330" y="194" text-anchor="middle" font-size="11" fill="#64748B">« Je te propose 192.168.1.42 (bail 24 h) »</text>
+
+<!-- R — REQUEST → -->
+<line x1="150" y1="234" x2="507" y2="234" stroke="#F59E0B" stroke-width="2" marker-end="url(#ma)"/>
+<text x="330" y="227" text-anchor="middle" font-size="13" font-weight="700" fill="#F59E0B">R — REQUEST</text>
+<text x="330" y="250" text-anchor="middle" font-size="11" fill="#64748B">« J'accepte cette adresse »</text>
+
+<!-- A — ACK ← -->
+<line x1="510" y1="286" x2="153" y2="286" stroke="#8B5CF6" stroke-width="2" marker-end="url(#mp)"/>
+<text x="330" y="279" text-anchor="middle" font-size="13" font-weight="700" fill="#8B5CF6">A — ACK</text>
+<text x="330" y="302" text-anchor="middle" font-size="11" fill="#64748B">« Confirmé — adresse accordée »</text>
+</svg>

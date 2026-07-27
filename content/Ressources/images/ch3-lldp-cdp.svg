@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 580" font-family="Segoe UI,Arial,sans-serif">
+  <defs>
+    <filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter>
+    <marker id="b" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#2563eb"/></marker>
+    <marker id="g" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#0f8a5f"/></marker>
+  </defs>
+  <rect width="1200" height="580" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-size="34" font-weight="800" fill="#0b1f4d">LLDP / CDP — QUI EST BRANCHÉ SUR CE PORT ?</text>
+  <text x="600" y="80" text-anchor="middle" font-size="18" font-weight="600" fill="#64748b">Chaque équipement annonce son identité à son voisin directement connecté</text>
+
+  <rect x="30" y="115" width="1140" height="275" rx="16" fill="#fff" stroke="#b9d2ff" filter="url(#s)"/>
+  <rect x="48" y="98" width="285" height="38" rx="10" fill="#0755c9"/><text x="190" y="124" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">1. ANNONCER LE VOISIN</text>
+  <rect x="80" y="190" width="245" height="110" rx="14" fill="#334155"/><text x="202" y="226" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">SWITCH-ACCÈS-01</text><text x="202" y="257" text-anchor="middle" font-size="15" fill="#cbd5e1">port Gi1/0/24</text><text x="202" y="280" text-anchor="middle" font-size="13" fill="#86efac">LLDP activé</text>
+  <rect x="875" y="190" width="245" height="110" rx="14" fill="#334155"/><text x="997" y="226" text-anchor="middle" font-size="20" font-weight="800" fill="#fff">SWITCH-CŒUR-01</text><text x="997" y="257" text-anchor="middle" font-size="15" fill="#cbd5e1">port Gi1/0/1</text><text x="997" y="280" text-anchor="middle" font-size="13" fill="#86efac">LLDP activé</text>
+  <path d="M325 222H865" stroke="#2563eb" stroke-width="5" marker-end="url(#b)"/>
+  <path d="M875 274H335" stroke="#0f8a5f" stroke-width="5" marker-end="url(#g)"/>
+  <rect x="450" y="177" width="300" height="132" rx="13" fill="#eff6ff" stroke="#93c5fd"/>
+  <text x="600" y="205" text-anchor="middle" font-size="17" font-weight="800" fill="#1e3a8a">INFORMATIONS ANNONCÉES</text>
+  <text x="475" y="235" font-size="15" fill="#475569">• nom de l'équipement</text>
+  <text x="475" y="260" font-size="15" fill="#475569">• port et capacités</text>
+  <text x="475" y="285" font-size="15" fill="#475569">• VLAN / téléphonie selon le cas</text>
+  <text x="202" y="338" text-anchor="middle" font-size="16" font-weight="700" fill="#1d4ed8">Voisin trouvé : CŒUR-01, Gi1/0/1</text>
+  <text x="997" y="338" text-anchor="middle" font-size="16" font-weight="700" fill="#15803d">Voisin trouvé : ACCÈS-01, Gi1/0/24</text>
+  <text x="600" y="371" text-anchor="middle" font-size="15" fill="#64748b">Les annonces ne traversent pas les routeurs et ne décrivent que le lien immédiat.</text>
+
+  <rect x="30" y="435" width="555" height="105" rx="16" fill="#fff" stroke="#86efac" filter="url(#s)"/>
+  <rect x="48" y="418" width="150" height="38" rx="10" fill="#0f8a5f"/><text x="123" y="444" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">LLDP</text>
+  <text x="70" y="488" font-size="18" font-weight="800" fill="#166534">IEEE 802.1AB</text>
+  <text x="70" y="516" font-size="16" fill="#475569">Standard ouvert • environnement multiconstructeur</text>
+  <rect x="615" y="435" width="555" height="105" rx="16" fill="#fff" stroke="#93c5fd" filter="url(#s)"/>
+  <rect x="633" y="418" width="150" height="38" rx="10" fill="#0755c9"/><text x="708" y="444" text-anchor="middle" font-size="19" font-weight="700" fill="#fff">CDP</text>
+  <text x="655" y="488" font-size="18" font-weight="800" fill="#1e3a8a">Cisco Discovery Protocol</text>
+  <text x="655" y="516" font-size="16" fill="#475569">Propriétaire Cisco • rôle comparable à LLDP</text>
+</svg>
