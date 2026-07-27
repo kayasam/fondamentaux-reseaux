@@ -4,7 +4,7 @@ Les trames Ethernet étudiées au chapitre 3 circulent dans un réseau local. Po
 
 Ce chapitre réunit les bases et les notions avancées de couche 3 dans une progression unique : **IPv4**, **CIDR**, **VLSM**, **paquet IP**, **passerelle**, **routage statique et dynamique**, **ICMP**, **IPv6** et un aperçu de **MPLS**.
 
-![[ch4-vue-ensemble.svg]]
+![ch4-vue-ensemble.svg](../Ressources/images/ch4-vue-ensemble.svg)
 
 > [!NOTE] Objectifs
 > À la fin de ce chapitre, vous saurez lire un plan d'adressage, déterminer si une destination est locale ou distante, interpréter une table de routage et expliquer les rôles d'OSPF, BGP, ICMP et IPv6.
@@ -28,7 +28,7 @@ Exemple : `192.168.1.42/24`
 - `42` identifie l'interface dans ce réseau ;
 - le réseau correspondant est `192.168.1.0/24`.
 
-![[ch4-ipv4-adresse.svg]]
+![ch4-ipv4-adresse.svg](../Ressources/images/ch4-ipv4-adresse.svg)
 
 ### Adresses privées et adresses particulières
 
@@ -99,7 +99,7 @@ Les deux adresses retirées sont généralement :
 
 Emprunter 2 bits à la partie hôte produit `2² = 4` sous-réseaux. Chaque `/26` contient 64 adresses.
 
-![[ch4-cidr-sous-reseaux.svg]]
+![ch4-cidr-sous-reseaux.svg](../Ressources/images/ch4-cidr-sous-reseaux.svg)
 
 |Réseau|Première IP hôte|Dernière IP hôte|Broadcast|
 |---|---|---|---|
@@ -136,7 +136,7 @@ Exemple dans `192.168.50.0/24` :
 |Serveurs|12 hôtes|`/28` : 14 hôtes|`192.168.50.96/28`|
 |Lien entre routeurs|2 hôtes|`/30` : 2 hôtes|`192.168.50.112/30`|
 
-![[ch4-vlsm.svg]]
+![ch4-vlsm.svg](../Ressources/images/ch4-vlsm.svg)
 
 > [!WARNING]
 > Un plan VLSM se construit toujours du plus grand besoin vers le plus petit. Sinon, un petit bloc placé trop tôt peut empêcher l'attribution d'un grand bloc contigu.
@@ -151,7 +151,7 @@ Exemple dans `192.168.50.0/24` :
 |**Broadcast**|Tous les hôtes du LAN|Requête ARP ou découverte DHCP|
 |**Multicast**|Un groupe abonné|OSPF, diffusion vers plusieurs récepteurs|
 
-![[ch4-modes-diffusion.svg]]
+![ch4-modes-diffusion.svg](../Ressources/images/ch4-modes-diffusion.svg)
 
 Un routeur ne transfère normalement pas les broadcasts du LAN. Chaque sous-réseau constitue donc un **domaine de broadcast** distinct.
 
@@ -163,7 +163,7 @@ IPv4 choisit une destination avec une adresse IP, mais Ethernet livre la trame a
 - destination distante : ARP recherche la MAC de la passerelle ;
 - la table ARP évite de répéter la découverte à chaque paquet.
 
-![[ch3-arp.svg]]
+![ch3-arp.svg](../Ressources/images/ch3-arp.svg)
 
 ```bash
 # Linux
@@ -194,7 +194,7 @@ IP encapsule les données de la couche transport dans un **paquet**. Pour compre
 |Protocole|Indique le contenu : ICMP, TCP, UDP…|
 |Données|Segment TCP, datagramme UDP ou message ICMP|
 
-![[ch4-paquet-ip.svg]]
+![ch4-paquet-ip.svg](../Ressources/images/ch4-paquet-ip.svg)
 
 > [!IMPORTANT] Ce qui change pendant le trajet
 > Les adresses MAC sont remplacées à chaque liaison. Les adresses IP source et destination restent normalement celles des extrémités ; une traduction NAT, étudiée au chapitre 8, constitue une exception.
@@ -210,7 +210,7 @@ Avant d'envoyer un paquet, un poste compare l'IP de destination avec son propre 
 - même sous-réseau : livraison directe ;
 - autre sous-réseau : livraison de la trame à la **passerelle par défaut**.
 
-![[ch4-passerelle.svg]]
+![ch4-passerelle.svg](../Ressources/images/ch4-passerelle.svg)
 
 La passerelle n'est pas « Internet » : c'est simplement le routeur capable de faire sortir le paquet du réseau local.
 
@@ -232,7 +232,7 @@ Le routeur :
 
 Pour `10.20.30.42`, la route `/24` gagne sur la `/16` et la `/0`.
 
-![[ch4-table-routage.svg]]
+![ch4-table-routage.svg](../Ressources/images/ch4-table-routage.svg)
 
 Une **route statique** est saisie par un administrateur. Elle est prévisible et adaptée aux petits réseaux, mais elle ne s'adapte pas seule à une panne.
 
@@ -258,7 +258,7 @@ Dans un réseau plus grand, saisir et corriger toutes les routes à la main devi
 - de retirer une route devenue indisponible ;
 - d'en choisir une autre lorsque la topologie change.
 
-![[ch4-routage-dynamique.svg]]
+![ch4-routage-dynamique.svg](../Ressources/images/ch4-routage-dynamique.svg)
 
 |Protocole|Idée principale|Usage typique|
 |---|---|---|
@@ -270,7 +270,7 @@ Dans un réseau plus grand, saisir et corriger toutes les routes à la main devi
 
 Avec OSPF, chaque routeur construit une vue de la topologie de sa zone puis calcule les meilleurs chemins. La métrique est un **coût** : le nombre de sauts n'est donc pas le seul critère.
 
-![[ch4-ospf.svg]]
+![ch4-ospf.svg](../Ressources/images/ch4-ospf.svg)
 
 Dans un grand réseau, OSPF peut être divisé en **zones**. La zone 0 forme le cœur logique, mais ce niveau de conception dépasse l'objectif de ce chapitre.
 
@@ -283,7 +283,7 @@ Dans un grand réseau, OSPF peut être divisé en **zones**. La zone 0 forme le 
 
 Internet est composé de réseaux administrés indépendamment, appelés **systèmes autonomes** ou **AS**. BGP annonce les préfixes joignables entre ces AS et applique des politiques de routage.
 
-![[ch4-bgp.svg]]
+![ch4-bgp.svg](../Ressources/images/ch4-bgp.svg)
 
 > [!NOTE]
 > OSPF cherche un chemin à l'intérieur d'une organisation. BGP échange des routes entre organisations. Dire que BGP choisit simplement « le chemin le plus court » serait trompeur : les politiques comptent beaucoup.
@@ -323,7 +323,7 @@ traceroute example.com
 tracert example.com
 ```
 
-![[ch4-icmp.svg]]
+![ch4-icmp.svg](../Ressources/images/ch4-icmp.svg)
 
 ### Diagnostic progressif
 
@@ -371,7 +371,7 @@ Deux simplifications sont possibles :
 2001:db8::1
 ```
 
-![[ch4-ipv6-adresse.svg]]
+![ch4-ipv6-adresse.svg](../Ressources/images/ch4-ipv6-adresse.svg)
 
 ### Reconnaître les principales portées
 
@@ -383,7 +383,7 @@ Deux simplifications sont possibles :
 |Multicast|`ff00::/8`|Groupe de destinataires|
 |Loopback|`::1`|Machine locale|
 
-![[ch4-ipv6-portees.svg]]
+![ch4-ipv6-portees.svg](../Ressources/images/ch4-ipv6-portees.svg)
 
 > [!IMPORTANT]
 > Une interface IPv6 possède souvent plusieurs adresses en même temps, par exemple une link-local et une global unicast. C'est normal.
@@ -392,7 +392,7 @@ Deux simplifications sont possibles :
 
 Avec **SLAAC**, le routeur annonce notamment le préfixe du réseau. Le poste forme alors une adresse, vérifie qu'elle n'est pas déjà utilisée et apprend une route par défaut. DHCPv6 peut compléter cette configuration selon le réseau.
 
-![[ch4-slaac.svg]]
+![ch4-slaac.svg](../Ressources/images/ch4-slaac.svg)
 
 > [!INFO] Références officielles
 > [RFC 8200 — IPv6](https://www.rfc-editor.org/info/rfc8200/) · [RFC 4862 — Stateless Address Autoconfiguration](https://www.rfc-editor.org/info/rfc4862/)
@@ -403,7 +403,7 @@ Avec **SLAAC**, le routeur annonce notamment le préfixe du réseau. Le poste fo
 
 **MPLS** (*Multiprotocol Label Switching*) est surtout rencontré dans les réseaux d'opérateurs. À l'entrée du réseau MPLS, un équipement associe le paquet à une classe de trafic et ajoute un **label**. Les équipements du cœur utilisent ensuite ce label pour le faire progresser sur un chemin appelé **LSP**.
 
-![[ch4-mpls.svg]]
+![ch4-mpls.svg](../Ressources/images/ch4-mpls.svg)
 
 Trois opérations suffisent pour comprendre le principe :
 

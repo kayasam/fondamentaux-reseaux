@@ -12,7 +12,7 @@ Elle répond à quatre questions :
 - comment détecter une trame endommagée ?
 - comment organiser et protéger le réseau local ?
 
-![[ch3-vue-ensemble.svg]]
+![ch3-vue-ensemble.svg](../Ressources/images/ch3-vue-ensemble.svg)
 
 > [!TIP] Limite de la couche 2
 > Une adresse MAC permet de communiquer dans un réseau local. Pour atteindre un autre réseau, il faut passer par une passerelle et utiliser la couche 3.
@@ -34,7 +34,7 @@ Ethernet ne transmet pas un flux sans structure : il regroupe les informations d
 |Données|46 à 1 500 octets|Transporter le paquet de couche 3|
 |FCS|4 octets|Détecter une corruption avec un contrôle CRC|
 
-![[ch3-trame-ethernet.svg]]
+![ch3-trame-ethernet.svg](../Ressources/images/ch3-trame-ethernet.svg)
 
 > [!NOTE] Taille d'une trame
 > De l'adresse MAC destination au FCS, une trame Ethernet mesure normalement entre **64 et 1 518 octets**. Le préambule et le SFD ne sont pas comptés. Un tag VLAN ajoute 4 octets.
@@ -52,7 +52,7 @@ Si le FCS calculé à la réception ne correspond pas au FCS de la trame, celle-
 
 Une adresse MAC Ethernet classique contient **48 bits**, soit 6 octets écrits en hexadécimal :
 
-![[ch3-adresse-mac.svg]]
+![ch3-adresse-mac.svg](../Ressources/images/ch3-adresse-mac.svg)
 
 - l'**OUI** identifie généralement le constructeur ;
 - la partie **NIC** distingue l'interface ;
@@ -90,7 +90,7 @@ Une application connaît généralement une adresse IP, mais Ethernet doit const
 
 Si la destination se trouve dans un autre réseau, la machine ne cherche pas la MAC du serveur distant : elle utilise la MAC de sa **passerelle par défaut**.
 
-![[ch3-arp.svg]]
+![ch3-arp.svg](../Ressources/images/ch3-arp.svg)
 
 > Le déroulement complet d'ARP et les risques d'ARP spoofing seront étudiés au chapitre 7.
 
@@ -110,7 +110,7 @@ Pour chaque trame, le switch suit cette logique :
 4. si elle est inconnue, il effectue un **flooding** dans le LAN ;
 5. les entrées inutilisées disparaissent après un délai de vieillissement.
 
-![[ch3-switch-apprentissage.svg]]
+![ch3-switch-apprentissage.svg](../Ressources/images/ch3-switch-apprentissage.svg)
 
 > [!NOTE] Le flooding n'est pas toujours un broadcast
 > Un **broadcast** est décidé par l'émetteur avec l'adresse `FF:FF:FF:FF:FF:FF`. Un **unknown unicast** vise une seule MAC, mais le switch le diffuse temporairement parce qu'il ne sait pas encore où elle se trouve.
@@ -148,7 +148,7 @@ Le **Spanning Tree Protocol** conserve la redondance physique tout en bloquant l
 3. un port redondant est placé dans un état qui ne transfère pas les trames ;
 4. si le lien actif tombe, STP peut activer le chemin de secours.
 
-![[ch3-stp.svg]]
+![ch3-stp.svg](../Ressources/images/ch3-stp.svg)
 
 > [!TIP] STP ou RSTP ?
 > **RSTP** est l'évolution moderne de STP. Il réagit généralement en quelques secondes, alors que le STP historique peut demander plusieurs dizaines de secondes.
@@ -178,7 +178,7 @@ Exemple :
 - un port **trunk** transporte plusieurs VLAN entre équipements réseau ;
 - sur un trunk, **[IEEE 802.1Q](https://1.ieee802.org/maintenance/p802-1q-rev/)** ajoute un tag contenant notamment l'identifiant du VLAN.
 
-![[ch3-vlan.svg]]
+![ch3-vlan.svg](../Ressources/images/ch3-vlan.svg)
 
 > [!NOTE]
 > Les identifiants de VLAN vont de 1 à 4 094 dans l'usage courant. Le VLAN 1 existe par défaut, mais il est préférable de créer des VLAN dédiés aux utilisateurs et à l'administration.
@@ -202,7 +202,7 @@ VLAN 20 ─┘
 
 L'agrégation regroupe plusieurs liens Ethernet physiques dans une seule interface logique. **LACP** négocie automatiquement cette agrégation entre les deux équipements.
 
-![[ch3-lacp.svg]]
+![ch3-lacp.svg](../Ressources/images/ch3-lacp.svg)
 
 ### Deux intérêts
 
@@ -237,7 +237,7 @@ Ils peuvent annoncer :
 - les capacités de l'équipement ;
 - certaines informations de VLAN ou de téléphonie.
 
-![[ch3-lldp-cdp.svg]]
+![ch3-lldp-cdp.svg](../Ressources/images/ch3-lldp-cdp.svg)
 
 ```text
 Switch A, port 24 ───── port 1, Switch B
@@ -263,7 +263,7 @@ En mode **infrastructure**, les clients s'associent à un point d'accès :
 
 Le mode **ad hoc**, sans point d'accès, existe mais reste peu utilisé dans les réseaux d'entreprise.
 
-![[ch3-wifi-infrastructure.svg]]
+![ch3-wifi-infrastructure.svg](../Ressources/images/ch3-wifi-infrastructure.svg)
 
 > [!INFO] Pour aller plus loin
 > [IEEE 802.11 — groupe de travail des réseaux locaux sans fil (site officiel)](https://www.ieee802.org/11/)
@@ -278,7 +278,7 @@ Une station Wi-Fi ne peut pas écouter correctement le canal pendant qu'elle ém
 4. elle émet lorsque son compteur arrive à zéro ;
 5. le destinataire confirme la réception avec un acquittement.
 
-![[ch3-csmaca.svg]]
+![ch3-csmaca.svg](../Ressources/images/ch3-csmaca.svg)
 
 > [!NOTE]
 > Tous les clients d'une même radio partagent le temps d'antenne. Un client lent peut donc consommer beaucoup de temps sans transmettre beaucoup de données.

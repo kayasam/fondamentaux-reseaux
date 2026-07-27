@@ -120,7 +120,7 @@ On y place les serveurs qui doivent être visibles depuis l'extérieur :
 - reverse proxy,
 - parfois serveur VPN.
 
-![[ch8-dmz-vpn.svg]]
+![ch8-dmz-vpn.svg](../Ressources/images/ch8-dmz-vpn.svg)
 
 ### Pourquoi une DMZ ?
 

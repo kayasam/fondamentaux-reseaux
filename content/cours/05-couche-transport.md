@@ -55,7 +55,7 @@ Client        →  ACK          →  Serveur
               [connexion établie]
 ```
 
-![[ch3-tcp-handshake.svg]]
+![ch3-tcp-handshake.svg](../Ressources/images/ch3-tcp-handshake.svg)
 
 ### Fermeture de connexion (4 étapes)
 
