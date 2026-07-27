@@ -143,7 +143,7 @@ $revisionMarkdown = [IO.File]::ReadAllText($publishedRevisionMarkdown)
 $revisionMarkdown = $revisionMarkdown.Replace("../cours/", "../")
 $revisionMarkdown = $revisionMarkdown.Replace(
   "index-protocoles-et-notions.html",
-  "https://kayasam.github.io/fondamentaux-reseaux/Ressources/index-protocoles-et-notions-interactif.html"
+  "https://kayasam.github.io/fondamentaux-reseaux/ressources/index-protocoles-et-notions-interactif.html"
 )
 [IO.File]::WriteAllText($publishedRevisionMarkdown, $revisionMarkdown, $utf8WithoutBom)
 

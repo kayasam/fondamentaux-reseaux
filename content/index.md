@@ -35,7 +35,7 @@ Après l'avoir décompressée, ouvrez le dossier `Fondamentaux-Reseaux` dans Obs
 ## Réviser les protocoles et les notions
 
 > [!TIP] Index de révision
-> - <a href="./Ressources/index-protocoles-et-notions-interactif.html" target="_blank">Ouvrir l’index interactif</a>
+> - <a href="./ressources/index-protocoles-et-notions-interactif.html" target="_blank">Ouvrir l’index interactif</a>
 > - [[Ressources/index-protocoles-et-notions|Consulter la note de révision dans Quartz]]
 > - <a href="./telechargements/index-protocoles-et-notions.md" download>Télécharger l’index en Markdown</a>
 

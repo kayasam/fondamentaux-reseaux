@@ -65,6 +65,8 @@ jobs:
           done
           mkdir -p public/Ressources/html-assets
           cp -R content/Ressources/html-assets/. public/Ressources/html-assets/
+          mkdir -p public/ressources
+          cp content/Ressources/index-protocoles-et-notions-interactif.html public/ressources/
 
       - name: Publish individual Markdown downloads
         run: |

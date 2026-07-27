@@ -15,7 +15,7 @@ tags:
 # Index des protocoles et notions réseau
 
 > [!TIP] Version interactive
-> [Ouvrir l’index dynamique](https://kayasam.github.io/fondamentaux-reseaux/Ressources/index-protocoles-et-notions-interactif.html) pour rechercher, filtrer, trier, créer des favoris ou lancer une carte de révision aléatoire.
+> [Ouvrir l’index dynamique](https://kayasam.github.io/fondamentaux-reseaux/ressources/index-protocoles-et-notions-interactif.html) pour rechercher, filtrer, trier, créer des favoris ou lancer une carte de révision aléatoire.
 
 Cette note rassemble le vocabulaire étudié dans la formation **Fondamentaux Réseaux**. Elle sert d’aide-mémoire dans Obsidian et de point d’entrée vers les chapitres.
 
