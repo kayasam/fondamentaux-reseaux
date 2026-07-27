@@ -1,8 +1,8 @@
 ---
-title: 00 — Introduction aux réseaux
+title: 00. Introduction aux réseaux
 ---
 
-# Chapitre 0 — Introduction aux réseaux
+# Introduction aux réseaux
 
 > [!TIP] Ressources du chapitre
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/00-introduction-reseaux/00-introduction-reseaux-interactif.html" target="_blank">Ouvrir le cours interactif</a>

@@ -1,3 +1,7 @@
+---
+title: "TP avancé : NAT, DMZ et filtrage"
+---
+
 # TP 06 - NAT, DMZ et filtrage - Version avancee
 > Chapitre associé : [[06-securite-et-acces]]
 

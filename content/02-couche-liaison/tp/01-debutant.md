@@ -1,3 +1,7 @@
+---
+title: "TP débutant : VLAN et segmentation"
+---
+
 # TP 02 - VLAN et segmentation - Version debutant
 > Chapitre associé : [[02-couche-liaison]]
 

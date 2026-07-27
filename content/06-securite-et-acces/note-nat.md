@@ -1,4 +1,8 @@
-# Note — NAT, pour aller plus loin
+---
+title: "Complément : NAT"
+---
+
+# NAT : pour aller plus loin
 
 > [!info]
 > L'explication de référence (SNAT/DNAT, statique/dynamique/PAT, masquerade) vit maintenant dans **[[06-securite-et-acces#7.1 NAT / PAT]]**. Cette note ne garde que la méthode d'analyse et des exemples travaillés, pour s'entraîner une fois le cours lu.

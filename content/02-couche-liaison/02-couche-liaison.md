@@ -1,8 +1,8 @@
 ---
-title: 02 — Couche liaison
+title: 02. Couche liaison
 ---
 
-# Chapitre 2 — Couche 2 : la liaison de données
+# Couche 2 : la couche liaison
 
 > [!TIP] Ressources du chapitre
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/02-couche-liaison/02-couche-liaison-interactif.html" target="_blank">Ouvrir le cours interactif</a>

@@ -1,3 +1,7 @@
+---
+title: "TP avancé : VLAN, trunk et STP"
+---
+
 # TP 02 - VLAN, trunk et STP - Version avancee
 > Chapitre associé : [[02-couche-liaison]]
 

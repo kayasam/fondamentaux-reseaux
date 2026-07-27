@@ -1,16 +1,16 @@
 ---
-title: "03 — Couche réseau : adressage et routage"
+title: 03. Couche réseau
 ---
 
-# Chapitre 3 — Couche 3 : adressage et routage
+# Couche 3 : la couche réseau
 
 > [!TIP] Ressources du chapitre
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/03-couche-reseau/03-couche-reseau-interactif.html" target="_blank">Ouvrir le cours interactif</a>
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/03-couche-reseau.md" download>Télécharger ce cours en Markdown</a>
-> - [[03-couche-reseau/tp/01-debutant|TP IPv4 et routage — débutant]]
-> - [[03-couche-reseau/tp/02-avance|TP IPv4 et routage — avancé]]
-> - [[03-couche-reseau/tp/reseau-avance/01-debutant|TP réseau avancé — débutant]]
-> - [[03-couche-reseau/tp/reseau-avance/02-avance|TP réseau avancé — avancé]]
+> - [[03-couche-reseau/tp/01-debutant|TP débutant : IPv4 et routage]]
+> - [[03-couche-reseau/tp/02-avance|TP avancé : IPv4, VLSM et routage]]
+> - [[03-couche-reseau/tp/reseau-avance/01-debutant|TP complémentaire : ARP, VLSM et IPv6]]
+> - [[03-couche-reseau/tp/reseau-avance/02-avance|TP complémentaire : routage dynamique]]
 
 Les trames Ethernet étudiées au chapitre 2 circulent dans un réseau local. Pour atteindre un autre réseau, il faut une adresse logique et des équipements capables de choisir un chemin : c'est le rôle de la **couche réseau**.
 

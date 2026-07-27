@@ -1,3 +1,7 @@
+---
+title: "TP débutant : DHCP et DNS"
+---
+
 # TP 05 - DHCP et DNS - Version debutant
 > Chapitre associé : [[05-services-reseau]]
 

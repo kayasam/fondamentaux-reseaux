@@ -1,8 +1,8 @@
 ---
-title: 04 — Couche transport
+title: 04. Couche transport
 ---
 
-# Chapitre 4 — Couche 4 : Transport
+# Couche 4 : la couche transport
 
 > [!TIP] Ressources du chapitre
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/04-couche-transport/04-couche-transport-interactif.html" target="_blank">Ouvrir le cours interactif</a>
@@ -10,7 +10,7 @@ title: 04 — Couche transport
 > - [[04-couche-transport/tp/01-debutant|TP débutant]]
 > - [[04-couche-transport/tp/02-avance|TP avancé]]
 
-Les paquets IP (ch. 4) savent trouver leur chemin entre réseaux, mais ils ne savent pas quelle **application** les attend. La couche Transport (L4) résout ce problème grâce aux **numéros de ports** et choisit entre livraison fiable (TCP) ou rapide (UDP).
+Les paquets IP étudiés au chapitre 3 savent trouver leur chemin entre réseaux, mais ils ne savent pas quelle **application** les attend. La couche transport (L4) résout ce problème grâce aux **numéros de ports** et choisit entre livraison fiable (TCP) ou rapide (UDP).
 
 La couche Transport assure le **transfert des données entre deux applications** situées sur des machines différentes. Elle gère la segmentation, la fiabilité et le multiplexage via les **ports**.
 

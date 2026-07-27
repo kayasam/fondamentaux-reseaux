@@ -50,6 +50,9 @@ jobs:
       - name: Install Quartz plugins
         run: npx quartz plugin install
 
+      - name: Fix folder-page links in the local graph
+        run: node scripts/fix-quartz-graph.mjs
+
       - name: Build Quartz
         run: npx quartz build
 

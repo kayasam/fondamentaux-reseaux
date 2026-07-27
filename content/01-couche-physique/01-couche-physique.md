@@ -1,8 +1,8 @@
 ---
-title: 01 — Couche physique
+title: 01. Couche physique
 ---
 
-# Chapitre 1 — Couche 1 : la couche physique
+# Couche 1 : la couche physique
 
 > [!TIP] Ressources du chapitre
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/01-couche-physique/01-couche-physique-interactif.html" target="_blank">Ouvrir le cours interactif</a>

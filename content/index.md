@@ -24,13 +24,13 @@ Après l'avoir décompressée, ouvrez le dossier `Fondamentaux-Reseaux` dans Obs
 
 ## Cours
 
-1. [[00-introduction-reseaux/00-introduction-reseaux|Introduction aux réseaux]]
-2. [[01-couche-physique/01-couche-physique|La couche physique]]
-3. [[02-couche-liaison/02-couche-liaison|La couche liaison]]
-4. [[03-couche-reseau/03-couche-reseau|Adressage et routage]]
-5. [[04-couche-transport/04-couche-transport|La couche transport]]
-6. [[05-services-reseau/05-services-reseau|Les services réseau]]
-7. [[06-securite-et-acces/06-securite-et-acces|Sécurité et accès réseau]]
+1. [[00-introduction-reseaux/00-introduction-reseaux|00. Introduction aux réseaux]]
+2. [[01-couche-physique/01-couche-physique|01. Couche physique]]
+3. [[02-couche-liaison/02-couche-liaison|02. Couche liaison]]
+4. [[03-couche-reseau/03-couche-reseau|03. Couche réseau]]
+5. [[04-couche-transport/04-couche-transport|04. Couche transport]]
+6. [[05-services-reseau/05-services-reseau|05. Couche application]]
+7. [[06-securite-et-acces/06-securite-et-acces|06. Sécurité réseau]]
 
 ## Travaux pratiques
 

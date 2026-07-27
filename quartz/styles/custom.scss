@@ -1,5 +1,9 @@
 @use "./variables.scss" as *;
 
+body[data-slug$="/index"] article .markdown-preview-view > h1:first-child {
+  display: none;
+}
+
 article a[href$="-interactif.html"],
 article a[href$="schema-osi-encapsulation.html"] {
   display: inline-flex;

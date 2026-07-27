@@ -1,14 +1,17 @@
 ---
-title: 05 — Services réseau
+title: 05. Couche application
 ---
 
-# Chapitre 5 — Services réseau essentiels
+# Couche application : les services réseau
 
 > [!TIP] Ressources du chapitre
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/05-services-reseau/05-services-reseau-interactif.html" target="_blank">Ouvrir le cours interactif</a>
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/05-services-reseau.md" download>Télécharger ce cours en Markdown</a>
 > - [[05-services-reseau/tp/01-debutant|TP débutant]]
 > - [[05-services-reseau/tp/02-avance|TP avancé]]
+
+> [!NOTE] Pourquoi « couche application » ?
+> Dans le modèle TCP/IP, la **couche application** regroupe les fonctions des couches **5 (session)**, **6 (présentation)** et **7 (application)** du modèle OSI. Nous les étudions ensemble à travers les services réellement utilisés : DHCP, DNS, HTTP et HTTPS.
 
 Après les couches basses (physique, liaison, réseau, transport), on peut enfin voir ce qui rend un réseau **utile au quotidien**. Ce sont les services qui permettent à un poste d'obtenir une configuration, de trouver un serveur et de dialoguer avec lui.
 

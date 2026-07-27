@@ -1,8 +1,8 @@
 ---
-title: 06 — Sécurité et accès réseau
+title: 06. Sécurité réseau
 ---
 
-# Chapitre 6 — Sécurité et accès réseau
+# Sécurité réseau et contrôle des accès
 
 > [!TIP] Ressources du chapitre
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/06-securite-et-acces/06-securite-et-acces-interactif.html" target="_blank">Ouvrir le cours interactif</a>
