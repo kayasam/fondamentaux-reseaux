@@ -15,6 +15,7 @@ $destinationContent = Join-Path $projectRoot "content"
 $stagingRoot = Join-Path $projectRoot ".publication-stage"
 $stagingCourses = Join-Path $stagingRoot "cours"
 $destinationResources = Join-Path $projectRoot "content\Ressources"
+$destinationRevisionIndexHtml = Join-Path $destinationResources "index-protocoles-et-notions-interactif.html"
 $destinationImages = Join-Path $projectRoot "content\Ressources\images"
 $destinationHtmlAssets = Join-Path $projectRoot "content\Ressources\html-assets"
 
@@ -100,7 +101,7 @@ Copy-MirroredDirectory `
 Write-Host "2/6 - Copie des illustrations et des ressources HTML..."
 Copy-MirroredDirectory -Source $sourceImages -Destination $destinationImages
 Copy-MirroredDirectory -Source $sourceHtmlAssets -Destination $destinationHtmlAssets
-Copy-Item -LiteralPath $sourceRevisionIndexHtml -Destination $destinationResources -Force
+Copy-Item -LiteralPath $sourceRevisionIndexHtml -Destination $destinationRevisionIndexHtml -Force
 Copy-Item -LiteralPath $sourceRevisionIndexMarkdown -Destination $destinationResources -Force
 
 Write-Host "3/6 - Adaptation des liens pour le site..."
@@ -140,14 +141,22 @@ Get-ChildItem -LiteralPath $stagingCourses -Recurse -File -Filter "*.html" | For
 $publishedRevisionMarkdown = Join-Path $destinationResources "index-protocoles-et-notions.md"
 $revisionMarkdown = [IO.File]::ReadAllText($publishedRevisionMarkdown)
 $revisionMarkdown = $revisionMarkdown.Replace("../cours/", "../")
+$revisionMarkdown = $revisionMarkdown.Replace(
+  "index-protocoles-et-notions.html",
+  "index-protocoles-et-notions-interactif.html"
+)
 [IO.File]::WriteAllText($publishedRevisionMarkdown, $revisionMarkdown, $utf8WithoutBom)
 
-$publishedRevisionHtml = Join-Path $destinationResources "index-protocoles-et-notions.html"
+$publishedRevisionHtml = $destinationRevisionIndexHtml
 $revisionHtml = [IO.File]::ReadAllText($publishedRevisionHtml)
 $revisionHtml = $revisionHtml.Replace("../cours/", "../")
 $revisionHtml = $revisionHtml.Replace(
   'href="index-protocoles-et-notions.md" download',
   'href="../telechargements/index-protocoles-et-notions.md" download'
+)
+$revisionHtml = $revisionHtml.Replace(
+  'href="index-protocoles-et-notions.md"',
+  'href="index-protocoles-et-notions"'
 )
 [IO.File]::WriteAllText($publishedRevisionHtml, $revisionHtml, $utf8WithoutBom)
 
