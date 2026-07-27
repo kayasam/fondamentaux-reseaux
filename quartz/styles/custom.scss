@@ -1,5 +1,25 @@
 @use "./variables.scss" as *;
 
+article a[href$="-interactif.html"],
+article a[href$="schema-osi-encapsulation.html"] {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.65rem;
+  border: 1px solid color-mix(in srgb, var(--secondary) 55%, transparent);
+  border-radius: 0.45rem;
+  color: #fff;
+  background-color: var(--secondary);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+article a[href$="-interactif.html"]:hover,
+article a[href$="schema-osi-encapsulation.html"]:hover {
+  color: #fff;
+  filter: brightness(1.15);
+}
+
 .obsidian-download {
   display: grid;
   grid-template-columns: auto minmax(0, 1fr) auto;

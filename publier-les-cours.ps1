@@ -8,8 +8,10 @@ $sourceRoot = "C:\Users\kayaw\Nextcloud\Obsidian\CoffreSam\Formations\fondamenta
 $projectRoot = "D:\Projet-git\fondamentaux-reseaux-web"
 $sourceCourses = Join-Path $sourceRoot "cours"
 $sourceImages = Join-Path $sourceRoot "Ressources\images"
+$sourceHtmlAssets = Join-Path $sourceRoot "Ressources\html-assets"
 $destinationCourses = Join-Path $projectRoot "content\cours"
 $destinationImages = Join-Path $projectRoot "content\Ressources\images"
+$destinationHtmlAssets = Join-Path $projectRoot "content\Ressources\html-assets"
 
 function Assert-Directory {
   param(
@@ -59,28 +61,25 @@ Write-Host "===================================" -ForegroundColor Cyan
 
 Assert-Directory -Path $sourceCourses -Description "Le dossier des cours"
 Assert-Directory -Path $sourceImages -Description "Le dossier des images"
+Assert-Directory -Path $sourceHtmlAssets -Description "Le dossier des ressources HTML"
 Assert-Directory -Path (Join-Path $projectRoot ".git") -Description "Le dépôt Git"
 
-Write-Host "1/4 - Copie des cours depuis le coffre Obsidian..."
+Write-Host "1/5 - Copie des cours depuis le coffre Obsidian..."
 Copy-MirroredDirectory `
   -Source $sourceCourses `
   -Destination $destinationCourses `
   -ExcludedFiles @("*.excalidraw", "*.excalidraw.md")
 
-Write-Host "2/4 - Copie des illustrations..."
+Write-Host "2/5 - Copie des illustrations et des ressources HTML..."
 Copy-MirroredDirectory -Source $sourceImages -Destination $destinationImages
+Copy-MirroredDirectory -Source $sourceHtmlAssets -Destination $destinationHtmlAssets
 
-Write-Host "3/4 - Adaptation des liens d'images pour le site..."
+Write-Host "3/5 - Adaptation des liens d'images pour le site..."
 $imagePattern = '!\[\[([^]|]+\.(?:svg|jpe?g|png|webp))(?:\|[^]]+)?\]\]'
 $utf8WithoutBom = [Text.UTF8Encoding]::new($false)
 
 Get-ChildItem -LiteralPath $destinationCourses -Recurse -File -Filter "*.md" | ForEach-Object {
   $markdownFile = $_
-  $relativeImages = [IO.Path]::GetRelativePath(
-    $markdownFile.DirectoryName,
-    $destinationImages
-  ).Replace("\", "/")
-
   $original = [IO.File]::ReadAllText($markdownFile.FullName)
   $updated = [regex]::Replace(
     $original,
@@ -88,7 +87,7 @@ Get-ChildItem -LiteralPath $destinationCourses -Recurse -File -Filter "*.md" | F
     {
       param($match)
       $imageName = $match.Groups[1].Value
-      "![$imageName]($relativeImages/$imageName)"
+      "![$imageName](Ressources/images/$imageName)"
     },
     [Text.RegularExpressions.RegexOptions]::IgnoreCase
   )
@@ -98,6 +97,17 @@ Get-ChildItem -LiteralPath $destinationCourses -Recurse -File -Filter "*.md" | F
   }
 }
 
+Write-Host "4/5 - Masquage des corrections non publiées..."
+$hiddenCorrections = 0
+Get-ChildItem -LiteralPath $destinationCourses -Recurse -File -Filter "*correction*.md" | ForEach-Object {
+  $correctionContent = [IO.File]::ReadAllText($_.FullName)
+  if ($correctionContent -notmatch '(?m)^publier:\s*true\s*$') {
+    [IO.File]::Delete($_.FullName)
+    $hiddenCorrections++
+  }
+}
+Write-Host "$hiddenCorrections correction(s) conservée(s) uniquement dans le coffre."
+
 Push-Location $projectRoot
 try {
   & git diff --check
@@ -106,7 +116,7 @@ try {
   }
 
   $changes = @(
-    & git status --porcelain -- content/cours content/Ressources/images
+    & git status --porcelain -- content/cours content/Ressources/images content/Ressources/html-assets
   )
 
   if ($changes.Count -eq 0) {
@@ -115,7 +125,7 @@ try {
     exit 0
   }
 
-  & git add -A -- content/cours content/Ressources/images
+  & git add -A -- content/cours content/Ressources/images content/Ressources/html-assets
   if ($LASTEXITCODE -ne 0) {
     throw "Impossible de préparer les modifications Git."
   }
@@ -132,14 +142,17 @@ try {
     $Message = "Mise à jour des cours - $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
   }
 
-  $confirmation = Read-Host "Publier maintenant sur GitHub ? [O/n]"
-  if ($confirmation -notmatch '^(|o|oui|y|yes)$') {
-    & git restore --staged -- content/cours content/Ressources/images
+  $confirmation = Read-Host "Publier maintenant sur GitHub ? [o/N]"
+  if (
+    [string]::IsNullOrWhiteSpace($confirmation) -or
+    $confirmation -notmatch '^(o|oui|y|yes)$'
+  ) {
+    & git restore --staged -- content/cours content/Ressources/images content/Ressources/html-assets
     Write-Host "Publication annulée. Les fichiers copiés restent disponibles localement." -ForegroundColor Yellow
     exit 0
   }
 
-  Write-Host "4/4 - Commit et envoi vers GitHub..."
+  Write-Host "5/5 - Commit et envoi vers GitHub..."
   & git commit -m $Message
   if ($LASTEXITCODE -ne 0) {
     throw "La création du commit a échoué."

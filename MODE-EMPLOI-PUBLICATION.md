@@ -15,11 +15,29 @@ Le coffre Obsidian reste la source officielle :
 Le script :
 
 - synchronise `cours` et `Ressources/images` avec le projet web ;
+- synchronise les cours HTML interactifs et leurs ressources ;
 - exclut les fichiers Excalidraw ;
+- conserve les corrections marquées `publier: false` uniquement dans le coffre ;
 - adapte les liens d'images pour Quartz sans modifier le coffre ;
 - affiche le résumé des changements ;
 - crée le commit et l'envoie sur GitHub.
 
 GitHub reconstruit ensuite automatiquement le site et l'archive Obsidian.
+
+## Publier une correction après un TP
+
+Dans le coffre Obsidian, ouvrir le fichier `03-correction.md` concerné et remplacer :
+
+```yaml
+publier: false
+```
+
+par :
+
+```yaml
+publier: true
+```
+
+Relancer ensuite `Publier les cours.cmd`. Pour masquer de nouveau la correction, remettre `publier: false` et republier.
 
 Site : <https://kayasam.github.io/fondamentaux-reseaux/>

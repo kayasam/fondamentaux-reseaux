@@ -22,17 +22,20 @@ Après l'avoir décompressée, ouvrez le dossier `Fondamentaux-Reseaux` dans Obs
 
 ## Cours
 
-1. [[01-introduction-reseaux|Introduction aux réseaux]]
-2. [[02-couche-physique|La couche physique]]
-3. [[03-couche-liaison|La couche liaison]]
-4. [[04-couche-reseau|Adressage et routage]]
-5. [[05-couche-transport|La couche transport]]
-6. [[06-services-reseau|Les services réseau]]
-7. [[08-securite-et-acces|Sécurité et accès réseau]]
+1. [[cours/01-introduction-reseaux/01-introduction-reseaux|Introduction aux réseaux]]
+2. [[cours/02-couche-physique/02-couche-physique|La couche physique]]
+3. [[cours/03-couche-liaison/03-couche-liaison|La couche liaison]]
+4. [[cours/04-couche-reseau/04-couche-reseau|Adressage et routage]]
+5. [[cours/05-couche-transport/05-couche-transport|La couche transport]]
+6. [[cours/06-services-reseau/06-services-reseau|Les services réseau]]
+7. [[cours/07-securite-et-acces/07-securite-et-acces|Sécurité et accès réseau]]
 
 ## Travaux pratiques
 
 Les TP sont disponibles dans les sous-dossiers de chaque chapitre depuis l'explorateur du site.
+
+> [!NOTE]
+> Les corrections sont publiées progressivement par le formateur après la réalisation des TP.
 
 > [!INFO]
 > Cette première version sert à vérifier le rendu des callouts Obsidian, des illustrations SVG, des tableaux et des liens entre chapitres.

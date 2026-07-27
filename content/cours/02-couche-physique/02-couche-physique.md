@@ -1,9 +1,13 @@
+---
+title: Couche physique
+---
+
 # Chapitre 2 — Couche 1 : la couche physique
 
 > [!TIP] Ressources du chapitre
-> - [Ouvrir le cours interactif](02-couche-physique-interactif.html)
-> - [TP débutant](tp/01-debutant.md)
-> - [TP avancé](tp/02-avance.md)
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/cours/02-couche-physique/02-couche-physique-interactif.html" target="_blank">Ouvrir le cours interactif</a>
+> - [[cours/02-couche-physique/tp/01-debutant|TP débutant]]
+> - [[cours/02-couche-physique/tp/02-avance|TP avancé]]
 
 > [!NOTE] Objectifs
 > Identifier les principaux supports de transmission, choisir un média adapté et reconnaître une panne de couche 1.
@@ -16,7 +20,7 @@ La couche physique transforme une suite de **bits** en un signal capable de circ
 
 Elle définit aussi les connecteurs, les fréquences, le codage du signal, le débit et les distances maximales. Elle ne connaît ni les adresses IP, ni les adresses MAC, ni les applications.
 
-![ch2-vue-ensemble.svg](../../Ressources/images/ch2-vue-ensemble.svg)
+![ch2-vue-ensemble.svg](Ressources/images/ch2-vue-ensemble.svg)
 
 > [!TIP] Réflexe de diagnostic
 > Avant d'analyser les adresses ou les protocoles, vérifier la couche 1 : alimentation, voyants, câble, connecteur, portée et qualité du signal.
@@ -55,7 +59,7 @@ Le connecteur est couramment appelé **RJ45**. Techniquement, Ethernet utilise u
 |**Cat 7**|10 Gbit/s|100 m|Norme ISO/IEC, usage spécifique|
 |**Cat 8**|25 ou 40 Gbit/s|30 m|Liaisons courtes en centre de données|
 
-![ch2-cables-comparaison.svg](../../Ressources/images/ch2-cables-comparaison.svg)
+![ch2-cables-comparaison.svg](Ressources/images/ch2-cables-comparaison.svg)
 
 > [!NOTE]
 > Les **100 mètres** correspondent généralement à 90 m de câble permanent et 10 m de cordons. Une catégorie plus élevée ne rend pas automatiquement le réseau plus rapide : les cartes réseau et les switches doivent supporter le même débit.
@@ -100,7 +104,7 @@ La distance réelle dépend du **module optique**, du débit, du type de fibre e
 |**SC**|Carré|Push-pull|Télécoms, panneaux de brassage|
 |**LC**|Petit, avec languette|Push-pull|Switches et centres de données|
 
-![ch2-connecteurs-fibre.svg](../../Ressources/images/ch2-connecteurs-fibre.svg)
+![ch2-connecteurs-fibre.svg](Ressources/images/ch2-connecteurs-fibre.svg)
 
 ### Choisir entre cuivre et fibre
 
@@ -121,7 +125,7 @@ La distance réelle dépend du **module optique**, du débit, du type de fibre e
 
 Les liaisons sans fil utilisent des **ondes électromagnétiques**. Elles facilitent la mobilité, mais le débit et la portée varient selon la distance, les obstacles, les interférences et le nombre d'utilisateurs.
 
-![ch2-sans-fil.svg](../../Ressources/images/ch2-sans-fil.svg)
+![ch2-sans-fil.svg](Ressources/images/ch2-sans-fil.svg)
 
 |Technologie|Usage|Portée indicative|Point fort|
 |---|---|---:|---|
@@ -153,7 +157,7 @@ Trois phénomènes doivent être distingués :
 - **bruit** : un signal parasite se superpose au signal utile ;
 - **diaphonie** : le signal d'une paire de cuivre perturbe une paire voisine.
 
-![ch2-attenuation-emi.svg](../../Ressources/images/ch2-attenuation-emi.svg)
+![ch2-attenuation-emi.svg](Ressources/images/ch2-attenuation-emi.svg)
 
 ### Sources fréquentes
 
@@ -184,7 +188,7 @@ Un répéteur reçoit un signal affaibli, le **régénère**, puis le retransmet
 
 Le hub répète les bits reçus vers **tous ses autres ports**. Il ne lit pas les adresses MAC et ne choisit pas le destinataire. Tous les appareils partagent le débit, un seul peut émettre à la fois et tous les ports appartiennent au même domaine de collision.
 
-![ch2-hub-collision.svg](../../Ressources/images/ch2-hub-collision.svg)
+![ch2-hub-collision.svg](Ressources/images/ch2-hub-collision.svg)
 
 > [!WARNING]
 > Le hub est aujourd'hui obsolète. Il a été remplacé par le switch, un équipement de couche 2 capable d'envoyer une trame uniquement vers le bon port.
@@ -198,7 +202,7 @@ Le hub répète les bits reçus vers **tous ses autres ports**. Il ne lit pas le
 |**Half-duplex**|Émettre ou recevoir, mais pas simultanément|Talkie-walkie, Ethernet avec hub|
 |**Full-duplex**|Émettre et recevoir en même temps|Ethernet moderne avec switch|
 
-![ch2-duplex.svg](../../Ressources/images/ch2-duplex.svg)
+![ch2-duplex.svg](Ressources/images/ch2-duplex.svg)
 
 ### CSMA/CD : gérer les collisions
 
@@ -210,7 +214,7 @@ Sur les anciens réseaux Ethernet partagés, **CSMA/CD** organisait l'accès au 
 4. **Collision Detection** : en cas de collision, l'émission s'arrête ;
 5. chaque machine attend un délai aléatoire avant de réessayer.
 
-![ch2-csmacd.svg](../../Ressources/images/ch2-csmacd.svg)
+![ch2-csmacd.svg](Ressources/images/ch2-csmacd.svg)
 
 Avec un switch et des liaisons full-duplex, chaque port dispose de son propre lien : il n'y a plus de collision et CSMA/CD n'est plus utilisé.
 

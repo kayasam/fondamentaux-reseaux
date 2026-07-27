@@ -1,9 +1,13 @@
+---
+title: Couche transport
+---
+
 # Chapitre 5 — Couche 4 : Transport
 
 > [!TIP] Ressources du chapitre
-> - [Ouvrir le cours interactif](05-couche-transport-interactif.html)
-> - [TP débutant](tp/01-debutant.md)
-> - [TP avancé](tp/02-avance.md)
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/cours/05-couche-transport/05-couche-transport-interactif.html" target="_blank">Ouvrir le cours interactif</a>
+> - [[cours/05-couche-transport/tp/01-debutant|TP débutant]]
+> - [[cours/05-couche-transport/tp/02-avance|TP avancé]]
 
 Les paquets IP (ch. 4) savent trouver leur chemin entre réseaux, mais ils ne savent pas quelle **application** les attend. La couche Transport (L4) résout ce problème grâce aux **numéros de ports** et choisit entre livraison fiable (TCP) ou rapide (UDP).
 
@@ -60,7 +64,7 @@ Client        →  ACK          →  Serveur
               [connexion établie]
 ```
 
-![ch3-tcp-handshake.svg](../../Ressources/images/ch3-tcp-handshake.svg)
+![ch3-tcp-handshake.svg](Ressources/images/ch3-tcp-handshake.svg)
 
 ### Fermeture de connexion (4 étapes)
 

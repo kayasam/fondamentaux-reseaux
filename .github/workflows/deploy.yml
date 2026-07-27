@@ -53,11 +53,22 @@ jobs:
       - name: Build Quartz
         run: npx quartz build
 
+      - name: Publish interactive HTML courses
+        run: |
+          find content/cours -type f -name "*.html" -print0 | while IFS= read -r -d '' file; do
+            relative_path="${file#content/}"
+            mkdir -p "public/$(dirname "$relative_path")"
+            cp "$file" "public/$relative_path"
+          done
+          mkdir -p public/Ressources/html-assets
+          cp -R content/Ressources/html-assets/. public/Ressources/html-assets/
+
       - name: Create Obsidian archive
         run: |
           mkdir -p download/Fondamentaux-Reseaux/Ressources
           cp -R content/cours download/Fondamentaux-Reseaux/
           cp -R content/Ressources/images download/Fondamentaux-Reseaux/Ressources/
+          cp -R content/Ressources/html-assets download/Fondamentaux-Reseaux/Ressources/
           cd download
           zip -qr ../public/fondamentaux-reseaux-obsidian.zip Fondamentaux-Reseaux
 

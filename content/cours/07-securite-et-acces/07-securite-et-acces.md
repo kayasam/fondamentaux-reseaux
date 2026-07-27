@@ -1,10 +1,14 @@
+---
+title: Sécurité et accès réseau
+---
+
 # Chapitre 7 — Sécurité et accès réseau
 
 > [!TIP] Ressources du chapitre
-> - [Ouvrir le cours interactif](07-securite-et-acces-interactif.html)
-> - [TP débutant](tp/01-debutant.md)
-> - [TP avancé](tp/02-avance.md)
-> - [Note complémentaire sur le NAT](note-nat.md)
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/cours/07-securite-et-acces/07-securite-et-acces-interactif.html" target="_blank">Ouvrir le cours interactif</a>
+> - [[cours/07-securite-et-acces/tp/01-debutant|TP débutant]]
+> - [[cours/07-securite-et-acces/tp/02-avance|TP avancé]]
+> - [[cours/07-securite-et-acces/note-nat|Note complémentaire sur le NAT]]
 
 Une fois les bases du fonctionnement réseau posées, il faut répondre à une autre question : **comment contrôler, protéger et segmenter les accès** ?
 
@@ -126,7 +130,7 @@ On y place les serveurs qui doivent être visibles depuis l'extérieur :
 - reverse proxy,
 - parfois serveur VPN.
 
-![ch8-dmz-vpn.svg](../../Ressources/images/ch8-dmz-vpn.svg)
+![ch8-dmz-vpn.svg](Ressources/images/ch8-dmz-vpn.svg)
 
 ### Pourquoi une DMZ ?
 

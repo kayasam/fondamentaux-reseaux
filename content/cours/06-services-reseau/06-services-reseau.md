@@ -1,9 +1,13 @@
+---
+title: Services réseau
+---
+
 # Chapitre 6 — Services réseau essentiels
 
 > [!TIP] Ressources du chapitre
-> - [Ouvrir le cours interactif](06-services-reseau-interactif.html)
-> - [TP débutant](tp/01-debutant.md)
-> - [TP avancé](tp/02-avance.md)
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/cours/06-services-reseau/06-services-reseau-interactif.html" target="_blank">Ouvrir le cours interactif</a>
+> - [[cours/06-services-reseau/tp/01-debutant|TP débutant]]
+> - [[cours/06-services-reseau/tp/02-avance|TP avancé]]
 
 Après les couches basses (physique, liaison, réseau, transport), on peut enfin voir ce qui rend un réseau **utile au quotidien**. Ce sont les services qui permettent à un poste d'obtenir une configuration, de trouver un serveur et de dialoguer avec lui.
 
@@ -53,9 +57,9 @@ Client  →  REQUEST   →  serveur DHCP
 Client  ←  ACK       ←  serveur DHCP
 ```
 
-![ch2-dhcp-dora.svg](../../Ressources/images/ch2-dhcp-dora.svg)
+![ch2-dhcp-dora.svg](Ressources/images/ch2-dhcp-dora.svg)
 
-![ch6-services-web.svg](../../Ressources/images/ch6-services-web.svg)
+![ch6-services-web.svg](Ressources/images/ch6-services-web.svg)
 
 > [!info]
 > Si aucun serveur DHCP ne répond, un poste Windows peut s'attribuer une adresse **APIPA** en `169.254.x.x`. On peut alors parfois communiquer localement, mais pas sortir vers Internet.
@@ -79,7 +83,7 @@ Exemple :
 3. Le serveur répond avec l'adresse IP.
 4. La connexion peut commencer.
 
-![ch2-dns-resolution.svg](../../Ressources/images/ch2-dns-resolution.svg)
+![ch2-dns-resolution.svg](Ressources/images/ch2-dns-resolution.svg)
 
 ### Enregistrements à connaître
 

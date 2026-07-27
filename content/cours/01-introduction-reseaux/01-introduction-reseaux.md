@@ -1,10 +1,14 @@
+---
+title: Introduction aux réseaux
+---
+
 # Chapitre 1 — Introduction aux réseaux
 
 > [!TIP] Ressources du chapitre
-> - [Ouvrir le cours interactif](01-introduction-reseaux-interactif.html)
-> - [Explorer le schéma OSI interactif](schema-osi-encapsulation.html)
-> - [TP débutant](tp/01-debutant.md)
-> - [TP avancé](tp/02-avance.md)
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/cours/01-introduction-reseaux/01-introduction-reseaux-interactif.html" target="_blank">Ouvrir le cours interactif</a>
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/cours/01-introduction-reseaux/schema-osi-encapsulation.html" target="_blank">Explorer le schéma OSI interactif</a>
+> - [[cours/01-introduction-reseaux/tp/01-debutant|TP débutant]]
+> - [[cours/01-introduction-reseaux/tp/02-avance|TP avancé]]
 
 ## 1.1 Présentation générale
 
@@ -73,7 +77,7 @@ Les utilisateurs (personnes ou machines) se connectent pour :
 
 <iframe width="560" height="315" src="https://www.youtube.com/embed/c0Xj09s5hYA?si=9SB7DfBIeXyB4iml" title="YouTube video player" frameborder="0" allowfullscreen></iframe>
 
-![ch1-etendues.svg](../../Ressources/images/ch1-etendues.svg)
+![ch1-etendues.svg](Ressources/images/ch1-etendues.svg)
 
 |Type|Signification|Portée|Exemple|
 |---|---|---|---|
@@ -93,11 +97,11 @@ Internet est un **WAN mondial** qui interconnecte des millions de **LAN**.
 - **Client/serveur** : un serveur central fournit des services à plusieurs clients. Exemple : serveur de fichiers partagé.
 - **Pair-à-pair (P2P)** : chaque appareil peut être client et serveur simultanément.
 
-![ch1-architecture.svg](../../Ressources/images/ch1-architecture.svg)
+![ch1-architecture.svg](Ressources/images/ch1-architecture.svg)
 
 ### Topologies
 
-![ch1-topologies.svg](../../Ressources/images/ch1-topologies.svg)
+![ch1-topologies.svg](Ressources/images/ch1-topologies.svg)
 
 |Topologie|Avantages|Inconvénients|
 |---|---|---|
@@ -116,7 +120,7 @@ La **topologie en étoile** est la norme dans les réseaux modernes grâce aux s
 
 Le modèle **OSI** découpe les communications réseau en **7 couches**, chacune avec un rôle précis.
 
-![ch1-osi-modele.svg](../../Ressources/images/ch1-osi-modele.svg)
+![ch1-osi-modele.svg](Ressources/images/ch1-osi-modele.svg)
 
 |N°|Couche|Rôle|PDU|
 |---|---|---|---|
@@ -137,7 +141,7 @@ Envoi :    HTTP → [TCP] → [IP] → [Ethernet] → signal
 Réception: signal → Ethernet → IP → TCP → HTTP
 ```
 
-![ch7-encapsulation.svg](../../Ressources/images/ch7-encapsulation.svg)
+![ch7-encapsulation.svg](Ressources/images/ch7-encapsulation.svg)
 
 > [!info]
 > Le modèle OSI est aussi un outil de **diagnostic** : localiser une panne (couche 1 = câble, couche 3 = routage, couche 7 = application).
