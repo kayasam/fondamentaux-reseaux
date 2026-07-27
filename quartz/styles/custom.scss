@@ -5,7 +5,8 @@ body[data-slug$="/index"] article .markdown-preview-view > h1:first-child {
 }
 
 article a[href$="-interactif.html"],
-article a[href$="schema-osi-encapsulation.html"] {
+article a[href$="schema-osi-encapsulation.html"],
+article a[href$="index-protocoles-et-notions.html"] {
   display: inline-flex;
   align-items: center;
   gap: 0.35rem;
@@ -19,7 +20,8 @@ article a[href$="schema-osi-encapsulation.html"] {
 }
 
 article a[href$="-interactif.html"]:hover,
-article a[href$="schema-osi-encapsulation.html"]:hover {
+article a[href$="schema-osi-encapsulation.html"]:hover,
+article a[href$="index-protocoles-et-notions.html"]:hover {
   color: #fff;
   filter: brightness(1.15);
 }

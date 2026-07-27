@@ -76,6 +76,7 @@ jobs:
               cp "$course_file" "public/telechargements/$chapter_name.md"
             fi
           done
+          cp content/Ressources/index-protocoles-et-notions.md public/telechargements/
 
       - name: Create Obsidian archive
         run: |
@@ -84,6 +85,7 @@ jobs:
           cp -R content/[0-9][0-9]-* download/Fondamentaux-Reseaux/cours/
           cp -R content/Ressources/images download/Fondamentaux-Reseaux/Ressources/
           cp -R content/Ressources/html-assets download/Fondamentaux-Reseaux/Ressources/
+          cp content/Ressources/index-protocoles-et-notions.* download/Fondamentaux-Reseaux/Ressources/
           cd download
           zip -qr ../public/fondamentaux-reseaux-obsidian.zip Fondamentaux-Reseaux
 

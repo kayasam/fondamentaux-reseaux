@@ -10,180 +10,423 @@ title: 04. Couche transport
 > - [[04-couche-transport/tp/01-debutant|TP débutant]]
 > - [[04-couche-transport/tp/02-avance|TP avancé]]
 
-Les paquets IP étudiés au chapitre 3 savent trouver leur chemin entre réseaux, mais ils ne savent pas quelle **application** les attend. La couche transport (L4) résout ce problème grâce aux **numéros de ports** et choisit entre livraison fiable (TCP) ou rapide (UDP).
+Au chapitre précédent, la couche réseau a permis d'acheminer un paquet IP jusqu'à la **bonne machine**. Il reste cependant une question : à quelle application faut-il remettre les données ?
 
-La couche Transport assure le **transfert des données entre deux applications** situées sur des machines différentes. Elle gère la segmentation, la fiabilité et le multiplexage via les **ports**.
+Un serveur peut faire fonctionner simultanément un site web, un service SSH et un serveur DNS. La couche transport utilise les **numéros de port** pour atteindre le bon programme et propose principalement deux protocoles :
 
----
+- **TCP**, qui fournit un flux d'octets fiable et ordonné ;
+- **UDP**, qui transporte des datagrammes indépendants avec peu de mécanismes.
 
-## 4.1 Rôle de la couche Transport
+![transport-vue-ensemble.svg](Ressources/images/transport-vue-ensemble.svg)
 
-La couche 4 :
-- **segmente** les données en unités transportables,
-- **identifie les applications** via les numéros de port,
-- choisit entre **fiabilité** (TCP) et **rapidité** (UDP) selon le besoin.
-
-Une **socket** = adresse IP + port. Exemple : `192.168.1.10:80` identifie un serveur web.
+> [!NOTE] Objectifs
+> À la fin de ce chapitre, vous saurez expliquer le rôle des ports, différencier TCP et UDP, lire un échange TCP simple et diagnostiquer l'accessibilité d'un service.
 
 ---
 
-## 4.2 UDP — User Datagram Protocol
+## 4.1 — De la machine à l'application
 
-**UDP** envoie des données sans établir de connexion et sans vérification de réception.
+Chaque couche répond à une question différente :
 
-**Avantages :** faible latence, overhead minimal, débit maximal.  
-**Inconvénients :** pas de garantie de livraison, pas d'ordre assuré, pas de retransmission.
+|Couche|Question|Information principale|
+|---|---|---|
+|Liaison|Quel équipement sur la liaison locale ?|Adresse MAC|
+|Réseau|Quelle machine faut-il atteindre ?|Adresse IP|
+|Transport|À quelle application remettre les données ?|Numéro de port|
 
-|Application|Pourquoi UDP ?|
+Prenons une connexion HTTPS :
+
+```text
+192.168.1.20:53142  →  203.0.113.10:443
+```
+
+- `203.0.113.10` identifie le serveur ;
+- `443` désigne le service HTTPS ;
+- `53142` est un port temporaire choisi par le client pour cette communication.
+
+![transport-processus-a-processus.svg](Ressources/images/transport-processus-a-processus.svg)
+
+> [!IMPORTANT]
+> Une adresse IP identifie une interface réseau. Un port identifie un point de communication utilisé par une application sur cette machine.
+
+---
+
+## 4.2 — Ports, sockets et multiplexage
+
+Un numéro de port est codé sur **16 bits** : sa valeur est donc comprise entre `0` et `65535`.
+
+Le système d'exploitation associe les communications aux applications :
+
+- les données reçues sur `TCP/443` sont remises au serveur HTTPS ;
+- les données reçues sur `TCP/22` sont remises au serveur SSH ;
+- les données reçues sur `UDP/53` sont remises au service DNS utilisant UDP.
+
+Ce partage d'une même adresse IP entre plusieurs applications s'appelle le **multiplexage**.
+
+![transport-ports-multiplexage.svg](Ressources/images/transport-ports-multiplexage.svg)
+
+### Point d'extrémité et connexion
+
+Dans ce cours, on utilisera le terme **socket réseau** pour désigner un point d'extrémité composé d'une adresse IP, d'un protocole de transport et d'un port :
+
+```text
+TCP 192.168.1.20:53142
+```
+
+Une connexion TCP est distinguée des autres grâce à quatre valeurs :
+
+```text
+IP source + port source + IP destination + port destination
+```
+
+Lorsque l'on ajoute le protocole de transport, on parle souvent du **quintuplet d'un flux**.
+
+![transport-quadruplet.svg](Ressources/images/transport-quadruplet.svg)
+
+> [!NOTE]
+> Deux clients peuvent contacter simultanément le même serveur sur le port `443`. Leurs adresses ou leurs ports source étant différents, le serveur sait à quelle connexion appartient chaque réponse.
+
+---
+
+## 4.3 — Segmentation et encapsulation
+
+Une application peut produire davantage de données que le réseau ne peut en transporter en une seule fois. La couche transport prépare ces données avant de les confier à IP :
+
+- TCP présente à l'application un **flux d'octets** et le répartit en segments ;
+- UDP reçoit des messages indépendants et conserve leurs limites sous forme de datagrammes ;
+- chaque segment TCP ou datagramme UDP est encapsulé dans un paquet IP ;
+- le paquet IP est ensuite encapsulé dans une trame adaptée à la liaison.
+
+![transport-segmentation-encapsulation.svg](Ressources/images/transport-segmentation-encapsulation.svg)
+
+> [!IMPORTANT] Ne pas confondre les unités
+> - **Données** à la couche application ;
+> - **segment** avec TCP ;
+> - **datagramme** avec UDP ;
+> - **paquet** à la couche IP ;
+> - **trame** à la couche liaison.
+
+> [!NOTE]
+> TCP adapte normalement la taille de ses segments au chemin. Une application UDP doit éviter les datagrammes inutilement grands, car la fragmentation IP augmente le risque de perdre tout le datagramme.
+
+---
+
+## 4.4 — UDP : transporter des datagrammes
+
+**UDP** (*User Datagram Protocol*) est un protocole sans établissement de connexion. L'application fournit un message ; UDP ajoute un petit en-tête puis remet le datagramme à IP.
+
+UDP :
+
+- conserve les limites de chaque message ;
+- ne confirme pas la réception ;
+- ne remet pas les datagrammes dans l'ordre ;
+- ne retransmet pas automatiquement un datagramme perdu ;
+- ne réalise pas lui-même de contrôle de flux ou de congestion.
+
+![transport-datagramme-udp.svg](Ressources/images/transport-datagramme-udp.svg)
+
+L'en-tête UDP mesure seulement **8 octets** :
+
+|Champ|Taille|Rôle|
+|---|---:|---|
+|Port source|16 bits|Identifie l'application émettrice|
+|Port destination|16 bits|Identifie l'application destinataire|
+|Longueur|16 bits|Taille de l'en-tête et des données|
+|Checksum|16 bits|Détecte certaines altérations|
+
+### Quand UDP est-il pertinent ?
+
+|Situation|Pourquoi UDP peut convenir ?|
 |---|---|
-|Streaming vidéo/audio|Quelques pertes acceptables, latence prioritaire|
-|Jeux en ligne|Vitesse avant fiabilité|
-|DNS|Requêtes courtes, réponse rapide|
-|VoIP (téléphonie IP)|La latence est critique|
+|DNS|Échanges généralement courts ; l'application peut réessayer|
+|Voix et visioconférence|Une donnée arrivée trop tard peut être moins utile qu'une donnée perdue|
+|Jeux en ligne|Les mises à jour récentes peuvent remplacer les anciennes|
+|DHCP|Le client doit communiquer avant de disposer d'une configuration IP complète|
 
-### Structure d'un datagramme UDP
+> [!WARNING]
+> UDP ne signifie ni « forcément rapide » ni « réservé au temps réel ». L'application doit gérer elle-même les fonctions dont elle a besoin.
+
+> [!NOTE] Pour aller plus loin
+> En IPv4, un checksum UDP nul peut indiquer qu'il n'a pas été calculé. En IPv6, le checksum UDP est normalement obligatoire.
+
+> [!INFO] Référence officielle
+> [RFC 768 — User Datagram Protocol](https://www.rfc-editor.org/info/rfc768/)
+
+---
+
+## 4.5 — Choisir entre TCP et UDP
+
+La bonne question n'est pas « quel protocole est le plus rapide ? », mais **quels services l'application attend-elle du transport ?**
+
+![transport-tcp-vs-udp.svg](Ressources/images/transport-tcp-vs-udp.svg)
+
+|Besoin|TCP|UDP|
+|---|---:|---:|
+|Établissement préalable d'une connexion|Oui|Non|
+|Livraison fiable et ordonnée|Oui|Non|
+|Conservation des limites des messages|Non : flux d'octets|Oui : datagrammes|
+|Retransmission intégrée|Oui|Non|
+|Contrôle de flux et de congestion|Oui|Non dans UDP lui-même|
+|En-tête minimal|20 octets sans option|8 octets|
+
+### Un cas moderne : QUIC
+
+HTTP/3 n'utilise pas directement TCP. Il utilise **QUIC**, un protocole fiable et sécurisé transporté dans des datagrammes UDP.
+
+Cela montre qu'une application peut employer UDP comme support tout en ajoutant :
+
+- de la fiabilité ;
+- des flux ordonnés ;
+- un contrôle de congestion ;
+- un établissement de connexion sécurisé.
+
+> [!INFO] Référence officielle
+> [RFC 9000 — QUIC: A UDP-Based Multiplexed and Secure Transport](https://www.rfc-editor.org/info/rfc9000/)
+
+---
+
+## 4.6 — TCP : établir une connexion
+
+**TCP** (*Transmission Control Protocol*) fournit aux applications un **flux d'octets fiable, bidirectionnel et ordonné**.
+
+TCP ne conserve pas les limites des messages écrits par l'application. Si une application effectue deux écritures, le destinataire peut lire les octets en une ou plusieurs fois : c'est le protocole applicatif qui doit reconnaître ses messages.
+
+### L'en-tête d'un segment TCP
+
+![transport-entete-tcp.svg](Ressources/images/transport-entete-tcp.svg)
+
+Les champs les plus utiles pour débuter sont :
 
 |Champ|Rôle|
 |---|---|
-|Port source|Application émettrice|
-|Port destination|Application réceptrice|
-|Longueur|Taille du message|
-|Checksum|Vérification d'intégrité|
+|Ports source et destination|Identifient les applications|
+|Numéro de séquence|Indique la position des octets transportés|
+|Numéro d'acquittement|Indique le prochain octet attendu|
+|Drapeaux|Pilotent la connexion : SYN, ACK, FIN, RST…|
+|Fenêtre|Indique la quantité de données que le récepteur peut accepter|
+|Checksum|Vérifie l'intégrité du segment|
+
+### Le handshake en trois étapes
+
+Avant l'échange de données, les deux extrémités établissent la connexion :
+
+1. le client envoie `SYN` avec son numéro de séquence initial ;
+2. le serveur répond `SYN-ACK` avec son propre numéro et acquitte celui du client ;
+3. le client répond `ACK`.
+
+![transport-handshake.svg](Ressources/images/transport-handshake.svg)
+
+Le handshake permet notamment :
+
+- de vérifier que les deux sens de communication fonctionnent ;
+- de synchroniser les numéros de séquence ;
+- de négocier des options TCP ;
+- de créer l'état de la connexion sur les deux machines.
+
+> [!INFO] Référence officielle
+> [RFC 9293 — Transmission Control Protocol](https://www.rfc-editor.org/info/rfc9293/)
 
 ---
 
-## 4.3 TCP — Transmission Control Protocol
+## 4.7 — Séquences, ACK et retransmissions
 
-**TCP** garantit que les données arrivent **dans l'ordre**, **sans perte** et **sans erreur**.
+TCP numérote les **octets** du flux. Le numéro d'acquittement indique le **prochain octet attendu**.
 
-### Établissement de connexion (handshake à 3 étapes)
+Si le serveur reçoit correctement les octets `1000` à `1499`, il peut répondre :
 
-```
-Client        →  SYN          →  Serveur
-Client        ←  SYN-ACK      ←  Serveur
-Client        →  ACK          →  Serveur
-              [connexion établie]
+```text
+ACK = 1500
 ```
 
-![ch3-tcp-handshake.svg](Ressources/images/ch3-tcp-handshake.svg)
+Cela signifie : « j'ai reçu tout ce qui précède `1500` ; envoie-moi la suite ».
 
-### Fermeture de connexion (4 étapes)
+![transport-sequence-ack.svg](Ressources/images/transport-sequence-ack.svg)
 
-Une fois l'échange terminé, chaque côté ferme sa moitié de connexion :
+Les acquittements sont généralement **cumulatifs** : un seul `ACK` peut confirmer plusieurs segments reçus.
 
-```
-Client        →  FIN          →  Serveur
-Client        ←  ACK          ←  Serveur
-Client        ←  FIN          ←  Serveur
-Client        →  ACK          →  Serveur
-              [connexion fermée]
-```
+### Que se passe-t-il lorsqu'un segment est perdu ?
 
-Après le dernier ACK, le client passe en état **TIME_WAIT** (quelques secondes) pour s'assurer que le serveur a bien reçu le message avant de libérer les ressources.
+TCP peut détecter une perte grâce à un délai d'attente ou à des acquittements indiquant toujours le même octet attendu. L'émetteur retransmet alors les données manquantes.
 
-### Mécanismes clés
+![transport-retransmission.svg](Ressources/images/transport-retransmission.svg)
 
-- **Numéros de séquence** : réassemblage des paquets dans l'ordre.
-- **Acquittements (ACK)** : chaque segment reçu est confirmé.
-- **Fenêtre glissante** : contrôle du débit pour éviter la saturation.
-- **Retransmission** : si un paquet n'est pas acquitté, il est renvoyé.
+> [!IMPORTANT]
+> TCP ne rend pas le réseau incapable de perdre des paquets. Il masque une partie de ces pertes à l'application grâce aux acquittements et aux retransmissions. S'il ne peut pas rétablir la communication, il signale l'échec de la connexion.
 
-|Application|Pourquoi TCP ?|
+---
+
+## 4.8 — Fenêtre, contrôle de flux et congestion
+
+Attendre un ACK après chaque petit segment utiliserait mal le réseau. TCP autorise donc plusieurs segments à être **en transit simultanément** : c'est le principe de la fenêtre glissante.
+
+Deux limites différentes interviennent :
+
+- le **contrôle de flux** protège le récepteur qui annonce l'espace qu'il peut encore accepter ;
+- le **contrôle de congestion** adapte l'envoi à l'état estimé du réseau.
+
+![transport-fenetre-controles.svg](Ressources/images/transport-fenetre-controles.svg)
+
+La quantité réellement envoyée sans acquittement dépend de la limite la plus contraignante.
+
+> [!TIP] Image mentale
+> Le contrôle de flux demande : « le destinataire peut-il suivre ? ». Le contrôle de congestion demande : « le réseau peut-il suivre ? ».
+
+> [!INFO] Référence officielle
+> [RFC 5681 — TCP Congestion Control](https://www.rfc-editor.org/info/rfc5681/)
+
+---
+
+## 4.9 — Fermer une connexion et lire les états TCP
+
+TCP est **bidirectionnel** : chaque extrémité ferme séparément son sens d'émission. Une fermeture classique utilise donc deux échanges `FIN` / `ACK`.
+
+![transport-fermeture-etats.svg](Ressources/images/transport-fermeture-etats.svg)
+
+Après le dernier ACK, l'extrémité qui termine activement la connexion peut rester en **TIME_WAIT**. Cela permet notamment de retransmettre le dernier ACK et d'éviter qu'un ancien segment retardé soit confondu avec une nouvelle connexion.
+
+### États courants
+
+|État|Interprétation|
 |---|---|
-|Web (HTTP/HTTPS)|La page doit être complète|
-|Email (SMTP, IMAP)|Aucune perte tolérée|
-|Transfert de fichiers|Intégrité et ordre essentiels|
-|SSH|Connexion fiable indispensable|
+|`LISTEN`|Le service attend une connexion|
+|`SYN_SENT`|Une demande a été envoyée ; la réponse n'est pas encore reçue|
+|`SYN_RECEIVED`|Une demande a été reçue ; le handshake se poursuit|
+|`ESTABLISHED`|La connexion est établie|
+|`FIN_WAIT`|La fermeture active est en cours|
+|`CLOSE_WAIT`|Le pair a fermé ; l'application locale doit encore fermer|
+|`TIME_WAIT`|La fermeture est terminée mais la connexion reste temporairement mémorisée|
+
+> [!WARNING]
+> La présence de connexions en `TIME_WAIT` est normale. Leur nombre doit être interprété avec le volume et la durée habituels des connexions, pas comme une panne automatique.
 
 ---
 
-## 4.4 Numéros de ports
+## 4.10 — Plages de ports et services connus
 
-Un **port** identifie une application sur une machine. Plage : **0 à 65535**.
+L'IANA répartit les ports en trois grandes plages :
 
-|Plage|Type|Usage|
+![transport-plages-ports.svg](Ressources/images/transport-plages-ports.svg)
+
+|Plage|Nom IANA|Utilisation|
 |---|---|---|
-|0 – 1023|Ports bien connus|Services standards (HTTP, SSH…)|
-|1024 – 49151|Ports enregistrés|Applications définies par les éditeurs|
-|49152 – 65535|Ports dynamiques|Utilisés temporairement par les clients|
+|`0–1023`|System Ports|Services standards et privilégiés|
+|`1024–49151`|User Ports|Services et applications enregistrés|
+|`49152–65535`|Dynamic/Private Ports|Ports temporaires ou usages privés|
 
-### Ports standards à connaître
+Quelques associations courantes :
 
-|Service|Proto|Port|
-|---|---|---|
-|HTTP|TCP|80|
-|HTTPS|TCP|443|
+|Service|Transport|Port habituel|
+|---|---|---:|
 |SSH|TCP|22|
-|FTP|TCP|21|
-|DNS|UDP/TCP|53|
-|DHCP|UDP|67/68|
 |SMTP|TCP|25|
-|RDP|TCP|3389|
+|DNS|UDP et TCP|53|
+|DHCP serveur/client|UDP|67 / 68|
+|HTTP|TCP|80|
+|HTTPS sur TCP|TCP|443|
+|RDP|TCP et UDP selon les fonctions|3389|
 
-> [!info]
-> Un serveur **écoute** sur un port fixe (ex. 443) ; le client utilise un **port temporaire** (ex. 51324) pour la réponse. La session est identifiée par le quadruplet : IP src, port src, IP dst, port dst.
+> [!IMPORTANT]
+> Un numéro de port ne prouve pas quelle application circule réellement. Un service peut écouter sur un port non standard et une autre application peut utiliser un port habituellement associé à HTTPS ou DNS.
+
+> [!NOTE]
+> Le port temporaire réellement choisi par un système dépend de sa configuration. La plage dynamique IANA n'impose pas à tous les systèmes d'exploitation d'utiliser exactement la même plage locale.
+
+> [!INFO] Référence officielle
+> [IANA — Service Name and Transport Protocol Port Number Registry](https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml)
 
 ---
 
-## 4.5 Diagnostic de la couche Transport
+## 4.11 — Diagnostiquer une communication de couche 4
 
-### Outils
+Un `ping` réussi prouve qu'un échange ICMP est possible avec la machine. Il ne prouve pas qu'un serveur web écoute sur `TCP/443`.
 
-**`netstat`** — affiche les connexions actives et les ports ouverts :
+Le diagnostic doit progresser du service local vers le client distant :
+
+![transport-diagnostic.svg](Ressources/images/transport-diagnostic.svg)
+
+### 1. Vérifier les ports en écoute
+
+Sous Linux :
+
 ```bash
-netstat -an       # Toutes les connexions avec ports et états
-netstat -tulnp    # Linux : ports en écoute + processus associés
+ss -lntup
 ```
 
-**`ss`** (Linux) — version moderne et plus rapide de netstat :
-```bash
-ss -tulnp
+Sous Windows PowerShell :
+
+```powershell
+Get-NetTCPConnection -State Listen
+Get-NetUDPEndpoint
 ```
 
-**`telnet` / `nc`** — teste si un port est accessible :
+Il faut vérifier :
+
+- le numéro de port ;
+- le protocole TCP ou UDP ;
+- l'adresse locale d'écoute ;
+- le processus associé.
+
+`127.0.0.1:8080` n'est accessible que depuis la machine locale, contrairement à une écoute sur l'adresse réseau du serveur.
+
+### 2. Tester depuis le client
+
+Sous Linux :
+
 ```bash
-telnet 192.168.1.10 80   # Teste le port 80 sur la cible
-nc -zv 192.168.1.10 443  # Test TCP rapide
+nc -vz 203.0.113.10 443
+curl -I https://203.0.113.10
 ```
 
-### États TCP courants
+Sous Windows PowerShell :
 
-|État|Signification|
+```powershell
+Test-NetConnection 203.0.113.10 -Port 443
+```
+
+### 3. Observer les échanges
+
+Filtres Wireshark utiles :
+
+```text
+tcp.port == 443
+tcp.flags.syn == 1
+udp.port == 53
+```
+
+### Interpréter quelques résultats
+
+|Observation|Piste principale|
 |---|---|
-|LISTEN|Le service attend des connexions|
-|ESTABLISHED|Connexion active|
-|TIME_WAIT|Fermeture en cours (attente)|
-|SYN_SENT|Demande de connexion envoyée|
-|CLOSE_WAIT|Le pair distant a fermé la connexion|
+|Aucun port local en écoute|Service arrêté, mal configuré ou mauvais port|
+|Écoute uniquement sur `127.0.0.1`|Mauvaise adresse d'écoute pour un accès distant|
+|`SYN` envoyé, aucune réponse|Filtrage, routage, NAT ou serveur injoignable|
+|Réponse `RST`|Machine joignable mais aucun service n'accepte cette connexion|
+|Handshake réussi puis erreur|Chercher dans le protocole applicatif, TLS ou l'application|
+|Nombreux `CLOSE_WAIT` persistants|L'application locale ne ferme peut-être pas ses sockets|
 
-> [!info]
-> Un port en état **LISTEN** mais inaccessible depuis l'extérieur indique souvent un pare-feu. Un **TIME_WAIT** excessif peut trahir une charge serveur élevée.
-
----
-
-## 4.6 Transition vers les services applicatifs
-
-À ce stade, on sait :
-- adresser une machine en IP,
-- acheminer les paquets jusqu'à elle,
-- distinguer les applications grâce aux ports,
-- choisir entre **TCP** et **UDP**.
-
-La question suivante devient donc naturelle :
-
-**quels services utilisent réellement ces mécanismes ?**
-
-Le chapitre suivant répond à cela avec :
-- **DHCP** pour obtenir une configuration réseau,
-- **DNS** pour traduire un nom en IP,
-- **HTTP/HTTPS** pour le web,
-- puis quelques autres protocoles applicatifs courants.
+> [!TIP] Méthode
+> Distinguez toujours : **service démarré**, **port en écoute**, **adresse d'écoute**, **accessibilité réseau**, puis **réponse applicative**.
 
 ---
 
-> [!success] Résumé du chapitre 4
-> - La couche Transport relie des **applications** via des **sockets** (IP + port).
-> - **UDP** : rapide, sans fiabilité — idéal pour la voix, la vidéo et les requêtes DNS.
-> - **TCP** : fiable, ordonné, avec acquittements — indispensable pour le web, l'email et les fichiers.
-> - Les **ports** identifient les services ; certains sont standardisés (80 HTTP, 443 HTTPS, 22 SSH…).
-> - La couche transport prépare le terrain pour les **services applicatifs** vus au chapitre 5.
+## 4.12 — Choisir et raisonner
+
+![transport-choisir.svg](Ressources/images/transport-choisir.svg)
+
+Pour choisir ou reconnaître un transport, posez les questions dans cet ordre :
+
+1. faut-il recevoir tous les octets dans l'ordre ?
+2. une donnée ancienne reste-t-elle utile si elle arrive en retard ?
+3. l'application sait-elle gérer les pertes ou les retransmissions ?
+4. faut-il conserver les limites de chaque message ?
+5. le protocole applicatif impose-t-il déjà TCP, UDP ou QUIC ?
+
+> [!SUCCESS] À retenir
+> - La couche transport assure une communication **de processus à processus**.
+> - Les **ports** permettent à plusieurs applications de partager une même adresse IP.
+> - TCP fournit un **flux d'octets fiable et ordonné** grâce aux séquences, ACK et retransmissions.
+> - UDP transporte des **datagrammes indépendants** et laisse davantage de responsabilités à l'application.
+> - Le contrôle de flux protège le récepteur ; le contrôle de congestion protège le réseau.
+> - Un diagnostic couche 4 vérifie le service, le port, l'adresse d'écoute et les échanges observés.
+
+Le chapitre suivant étudie les services applicatifs qui utilisent ces transports : DNS, DHCP, HTTP/HTTPS et d'autres protocoles courants.

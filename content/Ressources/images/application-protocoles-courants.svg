@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="690" viewBox="0 0 1200 690">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter></defs>
+  <rect width="1200" height="690" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="33" font-weight="800" fill="#08285f">PROTOCOLES APPLICATIFS — LES CLASSER PAR BESOIN</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">Le port est un repère pratique ; le service rendu reste l'information principale</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="30" y="130" width="360" height="220" rx="16" fill="#fff" stroke="#93c5fd" filter="url(#s)"/>
+    <rect x="48" y="112" width="190" height="40" rx="11" fill="#0b5bd3"/><text x="143" y="139" font-size="17" font-weight="700" fill="#fff">MESSAGERIE</text>
+    <rect x="70" y="170" width="130" height="65" rx="10" fill="#dbeafe" stroke="#2563eb"/><text x="135" y="197" font-size="17" font-weight="700" fill="#123c8c">SMTP</text><text x="135" y="220" font-size="13" fill="#526581">25 / 587</text>
+    <rect x="220" y="170" width="130" height="65" rx="10" fill="#e0f2fe" stroke="#0284c7"/><text x="285" y="197" font-size="17" font-weight="700" fill="#075985">IMAP</text><text x="285" y="220" font-size="13" fill="#526581">143 / 993</text>
+    <rect x="70" y="255" width="280" height="65" rx="10" fill="#f8fafc" stroke="#cbd5e1"/><text x="210" y="282" font-size="17" font-weight="700" fill="#334155">POP3</text><text x="210" y="305" font-size="13" fill="#526581">110 / 995</text>
+    <rect x="420" y="130" width="360" height="220" rx="16" fill="#fff" stroke="#c4b5fd" filter="url(#s)"/>
+    <rect x="438" y="112" width="210" height="40" rx="11" fill="#7c3aed"/><text x="543" y="139" font-size="17" font-weight="700" fill="#fff">ADMINISTRATION</text>
+    <rect x="460" y="170" width="130" height="65" rx="10" fill="#ede9fe" stroke="#7c3aed"/><text x="525" y="197" font-size="17" font-weight="700" fill="#5620bb">SSH</text><text x="525" y="220" font-size="13" fill="#526581">TCP/22</text>
+    <rect x="610" y="170" width="130" height="65" rx="10" fill="#f5f3ff" stroke="#7c3aed"/><text x="675" y="197" font-size="17" font-weight="700" fill="#5620bb">RDP</text><text x="675" y="220" font-size="13" fill="#526581">3389</text>
+    <rect x="460" y="255" width="280" height="65" rx="10" fill="#d1fae5" stroke="#10b981"/><text x="600" y="282" font-size="17" font-weight="700" fill="#06633f">SNMPv3</text><text x="600" y="305" font-size="13" fill="#526581">supervision • UDP/161–162</text>
+    <rect x="810" y="130" width="360" height="220" rx="16" fill="#fff" stroke="#6ee7b7" filter="url(#s)"/>
+    <rect x="828" y="112" width="210" height="40" rx="11" fill="#0f8a5f"/><text x="933" y="139" font-size="17" font-weight="700" fill="#fff">FICHIERS</text>
+    <rect x="850" y="170" width="130" height="65" rx="10" fill="#d1fae5" stroke="#10b981"/><text x="915" y="197" font-size="17" font-weight="700" fill="#06633f">SMB</text><text x="915" y="220" font-size="13" fill="#526581">TCP/445</text>
+    <rect x="1000" y="170" width="130" height="65" rx="10" fill="#ecfdf5" stroke="#10b981"/><text x="1065" y="197" font-size="17" font-weight="700" fill="#06633f">SFTP</text><text x="1065" y="220" font-size="13" fill="#526581">via SSH/22</text>
+    <rect x="850" y="255" width="280" height="65" rx="10" fill="#fff7ed" stroke="#f59e0b"/><text x="990" y="282" font-size="17" font-weight="700" fill="#9a3f00">FTP / FTPS</text><text x="990" y="305" font-size="13" fill="#526581">plusieurs connexions</text>
+  </g>
+  <rect x="30" y="420" width="1140" height="190" rx="16" fill="#fff" stroke="#fdba74" filter="url(#s)"/>
+  <rect x="48" y="402" width="230" height="40" rx="11" fill="#f59e0b"/><text x="163" y="429" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">À NE PAS CONFONDRE</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="75" y="470" width="300" height="95" rx="12" fill="#fff7ed" stroke="#f59e0b"/><text x="225" y="502" font-size="19" font-weight="700" fill="#9a3f00">FTP</text><text x="225" y="531" font-size="14" fill="#526581">protocole historique, non chiffré seul</text>
+    <rect x="450" y="470" width="300" height="95" rx="12" fill="#e0f2fe" stroke="#0284c7"/><text x="600" y="502" font-size="19" font-weight="700" fill="#075985">FTPS</text><text x="600" y="531" font-size="14" fill="#526581">FTP protégé par TLS</text>
+    <rect x="825" y="470" width="300" height="95" rx="12" fill="#d1fae5" stroke="#10b981"/><text x="975" y="502" font-size="19" font-weight="700" fill="#06633f">SFTP</text><text x="975" y="531" font-size="14" fill="#526581">protocole de transfert fourni par SSH</text>
+  </g>
+  <rect x="215" y="635" width="770" height="36" rx="10" fill="#fee2e2" stroke="#ef4444"/>
+  <text x="600" y="659" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#991b1b">Un numéro de port est un indice — il ne prouve pas quel protocole circule</text>
+</svg>

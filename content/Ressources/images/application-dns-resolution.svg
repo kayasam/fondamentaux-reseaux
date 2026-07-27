@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter><marker id="b" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#7c3aed"/></marker><marker id="g" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#10b981"/></marker></defs>
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="33" font-weight="800" fill="#08285f">DNS — DU NOM À L'ADRESSE</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">L'application utilise le résolveur du système, qui délègue généralement la recherche</text>
+  <rect x="30" y="120" width="1140" height="420" rx="16" fill="#fff" stroke="#c4b5fd" filter="url(#s)"/>
+  <rect x="48" y="102" width="260" height="40" rx="11" fill="#7c3aed"/><text x="178" y="129" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">RÉSOLUTION DNS</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="70" y="175" width="220" height="150" rx="15" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <circle cx="180" cy="220" r="25" fill="#2563eb"/><rect x="130" y="255" width="100" height="48" rx="7" fill="#fff" stroke="#2563eb"/>
+    <text x="180" y="358" font-size="19" font-weight="700" fill="#123c8c">NAVIGATEUR</text><text x="180" y="385" font-size="14" fill="#526581">www.example.com</text>
+    <rect x="385" y="175" width="220" height="150" rx="15" fill="#f5f3ff" stroke="#7c3aed" stroke-width="2"/>
+    <rect x="440" y="215" width="110" height="70" rx="9" fill="#fff" stroke="#7c3aed"/>
+    <text x="495" y="246" font-size="18" font-weight="700" fill="#5620bb">OS</text><text x="495" y="271" font-size="13" fill="#526581">cache local</text>
+    <text x="495" y="358" font-size="19" font-weight="700" fill="#5620bb">RÉSOLVEUR LOCAL</text><text x="495" y="385" font-size="14" fill="#526581">bibliothèque système</text>
+    <rect x="700" y="175" width="220" height="150" rx="15" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/>
+    <circle cx="810" cy="250" r="48" fill="#fff" stroke="#7c3aed" stroke-width="2"/><text x="810" y="244" font-size="18" font-weight="700" fill="#5620bb">DNS</text><text x="810" y="268" font-size="13" fill="#526581">cache partagé</text>
+    <text x="810" y="358" font-size="19" font-weight="700" fill="#5620bb">RÉCURSIF</text><text x="810" y="385" font-size="14" fill="#526581">fourni par réseau ou opérateur</text>
+    <rect x="1015" y="175" width="120" height="150" rx="15" fill="#d1fae5" stroke="#10b981" stroke-width="2"/>
+    <text x="1075" y="220" font-size="17" font-weight="700" fill="#06633f">RÉPONSE</text><text x="1075" y="258" font-size="15" fill="#526581">A</text><text x="1075" y="287" font-size="15" font-weight="700" fill="#06633f">192.0.2.20</text>
+  </g>
+  <path d="M300 245H375M615 245H690M930 245H1005" stroke="#7c3aed" stroke-width="3" marker-end="url(#b)"/>
+  <text x="650" y="225" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="#7c3aed">QUESTION</text>
+  <path d="M1005 300H930M690 300H615M375 300H300" stroke="#10b981" stroke-width="3" marker-end="url(#g)"/>
+  <text x="650" y="326" text-anchor="middle" font-family="Arial" font-size="14" font-weight="700" fill="#10b981">RÉPONSE</text>
+  <rect x="185" y="435" width="830" height="62" rx="12" fill="#fff7ed" stroke="#f59e0b"/>
+  <text x="600" y="461" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#9a3f00">Si la réponse est en cache, le résolveur n'interroge pas toute la hiérarchie</text>
+  <text x="600" y="484" text-anchor="middle" font-family="Arial" font-size="14" fill="#526581">Le TTL détermine combien de temps elle peut généralement être conservée</text>
+  <rect x="235" y="565" width="730" height="36" rx="10" fill="#ecfdf5" stroke="#6ee7b7"/>
+  <text x="600" y="589" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#06633f">Le navigateur reçoit une donnée DNS ; il peut ensuite ouvrir la connexion réseau</text>
+</svg>

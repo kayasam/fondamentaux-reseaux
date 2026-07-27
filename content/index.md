@@ -32,6 +32,15 @@ Après l'avoir décompressée, ouvrez le dossier `Fondamentaux-Reseaux` dans Obs
 6. [[05-services-reseau/05-services-reseau|05. Couche application]]
 7. [[06-securite-et-acces/06-securite-et-acces|06. Sécurité réseau]]
 
+## Réviser les protocoles et les notions
+
+> [!TIP] Index de révision
+> - <a href="./Ressources/index-protocoles-et-notions.html" target="_blank">Ouvrir l’index interactif</a>
+> - [[Ressources/index-protocoles-et-notions|Consulter la note de révision]]
+> - <a href="./telechargements/index-protocoles-et-notions.md" download>Télécharger l’index en Markdown</a>
+
+L’index permet de rechercher et filtrer les protocoles, services, ports, équipements, notions et outils étudiés dans les sept chapitres. Un mode de révision aléatoire permet de s’auto-interroger.
+
 ## Travaux pratiques
 
 Les TP sont disponibles dans les sous-dossiers de chaque chapitre depuis l'explorateur du site.

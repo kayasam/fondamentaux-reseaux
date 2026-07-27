@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="680" viewBox="0 0 1200 680">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter></defs>
+  <rect width="1200" height="680" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="33" font-weight="800" fill="#08285f">HTTP — DEMANDER UNE ACTION, LIRE LE RÉSULTAT</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">La méthode exprime l'intention ; le premier chiffre du statut donne sa famille</text>
+  <rect x="30" y="120" width="550" height="490" rx="16" fill="#fff" stroke="#93c5fd" filter="url(#s)"/>
+  <rect x="48" y="102" width="205" height="40" rx="11" fill="#0b5bd3"/><text x="150" y="129" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">MÉTHODES</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="75" y="165" width="220" height="72" rx="11" fill="#dbeafe" stroke="#2563eb"/><text x="185" y="195" font-size="18" font-weight="700" fill="#123c8c">GET / HEAD</text><text x="185" y="219" font-size="14" fill="#526581">lire une représentation</text>
+    <rect x="315" y="165" width="220" height="72" rx="11" fill="#ede9fe" stroke="#7c3aed"/><text x="425" y="195" font-size="18" font-weight="700" fill="#5620bb">POST</text><text x="425" y="219" font-size="14" fill="#526581">soumettre ou déclencher</text>
+    <rect x="75" y="260" width="220" height="72" rx="11" fill="#d1fae5" stroke="#10b981"/><text x="185" y="290" font-size="18" font-weight="700" fill="#06633f">PUT</text><text x="185" y="314" font-size="14" fill="#526581">créer ou remplacer</text>
+    <rect x="315" y="260" width="220" height="72" rx="11" fill="#e0f2fe" stroke="#0284c7"/><text x="425" y="290" font-size="18" font-weight="700" fill="#075985">PATCH</text><text x="425" y="314" font-size="14" fill="#526581">modifier partiellement</text>
+    <rect x="75" y="355" width="460" height="72" rx="11" fill="#fee2e2" stroke="#ef4444"/><text x="305" y="385" font-size="18" font-weight="700" fill="#991b1b">DELETE</text><text x="305" y="409" font-size="14" fill="#526581">demander une suppression</text>
+    <rect x="75" y="465" width="460" height="100" rx="12" fill="#f8fafc" stroke="#cbd5e1"/><text x="305" y="499" font-size="17" font-weight="700" fill="#08285f">L'INTENTION N'EST PAS UNE AUTORISATION</text><text x="305" y="530" font-size="14" fill="#526581">Le serveur authentifie le client et applique ses règles</text>
+  </g>
+  <rect x="620" y="120" width="550" height="490" rx="16" fill="#fff" stroke="#c4b5fd" filter="url(#s)"/>
+  <rect x="638" y="102" width="235" height="40" rx="11" fill="#7c3aed"/><text x="755" y="129" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">CODES DE STATUT</text>
+  <g font-family="Arial">
+    <rect x="665" y="160" width="460" height="65" rx="10" fill="#e0f2fe" stroke="#0284c7"/><circle cx="705" cy="192" r="22" fill="#0284c7"/><text x="705" y="200" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">1xx</text><text x="755" y="186" font-size="17" font-weight="700" fill="#075985">INFORMATION</text><text x="755" y="209" font-size="13" fill="#526581">réponse provisoire</text>
+    <rect x="665" y="240" width="460" height="65" rx="10" fill="#d1fae5" stroke="#10b981"/><circle cx="705" cy="272" r="22" fill="#10b981"/><text x="705" y="280" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">2xx</text><text x="755" y="266" font-size="17" font-weight="700" fill="#06633f">SUCCÈS</text><text x="755" y="289" font-size="13" fill="#526581">200 OK • 201 Created</text>
+    <rect x="665" y="320" width="460" height="65" rx="10" fill="#f5f3ff" stroke="#7c3aed"/><circle cx="705" cy="352" r="22" fill="#7c3aed"/><text x="705" y="360" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">3xx</text><text x="755" y="346" font-size="17" font-weight="700" fill="#5620bb">REDIRECTION / CACHE</text><text x="755" y="369" font-size="13" fill="#526581">301 • 304</text>
+    <rect x="665" y="400" width="460" height="65" rx="10" fill="#fff7ed" stroke="#f59e0b"/><circle cx="705" cy="432" r="22" fill="#f59e0b"/><text x="705" y="440" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">4xx</text><text x="755" y="426" font-size="17" font-weight="700" fill="#9a3f00">REQUÊTE NON SATISFAITE</text><text x="755" y="449" font-size="13" fill="#526581">400 • 401 • 403 • 404</text>
+    <rect x="665" y="480" width="460" height="65" rx="10" fill="#fee2e2" stroke="#ef4444"/><circle cx="705" cy="512" r="22" fill="#ef4444"/><text x="705" y="520" text-anchor="middle" font-size="17" font-weight="700" fill="#fff">5xx</text><text x="755" y="506" font-size="17" font-weight="700" fill="#991b1b">ERREUR SERVEUR / AMONT</text><text x="755" y="529" font-size="13" fill="#526581">500 • 502 • 503</text>
+  </g>
+  <rect x="190" y="632" width="820" height="36" rx="10" fill="#ecfdf5" stroke="#6ee7b7"/>
+  <text x="600" y="656" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#06633f">Recevoir un statut HTTP prouve que la communication a atteint un service HTTP</text>
+</svg>

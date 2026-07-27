@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter><marker id="a" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#2563eb"/></marker></defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="33" font-weight="800" fill="#08285f">DE L'URL À LA PAGE AFFICHÉE</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">Un accès web est une chaîne de dépendances</text>
+  <rect x="30" y="120" width="1140" height="450" rx="16" fill="#fff" stroke="#93c5fd" filter="url(#s)"/>
+  <rect x="48" y="102" width="290" height="40" rx="11" fill="#0b5bd3"/><text x="193" y="129" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">PARCOURS HTTPS</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="70" y="170" width="190" height="100" rx="13" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><circle cx="105" cy="198" r="19" fill="#2563eb"/><text x="105" y="205" font-size="17" font-weight="700" fill="#fff">1</text><text x="165" y="205" font-size="18" font-weight="700" fill="#123c8c">URL</text><text x="165" y="239" font-size="14" fill="#526581">lire nom et chemin</text>
+    <rect x="290" y="170" width="190" height="100" rx="13" fill="#ede9fe" stroke="#7c3aed" stroke-width="2"/><circle cx="325" cy="198" r="19" fill="#7c3aed"/><text x="325" y="205" font-size="17" font-weight="700" fill="#fff">2</text><text x="385" y="205" font-size="18" font-weight="700" fill="#5620bb">DNS</text><text x="385" y="239" font-size="14" fill="#526581">nom → adresse IP</text>
+    <rect x="510" y="170" width="190" height="100" rx="13" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/><circle cx="545" cy="198" r="19" fill="#f59e0b"/><text x="545" y="205" font-size="17" font-weight="700" fill="#fff">3</text><text x="605" y="205" font-size="18" font-weight="700" fill="#9a3f00">TRANSPORT</text><text x="605" y="239" font-size="14" fill="#526581">TCP ou QUIC</text>
+    <rect x="730" y="170" width="190" height="100" rx="13" fill="#e0f2fe" stroke="#0284c7" stroke-width="2"/><circle cx="765" cy="198" r="19" fill="#0284c7"/><text x="765" y="205" font-size="17" font-weight="700" fill="#fff">4</text><text x="825" y="205" font-size="18" font-weight="700" fill="#075985">TLS</text><text x="825" y="239" font-size="14" fill="#526581">identité et clés</text>
+    <rect x="950" y="170" width="180" height="100" rx="13" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><circle cx="982" cy="198" r="19" fill="#10b981"/><text x="982" y="205" font-size="17" font-weight="700" fill="#fff">5</text><text x="1040" y="205" font-size="18" font-weight="700" fill="#06633f">HTTP</text><text x="1040" y="239" font-size="14" fill="#526581">GET puis réponse</text>
+  </g>
+  <path d="M260 220H281M480 220H501M700 220H721M920 220H941" stroke="#2563eb" stroke-width="3" marker-end="url(#a)"/>
+  <rect x="70" y="325" width="1060" height="72" rx="12" fill="#f8fafc" stroke="#cbd5e1"/>
+  <text x="600" y="353" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#08285f">https://cours.example:443/reseaux/index.html</text>
+  <g font-family="Arial" text-anchor="middle" font-size="14" font-weight="700">
+    <text x="168" y="382" fill="#2563eb">schéma</text><text x="420" y="382" fill="#7c3aed">hôte</text><text x="660" y="382" fill="#f59e0b">port</text><text x="900" y="382" fill="#10b981">chemin de la ressource</text>
+  </g>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="70" y="440" width="245" height="82" rx="11" fill="#fee2e2" stroke="#ef4444"/><text x="192" y="472" font-size="16" font-weight="700" fill="#991b1b">DNS ÉCHOUE</text><text x="192" y="500" font-size="14" fill="#526581">le serveur n'est pas localisé</text>
+    <rect x="350" y="440" width="245" height="82" rx="11" fill="#fee2e2" stroke="#ef4444"/><text x="472" y="472" font-size="16" font-weight="700" fill="#991b1b">PORT FERMÉ</text><text x="472" y="500" font-size="14" fill="#526581">pas de communication applicative</text>
+    <rect x="630" y="440" width="245" height="82" rx="11" fill="#fee2e2" stroke="#ef4444"/><text x="752" y="472" font-size="16" font-weight="700" fill="#991b1b">TLS REFUSÉ</text><text x="752" y="500" font-size="14" fill="#526581">canal sécurisé non accepté</text>
+    <rect x="910" y="440" width="220" height="82" rx="11" fill="#fff7ed" stroke="#f59e0b"/><text x="1020" y="472" font-size="16" font-weight="700" fill="#9a3f00">HTTP 404</text><text x="1020" y="500" font-size="14" fill="#526581">serveur joint, ressource absente</text>
+  </g>
+  <rect x="210" y="590" width="780" height="38" rx="10" fill="#ecfdf5" stroke="#6ee7b7"/>
+  <text x="600" y="615" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#06633f">Une panne « web » se localise en testant chaque dépendance dans l'ordre</text>
+</svg>

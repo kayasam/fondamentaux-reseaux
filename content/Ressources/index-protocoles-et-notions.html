@@ -1,0 +1,1104 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Index interactif des protocoles, services, notions, équipements et outils étudiés dans la formation Fondamentaux Réseaux.">
+  <title>Index de révision — Fondamentaux Réseaux</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-2: #1f2630;
+      --surface-3: #283241;
+      --border: #303a49;
+      --text: #e6edf3;
+      --muted: #9aa8b8;
+      --blue: #58a6ff;
+      --purple: #a371f7;
+      --green: #3fb950;
+      --orange: #f2a65a;
+      --red: #ff7b72;
+      --cyan: #39c5cf;
+      --yellow: #e3b341;
+      --shadow: 0 12px 32px rgb(0 0 0 / 22%);
+      --radius: 14px;
+    }
+
+    :root[data-theme="light"] {
+      color-scheme: light;
+      --bg: #f5f7fb;
+      --surface: #ffffff;
+      --surface-2: #edf2f8;
+      --surface-3: #e3eaf3;
+      --border: #cbd5e1;
+      --text: #172033;
+      --muted: #5a687b;
+      --blue: #0969da;
+      --purple: #7048e8;
+      --green: #16833c;
+      --orange: #c75b12;
+      --red: #cf222e;
+      --cyan: #087f8c;
+      --yellow: #9a6700;
+      --shadow: 0 12px 32px rgb(27 39 51 / 10%);
+    }
+
+    * { box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at 12% -10%, rgb(88 166 255 / 14%), transparent 28rem),
+        radial-gradient(circle at 90% 0%, rgb(163 113 247 / 12%), transparent 25rem),
+        var(--bg);
+      color: var(--text);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      line-height: 1.5;
+    }
+
+    button, input, select { font: inherit; }
+
+    button, select {
+      cursor: pointer;
+    }
+
+    a { color: var(--blue); }
+
+    .page {
+      width: min(1480px, calc(100% - 32px));
+      margin: 0 auto;
+      padding: 28px 0 64px;
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 24px;
+      align-items: center;
+      padding: clamp(24px, 5vw, 54px);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      background: linear-gradient(135deg, rgb(88 166 255 / 12%), rgb(163 113 247 / 8%) 50%, var(--surface));
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      width: 260px;
+      height: 260px;
+      right: -100px;
+      bottom: -160px;
+      border: 36px solid rgb(88 166 255 / 10%);
+      border-radius: 50%;
+    }
+
+    .eyebrow {
+      margin: 0 0 8px;
+      color: var(--cyan);
+      font-size: .78rem;
+      font-weight: 800;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0;
+      font-size: clamp(2rem, 5vw, 4.2rem);
+      line-height: 1.02;
+      letter-spacing: -.045em;
+    }
+
+    .hero p:not(.eyebrow) {
+      max-width: 820px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: clamp(1rem, 2vw, 1.18rem);
+    }
+
+    .hero-actions {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 10px;
+    }
+
+    .btn {
+      display: inline-flex;
+      min-height: 42px;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: var(--surface-2);
+      color: var(--text);
+      font-weight: 700;
+      text-decoration: none;
+      transition: transform .15s ease, border-color .15s ease, background .15s ease;
+    }
+
+    .btn:hover {
+      border-color: var(--blue);
+      transform: translateY(-1px);
+    }
+
+    .btn-primary {
+      border-color: transparent;
+      background: var(--blue);
+      color: #08111f;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin: 18px 0;
+    }
+
+    .stat {
+      padding: 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .stat strong {
+      display: block;
+      color: var(--blue);
+      font-size: 1.65rem;
+      line-height: 1.1;
+    }
+
+    .stat span {
+      color: var(--muted);
+      font-size: .86rem;
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns: 310px minmax(0, 1fr);
+      gap: 18px;
+      align-items: start;
+    }
+
+    .filters {
+      position: sticky;
+      top: 12px;
+      padding: 18px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgb(22 27 34 / 94%);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(14px);
+    }
+
+    :root[data-theme="light"] .filters { background: rgb(255 255 255 / 94%); }
+
+    .filters h2 {
+      margin: 0 0 4px;
+      font-size: 1.15rem;
+    }
+
+    .filters > p {
+      margin: 0 0 16px;
+      color: var(--muted);
+      font-size: .83rem;
+    }
+
+    .field {
+      display: grid;
+      gap: 5px;
+      margin-top: 12px;
+    }
+
+    .field label {
+      color: var(--muted);
+      font-size: .76rem;
+      font-weight: 800;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+    }
+
+    input[type="search"], select {
+      width: 100%;
+      min-height: 42px;
+      padding: 9px 11px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      outline: none;
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    input[type="search"]:focus, select:focus {
+      border-color: var(--blue);
+      box-shadow: 0 0 0 3px rgb(88 166 255 / 16%);
+    }
+
+    .checks {
+      display: grid;
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .check {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      color: var(--muted);
+      font-size: .9rem;
+    }
+
+    .check input {
+      width: 17px;
+      height: 17px;
+      accent-color: var(--blue);
+    }
+
+    .filters .btn { width: 100%; }
+
+    .results {
+      min-width: 0;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+      padding: 14px 16px;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .result-count {
+      margin: 0;
+      font-weight: 800;
+    }
+
+    .result-count span { color: var(--blue); }
+
+    .active-filter {
+      margin: 2px 0 0;
+      color: var(--muted);
+      font-size: .82rem;
+    }
+
+    .toolbar-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .toolbar-actions select { width: auto; min-width: 180px; }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      position: relative;
+      display: flex;
+      min-width: 0;
+      min-height: 280px;
+      flex-direction: column;
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--layer-color, var(--blue));
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: 0 5px 18px rgb(0 0 0 / 9%);
+      transition: transform .15s ease, border-color .15s ease;
+    }
+
+    .card:hover {
+      border-color: var(--layer-color, var(--blue));
+      transform: translateY(-2px);
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .card h3 {
+      margin: 10px 0 0;
+      font-size: 1.22rem;
+      line-height: 1.15;
+    }
+
+    .acronym {
+      color: var(--muted);
+      font-size: .78em;
+      font-weight: 650;
+    }
+
+    .favorite {
+      flex: 0 0 auto;
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: 1.05rem;
+    }
+
+    .favorite[aria-pressed="true"] {
+      border-color: var(--yellow);
+      color: var(--yellow);
+    }
+
+    .badges, .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .badge, .chip {
+      display: inline-flex;
+      align-items: center;
+      min-height: 24px;
+      padding: 3px 8px;
+      border: 1px solid var(--border);
+      border-radius: 999px;
+      background: var(--surface-2);
+      color: var(--muted);
+      font-size: .72rem;
+      font-weight: 750;
+    }
+
+    .badge-layer {
+      border-color: color-mix(in srgb, var(--layer-color) 55%, var(--border));
+      color: var(--layer-color);
+    }
+
+    .definition {
+      flex: 1;
+      margin: 14px 0;
+      color: var(--muted);
+      font-size: .92rem;
+    }
+
+    .meta {
+      margin-top: auto;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+
+    .port {
+      border-color: rgb(242 166 90 / 48%);
+      color: var(--orange);
+    }
+
+    .course-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 13px;
+      color: var(--blue);
+      font-size: .82rem;
+      font-weight: 750;
+      text-decoration: none;
+    }
+
+    .course-link:hover { text-decoration: underline; }
+
+    .empty {
+      grid-column: 1 / -1;
+      padding: 56px 24px;
+      border: 1px dashed var(--border);
+      border-radius: var(--radius);
+      color: var(--muted);
+      text-align: center;
+    }
+
+    dialog {
+      width: min(620px, calc(100% - 28px));
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 24px 90px rgb(0 0 0 / 55%);
+    }
+
+    dialog::backdrop {
+      background: rgb(3 7 18 / 78%);
+      backdrop-filter: blur(5px);
+    }
+
+    .quiz {
+      padding: 25px;
+    }
+
+    .quiz-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .quiz h2 {
+      margin: 24px 0 8px;
+      font-size: clamp(1.7rem, 5vw, 2.7rem);
+      text-align: center;
+    }
+
+    .quiz .quiz-prompt {
+      margin: 0 0 22px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .quiz-answer {
+      padding: 18px;
+      border-left: 4px solid var(--green);
+      border-radius: 9px;
+      background: var(--surface-2);
+    }
+
+    .quiz-answer[hidden] { display: none; }
+
+    .quiz-actions {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 9px;
+      margin-top: 20px;
+    }
+
+    .icon-btn {
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      background: var(--surface-2);
+      color: var(--text);
+    }
+
+    .noscript {
+      margin: 20px 0;
+      padding: 16px;
+      border: 1px solid var(--red);
+      border-radius: 10px;
+      color: var(--red);
+    }
+
+    footer {
+      margin-top: 32px;
+      color: var(--muted);
+      font-size: .82rem;
+      text-align: center;
+    }
+
+    @media (max-width: 1120px) {
+      .cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 860px) {
+      .hero { grid-template-columns: 1fr; }
+      .hero-actions { justify-content: flex-start; }
+      .workspace { grid-template-columns: 1fr; }
+      .filters { position: static; }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 580px) {
+      .page { width: min(100% - 18px, 1480px); padding-top: 9px; }
+      .hero { padding: 24px 18px; border-radius: 14px; }
+      .cards { grid-template-columns: 1fr; }
+      .toolbar { align-items: stretch; }
+      .toolbar-actions, .toolbar-actions .btn, .toolbar-actions select { width: 100%; }
+      .card { min-height: 0; }
+    }
+
+    @media print {
+      :root { color-scheme: light; }
+      body { background: #fff; color: #111; }
+      .page { width: 100%; padding: 0; }
+      .hero { padding: 18px; box-shadow: none; }
+      .hero-actions, .filters, .toolbar-actions, .favorite, dialog, footer { display: none !important; }
+      .workspace { display: block; }
+      .toolbar { border: 0; padding-inline: 0; }
+      .cards { grid-template-columns: repeat(2, 1fr); }
+      .card { break-inside: avoid; min-height: 0; box-shadow: none; }
+      .course-link { display: none; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <header class="hero">
+      <div>
+        <p class="eyebrow">Fondamentaux Réseaux · Aide-mémoire interactif</p>
+        <h1>Protocoles et notions, enfin au même endroit.</h1>
+        <p>Retrouvez rapidement un protocole, un port, une couche OSI, un équipement ou une commande. Filtrez la liste, marquez vos favoris et entraînez-vous avec une carte tirée au hasard.</p>
+      </div>
+      <div class="hero-actions">
+        <a class="btn" href="../telechargements/index-protocoles-et-notions.md" download>↓ Note Markdown</a>
+        <button class="btn" id="themeButton" type="button" aria-label="Changer de thème">☀ Thème</button>
+        <button class="btn btn-primary" id="quizButton" type="button">⟳ Révision aléatoire</button>
+      </div>
+    </header>
+
+    <section class="stats" aria-label="Résumé de l’index">
+      <div class="stat"><strong id="totalStat">0</strong><span>fiches de révision</span></div>
+      <div class="stat"><strong id="protocolStat">0</strong><span>protocoles et services</span></div>
+      <div class="stat"><strong id="portStat">0</strong><span>fiches avec un port</span></div>
+      <div class="stat"><strong>7</strong><span>chapitres couverts</span></div>
+    </section>
+
+    <noscript><p class="noscript">Cet index nécessite JavaScript pour la recherche et les filtres. La note Markdown reste consultable sans JavaScript.</p></noscript>
+
+    <div class="workspace">
+      <aside class="filters" aria-labelledby="filtersTitle">
+        <h2 id="filtersTitle">Affiner la révision</h2>
+        <p>Les filtres se combinent entre eux.</p>
+
+        <div class="field">
+          <label for="search">Recherche</label>
+          <input id="search" type="search" placeholder="DNS, port 443, adresse MAC…" autocomplete="off">
+        </div>
+
+        <div class="field">
+          <label for="category">Catégorie</label>
+          <select id="category"><option value="">Toutes les catégories</option></select>
+        </div>
+
+        <div class="field">
+          <label for="type">Type</label>
+          <select id="type"><option value="">Tous les types</option></select>
+        </div>
+
+        <div class="field">
+          <label for="layer">Couche</label>
+          <select id="layer"><option value="">Toutes les couches</option></select>
+        </div>
+
+        <div class="field">
+          <label for="chapter">Chapitre</label>
+          <select id="chapter"><option value="">Tous les chapitres</option></select>
+        </div>
+
+        <div class="field">
+          <label for="transport">Transport utilisé</label>
+          <select id="transport"><option value="">Tous les transports</option></select>
+        </div>
+
+        <div class="field">
+          <label for="priority">Priorité</label>
+          <select id="priority"><option value="">Tous les niveaux</option></select>
+        </div>
+
+        <div class="checks">
+          <label class="check"><input id="withPort" type="checkbox"> Uniquement les fiches avec un port</label>
+          <label class="check"><input id="favoritesOnly" type="checkbox"> Uniquement mes favoris</label>
+        </div>
+
+        <button class="btn" id="resetButton" type="button">Effacer tous les filtres</button>
+      </aside>
+
+      <section class="results" aria-live="polite">
+        <div class="toolbar">
+          <div>
+            <p class="result-count"><span id="resultCount">0</span> résultat(s)</p>
+            <p class="active-filter" id="activeFilter">Toutes les fiches sont affichées.</p>
+          </div>
+          <div class="toolbar-actions">
+            <select id="sort" aria-label="Trier les résultats">
+              <option value="chapter">Trier par chapitre</option>
+              <option value="name">Trier de A à Z</option>
+              <option value="layer">Trier par couche</option>
+              <option value="port">Trier par port</option>
+            </select>
+            <button class="btn" id="printButton" type="button">⎙ Imprimer la sélection</button>
+          </div>
+        </div>
+        <div class="cards" id="cards"></div>
+      </section>
+    </div>
+
+    <footer>
+      Index de révision de la formation « Fondamentaux Réseaux » · Les numéros de ports indiqués sont les valeurs usuelles ou normalisées étudiées dans le cours.
+    </footer>
+  </main>
+
+  <dialog id="quizDialog">
+    <div class="quiz">
+      <div class="quiz-top">
+        <span class="badge" id="quizBadge">Carte de révision</span>
+        <button class="icon-btn" id="closeQuiz" type="button" aria-label="Fermer">×</button>
+      </div>
+      <h2 id="quizName"></h2>
+      <p class="quiz-prompt">Expliquez cette notion à voix haute, puis affichez la réponse.</p>
+      <div class="quiz-answer" id="quizAnswer" hidden></div>
+      <div class="quiz-actions">
+        <button class="btn btn-primary" id="revealButton" type="button">Afficher la réponse</button>
+        <button class="btn" id="nextQuiz" type="button">Autre carte</button>
+      </div>
+    </div>
+  </dialog>
+
+  <script>
+    "use strict";
+
+    const chapterInfo = {
+      "0": { title: "Introduction aux réseaux", href: "../00-introduction-reseaux/00-introduction-reseaux-interactif.html" },
+      "1": { title: "Couche physique", href: "../01-couche-physique/01-couche-physique-interactif.html" },
+      "2": { title: "Couche liaison", href: "../02-couche-liaison/02-couche-liaison-interactif.html" },
+      "3": { title: "Couche réseau", href: "../03-couche-reseau/03-couche-reseau-interactif.html" },
+      "4": { title: "Couche transport", href: "../04-couche-transport/04-couche-transport-interactif.html" },
+      "5": { title: "Couche applicative", href: "../05-services-reseau/05-services-reseau-interactif.html" },
+      "6": { title: "Sécurité et accès réseau", href: "../06-securite-et-acces/06-securite-et-acces-interactif.html" }
+    };
+
+    const layerLabels = {
+      "Transverse": "Transverse",
+      "1": "Couche 1 · Physique",
+      "2": "Couche 2 · Liaison",
+      "3": "Couche 3 · Réseau",
+      "4": "Couche 4 · Transport",
+      "Application": "Couche applicative"
+    };
+
+    const layerColors = {
+      "Transverse": "#a371f7",
+      "1": "#39c5cf",
+      "2": "#58a6ff",
+      "3": "#3fb950",
+      "4": "#f2a65a",
+      "Application": "#ff7b72"
+    };
+
+    // n: nom, a: acronyme, c: catégorie, t: type, l: couche, ch: chapitre,
+    // tr: transport, p: port, q: priorité, d: définition, k: mots-clés.
+    const entries = [
+      {n:"Réseau informatique",a:"",c:"Notions",t:"Concept",l:"Transverse",ch:"0",tr:"Sans objet",p:"",q:"Essentiel",d:"Ensemble d’équipements reliés afin d’échanger des données et de partager des ressources selon des règles communes.",k:"communication ressources protocole"},
+      {n:"Protocole",a:"",c:"Notions",t:"Concept",l:"Transverse",ch:"0",tr:"Sans objet",p:"",q:"Essentiel",d:"Ensemble de règles qui précise le format, l’ordre et le sens des messages échangés.",k:"règle communication standard"},
+      {n:"Modèle OSI",a:"OSI",c:"Modèles",t:"Modèle",l:"Transverse",ch:"0",tr:"Sans objet",p:"",q:"Essentiel",d:"Modèle de référence en sept couches utilisé pour situer les fonctions réseau et faciliter le diagnostic.",k:"7 couches physique liaison réseau transport session présentation application"},
+      {n:"Modèle TCP/IP",a:"",c:"Modèles",t:"Modèle",l:"Transverse",ch:"0",tr:"Sans objet",p:"",q:"Essentiel",d:"Modèle pratique de l’Internet regroupant les fonctions réseau en quatre couches : accès réseau, Internet, transport et application.",k:"pile internet quatre couches"},
+      {n:"Encapsulation",a:"",c:"Notions",t:"Mécanisme",l:"Transverse",ch:"0",tr:"Sans objet",p:"",q:"Essentiel",d:"Ajout successif d’en-têtes, et parfois d’une remorque, quand les données descendent la pile réseau.",k:"décapsulation pdu données segment paquet trame bits"},
+      {n:"Client-serveur",a:"",c:"Architectures",t:"Architecture",l:"Application",ch:"0",tr:"Sans objet",p:"",q:"Essentiel",d:"Architecture où un client demande une ressource ou un service fourni par un serveur.",k:"requête réponse service"},
+      {n:"Pair à pair",a:"P2P",c:"Architectures",t:"Architecture",l:"Application",ch:"0",tr:"Sans objet",p:"",q:"Approfondissement",d:"Architecture où chaque machine peut fournir et consommer des ressources sans serveur central obligatoire.",k:"peer to peer décentralisé"},
+      {n:"Réseau local",a:"LAN",c:"Notions",t:"Périmètre",l:"Transverse",ch:"0",tr:"Sans objet",p:"",q:"Essentiel",d:"Réseau couvrant une zone limitée, comme un logement, une salle, un bâtiment ou un campus.",k:"local area network ethernet wifi"},
+      {n:"Réseau étendu",a:"WAN",c:"Notions",t:"Périmètre",l:"Transverse",ch:"0",tr:"Sans objet",p:"",q:"Essentiel",d:"Réseau reliant des sites éloignés, souvent grâce à un opérateur.",k:"wide area network internet sites distants"},
+      {n:"Unicast",a:"",c:"Notions",t:"Mode de diffusion",l:"Transverse",ch:"0",tr:"Sans objet",p:"",q:"Essentiel",d:"Communication d’un émetteur vers un destinataire unique.",k:"un vers un"},
+      {n:"Broadcast",a:"",c:"Notions",t:"Mode de diffusion",l:"2",ch:"0",tr:"Sans objet",p:"",q:"Essentiel",d:"Communication d’un émetteur vers tous les hôtes du même domaine de diffusion.",k:"diffusion générale ff:ff:ff:ff:ff:ff ipv4"},
+      {n:"Multicast",a:"",c:"Notions",t:"Mode de diffusion",l:"Transverse",ch:"0",tr:"Sans objet",p:"",q:"Approfondissement",d:"Communication d’un émetteur vers un groupe de destinataires abonnés.",k:"groupe multidiffusion"},
+
+      {n:"Bit",a:"",c:"Unités de données",t:"Unité de données",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Plus petite unité d’information binaire, représentée par 0 ou 1 sur le support physique.",k:"signal binaire pdu"},
+      {n:"Débit",a:"bit/s",c:"Mesures",t:"Mesure",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Quantité de bits transmis par seconde. Le débit utile réel reste généralement inférieur au débit nominal.",k:"bande passante performance mbps gbps"},
+      {n:"Latence",a:"",c:"Mesures",t:"Mesure",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Temps nécessaire à une donnée pour aller d’un point à un autre ; il se mesure généralement en millisecondes.",k:"délai ping temps de propagation"},
+      {n:"Atténuation",a:"",c:"Notions",t:"Phénomène physique",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Affaiblissement progressif d’un signal avec la distance et les caractéristiques du support.",k:"perte signal distance"},
+      {n:"Interférences",a:"",c:"Notions",t:"Phénomène physique",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Perturbations électromagnétiques ou radio qui peuvent dégrader le signal et provoquer des erreurs.",k:"bruit emi wifi câble"},
+      {n:"Paire torsadée non blindée",a:"UTP",c:"Supports",t:"Câble cuivre",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Câble Ethernet cuivre courant dont les paires torsadées limitent les perturbations sans blindage supplémentaire.",k:"rj45 ethernet cuivre cat5e cat6"},
+      {n:"Paire torsadée blindée",a:"STP",c:"Supports",t:"Câble cuivre",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Approfondissement",d:"Câble à paires torsadées avec blindage, mieux protégé des perturbations mais plus exigeant à installer.",k:"ftp sftp blindage terre ethernet"},
+      {n:"Connecteur 8P8C",a:"RJ45",c:"Supports",t:"Connecteur",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Connecteur modulaire à huit positions couramment appelé RJ45 et utilisé avec les câbles Ethernet cuivre.",k:"prise câble cuivre ethernet"},
+      {n:"Fibre multimode",a:"MMF",c:"Supports",t:"Fibre optique",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Fibre à cœur large transportant plusieurs trajets lumineux ; économique et adaptée aux liaisons courtes d’un bâtiment ou campus.",k:"courte distance datacenter 850 nm om3 om4"},
+      {n:"Fibre monomode",a:"SMF",c:"Supports",t:"Fibre optique",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Fibre à cœur fin guidant un trajet lumineux principal ; adaptée aux longues distances et aux liaisons opérateur.",k:"longue distance wan 1310 1550 nm os2"},
+      {n:"Wi-Fi",a:"IEEE 802.11",c:"Technologies",t:"Réseau sans fil",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Famille de normes de réseau local sans fil utilisant des ondes radio, notamment dans les bandes 2,4 GHz, 5 GHz et 6 GHz.",k:"wlan radio accès sans fil"},
+      {n:"Bluetooth",a:"",c:"Technologies",t:"Réseau sans fil",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Technologie radio de courte portée, adaptée aux périphériques et objets connectés grâce à sa faible consommation.",k:"casque clavier ble iot pan"},
+      {n:"NFC",a:"",c:"Technologies",t:"Réseau sans fil",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Approfondissement",d:"Communication radio en champ proche sur quelques centimètres, utilisée notamment pour les badges et paiements.",k:"near field communication badge paiement"},
+      {n:"4G et 5G",a:"",c:"Technologies",t:"Réseau sans fil",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Réseaux mobiles opérateur offrant une couverture de plusieurs centaines de mètres à plusieurs kilomètres.",k:"cellulaire lte nr mobile wan"},
+      {n:"Répéteur",a:"",c:"Équipements",t:"Équipement réseau",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Équipement qui régénère ou retransmet un signal afin d’étendre la portée d’une liaison.",k:"signal extension physique"},
+      {n:"Concentrateur",a:"Hub",c:"Équipements",t:"Équipement réseau",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Approfondissement",d:"Ancien équipement de couche 1 répétant chaque signal reçu vers tous ses autres ports.",k:"collision ethernet partagé"},
+      {n:"CSMA/CD",a:"",c:"Mécanismes",t:"Accès au média",l:"2",ch:"1",tr:"Sans objet",p:"",q:"Approfondissement",d:"Méthode historique d’Ethernet partagé : écouter, émettre, détecter une collision, attendre puis réessayer.",k:"carrier sense collision detection hub half duplex"},
+      {n:"Duplex intégral",a:"Full-duplex",c:"Notions",t:"Mode de transmission",l:"1",ch:"1",tr:"Sans objet",p:"",q:"Essentiel",d:"Mode permettant d’émettre et de recevoir simultanément ; il élimine les collisions sur une liaison Ethernet commutée.",k:"full duplex switch"},
+
+      {n:"Ethernet",a:"IEEE 802.3",c:"Protocoles",t:"Protocole de liaison",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Famille de normes définissant notamment la transmission et le format des trames sur les réseaux locaux filaires.",k:"lan trame mac switch"},
+      {n:"Trame Ethernet",a:"",c:"Unités de données",t:"Unité de données",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"PDU de couche 2 contenant les adresses MAC, le type de protocole, les données et un contrôle FCS en fin de trame.",k:"préambule destination source ethertype data fcs"},
+      {n:"Adresse MAC",a:"",c:"Adressage",t:"Identifiant",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Identifiant de couche 2, généralement codé sur 48 bits, utilisé pour livrer une trame sur le lien local.",k:"oui nic interface physique hexadécimal"},
+      {n:"FCS",a:"Frame Check Sequence",c:"Mécanismes",t:"Contrôle d’erreur",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Champ placé à la fin d’une trame Ethernet pour détecter une altération grâce à un calcul CRC.",k:"crc erreur remorque trailer"},
+      {n:"Commutateur",a:"Switch",c:"Équipements",t:"Équipement réseau",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Équipement qui apprend les adresses MAC sources et transmet chaque trame vers le port approprié.",k:"table mac cam bridge pont"},
+      {n:"Table MAC",a:"CAM",c:"Notions",t:"Table de décision",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Association dynamique entre une adresse MAC, un port de switch et un VLAN.",k:"apprentissage vieillissement forwarding database"},
+      {n:"ARP",a:"Address Resolution Protocol",c:"Protocoles",t:"Protocole de résolution",l:"2",ch:"2",tr:"Directement sur Ethernet",p:"",q:"Essentiel",d:"Résout une adresse IPv4 en adresse MAC sur le réseau local grâce à une requête diffusée puis une réponse.",k:"cache arp who has adresse ip mac broadcast"},
+      {n:"VLAN",a:"Virtual LAN",c:"Mécanismes",t:"Segmentation logique",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Sépare logiquement un switch en plusieurs domaines de diffusion, même si les hôtes partagent le même matériel.",k:"réseau virtuel isolation broadcast"},
+      {n:"Port access",a:"",c:"Notions",t:"Configuration de port",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Port de switch appartenant à un seul VLAN et transportant généralement des trames non étiquetées côté poste.",k:"vlan poste untagged"},
+      {n:"Lien trunk",a:"",c:"Notions",t:"Configuration de port",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Lien transportant plusieurs VLAN entre équipements au moyen de trames étiquetées.",k:"tagged commutateurs routeur"},
+      {n:"Étiquetage VLAN",a:"IEEE 802.1Q",c:"Standards",t:"Standard",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Standard ajoutant un tag à la trame Ethernet afin d’identifier le VLAN sur un lien trunk.",k:"dot1q tag vlan id vid"},
+      {n:"Routage inter-VLAN",a:"",c:"Mécanismes",t:"Routage",l:"3",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Passage des paquets entre VLAN distincts au moyen d’un routeur ou d’un switch de couche 3.",k:"passerelle svi router on a stick"},
+      {n:"Spanning Tree Protocol",a:"STP",c:"Protocoles",t:"Protocole de contrôle",l:"2",ch:"2",tr:"Directement sur Ethernet",p:"",q:"Essentiel",d:"Évite les boucles de couche 2 en construisant un arbre logique et en bloquant certains chemins redondants.",k:"ieee 802.1d boucle root bridge bpdu"},
+      {n:"Rapid Spanning Tree",a:"RSTP",c:"Protocoles",t:"Protocole de contrôle",l:"2",ch:"2",tr:"Directement sur Ethernet",p:"",q:"Approfondissement",d:"Évolution de STP offrant une convergence nettement plus rapide après un changement de topologie.",k:"ieee 802.1w boucle bpdu convergence"},
+      {n:"Link Aggregation Control Protocol",a:"LACP",c:"Protocoles",t:"Protocole de contrôle",l:"2",ch:"2",tr:"Directement sur Ethernet",p:"",q:"Approfondissement",d:"Négocie l’agrégation de plusieurs liens physiques en une liaison logique, pour la capacité et la redondance.",k:"ieee 802.1ax etherchannel lag"},
+      {n:"Link Layer Discovery Protocol",a:"LLDP",c:"Protocoles",t:"Protocole de découverte",l:"2",ch:"2",tr:"Directement sur Ethernet",p:"",q:"Approfondissement",d:"Standard de découverte permettant à des équipements voisins d’annoncer leur identité, leur port et leurs capacités.",k:"ieee 802.1ab voisin topologie"},
+      {n:"Cisco Discovery Protocol",a:"CDP",c:"Protocoles",t:"Protocole de découverte",l:"2",ch:"2",tr:"Directement sur Ethernet",p:"",q:"Approfondissement",d:"Protocole propriétaire Cisco de découverte des équipements directement voisins.",k:"cisco voisin show cdp"},
+      {n:"Point d’accès",a:"AP",c:"Équipements",t:"Équipement réseau",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Relie les clients Wi-Fi au réseau local filaire et coordonne l’accès au média radio.",k:"access point wlan infrastructure"},
+      {n:"SSID",a:"Service Set Identifier",c:"Adressage",t:"Identifiant",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Nom logique visible d’un réseau Wi-Fi auquel un utilisateur peut choisir de s’associer.",k:"nom wifi wlan"},
+      {n:"BSSID",a:"Basic Service Set Identifier",c:"Adressage",t:"Identifiant",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Approfondissement",d:"Adresse MAC identifiant généralement une radio précise d’un point d’accès Wi-Fi.",k:"mac ap wifi radio"},
+      {n:"CSMA/CA",a:"",c:"Mécanismes",t:"Accès au média",l:"2",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Méthode Wi-Fi cherchant à éviter les collisions en écoutant le canal et en attendant un délai aléatoire avant d’émettre.",k:"carrier sense collision avoidance radio ack"},
+
+      {n:"Paquet IP",a:"",c:"Unités de données",t:"Unité de données",l:"3",ch:"3",tr:"Sans objet",p:"",q:"Essentiel",d:"PDU de couche 3 contenant notamment les adresses IP source et destination, transportée de routeur en routeur.",k:"datagramme en-tête routage"},
+      {n:"IPv4",a:"Internet Protocol version 4",c:"Protocoles",t:"Protocole réseau",l:"3",ch:"3",tr:"Directement sur IP",p:"",q:"Essentiel",d:"Protocole d’adressage et de routage utilisant des adresses sur 32 bits écrites en notation décimale pointée.",k:"adresse masque sous-réseau routeur 32 bits"},
+      {n:"IPv6",a:"Internet Protocol version 6",c:"Protocoles",t:"Protocole réseau",l:"3",ch:"3",tr:"Directement sur IP",p:"",q:"Essentiel",d:"Successeur d’IPv4 utilisant des adresses sur 128 bits et conçu pour un espace d’adressage beaucoup plus vaste.",k:"hexadécimal préfixe link local global unicast 128 bits"},
+      {n:"Masque de sous-réseau",a:"",c:"Adressage",t:"Notion d’adressage",l:"3",ch:"3",tr:"Sans objet",p:"",q:"Essentiel",d:"Valeur distinguant la partie réseau de la partie hôte d’une adresse IPv4.",k:"255 cidr préfixe subnet"},
+      {n:"Notation CIDR",a:"CIDR",c:"Adressage",t:"Notion d’adressage",l:"3",ch:"3",tr:"Sans objet",p:"",q:"Essentiel",d:"Notation /n indiquant le nombre de bits du préfixe réseau, par exemple 192.168.1.0/24.",k:"classless inter domain routing masque préfixe"},
+      {n:"Sous-réseau",a:"Subnet",c:"Adressage",t:"Notion d’adressage",l:"3",ch:"3",tr:"Sans objet",p:"",q:"Essentiel",d:"Subdivision logique d’un réseau IP partageant le même préfixe et le même domaine de diffusion local.",k:"adresse réseau broadcast plage hôtes"},
+      {n:"VLSM",a:"Variable Length Subnet Mask",c:"Adressage",t:"Méthode d’adressage",l:"3",ch:"3",tr:"Sans objet",p:"",q:"Approfondissement",d:"Découpage d’un bloc IP avec des préfixes de tailles différentes afin d’adapter chaque sous-réseau au besoin réel.",k:"sous-réseaux allocation cidr"},
+      {n:"Passerelle par défaut",a:"Gateway",c:"Adressage",t:"Paramètre réseau",l:"3",ch:"3",tr:"Sans objet",p:"",q:"Essentiel",d:"Adresse du routeur auquel un hôte remet les paquets destinés à un autre réseau.",k:"gateway next hop hors sous-réseau"},
+      {n:"Routeur",a:"Router",c:"Équipements",t:"Équipement réseau",l:"3",ch:"3",tr:"Sans objet",p:"",q:"Essentiel",d:"Équipement qui choisit un prochain saut et transfère les paquets entre réseaux IP distincts.",k:"routage table route passerelle"},
+      {n:"Table de routage",a:"",c:"Notions",t:"Table de décision",l:"3",ch:"3",tr:"Sans objet",p:"",q:"Essentiel",d:"Liste de préfixes connus avec leur prochain saut ou interface de sortie ; la route la plus spécifique gagne.",k:"longest prefix match métrique next hop"},
+      {n:"Route par défaut",a:"0.0.0.0/0 · ::/0",c:"Notions",t:"Route",l:"3",ch:"3",tr:"Sans objet",p:"",q:"Essentiel",d:"Route utilisée quand aucune route plus précise ne correspond à l’adresse de destination.",k:"gateway of last resort internet"},
+      {n:"Route statique",a:"",c:"Notions",t:"Route",l:"3",ch:"3",tr:"Sans objet",p:"",q:"Essentiel",d:"Route configurée manuellement par l’administrateur vers un réseau et un prochain saut.",k:"ip route manuel"},
+      {n:"ICMP",a:"Internet Control Message Protocol",c:"Protocoles",t:"Protocole de contrôle",l:"3",ch:"3",tr:"Directement sur IP",p:"",q:"Essentiel",d:"Transporte des messages de contrôle et d’erreur, notamment ceux utilisés par ping et traceroute.",k:"echo request reply destination unreachable time exceeded"},
+      {n:"TTL et Hop Limit",a:"",c:"Mécanismes",t:"Champ d’en-tête",l:"3",ch:"3",tr:"Sans objet",p:"",q:"Essentiel",d:"Compteur décrémenté à chaque routeur ; le paquet est supprimé à zéro afin d’éviter qu’il boucle indéfiniment.",k:"time to live saut boucle ipv4 ipv6"},
+      {n:"Ping",a:"",c:"Outils",t:"Outil de diagnostic",l:"3",ch:"3",tr:"ICMP",p:"",q:"Essentiel",d:"Teste l’accessibilité IP et mesure le temps aller-retour au moyen de messages ICMP Echo.",k:"echo request reply latence connectivité"},
+      {n:"Traceroute",a:"tracert",c:"Outils",t:"Outil de diagnostic",l:"3",ch:"3",tr:"UDP ou ICMP",p:"",q:"Essentiel",d:"Révèle les sauts successifs d’un trajet en provoquant l’expiration progressive du TTL ou Hop Limit.",k:"route chemin routeurs time exceeded"},
+      {n:"SLAAC",a:"Stateless Address Autoconfiguration",c:"Mécanismes",t:"Autoconfiguration",l:"3",ch:"3",tr:"ICMPv6",p:"",q:"Approfondissement",d:"Permet à un hôte IPv6 de construire automatiquement son adresse à partir des annonces du routeur.",k:"router advertisement ndp ipv6 préfixe"},
+      {n:"RIP",a:"Routing Information Protocol",c:"Protocoles",t:"Protocole de routage",l:"3",ch:"3",tr:"UDP",p:"520",q:"Approfondissement",d:"Protocole de routage à vecteur de distance utilisant le nombre de sauts comme métrique.",k:"dynamique hop count convergence"},
+      {n:"OSPF",a:"Open Shortest Path First",c:"Protocoles",t:"Protocole de routage",l:"3",ch:"3",tr:"Directement sur IP",p:"",q:"Essentiel",d:"Protocole de routage à état de liens calculant les meilleurs chemins au sein d’un système autonome.",k:"igp dijkstra aire area coût protocole ip 89"},
+      {n:"BGP",a:"Border Gateway Protocol",c:"Protocoles",t:"Protocole de routage",l:"3",ch:"3",tr:"TCP",p:"179",q:"Approfondissement",d:"Protocole d’échange de routes entre systèmes autonomes, au cœur du routage mondial de l’Internet.",k:"egp as path opérateur internet"},
+      {n:"MPLS",a:"Multiprotocol Label Switching",c:"Technologies",t:"Technologie opérateur",l:"3",ch:"3",tr:"Sans objet",p:"",q:"Approfondissement",d:"Technologie d’acheminement par labels couramment utilisée dans les réseaux d’opérateurs.",k:"wan label vpn opérateur"},
+
+      {n:"Port réseau",a:"",c:"Adressage",t:"Identifiant logique",l:"4",ch:"4",tr:"TCP ou UDP",p:"0–65535",q:"Essentiel",d:"Numéro sur 16 bits identifiant une application source ou destination au sein d’un hôte.",k:"well known registered ephemeral multiplexage"},
+      {n:"Socket",a:"",c:"Notions",t:"Point de communication",l:"4",ch:"4",tr:"TCP ou UDP",p:"",q:"Essentiel",d:"Association d’une adresse IP, d’un protocole de transport et d’un numéro de port utilisée par une application.",k:"ip port endpoint processus"},
+      {n:"TCP",a:"Transmission Control Protocol",c:"Protocoles",t:"Protocole de transport",l:"4",ch:"4",tr:"TCP",p:"",q:"Essentiel",d:"Transport connecté, fiable et ordonné utilisant acquittements, numéros de séquence, retransmissions et contrôle de flux.",k:"segment connexion handshake ack fenêtre retransmission"},
+      {n:"UDP",a:"User Datagram Protocol",c:"Protocoles",t:"Protocole de transport",l:"4",ch:"4",tr:"UDP",p:"",q:"Essentiel",d:"Transport sans connexion, simple et rapide, sans garantie intégrée de livraison ni de remise dans l’ordre.",k:"datagramme faible surcharge temps réel"},
+      {n:"Segment TCP",a:"",c:"Unités de données",t:"Unité de données",l:"4",ch:"4",tr:"TCP",p:"",q:"Essentiel",d:"PDU de TCP contenant notamment ports, numéros de séquence, acquittements, drapeaux et données.",k:"syn ack fin rst fenêtre checksum"},
+      {n:"Datagramme UDP",a:"",c:"Unités de données",t:"Unité de données",l:"4",ch:"4",tr:"UDP",p:"",q:"Essentiel",d:"PDU UDP à en-tête court contenant ports source et destination, longueur et somme de contrôle.",k:"checksum length"},
+      {n:"Triple poignée de main",a:"Three-way handshake",c:"Mécanismes",t:"Établissement de connexion",l:"4",ch:"4",tr:"TCP",p:"",q:"Essentiel",d:"Établissement d’une connexion TCP en trois échanges : SYN, SYN-ACK puis ACK.",k:"synchronisation connexion"},
+      {n:"Numéro de séquence",a:"SEQ",c:"Mécanismes",t:"Fiabilité TCP",l:"4",ch:"4",tr:"TCP",p:"",q:"Essentiel",d:"Repère la position des octets dans le flux TCP afin de remettre les données dans l’ordre et détecter les pertes.",k:"ack retransmission ordre"},
+      {n:"Acquittement",a:"ACK",c:"Mécanismes",t:"Fiabilité TCP",l:"4",ch:"4",tr:"TCP",p:"",q:"Essentiel",d:"Confirmation indiquant le prochain octet attendu ; une absence d’acquittement peut déclencher une retransmission.",k:"acknowledgement fiabilité"},
+      {n:"Fenêtre glissante",a:"Sliding window",c:"Mécanismes",t:"Contrôle de flux",l:"4",ch:"4",tr:"TCP",p:"",q:"Approfondissement",d:"Autorise plusieurs octets en vol et adapte la quantité envoyée à la capacité annoncée par le récepteur.",k:"window rwnd débit contrôle flux"},
+      {n:"Contrôle de congestion",a:"",c:"Mécanismes",t:"Régulation",l:"4",ch:"4",tr:"TCP",p:"",q:"Approfondissement",d:"Adapte le rythme d’envoi TCP à l’état estimé du réseau afin de limiter les pertes et l’engorgement.",k:"cwnd slow start congestion avoidance"},
+      {n:"États TCP",a:"",c:"Notions",t:"Machine à états",l:"4",ch:"4",tr:"TCP",p:"",q:"Approfondissement",d:"Étapes de vie d’une connexion, par exemple LISTEN, SYN-SENT, ESTABLISHED, FIN-WAIT et TIME-WAIT.",k:"netstat ss connexion fermeture"},
+      {n:"QUIC",a:"Quick UDP Internet Connections",c:"Protocoles",t:"Protocole de transport sécurisé",l:"4",ch:"4",tr:"UDP",p:"443",q:"Approfondissement",d:"Transport moderne au-dessus d’UDP intégrant TLS et plusieurs flux ; il sert notamment de base à HTTP/3.",k:"http3 multiplexage tls migration connexion"},
+      {n:"Multiplexage",a:"",c:"Mécanismes",t:"Mécanisme de transport",l:"4",ch:"4",tr:"TCP ou UDP",p:"",q:"Essentiel",d:"Permet à plusieurs applications d’utiliser simultanément le réseau grâce aux numéros de ports.",k:"démultiplexage sockets processus"},
+
+      {n:"DHCP",a:"Dynamic Host Configuration Protocol",c:"Services",t:"Service d’adressage",l:"Application",ch:"5",tr:"UDP",p:"67/68",q:"Essentiel",d:"Attribue automatiquement une configuration IPv4 : adresse, masque, passerelle, DNS et durée de bail.",k:"dora discover offer request acknowledge bail broadcast"},
+      {n:"DHCPv6",a:"",c:"Services",t:"Service d’adressage",l:"Application",ch:"5",tr:"UDP",p:"546/547",q:"Approfondissement",d:"Fournit des paramètres IPv6 avec état ou sans état, en complément éventuel de SLAAC.",k:"ipv6 adressage automatique"},
+      {n:"Relais DHCP",a:"DHCP relay",c:"Mécanismes",t:"Relais applicatif",l:"Application",ch:"5",tr:"UDP",p:"67/68",q:"Essentiel",d:"Transmet les demandes DHCP entre sous-réseaux, car les diffusions clientes ne traversent pas normalement les routeurs.",k:"ip helper broadcast sous-réseau"},
+      {n:"APIPA",a:"Automatic Private IP Addressing",c:"Mécanismes",t:"Adresse de secours",l:"3",ch:"5",tr:"Sans objet",p:"",q:"Essentiel",d:"Adresse IPv4 169.254.0.0/16 choisie automatiquement lorsqu’un client Windows ne reçoit pas de réponse DHCP.",k:"link local échec dhcp 169.254"},
+      {n:"DNS",a:"Domain Name System",c:"Services",t:"Service de noms",l:"Application",ch:"5",tr:"TCP et UDP",p:"53",q:"Essentiel",d:"Système distribué traduisant les noms de domaine en informations, notamment en adresses IP.",k:"résolution nom domaine zone enregistrement cache"},
+      {n:"Résolveur DNS",a:"Resolver",c:"Équipements",t:"Composant logiciel",l:"Application",ch:"5",tr:"TCP et UDP",p:"53",q:"Essentiel",d:"Composant qui recherche une réponse DNS pour le client, souvent en interrogeant d’autres serveurs et en mettant le résultat en cache.",k:"récursif cache stub"},
+      {n:"Enregistrement A",a:"",c:"DNS",t:"Enregistrement DNS",l:"Application",ch:"5",tr:"DNS",p:"53",q:"Essentiel",d:"Associe un nom de domaine à une adresse IPv4.",k:"zone nom ipv4"},
+      {n:"Enregistrement AAAA",a:"",c:"DNS",t:"Enregistrement DNS",l:"Application",ch:"5",tr:"DNS",p:"53",q:"Essentiel",d:"Associe un nom de domaine à une adresse IPv6.",k:"zone nom ipv6"},
+      {n:"Enregistrement CNAME",a:"",c:"DNS",t:"Enregistrement DNS",l:"Application",ch:"5",tr:"DNS",p:"53",q:"Essentiel",d:"Déclare qu’un nom est un alias d’un autre nom canonique.",k:"alias canonical name"},
+      {n:"Enregistrement MX",a:"",c:"DNS",t:"Enregistrement DNS",l:"Application",ch:"5",tr:"DNS",p:"53",q:"Essentiel",d:"Indique les serveurs chargés de recevoir le courrier électronique d’un domaine, avec une priorité.",k:"mail exchanger smtp email"},
+      {n:"Enregistrement PTR",a:"",c:"DNS",t:"Enregistrement DNS",l:"Application",ch:"5",tr:"DNS",p:"53",q:"Approfondissement",d:"Associe une adresse IP à un nom lors d’une résolution DNS inverse.",k:"reverse dns in-addr.arpa ip6.arpa"},
+      {n:"TTL DNS",a:"Time To Live",c:"DNS",t:"Paramètre de cache",l:"Application",ch:"5",tr:"DNS",p:"53",q:"Essentiel",d:"Durée pendant laquelle une réponse DNS peut rester en cache avant de devoir être redemandée.",k:"cache expiration propagation"},
+      {n:"DNS over TLS",a:"DoT",c:"Protocoles",t:"Protocole sécurisé",l:"Application",ch:"5",tr:"TCP",p:"853",q:"Approfondissement",d:"Chiffre les requêtes DNS dans une connexion TLS dédiée.",k:"dns confidentialité tls"},
+      {n:"DNS over HTTPS",a:"DoH",c:"Protocoles",t:"Protocole sécurisé",l:"Application",ch:"5",tr:"TCP ou QUIC",p:"443",q:"Approfondissement",d:"Transporte les requêtes DNS dans HTTPS afin d’en chiffrer le contenu.",k:"dns confidentialité https"},
+      {n:"HTTP",a:"Hypertext Transfer Protocol",c:"Protocoles",t:"Protocole applicatif",l:"Application",ch:"5",tr:"TCP",p:"80",q:"Essentiel",d:"Protocole requête-réponse du Web permettant de demander ou d’envoyer des ressources.",k:"web url méthode get post statut"},
+      {n:"HTTPS",a:"HTTP Secure",c:"Protocoles",t:"Protocole applicatif sécurisé",l:"Application",ch:"5",tr:"TCP ou QUIC",p:"443",q:"Essentiel",d:"HTTP protégé par TLS, apportant chiffrement, intégrité et authentification du serveur.",k:"web certificat tls cadenas"},
+      {n:"TLS",a:"Transport Layer Security",c:"Protocoles",t:"Protocole de sécurité",l:"Application",ch:"5",tr:"TCP ou QUIC",p:"",q:"Essentiel",d:"Protège une communication applicative par chiffrement, contrôle d’intégrité et authentification par certificat.",k:"certificat handshake chiffrement https"},
+      {n:"URL",a:"Uniform Resource Locator",c:"Adressage",t:"Identifiant de ressource",l:"Application",ch:"5",tr:"Sans objet",p:"",q:"Essentiel",d:"Adresse d’une ressource précisant notamment un schéma, un hôte, un port éventuel, un chemin et des paramètres.",k:"uri https domaine chemin query"},
+      {n:"Code de statut HTTP",a:"",c:"Notions",t:"Réponse applicative",l:"Application",ch:"5",tr:"HTTP",p:"",q:"Essentiel",d:"Code à trois chiffres résumant le résultat : 2xx succès, 3xx redirection, 4xx erreur client, 5xx erreur serveur.",k:"200 301 404 500"},
+      {n:"SSH",a:"Secure Shell",c:"Services",t:"Administration distante",l:"Application",ch:"5",tr:"TCP",p:"22",q:"Essentiel",d:"Permet une administration distante chiffrée, l’exécution de commandes et la création de tunnels.",k:"terminal distant clé mot de passe"},
+      {n:"SFTP",a:"SSH File Transfer Protocol",c:"Services",t:"Transfert de fichiers",l:"Application",ch:"5",tr:"TCP",p:"22",q:"Essentiel",d:"Protocole de transfert de fichiers sécurisé fonctionnant dans une session SSH ; il est distinct de FTP.",k:"fichier ssh sécurisé"},
+      {n:"FTP",a:"File Transfer Protocol",c:"Services",t:"Transfert de fichiers",l:"Application",ch:"5",tr:"TCP",p:"21",q:"Approfondissement",d:"Ancien protocole de transfert utilisant une connexion de contrôle et une connexion de données séparée, sans chiffrement natif.",k:"actif passif port 20 fichiers"},
+      {n:"SMTP",a:"Simple Mail Transfer Protocol",c:"Services",t:"Messagerie",l:"Application",ch:"5",tr:"TCP",p:"25/587",q:"Essentiel",d:"Transporte et soumet les courriels entre clients et serveurs ou entre serveurs de messagerie.",k:"email envoi soumission mail"},
+      {n:"IMAP",a:"Internet Message Access Protocol",c:"Services",t:"Messagerie",l:"Application",ch:"5",tr:"TCP",p:"143/993",q:"Essentiel",d:"Consulte et organise les messages en les conservant sur le serveur ; 993 correspond généralement à IMAPS.",k:"email réception synchronisation dossiers"},
+      {n:"POP3",a:"Post Office Protocol v3",c:"Services",t:"Messagerie",l:"Application",ch:"5",tr:"TCP",p:"110/995",q:"Approfondissement",d:"Télécharge les messages depuis un serveur avec une logique plus simple qu’IMAP ; 995 correspond généralement à POP3S.",k:"email réception téléchargement"},
+      {n:"SMB",a:"Server Message Block",c:"Services",t:"Partage de ressources",l:"Application",ch:"5",tr:"TCP",p:"445",q:"Essentiel",d:"Partage des fichiers, imprimantes et autres ressources, particulièrement dans les environnements Windows.",k:"windows partage fichier dossier"},
+      {n:"NTP",a:"Network Time Protocol",c:"Services",t:"Synchronisation horaire",l:"Application",ch:"5",tr:"UDP",p:"123",q:"Essentiel",d:"Synchronise l’horloge des équipements, indispensable aux journaux, certificats et systèmes d’authentification.",k:"temps heure stratum horloge"},
+      {n:"SNMP",a:"Simple Network Management Protocol",c:"Services",t:"Supervision",l:"Application",ch:"5",tr:"UDP",p:"161/162",q:"Essentiel",d:"Permet de superviser des équipements ; les requêtes utilisent habituellement 161 et les notifications trap 162.",k:"mib oid manager agent trap monitoring"},
+      {n:"RDP",a:"Remote Desktop Protocol",c:"Services",t:"Bureau distant",l:"Application",ch:"5",tr:"TCP et UDP",p:"3389",q:"Essentiel",d:"Protocole Microsoft donnant accès à une session graphique distante.",k:"windows bureau distant administration"},
+
+      {n:"NAT",a:"Network Address Translation",c:"Sécurité",t:"Traduction d’adresses",l:"3",ch:"6",tr:"Sans objet",p:"",q:"Essentiel",d:"Modifie une adresse IP dans les paquets lors de leur passage par un équipement intermédiaire.",k:"translation ipv4 privée publique routeur"},
+      {n:"PAT",a:"Port Address Translation",c:"Sécurité",t:"Traduction d’adresses",l:"3",ch:"6",tr:"TCP ou UDP",p:"",q:"Essentiel",d:"Traduit aussi les ports afin que plusieurs machines privées partagent une même adresse IPv4 publique.",k:"nat overload source port"},
+      {n:"SNAT",a:"Source NAT",c:"Sécurité",t:"Traduction d’adresses",l:"3",ch:"6",tr:"Sans objet",p:"",q:"Approfondissement",d:"Modifie l’adresse source, typiquement lors de la sortie d’un réseau privé vers Internet.",k:"nat sortant masquerade"},
+      {n:"DNAT",a:"Destination NAT",c:"Sécurité",t:"Traduction d’adresses",l:"3",ch:"6",tr:"Sans objet",p:"",q:"Approfondissement",d:"Modifie l’adresse ou le port de destination, par exemple pour publier un service interne.",k:"port forwarding redirection entrant"},
+      {n:"Pare-feu",a:"Firewall",c:"Sécurité",t:"Équipement ou logiciel",l:"Transverse",ch:"6",tr:"Sans objet",p:"",q:"Essentiel",d:"Autorise ou bloque les flux selon une politique fondée notamment sur les adresses, protocoles, ports et états.",k:"filtrage règles acl sécurité"},
+      {n:"Filtrage sans état",a:"Stateless",c:"Sécurité",t:"Mécanisme de filtrage",l:"3",ch:"6",tr:"Sans objet",p:"",q:"Essentiel",d:"Évalue chaque paquet isolément, sans mémoriser la connexion à laquelle il appartient.",k:"acl paquet règle"},
+      {n:"Filtrage avec état",a:"Stateful",c:"Sécurité",t:"Mécanisme de filtrage",l:"4",ch:"6",tr:"TCP ou UDP",p:"",q:"Essentiel",d:"Mémorise l’état des connexions et autorise automatiquement les réponses appartenant à un échange permis.",k:"conntrack session firewall"},
+      {n:"ACL",a:"Access Control List",c:"Sécurité",t:"Règle de filtrage",l:"3",ch:"6",tr:"Sans objet",p:"",q:"Essentiel",d:"Liste ordonnée de règles permit ou deny appliquée à des paquets selon différents critères.",k:"access list cisco source destination protocole port"},
+      {n:"DMZ",a:"Demilitarized Zone",c:"Sécurité",t:"Architecture réseau",l:"Transverse",ch:"6",tr:"Sans objet",p:"",q:"Essentiel",d:"Zone réseau isolée accueillant les services exposés afin de limiter l’impact d’une compromission.",k:"segmentation serveur public firewall"},
+      {n:"Proxy direct",a:"Forward proxy",c:"Sécurité",t:"Intermédiaire applicatif",l:"Application",ch:"6",tr:"TCP",p:"",q:"Essentiel",d:"Agit pour les clients afin de contrôler, filtrer, journaliser ou mettre en cache leurs accès sortants.",k:"mandataire client web cache filtrage"},
+      {n:"Proxy inverse",a:"Reverse proxy",c:"Sécurité",t:"Intermédiaire applicatif",l:"Application",ch:"6",tr:"TCP ou QUIC",p:"80/443",q:"Essentiel",d:"Reçoit les requêtes devant un ou plusieurs serveurs et peut répartir la charge, terminer TLS ou filtrer le trafic.",k:"serveur web load balancer waf tls"},
+      {n:"VPN",a:"Virtual Private Network",c:"Sécurité",t:"Tunnel sécurisé",l:"Transverse",ch:"6",tr:"Variable",p:"",q:"Essentiel",d:"Crée un tunnel logique protégé au travers d’un réseau non maîtrisé pour relier un utilisateur ou des sites.",k:"chiffrement accès distant site à site"},
+      {n:"IPsec",a:"Internet Protocol Security",c:"Protocoles",t:"Suite de sécurité",l:"3",ch:"6",tr:"IP · IKE en UDP",p:"500/4500",q:"Essentiel",d:"Suite protégeant des paquets IP, souvent utilisée pour les VPN site à site avec ESP et IKE.",k:"esp ah ike tunnel transport protocole 50 51"},
+      {n:"OpenVPN",a:"",c:"Protocoles",t:"Protocole VPN",l:"Application",ch:"6",tr:"UDP ou TCP",p:"1194 usuel",q:"Approfondissement",d:"Solution VPN reposant sur TLS, configurable en UDP ou TCP et sur différents ports.",k:"tunnel certificat accès distant"},
+      {n:"WireGuard",a:"",c:"Protocoles",t:"Protocole VPN",l:"3",ch:"6",tr:"UDP",p:"51820 usuel",q:"Approfondissement",d:"Protocole VPN moderne, compact et performant, fondé sur des clés publiques et UDP.",k:"tunnel clé publique accès distant site à site"},
+      {n:"AAA",a:"Authentication, Authorization, Accounting",c:"Sécurité",t:"Modèle de contrôle d’accès",l:"Application",ch:"6",tr:"Sans objet",p:"",q:"Essentiel",d:"Distingue la vérification de l’identité, les droits accordés et la traçabilité des actions.",k:"authentification autorisation accounting journalisation"},
+      {n:"Authentification multifacteur",a:"MFA",c:"Sécurité",t:"Mécanisme d’authentification",l:"Application",ch:"6",tr:"Sans objet",p:"",q:"Essentiel",d:"Combine au moins deux facteurs différents : connaissance, possession ou caractéristique biométrique.",k:"2fa mot de passe token biométrie"},
+      {n:"Contrôle d’accès réseau",a:"IEEE 802.1X",c:"Standards",t:"Standard d’accès",l:"2",ch:"6",tr:"EAP sur LAN",p:"",q:"Essentiel",d:"Contrôle l’accès à un port Ethernet ou Wi-Fi au moyen d’un demandeur, d’un authentificateur et d’un serveur AAA.",k:"supplicant authenticator radius eap nac"},
+      {n:"RADIUS",a:"Remote Authentication Dial-In User Service",c:"Protocoles",t:"Protocole AAA",l:"Application",ch:"6",tr:"UDP",p:"1812/1813",q:"Essentiel",d:"Centralise l’authentification, l’autorisation et la comptabilité pour les accès réseau.",k:"aaa 802.1x wifi entreprise nac"},
+      {n:"WPA2",a:"Wi-Fi Protected Access 2",c:"Sécurité",t:"Protection Wi-Fi",l:"2",ch:"6",tr:"Sans objet",p:"",q:"Essentiel",d:"Protège un réseau Wi-Fi au moyen d’AES-CCMP, avec une clé partagée ou une authentification d’entreprise.",k:"personal enterprise psk aes ccmp"},
+      {n:"WPA3",a:"Wi-Fi Protected Access 3",c:"Sécurité",t:"Protection Wi-Fi",l:"2",ch:"6",tr:"Sans objet",p:"",q:"Essentiel",d:"Renforce la sécurité Wi-Fi ; le mode personnel utilise SAE pour mieux résister aux attaques hors ligne.",k:"personal enterprise sae wifi"},
+      {n:"IDS",a:"Intrusion Detection System",c:"Sécurité",t:"Détection",l:"Transverse",ch:"6",tr:"Sans objet",p:"",q:"Essentiel",d:"Analyse l’activité afin de détecter et signaler des comportements potentiellement malveillants.",k:"alerte sonde signature anomalie"},
+      {n:"IPS",a:"Intrusion Prevention System",c:"Sécurité",t:"Prévention",l:"Transverse",ch:"6",tr:"Sans objet",p:"",q:"Essentiel",d:"Analyse le trafic en ligne et peut bloquer automatiquement une activité considérée comme malveillante.",k:"blocage inline signature anomalie"},
+      {n:"Zero Trust",a:"",c:"Sécurité",t:"Modèle de sécurité",l:"Transverse",ch:"6",tr:"Sans objet",p:"",q:"Approfondissement",d:"Approche consistant à ne jamais faire confiance implicitement et à vérifier explicitement chaque accès.",k:"moindre privilège vérifier identité contexte segmentation"},
+      {n:"Moindre privilège",a:"",c:"Sécurité",t:"Principe de sécurité",l:"Transverse",ch:"6",tr:"Sans objet",p:"",q:"Essentiel",d:"N’accorder à un utilisateur, service ou équipement que les droits strictement nécessaires à sa mission.",k:"least privilege autorisation droits"},
+      {n:"Confidentialité, intégrité, disponibilité",a:"CIA",c:"Sécurité",t:"Objectifs de sécurité",l:"Transverse",ch:"6",tr:"Sans objet",p:"",q:"Essentiel",d:"Trois objectifs fondamentaux : empêcher la divulgation, détecter les altérations et maintenir l’accès au service.",k:"triade sécurité confidentialité intégrité disponibilité"},
+
+      {n:"ipconfig",a:"",c:"Outils",t:"Commande Windows",l:"Transverse",ch:"5",tr:"Sans objet",p:"",q:"Essentiel",d:"Affiche et gère certains paramètres IP sous Windows ; /all détaille la configuration et /renew renouvelle DHCP.",k:"windows réseau adresse dns dhcp"},
+      {n:"ip",a:"iproute2",c:"Outils",t:"Commande Linux",l:"Transverse",ch:"5",tr:"Sans objet",p:"",q:"Essentiel",d:"Commande Linux moderne pour consulter ou configurer adresses, liens, voisins et routes.",k:"linux ip addr link route neigh"},
+      {n:"ss",a:"",c:"Outils",t:"Commande Linux",l:"4",ch:"4",tr:"TCP ou UDP",p:"",q:"Essentiel",d:"Affiche les sockets, ports en écoute et connexions sous Linux, par exemple avec ss -lntup.",k:"linux socket listen connexion port"},
+      {n:"netstat",a:"",c:"Outils",t:"Commande multiplateforme",l:"4",ch:"4",tr:"TCP ou UDP",p:"",q:"Approfondissement",d:"Ancienne commande affichant connexions, ports en écoute, statistiques et parfois table de routage.",k:"windows linux socket listen connexion"},
+      {n:"nslookup",a:"",c:"Outils",t:"Outil DNS",l:"Application",ch:"5",tr:"DNS",p:"53",q:"Essentiel",d:"Interroge le DNS depuis Windows, Linux ou macOS afin de contrôler une résolution de nom.",k:"diagnostic nom enregistrement serveur dns"},
+      {n:"dig",a:"Domain Information Groper",c:"Outils",t:"Outil DNS",l:"Application",ch:"5",tr:"DNS",p:"53",q:"Essentiel",d:"Interroge précisément le DNS et affiche les sections, types d’enregistrements, délais et serveur interrogé.",k:"linux dns requête trace answer authority"},
+      {n:"Resolve-DnsName",a:"",c:"Outils",t:"Commande PowerShell",l:"Application",ch:"5",tr:"DNS",p:"53",q:"Essentiel",d:"Cmdlet PowerShell permettant d’interroger le DNS et de choisir un type d’enregistrement ou un serveur.",k:"windows powershell dns"},
+      {n:"Test-NetConnection",a:"",c:"Outils",t:"Commande PowerShell",l:"4",ch:"5",tr:"TCP",p:"",q:"Essentiel",d:"Teste sous Windows la résolution, la connectivité IP et l’ouverture d’un port TCP distant.",k:"powershell tnc port ping diagnostic"},
+      {n:"curl",a:"",c:"Outils",t:"Client applicatif",l:"Application",ch:"5",tr:"TCP ou QUIC",p:"",q:"Essentiel",d:"Envoie des requêtes à de nombreux services, notamment HTTP et HTTPS, et affiche précisément leurs réponses.",k:"web api get post header diagnostic"},
+      {n:"OpenSSL s_client",a:"",c:"Outils",t:"Outil TLS",l:"Application",ch:"5",tr:"TCP",p:"",q:"Approfondissement",d:"Ouvre une connexion TLS de test et affiche la négociation ainsi que la chaîne de certificats présentée.",k:"openssl certificat tls diagnostic"},
+      {n:"Wireshark",a:"",c:"Outils",t:"Analyseur de protocoles",l:"Transverse",ch:"2",tr:"Sans objet",p:"",q:"Essentiel",d:"Capture et décode les trames et paquets afin d’observer concrètement les échanges réseau.",k:"capture filtre paquet trame pcap diagnostic"}
+    ];
+
+    const els = {
+      cards: document.querySelector("#cards"),
+      search: document.querySelector("#search"),
+      category: document.querySelector("#category"),
+      type: document.querySelector("#type"),
+      layer: document.querySelector("#layer"),
+      chapter: document.querySelector("#chapter"),
+      transport: document.querySelector("#transport"),
+      priority: document.querySelector("#priority"),
+      withPort: document.querySelector("#withPort"),
+      favoritesOnly: document.querySelector("#favoritesOnly"),
+      sort: document.querySelector("#sort"),
+      resultCount: document.querySelector("#resultCount"),
+      activeFilter: document.querySelector("#activeFilter")
+    };
+
+    let favorites = new Set(JSON.parse(localStorage.getItem("reseaux-index-favoris") || "[]"));
+    let visibleEntries = [...entries];
+    let currentQuiz = null;
+
+    const normalize = (value) => String(value || "")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase();
+
+    const entryId = (entry) => normalize(`${entry.n}-${entry.a}`).replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+
+    function fillSelect(element, values, labelFunction = (value) => value) {
+      [...new Set(values)].sort((a, b) => labelFunction(a).localeCompare(labelFunction(b), "fr"))
+        .forEach((value) => {
+          const option = document.createElement("option");
+          option.value = value;
+          option.textContent = labelFunction(value);
+          element.append(option);
+        });
+    }
+
+    fillSelect(els.category, entries.map((entry) => entry.c));
+    fillSelect(els.type, entries.map((entry) => entry.t));
+    fillSelect(els.layer, entries.map((entry) => entry.l), (value) => layerLabels[value]);
+    fillSelect(els.chapter, entries.map((entry) => entry.ch), (value) => `Chapitre ${value} · ${chapterInfo[value].title}`);
+    fillSelect(els.transport, entries.map((entry) => entry.tr));
+    fillSelect(els.priority, entries.map((entry) => entry.q));
+
+    document.querySelector("#totalStat").textContent = entries.length;
+    document.querySelector("#protocolStat").textContent = entries.filter((entry) => ["Protocoles", "Services"].includes(entry.c)).length;
+    document.querySelector("#portStat").textContent = entries.filter((entry) => entry.p).length;
+
+    function searchableText(entry) {
+      return normalize([entry.n, entry.a, entry.c, entry.t, layerLabels[entry.l], chapterInfo[entry.ch].title, entry.tr, entry.p, entry.d, entry.k].join(" "));
+    }
+
+    function numericPort(value) {
+      const match = String(value).match(/\d+/);
+      return match ? Number(match[0]) : Number.MAX_SAFE_INTEGER;
+    }
+
+    function filterEntries() {
+      const query = normalize(els.search.value.trim());
+      visibleEntries = entries.filter((entry) => {
+        if (query && !searchableText(entry).includes(query)) return false;
+        if (els.category.value && entry.c !== els.category.value) return false;
+        if (els.type.value && entry.t !== els.type.value) return false;
+        if (els.layer.value && entry.l !== els.layer.value) return false;
+        if (els.chapter.value && entry.ch !== els.chapter.value) return false;
+        if (els.transport.value && entry.tr !== els.transport.value) return false;
+        if (els.priority.value && entry.q !== els.priority.value) return false;
+        if (els.withPort.checked && !entry.p) return false;
+        if (els.favoritesOnly.checked && !favorites.has(entryId(entry))) return false;
+        return true;
+      });
+
+      const sorter = {
+        name: (a, b) => a.n.localeCompare(b.n, "fr"),
+        chapter: (a, b) => Number(a.ch) - Number(b.ch) || a.n.localeCompare(b.n, "fr"),
+        layer: (a, b) => Object.keys(layerLabels).indexOf(a.l) - Object.keys(layerLabels).indexOf(b.l) || a.n.localeCompare(b.n, "fr"),
+        port: (a, b) => numericPort(a.p) - numericPort(b.p) || a.n.localeCompare(b.n, "fr")
+      }[els.sort.value];
+
+      visibleEntries.sort(sorter);
+      render();
+    }
+
+    function makeChip(text, className = "") {
+      const span = document.createElement("span");
+      span.className = `chip ${className}`.trim();
+      span.textContent = text;
+      return span;
+    }
+
+    function makeCard(entry) {
+      const id = entryId(entry);
+      const article = document.createElement("article");
+      article.className = "card";
+      article.style.setProperty("--layer-color", layerColors[entry.l]);
+
+      const head = document.createElement("div");
+      head.className = "card-head";
+
+      const titleArea = document.createElement("div");
+      const badges = document.createElement("div");
+      badges.className = "badges";
+      const layerBadge = makeChip(layerLabels[entry.l], "badge badge-layer");
+      layerBadge.style.setProperty("--layer-color", layerColors[entry.l]);
+      badges.append(layerBadge, makeChip(entry.c, "badge"), makeChip(entry.q, "badge"));
+
+      const title = document.createElement("h3");
+      title.textContent = entry.n;
+      if (entry.a) {
+        const acronym = document.createElement("span");
+        acronym.className = "acronym";
+        acronym.textContent = ` · ${entry.a}`;
+        title.append(acronym);
+      }
+      titleArea.append(badges, title);
+
+      const favorite = document.createElement("button");
+      favorite.className = "favorite";
+      favorite.type = "button";
+      favorite.textContent = "★";
+      favorite.setAttribute("aria-label", `Ajouter ${entry.n} aux favoris`);
+      favorite.setAttribute("aria-pressed", String(favorites.has(id)));
+      favorite.addEventListener("click", () => {
+        if (favorites.has(id)) favorites.delete(id); else favorites.add(id);
+        localStorage.setItem("reseaux-index-favoris", JSON.stringify([...favorites]));
+        favorite.setAttribute("aria-pressed", String(favorites.has(id)));
+        favorite.setAttribute("aria-label", `${favorites.has(id) ? "Retirer" : "Ajouter"} ${entry.n} ${favorites.has(id) ? "des" : "aux"} favoris`);
+        if (els.favoritesOnly.checked) filterEntries();
+      });
+
+      head.append(titleArea, favorite);
+
+      const definition = document.createElement("p");
+      definition.className = "definition";
+      definition.textContent = entry.d;
+
+      const meta = document.createElement("div");
+      meta.className = "meta";
+      meta.append(makeChip(entry.t), makeChip(entry.tr));
+      if (entry.p) meta.append(makeChip(`Port ${entry.p}`, "port"));
+
+      const courseLink = document.createElement("a");
+      courseLink.className = "course-link";
+      courseLink.href = chapterInfo[entry.ch].href;
+      courseLink.textContent = `Chapitre ${entry.ch} · ${chapterInfo[entry.ch].title} →`;
+
+      article.append(head, definition, meta, courseLink);
+      return article;
+    }
+
+    function activeFilterText() {
+      const labels = [];
+      if (els.search.value.trim()) labels.push(`recherche « ${els.search.value.trim()} »`);
+      [els.category, els.type, els.layer, els.chapter, els.transport, els.priority].forEach((select) => {
+        if (select.value) labels.push(select.options[select.selectedIndex].text);
+      });
+      if (els.withPort.checked) labels.push("avec port");
+      if (els.favoritesOnly.checked) labels.push("favoris");
+      return labels.length ? `Filtres actifs : ${labels.join(" · ")}` : "Toutes les fiches sont affichées.";
+    }
+
+    function render() {
+      els.cards.replaceChildren();
+      els.resultCount.textContent = visibleEntries.length;
+      els.activeFilter.textContent = activeFilterText();
+
+      if (!visibleEntries.length) {
+        const empty = document.createElement("div");
+        empty.className = "empty";
+        empty.innerHTML = "<strong>Aucune fiche ne correspond.</strong><br>Essayez un terme plus large ou effacez certains filtres.";
+        els.cards.append(empty);
+        return;
+      }
+
+      const fragment = document.createDocumentFragment();
+      visibleEntries.forEach((entry) => fragment.append(makeCard(entry)));
+      els.cards.append(fragment);
+    }
+
+    [els.category, els.type, els.layer, els.chapter, els.transport, els.priority, els.withPort, els.favoritesOnly, els.sort]
+      .forEach((element) => element.addEventListener("change", filterEntries));
+    els.search.addEventListener("input", filterEntries);
+
+    document.querySelector("#resetButton").addEventListener("click", () => {
+      els.search.value = "";
+      [els.category, els.type, els.layer, els.chapter, els.transport, els.priority].forEach((select) => select.value = "");
+      els.withPort.checked = false;
+      els.favoritesOnly.checked = false;
+      els.sort.value = "chapter";
+      filterEntries();
+      els.search.focus();
+    });
+
+    document.querySelector("#printButton").addEventListener("click", () => window.print());
+
+    const root = document.documentElement;
+    const savedTheme = localStorage.getItem("reseaux-index-theme");
+    if (savedTheme) root.dataset.theme = savedTheme;
+    document.querySelector("#themeButton").addEventListener("click", () => {
+      root.dataset.theme = root.dataset.theme === "light" ? "dark" : "light";
+      localStorage.setItem("reseaux-index-theme", root.dataset.theme);
+    });
+
+    const quizDialog = document.querySelector("#quizDialog");
+    const quizName = document.querySelector("#quizName");
+    const quizBadge = document.querySelector("#quizBadge");
+    const quizAnswer = document.querySelector("#quizAnswer");
+    const revealButton = document.querySelector("#revealButton");
+
+    function drawQuiz() {
+      const pool = visibleEntries.length ? visibleEntries : entries;
+      let candidate = pool[Math.floor(Math.random() * pool.length)];
+      if (pool.length > 1) {
+        while (candidate === currentQuiz) candidate = pool[Math.floor(Math.random() * pool.length)];
+      }
+      currentQuiz = candidate;
+      quizName.textContent = candidate.a ? `${candidate.n} · ${candidate.a}` : candidate.n;
+      quizBadge.textContent = `${layerLabels[candidate.l]} · ${candidate.c}`;
+      quizAnswer.replaceChildren();
+      const definition = document.createElement("p");
+      definition.textContent = candidate.d;
+      const details = document.createElement("p");
+      details.innerHTML = `<strong>Type :</strong> ${candidate.t} · <strong>Transport :</strong> ${candidate.tr}${candidate.p ? ` · <strong>Port :</strong> ${candidate.p}` : ""}`;
+      quizAnswer.append(definition, details);
+      quizAnswer.hidden = true;
+      revealButton.hidden = false;
+    }
+
+    document.querySelector("#quizButton").addEventListener("click", () => {
+      drawQuiz();
+      quizDialog.showModal();
+    });
+    document.querySelector("#nextQuiz").addEventListener("click", drawQuiz);
+    document.querySelector("#closeQuiz").addEventListener("click", () => quizDialog.close());
+    revealButton.addEventListener("click", () => {
+      quizAnswer.hidden = false;
+      revealButton.hidden = true;
+    });
+    quizDialog.addEventListener("click", (event) => {
+      if (event.target === quizDialog) quizDialog.close();
+    });
+
+    filterEntries();
+  </script>
+</body>
+</html>

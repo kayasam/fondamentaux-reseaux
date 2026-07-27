@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter></defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="33" font-weight="800" fill="#08285f">TCP OU UDP — PARTIR DU BESOIN</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">Ce ne sont pas deux vitesses : ce sont deux services différents</text>
+  <rect x="30" y="120" width="550" height="415" rx="16" fill="#fff" stroke="#c4b5fd" filter="url(#s)"/>
+  <rect x="48" y="102" width="185" height="40" rx="11" fill="#7c3aed"/><text x="140" y="129" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700" fill="#fff">TCP</text>
+  <rect x="620" y="120" width="550" height="415" rx="16" fill="#fff" stroke="#6ee7b7" filter="url(#s)"/>
+  <rect x="638" y="102" width="185" height="40" rx="11" fill="#0f8a5f"/><text x="730" y="129" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700" fill="#fff">UDP</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="85" y="160" width="440" height="65" rx="11" fill="#f5f3ff" stroke="#c4b5fd"/><text x="305" y="187" font-size="17" font-weight="700" fill="#5620bb">FLUX D'OCTETS</text><text x="305" y="210" font-size="14" fill="#526581">les limites des messages ne sont pas conservées</text>
+    <rect x="85" y="243" width="440" height="65" rx="11" fill="#f5f3ff" stroke="#c4b5fd"/><text x="305" y="270" font-size="17" font-weight="700" fill="#5620bb">FIABILITÉ ET ORDRE</text><text x="305" y="293" font-size="14" fill="#526581">ACK, séquences et retransmissions</text>
+    <rect x="85" y="326" width="440" height="65" rx="11" fill="#f5f3ff" stroke="#c4b5fd"/><text x="305" y="353" font-size="17" font-weight="700" fill="#5620bb">CONNEXION</text><text x="305" y="376" font-size="14" fill="#526581">état conservé par les deux extrémités</text>
+    <rect x="85" y="409" width="440" height="82" rx="11" fill="#ede9fe" stroke="#7c3aed"/><text x="305" y="441" font-size="17" font-weight="700" fill="#5620bb">EXEMPLES</text><text x="305" y="469" font-size="14" fill="#526581">SSH • SMTP • HTTP/1.1 et HTTP/2</text>
+    <rect x="675" y="160" width="440" height="65" rx="11" fill="#ecfdf5" stroke="#6ee7b7"/><text x="895" y="187" font-size="17" font-weight="700" fill="#06633f">DATAGRAMMES</text><text x="895" y="210" font-size="14" fill="#526581">chaque message conserve ses limites</text>
+    <rect x="675" y="243" width="440" height="65" rx="11" fill="#ecfdf5" stroke="#6ee7b7"/><text x="895" y="270" font-size="17" font-weight="700" fill="#06633f">SERVICE MINIMAL</text><text x="895" y="293" font-size="14" fill="#526581">pas de retransmission ou d'ordre intégré</text>
+    <rect x="675" y="326" width="440" height="65" rx="11" fill="#ecfdf5" stroke="#6ee7b7"/><text x="895" y="353" font-size="17" font-weight="700" fill="#06633f">SANS HANDSHAKE UDP</text><text x="895" y="376" font-size="14" fill="#526581">l'application peut cependant ajouter le sien</text>
+    <rect x="675" y="409" width="440" height="82" rx="11" fill="#d1fae5" stroke="#10b981"/><text x="895" y="441" font-size="17" font-weight="700" fill="#06633f">EXEMPLES</text><text x="895" y="469" font-size="14" fill="#526581">DNS • DHCP • QUIC / HTTP/3</text>
+  </g>
+  <rect x="205" y="566" width="790" height="50" rx="12" fill="#fff7ed" stroke="#f59e0b"/>
+  <text x="600" y="597" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#9a3f00">La performance dépend du réseau, du protocole applicatif et du besoin — pas seulement de TCP ou UDP</text>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter><marker id="b" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#2563eb"/></marker><marker id="g" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#10b981"/></marker></defs>
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="33" font-weight="800" fill="#08285f">TCP — NUMÉROTER LES OCTETS</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">Le numéro ACK indique le prochain octet attendu</text>
+  <rect x="30" y="120" width="1140" height="430" rx="16" fill="#fff" stroke="#93c5fd" filter="url(#s)"/>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="75" y="155" width="180" height="58" rx="10" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="165" y="191" font-size="18" font-weight="700" fill="#123c8c">ÉMETTEUR</text>
+    <rect x="945" y="155" width="180" height="58" rx="10" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><text x="1035" y="191" font-size="18" font-weight="700" fill="#06633f">RÉCEPTEUR</text>
+  </g>
+  <line x1="165" y1="213" x2="165" y2="512" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="7 6"/>
+  <line x1="1035" y1="213" x2="1035" y2="512" stroke="#cbd5e1" stroke-width="2" stroke-dasharray="7 6"/>
+  <path d="M175 260H1025" stroke="#2563eb" stroke-width="3" marker-end="url(#b)"/>
+  <text x="600" y="248" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#2563eb">Seq = 1000 • 500 octets → positions 1000 à 1499</text>
+  <path d="M175 340H1025" stroke="#2563eb" stroke-width="3" marker-end="url(#b)"/>
+  <text x="600" y="328" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#2563eb">Seq = 1500 • 500 octets → positions 1500 à 1999</text>
+  <path d="M1025 430H175" stroke="#10b981" stroke-width="3" marker-end="url(#g)"/>
+  <text x="600" y="418" text-anchor="middle" font-family="Arial" font-size="18" font-weight="700" fill="#10b981">ACK = 2000</text>
+  <text x="600" y="454" text-anchor="middle" font-family="Arial" font-size="15" fill="#526581">« Tout ce qui précède 2000 est reçu ; j'attends maintenant l'octet 2000 »</text>
+  <rect x="260" y="485" width="680" height="46" rx="10" fill="#ecfdf5" stroke="#6ee7b7"/>
+  <text x="600" y="514" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#06633f">Un ACK cumulatif confirme ici la réception de deux segments</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="205" y="565" width="790" height="38" rx="10" fill="#fff7ed" stroke="#f59e0b"/>
+    <text x="600" y="590" font-size="16" font-weight="700" fill="#9a3f00">Séquence = position dans le flux • ACK = prochaine position attendue</text>
+  </g>
+</svg>

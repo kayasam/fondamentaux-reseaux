@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter><marker id="a" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#10b981"/></marker></defs>
+  <rect width="1200" height="620" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="33" font-weight="800" fill="#08285f">UDP — UN MESSAGE, UN DATAGRAMME</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">Peu de mécanismes intégrés ; l'application décide comment gérer les pertes</text>
+  <rect x="30" y="120" width="1140" height="430" rx="16" fill="#fff" stroke="#6ee7b7" filter="url(#s)"/>
+  <rect x="48" y="102" width="235" height="40" rx="11" fill="#0f8a5f"/><text x="165" y="129" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">DATAGRAMME UDP</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="82" y="171" width="245" height="88" rx="13" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><text x="204" y="205" font-size="19" font-weight="700" fill="#123c8c">APPLICATION</text><text x="204" y="233" font-size="15" fill="#526581">« position joueur : 42,18 »</text>
+    <path d="M337 215H420" stroke="#10b981" stroke-width="4" marker-end="url(#a)"/>
+    <rect x="440" y="158" width="680" height="116" rx="13" fill="#ecfdf5" stroke="#10b981" stroke-width="2"/>
+    <rect x="440" y="158" width="125" height="116" rx="13" fill="#10b981"/><text x="502" y="211" font-size="17" font-weight="700" fill="#fff">EN-TÊTE</text><text x="502" y="235" font-size="15" fill="#fff">8 octets</text>
+    <text x="842" y="210" font-size="19" font-weight="700" fill="#06633f">UN MESSAGE COMPLET</text><text x="842" y="238" font-size="15" fill="#526581">les limites sont conservées</text>
+  </g>
+  <text x="80" y="330" font-family="Arial" font-size="18" font-weight="700" fill="#08285f">EN-TÊTE : 4 CHAMPS DE 16 BITS</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="80" y="353" width="255" height="85" rx="10" fill="#dbeafe" stroke="#2563eb"/><text x="207" y="386" font-size="16" font-weight="700" fill="#123c8c">PORT SOURCE</text><text x="207" y="414" font-size="14" fill="#526581">application émettrice</text>
+    <rect x="345" y="353" width="255" height="85" rx="10" fill="#ede9fe" stroke="#7c3aed"/><text x="472" y="386" font-size="16" font-weight="700" fill="#5620bb">PORT DESTINATION</text><text x="472" y="414" font-size="14" fill="#526581">application destinataire</text>
+    <rect x="610" y="353" width="245" height="85" rx="10" fill="#fff7ed" stroke="#f59e0b"/><text x="732" y="386" font-size="16" font-weight="700" fill="#9a3f00">LONGUEUR</text><text x="732" y="414" font-size="14" fill="#526581">en-tête + données</text>
+    <rect x="865" y="353" width="255" height="85" rx="10" fill="#d1fae5" stroke="#10b981"/><text x="992" y="386" font-size="16" font-weight="700" fill="#06633f">CHECKSUM</text><text x="992" y="414" font-size="14" fill="#526581">détection d'altération</text>
+  </g>
+  <g font-family="Arial" text-anchor="middle">
+    <circle cx="262" cy="493" r="13" fill="#ef4444"/><text x="262" y="499" font-size="18" font-weight="700" fill="#fff">×</text><text x="380" y="499" font-size="15" fill="#991b1b">pas d'ACK</text>
+    <circle cx="526" cy="493" r="13" fill="#ef4444"/><text x="526" y="499" font-size="18" font-weight="700" fill="#fff">×</text><text x="670" y="499" font-size="15" fill="#991b1b">pas de retransmission</text>
+    <circle cx="840" cy="493" r="13" fill="#ef4444"/><text x="840" y="499" font-size="18" font-weight="700" fill="#fff">×</text><text x="964" y="499" font-size="15" fill="#991b1b">pas de remise en ordre</text>
+  </g>
+  <rect x="260" y="565" width="680" height="38" rx="10" fill="#ecfdf5" stroke="#6ee7b7"/>
+  <text x="600" y="590" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#06633f">UDP livre le datagramme reçu ou ne livre rien : l'application choisit la suite</text>
+</svg>

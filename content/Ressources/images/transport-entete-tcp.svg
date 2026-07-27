@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="650" viewBox="0 0 1200 650">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter></defs>
+  <rect width="1200" height="650" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="33" font-weight="800" fill="#08285f">SEGMENT TCP — LES CHAMPS ESSENTIELS</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">L'en-tête fait au minimum 20 octets et pilote la connexion fiable</text>
+  <rect x="30" y="120" width="1140" height="455" rx="16" fill="#fff" stroke="#c4b5fd" filter="url(#s)"/>
+  <rect x="48" y="102" width="220" height="40" rx="11" fill="#7c3aed"/><text x="158" y="129" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">EN-TÊTE TCP</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="75" y="165" width="525" height="68" rx="9" fill="#dbeafe" stroke="#2563eb"/><text x="337" y="194" font-size="17" font-weight="700" fill="#123c8c">PORT SOURCE — 16 BITS</text><text x="337" y="217" font-size="14" fill="#526581">application émettrice</text>
+    <rect x="600" y="165" width="525" height="68" rx="9" fill="#ede9fe" stroke="#7c3aed"/><text x="862" y="194" font-size="17" font-weight="700" fill="#5620bb">PORT DESTINATION — 16 BITS</text><text x="862" y="217" font-size="14" fill="#526581">application destinataire</text>
+    <rect x="75" y="243" width="1050" height="68" rx="9" fill="#ecfdf5" stroke="#10b981"/><text x="600" y="272" font-size="17" font-weight="700" fill="#06633f">NUMÉRO DE SÉQUENCE — 32 BITS</text><text x="600" y="295" font-size="14" fill="#526581">position du premier octet de données transporté</text>
+    <rect x="75" y="321" width="1050" height="68" rx="9" fill="#fff7ed" stroke="#f59e0b"/><text x="600" y="350" font-size="17" font-weight="700" fill="#9a3f00">NUMÉRO D'ACQUITTEMENT — 32 BITS</text><text x="600" y="373" font-size="14" fill="#526581">prochain octet attendu lorsque ACK est actif</text>
+    <rect x="75" y="399" width="330" height="88" rx="9" fill="#f5f3ff" stroke="#c4b5fd"/><text x="240" y="430" font-size="17" font-weight="700" fill="#5620bb">DRAPEAUX</text><text x="240" y="457" font-size="14" fill="#526581">SYN • ACK • FIN • RST…</text>
+    <rect x="435" y="399" width="330" height="88" rx="9" fill="#e0f2fe" stroke="#38bdf8"/><text x="600" y="430" font-size="17" font-weight="700" fill="#075985">FENÊTRE</text><text x="600" y="457" font-size="14" fill="#526581">capacité annoncée par le récepteur</text>
+    <rect x="795" y="399" width="330" height="88" rx="9" fill="#d1fae5" stroke="#10b981"/><text x="960" y="430" font-size="17" font-weight="700" fill="#06633f">CHECKSUM</text><text x="960" y="457" font-size="14" fill="#526581">intégrité de l'en-tête et des données</text>
+    <rect x="75" y="507" width="1050" height="42" rx="9" fill="#334155"/><text x="600" y="534" font-size="16" font-weight="700" fill="#fff">OPTIONS ÉVENTUELLES + DONNÉES DU FLUX</text>
+  </g>
+  <rect x="260" y="592" width="680" height="38" rx="10" fill="#f5f3ff" stroke="#c4b5fd"/>
+  <text x="600" y="617" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#5620bb">Les séquences et ACK portent sur des octets, pas sur des numéros de paquets</text>
+</svg>

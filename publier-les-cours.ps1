@@ -9,9 +9,12 @@ $projectRoot = "D:\Projet-git\fondamentaux-reseaux-web"
 $sourceCourses = Join-Path $sourceRoot "cours"
 $sourceImages = Join-Path $sourceRoot "Ressources\images"
 $sourceHtmlAssets = Join-Path $sourceRoot "Ressources\html-assets"
+$sourceRevisionIndexHtml = Join-Path $sourceRoot "Ressources\index-protocoles-et-notions.html"
+$sourceRevisionIndexMarkdown = Join-Path $sourceRoot "Ressources\index-protocoles-et-notions.md"
 $destinationContent = Join-Path $projectRoot "content"
 $stagingRoot = Join-Path $projectRoot ".publication-stage"
 $stagingCourses = Join-Path $stagingRoot "cours"
+$destinationResources = Join-Path $projectRoot "content\Ressources"
 $destinationImages = Join-Path $projectRoot "content\Ressources\images"
 $destinationHtmlAssets = Join-Path $projectRoot "content\Ressources\html-assets"
 
@@ -22,6 +25,17 @@ function Assert-Directory {
   )
 
   if (-not (Test-Path -LiteralPath $Path -PathType Container)) {
+    throw "$Description introuvable : $Path"
+  }
+}
+
+function Assert-File {
+  param(
+    [string]$Path,
+    [string]$Description
+  )
+
+  if (-not (Test-Path -LiteralPath $Path -PathType Leaf)) {
     throw "$Description introuvable : $Path"
   }
 }
@@ -65,6 +79,8 @@ Assert-Directory -Path $sourceCourses -Description "Le dossier des cours"
 Assert-Directory -Path $sourceImages -Description "Le dossier des images"
 Assert-Directory -Path $sourceHtmlAssets -Description "Le dossier des ressources HTML"
 Assert-Directory -Path (Join-Path $projectRoot ".git") -Description "Le dépôt Git"
+Assert-File -Path $sourceRevisionIndexHtml -Description "L'index de révision HTML"
+Assert-File -Path $sourceRevisionIndexMarkdown -Description "L'index de révision Markdown"
 
 if (Test-Path -LiteralPath $stagingRoot) {
   $resolvedStage = (Resolve-Path -LiteralPath $stagingRoot).Path
@@ -84,6 +100,8 @@ Copy-MirroredDirectory `
 Write-Host "2/6 - Copie des illustrations et des ressources HTML..."
 Copy-MirroredDirectory -Source $sourceImages -Destination $destinationImages
 Copy-MirroredDirectory -Source $sourceHtmlAssets -Destination $destinationHtmlAssets
+Copy-Item -LiteralPath $sourceRevisionIndexHtml -Destination $destinationResources -Force
+Copy-Item -LiteralPath $sourceRevisionIndexMarkdown -Destination $destinationResources -Force
 
 Write-Host "3/6 - Adaptation des liens pour le site..."
 $imagePattern = '!\[\[([^]|]+\.(?:svg|jpe?g|png|webp))(?:\|[^]]+)?\]\]'
@@ -118,6 +136,20 @@ Get-ChildItem -LiteralPath $stagingCourses -Recurse -File -Filter "*.html" | For
     [IO.File]::WriteAllText($htmlFile.FullName, $updated, $utf8WithoutBom)
   }
 }
+
+$publishedRevisionMarkdown = Join-Path $destinationResources "index-protocoles-et-notions.md"
+$revisionMarkdown = [IO.File]::ReadAllText($publishedRevisionMarkdown)
+$revisionMarkdown = $revisionMarkdown.Replace("../cours/", "../")
+[IO.File]::WriteAllText($publishedRevisionMarkdown, $revisionMarkdown, $utf8WithoutBom)
+
+$publishedRevisionHtml = Join-Path $destinationResources "index-protocoles-et-notions.html"
+$revisionHtml = [IO.File]::ReadAllText($publishedRevisionHtml)
+$revisionHtml = $revisionHtml.Replace("../cours/", "../")
+$revisionHtml = $revisionHtml.Replace(
+  'href="index-protocoles-et-notions.md" download',
+  'href="../telechargements/index-protocoles-et-notions.md" download'
+)
+[IO.File]::WriteAllText($publishedRevisionHtml, $revisionHtml, $utf8WithoutBom)
 
 Write-Host "4/6 - Masquage des documents privés et des corrections non publiées..."
 $hiddenDocuments = 0

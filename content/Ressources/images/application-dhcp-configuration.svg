@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="610" viewBox="0 0 1200 610">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter><marker id="a" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#f59e0b"/></marker></defs>
+  <rect width="1200" height="610" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="33" font-weight="800" fill="#08285f">DHCP — FOURNIR UNE CONFIGURATION COHÉRENTE</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">Une adresse seule ne suffit pas pour utiliser les autres réseaux et les noms</text>
+  <rect x="30" y="120" width="1140" height="410" rx="16" fill="#fff" stroke="#fdba74" filter="url(#s)"/>
+  <rect x="48" y="102" width="265" height="40" rx="11" fill="#f59e0b"/><text x="180" y="129" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">OPTIONS DHCP</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="75" y="185" width="240" height="210" rx="16" fill="#fff7ed" stroke="#f59e0b" stroke-width="2"/>
+    <rect x="135" y="220" width="120" height="75" rx="8" fill="#fff" stroke="#f59e0b"/><circle cx="195" cy="315" r="8" fill="#f59e0b"/>
+    <text x="195" y="360" font-size="20" font-weight="700" fill="#9a3f00">SERVEUR DHCP</text>
+    <path d="M325 290H425" stroke="#f59e0b" stroke-width="4" marker-end="url(#a)"/>
+    <rect x="445" y="160" width="300" height="260" rx="15" fill="#f8fafc" stroke="#cbd5e1"/>
+    <text x="595" y="198" font-size="19" font-weight="700" fill="#08285f">CONFIGURATION FOURNIE</text>
+    <rect x="480" y="220" width="230" height="38" rx="8" fill="#dbeafe" stroke="#2563eb"/><text x="595" y="245" font-size="15" font-weight="700" fill="#123c8c">IP : 192.168.10.42</text>
+    <rect x="480" y="270" width="230" height="38" rx="8" fill="#ede9fe" stroke="#7c3aed"/><text x="595" y="295" font-size="15" font-weight="700" fill="#5620bb">PRÉFIXE : /24</text>
+    <rect x="480" y="320" width="230" height="38" rx="8" fill="#d1fae5" stroke="#10b981"/><text x="595" y="345" font-size="15" font-weight="700" fill="#06633f">PASSERELLE : .254</text>
+    <rect x="480" y="370" width="230" height="38" rx="8" fill="#e0f2fe" stroke="#0284c7"/><text x="595" y="395" font-size="15" font-weight="700" fill="#075985">DNS : 192.168.10.10</text>
+    <path d="M755 290H855" stroke="#f59e0b" stroke-width="4" marker-end="url(#a)"/>
+    <rect x="875" y="185" width="250" height="210" rx="16" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/>
+    <circle cx="1000" cy="240" r="27" fill="#2563eb"/><rect x="945" y="280" width="110" height="62" rx="8" fill="#fff" stroke="#2563eb"/>
+    <text x="1000" y="375" font-size="20" font-weight="700" fill="#123c8c">POSTE CLIENT</text>
+  </g>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="75" y="450" width="240" height="52" rx="10" fill="#dbeafe" stroke="#93c5fd"/><text x="195" y="482" font-size="15" font-weight="700" fill="#123c8c">UDP/67 — serveur</text>
+    <rect x="480" y="450" width="230" height="52" rx="10" fill="#fff7ed" stroke="#fdba74"/><text x="595" y="482" font-size="15" font-weight="700" fill="#9a3f00">BAIL — durée limitée</text>
+    <rect x="875" y="450" width="250" height="52" rx="10" fill="#d1fae5" stroke="#6ee7b7"/><text x="1000" y="482" font-size="15" font-weight="700" fill="#06633f">UDP/68 — client</text>
+  </g>
+  <rect x="225" y="553" width="750" height="38" rx="10" fill="#ecfdf5" stroke="#6ee7b7"/>
+  <text x="600" y="578" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#06633f">IP + préfixe + passerelle + DNS : quatre informations à contrôler ensemble</text>
+</svg>

@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="670" viewBox="0 0 1200 670">
+  <defs><filter id="s"><feDropShadow dx="0" dy="3" stdDeviation="5" flood-opacity=".13"/></filter><marker id="b" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#2563eb"/></marker><marker id="g" markerUnits="userSpaceOnUse" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#10b981"/></marker></defs>
+  <rect width="1200" height="670" fill="#f8fafc"/>
+  <text x="600" y="50" text-anchor="middle" font-family="Arial" font-size="33" font-weight="800" fill="#08285f">HTTP — UNE REQUÊTE, UNE RÉPONSE</text>
+  <text x="600" y="82" text-anchor="middle" font-family="Arial" font-size="17" fill="#526581">La méthode et l'URI décrivent l'action ; le statut décrit le résultat</text>
+  <rect x="30" y="120" width="1140" height="475" rx="16" fill="#fff" stroke="#93c5fd" filter="url(#s)"/>
+  <rect x="48" y="102" width="275" height="40" rx="11" fill="#0b5bd3"/><text x="185" y="129" text-anchor="middle" font-family="Arial" font-size="17" font-weight="700" fill="#fff">ÉCHANGE HTTP/1.1</text>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="70" y="170" width="210" height="120" rx="14" fill="#dbeafe" stroke="#2563eb" stroke-width="2"/><circle cx="175" cy="208" r="23" fill="#2563eb"/><rect x="130" y="240" width="90" height="34" rx="6" fill="#fff" stroke="#2563eb"/><text x="175" y="320" font-size="19" font-weight="700" fill="#123c8c">CLIENT</text>
+    <rect x="920" y="170" width="210" height="120" rx="14" fill="#d1fae5" stroke="#10b981" stroke-width="2"/><rect x="985" y="195" width="80" height="72" rx="8" fill="#fff" stroke="#10b981"/><text x="1025" y="320" font-size="19" font-weight="700" fill="#06633f">SERVEUR WEB</text>
+  </g>
+  <path d="M290 220H910" stroke="#2563eb" stroke-width="4" marker-end="url(#b)"/>
+  <rect x="370" y="160" width="460" height="120" rx="12" fill="#eff6ff" stroke="#93c5fd"/>
+  <g font-family="monospace">
+    <text x="400" y="192" font-size="17" font-weight="700" fill="#123c8c">GET /reseaux/index.html HTTP/1.1</text>
+    <text x="400" y="220" font-size="15" fill="#334155">Host: cours.example</text>
+    <text x="400" y="246" font-size="15" fill="#334155">Accept: text/html</text>
+  </g>
+  <path d="M910 395H290" stroke="#10b981" stroke-width="4" marker-end="url(#g)"/>
+  <rect x="370" y="335" width="460" height="145" rx="12" fill="#ecfdf5" stroke="#6ee7b7"/>
+  <g font-family="monospace">
+    <text x="400" y="367" font-size="17" font-weight="700" fill="#06633f">HTTP/1.1 200 OK</text>
+    <text x="400" y="395" font-size="15" fill="#334155">Content-Type: text/html</text>
+    <text x="400" y="421" font-size="15" fill="#334155">Content-Length: 1250</text>
+    <text x="400" y="452" font-size="15" fill="#334155">&lt;!doctype html&gt; ...</text>
+  </g>
+  <g font-family="Arial" text-anchor="middle">
+    <rect x="70" y="510" width="250" height="58" rx="10" fill="#dbeafe" stroke="#93c5fd"/><text x="195" y="534" font-size="15" font-weight="700" fill="#123c8c">MÉTHODE + CIBLE</text><text x="195" y="555" font-size="13" fill="#526581">ce que souhaite le client</text>
+    <rect x="345" y="510" width="250" height="58" rx="10" fill="#ede9fe" stroke="#c4b5fd"/><text x="470" y="534" font-size="15" font-weight="700" fill="#5620bb">EN-TÊTES</text><text x="470" y="555" font-size="13" fill="#526581">métadonnées de l'échange</text>
+    <rect x="620" y="510" width="250" height="58" rx="10" fill="#d1fae5" stroke="#6ee7b7"/><text x="745" y="534" font-size="15" font-weight="700" fill="#06633f">STATUT</text><text x="745" y="555" font-size="13" fill="#526581">résultat du traitement</text>
+    <rect x="895" y="510" width="235" height="58" rx="10" fill="#fff7ed" stroke="#fdba74"/><text x="1012" y="534" font-size="15" font-weight="700" fill="#9a3f00">CORPS ÉVENTUEL</text><text x="1012" y="555" font-size="13" fill="#526581">représentation ou données</text>
+  </g>
+  <rect x="250" y="615" width="700" height="36" rx="10" fill="#fff7ed" stroke="#f59e0b"/>
+  <text x="600" y="639" text-anchor="middle" font-family="Arial" font-size="16" font-weight="700" fill="#9a3f00">HTTP décrit l'échange applicatif ; le transport porte les messages</text>
+</svg>
