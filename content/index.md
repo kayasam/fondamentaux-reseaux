@@ -9,9 +9,16 @@ Ce site permet de consulter les cours et les travaux pratiques directement dans 
 
 ## Télécharger pour Obsidian
 
-[Télécharger la formation complète au format ZIP](fondamentaux-reseaux-obsidian.zip)
+<div class="obsidian-download">
+  <div class="obsidian-download__icon" aria-hidden="true">⬇</div>
+  <div class="obsidian-download__content">
+    <strong>Emporter toute la formation</strong>
+    <span>Cours, travaux pratiques et illustrations — prêts à ouvrir dans Obsidian.</span>
+  </div>
+  <a class="obsidian-download__button" href="./fondamentaux-reseaux-obsidian.zip" download>Télécharger le ZIP</a>
+</div>
 
-L'archive contient les cours, les travaux pratiques et toutes les illustrations. Après l'avoir décompressée, ouvrez le dossier `Fondamentaux-Reseaux` dans Obsidian avec **Ouvrir un dossier comme coffre**.
+Après l'avoir décompressée, ouvrez le dossier `Fondamentaux-Reseaux` dans Obsidian avec **Ouvrir un dossier comme coffre**.
 
 ## Cours
 
