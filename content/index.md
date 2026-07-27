@@ -7,6 +7,8 @@ description: Support de formation consacré aux fondamentaux des réseaux inform
 
 Ce site permet de consulter les cours et les travaux pratiques directement dans le navigateur.
 
+![Un réseau informatique moderne reliant postes, Wi-Fi, serveurs et cloud](Ressources/images/hero-fondamentaux-reseaux.png)
+
 ## Télécharger pour Obsidian
 
 <div class="obsidian-download">
@@ -22,13 +24,13 @@ Après l'avoir décompressée, ouvrez le dossier `Fondamentaux-Reseaux` dans Obs
 
 ## Cours
 
-1. [[cours/01-introduction-reseaux/01-introduction-reseaux|Introduction aux réseaux]]
-2. [[cours/02-couche-physique/02-couche-physique|La couche physique]]
-3. [[cours/03-couche-liaison/03-couche-liaison|La couche liaison]]
-4. [[cours/04-couche-reseau/04-couche-reseau|Adressage et routage]]
-5. [[cours/05-couche-transport/05-couche-transport|La couche transport]]
-6. [[cours/06-services-reseau/06-services-reseau|Les services réseau]]
-7. [[cours/07-securite-et-acces/07-securite-et-acces|Sécurité et accès réseau]]
+1. [[00-introduction-reseaux/00-introduction-reseaux|Introduction aux réseaux]]
+2. [[01-couche-physique/01-couche-physique|La couche physique]]
+3. [[02-couche-liaison/02-couche-liaison|La couche liaison]]
+4. [[03-couche-reseau/03-couche-reseau|Adressage et routage]]
+5. [[04-couche-transport/04-couche-transport|La couche transport]]
+6. [[05-services-reseau/05-services-reseau|Les services réseau]]
+7. [[06-securite-et-acces/06-securite-et-acces|Sécurité et accès réseau]]
 
 ## Travaux pratiques
 

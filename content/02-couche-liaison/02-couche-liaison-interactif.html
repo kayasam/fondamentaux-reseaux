@@ -1,0 +1,1621 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Support interactif de formation Fondamentaux Réseaux : 02 — Couche liaison de données">
+<title>02 — Couche liaison</title>
+<style>
+:root {
+  --bg: #0f1117; --surface: #1a1d27; --surface2: #232635; --border: #2e3148;
+  --accent: #60a5fa; --accent2: #93c5fd;
+  --warn: #f0a500; --danger: #e05c5c; --success: #4caf82;
+  --text: #d4d8f0; --text-dim: #7880a0; --code-bg: #12141f; --radius: 10px;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; font-size: 15px; line-height: 1.7; }
+
+header { background: linear-gradient(135deg, #080e1a 0%, #0d1220 100%); border-bottom: 1px solid var(--border); padding: 2.5rem 2rem 1.5rem; text-align: center; }
+.badge { display: inline-block; background: var(--accent); color: #0a0e1a; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; padding: 3px 10px; border-radius: 20px; margin-bottom: .7rem; }
+header h1 { font-size: 1.8rem; font-weight: 700; color: #fff; line-height: 1.2; }
+header p { color: var(--text-dim); margin-top: .4rem; font-size: .95rem; }
+
+nav { position: sticky; top: 0; z-index: 100; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; justify-content: center; flex-wrap: wrap; gap: .25rem; padding: .5rem 1rem; }
+nav button { background: none; border: none; color: var(--text-dim); padding: .85rem 1.1rem; font-size: .88rem; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; white-space: nowrap; transition: all .2s; }
+nav button:hover { color: var(--text); }
+nav button.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+.tab-content { display: none; padding: 2rem; max-width: 900px; margin: 0 auto; }
+.tab-content.active { display: block; }
+
+h2 { font-size: 1.25rem; color: var(--accent2); margin: 1.8rem 0 .8rem; border-left: 3px solid var(--accent); padding-left: .75rem; }
+h2:first-child { margin-top: 0; }
+h3 { font-size: 1.05rem; color: var(--text); margin: 1.4rem 0 .6rem; }
+p { margin-bottom: .9rem; }
+ul, ol { padding-left: 1.4rem; margin-bottom: .9rem; }
+li { margin-bottom: .35rem; }
+
+.callout { border-radius: var(--radius); padding: .9rem 1.1rem; margin: 1.2rem 0; border-left: 4px solid; }
+.callout.note  { background: #1a2035; border-color: var(--accent); }
+.callout.tip   { background: #0e2018; border-color: var(--success); }
+.callout.warn  { background: #1e1800; border-color: var(--warn); }
+.callout-title { font-weight: 700; font-size: .82rem; text-transform: uppercase; letter-spacing: .07em; margin-bottom: .4rem; }
+.callout.note  .callout-title { color: var(--accent); }
+.callout.tip   .callout-title { color: var(--success); }
+.callout.warn  .callout-title { color: var(--warn); }
+
+.table-wrap { overflow-x: auto; margin: 1rem 0; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th { background: var(--surface2); color: var(--accent2); text-align: left; padding: .6rem .9rem; font-weight: 600; border: 1px solid var(--border); }
+td { padding: .55rem .9rem; border: 1px solid var(--border); vertical-align: top; }
+tr:hover td { background: var(--surface2); }
+
+code { font-family: 'Consolas', 'Cascadia Code', monospace; font-size: .88rem; color: #a8d8ff; background: var(--code-bg); padding: .15rem .4rem; border-radius: 4px; }
+.code-block { position: relative; margin: 1rem 0; }
+pre { background: var(--code-bg); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem 1.2rem; overflow-x: auto; }
+pre code { background: none; padding: 0; }
+.copy-btn { position: absolute; top: .5rem; right: .5rem; background: var(--surface2); border: 1px solid var(--border); color: var(--text-dim); padding: .25rem .6rem; font-size: .75rem; border-radius: 5px; cursor: pointer; transition: all .2s; }
+.copy-btn:hover { background: var(--accent); color: #000; }
+.copy-btn.copied { background: var(--success); color: #000; }
+
+.video-wrap { position: relative; padding-bottom: 56.25%; height: 0; margin: 1.2rem 0; border-radius: var(--radius); overflow: hidden; }
+.video-wrap iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
+/* ── TRAME VISUAL ── */
+.frame-visual { display: flex; gap: 0; margin: 1.5rem 0; overflow-x: auto; padding-bottom: .5rem; }
+.frame-field {
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: .6rem .5rem; text-align: center; border: 1px solid; min-width: 70px;
+  cursor: pointer; transition: all .3s; position: relative;
+}
+.frame-field:first-child { border-radius: 8px 0 0 8px; }
+.frame-field:last-child { border-radius: 0 8px 8px 0; }
+.frame-field .ff-name { font-size: .75rem; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; }
+.frame-field .ff-size { font-size: .65rem; opacity: .7; margin-top: .2rem; }
+.frame-field.preamble { background: rgba(100,100,140,.15); border-color: #6366f1; color: #a5b4fc; }
+.frame-field.mac-dst  { background: rgba(239,68,68,.12); border-color: #ef4444; color: #fca5a5; flex-grow: 1; }
+.frame-field.mac-src  { background: rgba(249,115,22,.12); border-color: #f97316; color: #fdba74; flex-grow: 1; }
+.frame-field.ethertype{ background: rgba(168,85,247,.12); border-color: #a855f7; color: #d8b4fe; }
+.frame-field.payload  { background: rgba(34,197,94,.1); border-color: #22c55e; color: #86efac; flex-grow: 3; min-width: 160px; }
+.frame-field.fcs      { background: rgba(234,179,8,.1); border-color: #eab308; color: #fde68a; }
+.frame-field:hover { filter: brightness(1.3); transform: translateY(-2px); }
+.frame-field.active { filter: brightness(1.4); transform: translateY(-4px); box-shadow: 0 6px 20px rgba(0,0,0,.4); }
+.frame-info {
+  background: var(--surface2); border: 1px solid var(--accent); border-radius: var(--radius);
+  padding: 1rem; margin-top: .5rem; font-size: .88rem; display: none;
+}
+.frame-info.visible { display: block; }
+
+/* ── MAC ADDRESS VISUAL ── */
+.mac-visual { display: flex; align-items: center; gap: 0; margin: 1.2rem 0; justify-content: center; flex-wrap: wrap; }
+.mac-byte {
+  padding: .6rem .7rem; font-family: 'Consolas', monospace; font-size: 1.1rem; font-weight: 700;
+  text-align: center; border: 1px solid; min-width: 50px;
+}
+.mac-byte:first-child { border-radius: 8px 0 0 8px; }
+.mac-byte:nth-child(3) { border-right: 3px solid var(--text-dim); }
+.mac-byte:last-child { border-radius: 0 8px 8px 0; }
+.mac-byte.oui { background: rgba(96,165,250,.15); border-color: #60a5fa; color: #93c5fd; }
+.mac-byte.nic { background: rgba(76,175,130,.15); border-color: #4caf82; color: #6ee7b7; }
+.mac-labels { display: flex; justify-content: center; gap: 0; margin-top: .3rem; }
+.mac-label { font-size: .75rem; font-weight: 600; text-align: center; }
+.mac-label.oui { color: #93c5fd; width: 168px; }
+.mac-label.nic { color: #6ee7b7; width: 168px; }
+
+/* ── SWITCH ANIM ── */
+.switch-demo { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.5rem; margin: 1.5rem 0; }
+.switch-diagram {
+  display: grid; grid-template-columns: 120px 1fr 120px; align-items: center; gap: 1rem;
+  font-family: 'Consolas', monospace; font-size: .85rem; margin-bottom: 1rem;
+}
+.sw-device { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: .6rem; text-align: center; }
+.sw-device.highlight { border-color: var(--accent); background: rgba(96,165,250,.1); }
+.sw-center { background: linear-gradient(135deg, #1e3a5f, #1d4ed8); border-radius: 10px; padding: 1rem; text-align: center; color: #fff; font-weight: 700; font-size: 1rem; }
+.sw-links { display: flex; flex-direction: column; gap: .4rem; }
+.sw-link { height: 2px; background: var(--border); position: relative; transition: background .4s; }
+.sw-link.active { background: var(--accent); box-shadow: 0 0 8px rgba(96,165,250,.4); }
+.sw-link .sw-arrow { position: absolute; right: -2px; top: -4px; border-left: 8px solid var(--accent); border-top: 5px solid transparent; border-bottom: 5px solid transparent; opacity: 0; transition: opacity .3s; }
+.sw-link.active .sw-arrow { opacity: 1; }
+.sw-table { margin-top: 1rem; }
+.sw-controls { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1rem; }
+.sw-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: .45rem 1rem; border-radius: 8px; cursor: pointer; font-size: .82rem; transition: all .2s; }
+.sw-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+.sw-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+.sw-msg { font-size: .88rem; color: var(--text); margin-top: .8rem; padding: .6rem; background: var(--code-bg); border-radius: 6px; min-height: 2.5rem; }
+
+/* ── STP VISUAL ── */
+.stp-visual { display: flex; flex-direction: column; gap: 0; margin: 1.2rem 0; }
+.stp-step {
+  display: grid; grid-template-columns: 3rem 1fr; gap: .8rem; align-items: center;
+  padding: .8rem 1rem; background: var(--surface); border: 1px solid var(--border);
+}
+.stp-step:first-child { border-radius: var(--radius) var(--radius) 0 0; }
+.stp-step:last-child { border-radius: 0 0 var(--radius) var(--radius); }
+.stp-step + .stp-step { border-top: none; }
+.stp-step .step-num {
+  width: 2.5rem; height: 2.5rem; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 1rem; font-weight: 800; color: #fff;
+}
+.stp-step:nth-child(1) .step-num { background: linear-gradient(135deg, #7c3aed, #a78bfa); }
+.stp-step:nth-child(2) .step-num { background: linear-gradient(135deg, #1d4ed8, #3b82f6); }
+.stp-step:nth-child(3) .step-num { background: linear-gradient(135deg, #b45309, #f59e0b); }
+.stp-step .step-title { font-weight: 700; font-size: .95rem; }
+.stp-step .step-desc { font-size: .85rem; color: var(--text-dim); }
+
+/* ── VLAN VISUAL ── */
+.vlan-switch { margin: 1.5rem 0; }
+.vlan-ports { display: flex; gap: 0; margin: .8rem 0; }
+.vlan-port {
+  flex: 1; padding: .7rem .4rem; text-align: center; font-size: .78rem; font-weight: 600;
+  border: 1px solid; cursor: pointer; transition: all .3s;
+}
+.vlan-port:first-child { border-radius: 8px 0 0 8px; }
+.vlan-port:last-child { border-radius: 0 8px 8px 0; }
+.vlan-port.v10 { background: rgba(239,68,68,.12); border-color: #ef4444; color: #fca5a5; }
+.vlan-port.v20 { background: rgba(59,130,246,.12); border-color: #3b82f6; color: #93c5fd; }
+.vlan-port.v30 { background: rgba(34,197,94,.12); border-color: #22c55e; color: #86efac; }
+.vlan-port.trunk { background: rgba(168,85,247,.12); border-color: #a855f7; color: #d8b4fe; }
+.vlan-port:hover { filter: brightness(1.3); transform: translateY(-2px); }
+.vlan-port .port-label { font-size: .65rem; opacity: .7; display: block; margin-top: .2rem; }
+.vlan-legend { display: flex; gap: 1.2rem; flex-wrap: wrap; margin-top: .6rem; }
+.vlan-legend-item { display: flex; align-items: center; gap: .4rem; font-size: .82rem; }
+.vlan-legend-color { width: 12px; height: 12px; border-radius: 3px; }
+
+/* ── CARDS ── */
+.cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; margin: 1.2rem 0; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.1rem; cursor: pointer; transition: all .25s; }
+.card:hover, .card.selected { border-color: var(--accent); background: var(--surface2); }
+.card h4 { color: var(--accent); margin-bottom: .4rem; font-size: 1rem; }
+.card .tag { font-size: .75rem; color: var(--text-dim); }
+.card-detail { display: none; background: var(--surface2); border: 1px solid var(--accent); border-radius: var(--radius); padding: 1rem; margin-top: .8rem; font-size: .9rem; line-height: 1.6; }
+.card-detail.visible { display: block; }
+
+/* ── RECAP ── */
+.filter-bar { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.filter-btn { background: var(--surface); border: 1px solid var(--border); color: var(--text-dim); padding: .35rem .85rem; border-radius: 20px; font-size: .82rem; cursor: pointer; transition: all .2s; }
+.filter-btn:hover, .filter-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+.recap-row.hidden { display: none; }
+
+/* ── QUIZ ── */
+.quiz-question { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1.2rem; margin-bottom: 1.2rem; }
+.quiz-question h4 { color: var(--accent2); margin-bottom: .9rem; font-size: .98rem; }
+.quiz-options { display: flex; flex-direction: column; gap: .5rem; }
+.quiz-option { background: var(--surface2); border: 1px solid var(--border); border-radius: 8px; padding: .6rem .9rem; cursor: pointer; font-size: .9rem; transition: all .2s; text-align: left; color: var(--text); }
+.quiz-option:hover:not(:disabled) { border-color: var(--accent); }
+.quiz-option.correct { background: #0d2e1e; border-color: var(--success); color: var(--success); }
+.quiz-option.wrong   { background: #2e0d0d; border-color: var(--danger);  color: var(--danger); }
+.quiz-option:disabled { cursor: default; }
+.quiz-feedback { margin-top: .6rem; font-size: .87rem; color: var(--text-dim); font-style: italic; }
+.quiz-score { background: var(--surface2); border: 1px solid var(--accent); border-radius: var(--radius); padding: 1.5rem; text-align: center; margin-top: 1.5rem; display: none; }
+.quiz-score .score-num { font-size: 2.5rem; font-weight: 700; color: var(--accent); }
+.quiz-score p { color: var(--text-dim); margin-top: .4rem; }
+.btn-restart { background: var(--accent); color: #000; border: none; padding: .6rem 1.4rem; border-radius: 8px; font-weight: 700; cursor: pointer; margin-top: 1rem; font-size: .9rem; }
+.btn-restart:hover { background: var(--accent2); }
+
+/* ── SVG NETWORK DIAGRAMS ── */
+.net-diagram { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 1rem; margin: 1.5rem 0; }
+.net-diagram svg { width: 100%; height: auto; display: block; }
+.net-diagram svg text { font-family: 'Segoe UI', system-ui, sans-serif; }
+.nd-controls { display: flex; gap: .6rem; flex-wrap: wrap; margin-top: 1rem; justify-content: center; }
+.nd-btn { background: var(--surface2); border: 1px solid var(--border); color: var(--text); padding: .45rem 1rem; border-radius: 8px; cursor: pointer; font-size: .82rem; transition: all .2s; }
+.nd-btn:hover { background: var(--accent); color: #000; border-color: var(--accent); }
+.nd-btn.active { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 600; }
+.nd-msg { font-size: .88rem; color: var(--text); margin-top: .8rem; padding: .6rem; background: var(--code-bg); border-radius: 6px; text-align: center; min-height: 2.5rem; }
+
+.svg-link { transition: stroke .4s, stroke-dasharray .4s, opacity .4s; }
+.svg-link.blocked { stroke-dasharray: 8 6; opacity: .35; }
+.svg-link.highlight { stroke-width: 3; filter: drop-shadow(0 0 6px currentColor); }
+.svg-node { cursor: pointer; transition: opacity .3s; }
+.svg-node.dimmed { opacity: .25; }
+.svg-node:hover { filter: brightness(1.2); }
+@keyframes loopPulse { 0%,100% { stroke-opacity: 1; } 50% { stroke-opacity: .3; } }
+.svg-link.looping { animation: loopPulse .8s infinite; stroke: var(--danger); }
+
+@media (max-width: 600px) {
+  .cards-grid { grid-template-columns: 1fr; }
+  .switch-diagram { grid-template-columns: 1fr; }
+  .mac-visual { gap: 0; }
+  .mac-byte { min-width: 38px; padding: .4rem .3rem; font-size: .9rem; }
+  .frame-visual { gap: 0; }
+  .frame-field { min-width: 50px; padding: .5rem .3rem; }
+  .frame-field .ff-name { font-size: .65rem; }
+  .vlan-port { font-size: .7rem; padding: .5rem .2rem; }
+}
+</style>
+<link rel="stylesheet" href="../Ressources/html-assets/course-common.css">
+<script src="../Ressources/html-assets/course-common.js" defer></script>
+</head>
+<body>
+
+<header>
+  <div class="badge">Fondamentaux Réseaux</div>
+  <h1>02 — Couche liaison de données</h1>
+  <p>Trames Ethernet, adresses MAC, switches, VLANs et protocoles de couche 2.</p>
+</header>
+
+<nav id="main-nav">
+  <button class="active" onclick="showTab('trame')">Trame &amp; MAC</button>
+  <button onclick="showTab('switch')">Switch &amp; STP</button>
+  <button onclick="showTab('vlan')">VLAN</button>
+  <button onclick="showTab('autres')">LACP &amp; LLDP</button>
+  <button onclick="showTab('wlan')">WLAN</button>
+  <button onclick="showTab('recap')">Récapitulatif</button>
+  <button onclick="showTab('quiz')">Quiz</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 1 : Trame Ethernet & adresses MAC                                    -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-trame" class="tab-content active">
+
+  <h2>La trame Ethernet</h2>
+  <p>La <strong>trame Ethernet</strong> est l'unité de base de la communication sur un LAN. Elle encapsule les paquets IP reçus de la couche 3. Cliquez sur un champ pour voir son rôle :</p>
+
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/NNtotn5AG2U?si=ZOU-1rWPDrrmUiEq" title="YouTube video player" allowfullscreen></iframe>
+  </div>
+
+  <div class="frame-visual" id="frame-visual">
+    <div class="frame-field preamble" onclick="showFrameInfo('preamble')">
+      <span class="ff-name">Préambule</span>
+      <span class="ff-size">8 octets</span>
+    </div>
+    <div class="frame-field mac-dst" onclick="showFrameInfo('macdst')">
+      <span class="ff-name">MAC Dest.</span>
+      <span class="ff-size">6 octets</span>
+    </div>
+    <div class="frame-field mac-src" onclick="showFrameInfo('macsrc')">
+      <span class="ff-name">MAC Source</span>
+      <span class="ff-size">6 octets</span>
+    </div>
+    <div class="frame-field ethertype" onclick="showFrameInfo('ethertype')">
+      <span class="ff-name">EtherType</span>
+      <span class="ff-size">2 octets</span>
+    </div>
+    <div class="frame-field payload" onclick="showFrameInfo('payload')">
+      <span class="ff-name">Données (Payload)</span>
+      <span class="ff-size">46 – 1500 octets</span>
+    </div>
+    <div class="frame-field fcs" onclick="showFrameInfo('fcs')">
+      <span class="ff-name">FCS</span>
+      <span class="ff-size">4 octets</span>
+    </div>
+  </div>
+
+  <div class="frame-info" id="fi-preamble">
+    <strong>Préambule + SFD</strong> (8 octets) — Séquence de synchronisation qui indique le début d'une trame. Le SFD (Start Frame Delimiter) marque la fin du préambule et le début des données.
+  </div>
+  <div class="frame-info" id="fi-macdst">
+    <strong>MAC Destination</strong> (6 octets) — Adresse physique de l'appareil destinataire. Peut être unicast (un seul), broadcast (<code>FF:FF:FF:FF:FF:FF</code> = tous), ou multicast (un groupe).
+  </div>
+  <div class="frame-info" id="fi-macsrc">
+    <strong>MAC Source</strong> (6 octets) — Adresse physique de l'appareil émetteur. Toujours une adresse unicast. Permet au switch de remplir sa table MAC.
+  </div>
+  <div class="frame-info" id="fi-ethertype">
+    <strong>EtherType</strong> (2 octets) — Identifie le protocole encapsulé dans la trame. Valeurs courantes : <code>0x0800</code> = IPv4, <code>0x86DD</code> = IPv6, <code>0x0806</code> = ARP, <code>0x8100</code> = 802.1Q (VLAN).
+  </div>
+  <div class="frame-info" id="fi-payload">
+    <strong>Données</strong> (46 à 1500 octets) — Le contenu utile transporté (paquet IP, requête ARP…). Minimum 46 octets (padding ajouté si nécessaire). Le <strong>MTU</strong> standard Ethernet est de 1500 octets.
+  </div>
+  <div class="frame-info" id="fi-fcs">
+    <strong>FCS / CRC</strong> (4 octets) — Frame Check Sequence. Un calcul CRC-32 permet au récepteur de <strong>vérifier l'intégrité</strong> de la trame. Si le CRC ne correspond pas, la trame est silencieusement jetée.
+  </div>
+
+  <div class="callout note">
+    <div class="callout-title">Note</div>
+    Taille d'une trame Ethernet : minimum <strong>64 octets</strong>, maximum <strong>1518 octets</strong> (hors tag VLAN 802.1Q qui ajoute 4 octets).
+  </div>
+
+  <h2>Adresses MAC</h2>
+
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/7ln7oYIS-n0?si=aaYBsivQlPeIUiti" title="YouTube video player" allowfullscreen></iframe>
+  </div>
+
+  <p>Chaque interface réseau possède une <strong>adresse MAC unique</strong> de 48 bits (6 octets), attribuée par le constructeur :</p>
+
+  <div class="mac-visual">
+    <div class="mac-byte oui">C8</div>
+    <div class="mac-byte oui">5A</div>
+    <div class="mac-byte oui">CF</div>
+    <div class="mac-byte nic">06</div>
+    <div class="mac-byte nic">8C</div>
+    <div class="mac-byte nic">67</div>
+  </div>
+  <div class="mac-labels">
+    <div class="mac-label oui">OUI (constructeur)</div>
+    <div class="mac-label nic">NIC (carte unique)</div>
+  </div>
+
+  <h3>Types d'adresses MAC</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Type</th><th>Cible</th><th>Exemple</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Unicast</strong></td><td>Un seul appareil</td><td><code>C8:5A:CF:06:8C:67</code></td></tr>
+        <tr><td><strong>Broadcast</strong></td><td>Tous les appareils du LAN</td><td><code>FF:FF:FF:FF:FF:FF</code></td></tr>
+        <tr><td><strong>Multicast</strong></td><td>Un groupe d'appareils</td><td><code>01:00:5E:xx:xx:xx</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Afficher son adresse MAC</h3>
+  <div class="code-block">
+    <pre><code># Linux
+ip a show
+
+# Windows (PowerShell)
+Get-NetAdapter</code></pre>
+    <button class="copy-btn" onclick="copyCode(this)">Copier</button>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">ARP</div>
+    Pour envoyer une trame, une machine doit connaître la MAC du destinataire. Si elle ne la connaît pas, elle utilise le protocole <strong>ARP</strong> (broadcast) pour la demander. ARP est détaillé au chapitre 3.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 2 : Switch & STP                                                      -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-switch" class="tab-content">
+
+  <h2>Le switch (commutateur)</h2>
+  <p>Un <strong>switch</strong> connecte plusieurs appareils dans un LAN et <strong>envoie les trames uniquement au bon destinataire</strong> (contrairement au hub qui diffuse partout).</p>
+
+  <h3>Simulateur de switch</h3>
+  <p>Cliquez sur un scénario pour voir comment le switch traite la trame :</p>
+
+  <div class="switch-demo">
+    <div class="switch-diagram">
+      <div class="sw-links" id="sw-left-links">
+        <div class="sw-device" id="sw-pc1">PC1<br><span style="font-size:.7rem;color:var(--text-dim);">Port 1 — AA:AA</span></div>
+        <div class="sw-link" id="sw-link1"><div class="sw-arrow"></div></div>
+        <div class="sw-device" id="sw-pc2">PC2<br><span style="font-size:.7rem;color:var(--text-dim);">Port 2 — BB:BB</span></div>
+        <div class="sw-link" id="sw-link2"><div class="sw-arrow"></div></div>
+      </div>
+      <div class="sw-center">SWITCH</div>
+      <div class="sw-links" id="sw-right-links">
+        <div class="sw-device" id="sw-srv">Serveur<br><span style="font-size:.7rem;color:var(--text-dim);">Port 3 — CC:CC</span></div>
+        <div class="sw-link" id="sw-link3"><div class="sw-arrow"></div></div>
+        <div class="sw-device" id="sw-pc3">PC3<br><span style="font-size:.7rem;color:var(--text-dim);">Port 4 — DD:DD</span></div>
+        <div class="sw-link" id="sw-link4"><div class="sw-arrow"></div></div>
+      </div>
+    </div>
+    <div class="sw-controls">
+      <button class="sw-btn" onclick="switchScenario('learn')">1. Apprentissage</button>
+      <button class="sw-btn" onclick="switchScenario('known')">2. Envoi ciblé</button>
+      <button class="sw-btn" onclick="switchScenario('flood')">3. Flooding (inconnu)</button>
+      <button class="sw-btn" onclick="switchScenario('broadcast')">4. Broadcast</button>
+    </div>
+    <div class="sw-msg" id="sw-msg">Cliquez sur un scénario pour voir le switch en action.</div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Type de switch</th><th>Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Non managé</strong></td><td>Plug & play, aucune configuration possible. Suffisant pour un petit réseau.</td></tr>
+        <tr><td><strong>Managé</strong></td><td>Paramétrable : VLANs, QoS, supervision SNMP, STP, agrégation de liens.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Spanning Tree Protocol (STP)</h2>
+  <p>Quand plusieurs switches sont interconnectés, une <strong>boucle</strong> peut se créer : une trame tourne indéfiniment et sature le réseau. <strong>STP</strong> résout ce problème.</p>
+
+  <div class="stp-visual">
+    <div class="stp-step">
+      <div class="step-num">1</div>
+      <div>
+        <div class="step-title">Élection du switch racine</div>
+        <div class="step-desc">Les switches échangent des BPDU et élisent un <strong>root bridge</strong> (celui avec le plus petit Bridge ID).</div>
+      </div>
+    </div>
+    <div class="stp-step">
+      <div class="step-num">2</div>
+      <div>
+        <div class="step-title">Calcul des chemins</div>
+        <div class="step-desc">Chaque switch calcule le <strong>chemin le plus court</strong> vers la racine (coût basé sur le débit des liens).</div>
+      </div>
+    </div>
+    <div class="stp-step">
+      <div class="step-num">3</div>
+      <div>
+        <div class="step-title">Blocage des boucles</div>
+        <div class="step-desc">Les ports créant des boucles sont mis en état <strong>Blocking</strong>. Ils restent en réserve et se réactivent si un lien principal tombe.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>Schéma interactif — Boucle et STP</h3>
+  <p>Observez ce qui se passe avec et sans STP dans un réseau avec 3 switches en triangle :</p>
+
+  <div class="net-diagram">
+    <svg viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="stp-icon-sw">
+          <rect x="-50" y="-18" width="100" height="36" rx="5" fill="#1d4ed8" stroke="#3b82f6" stroke-width="2"/>
+          <rect x="-38" y="-7" width="7" height="9" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".7"/>
+          <rect x="-28" y="-7" width="7" height="9" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".7"/>
+          <rect x="-18" y="-7" width="7" height="9" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".7"/>
+          <rect x="-8" y="-7" width="7" height="9" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".7"/>
+          <rect x="2" y="-7" width="7" height="9" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".7"/>
+          <rect x="12" y="-7" width="7" height="9" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".7"/>
+          <circle cx="-38" cy="10" r="2" fill="#4caf82"/>
+          <circle cx="-31" cy="10" r="2" fill="#4caf82"/>
+          <circle cx="-24" cy="10" r="2" fill="#60a5fa"/>
+        </g>
+      </defs>
+
+      <!-- Links -->
+      <line id="stp-ab" class="svg-link" x1="250" y1="72" x2="130" y2="210" stroke="#60a5fa" stroke-width="2.5"/>
+      <line id="stp-ac" class="svg-link" x1="250" y1="72" x2="370" y2="210" stroke="#60a5fa" stroke-width="2.5"/>
+      <line id="stp-bc" class="svg-link" x1="180" y1="230" x2="320" y2="230" stroke="#60a5fa" stroke-width="2.5"/>
+
+      <!-- Link labels -->
+      <text x="175" y="138" fill="#7880a0" font-size="10" text-anchor="middle">1 Gbit/s</text>
+      <text x="325" y="138" fill="#7880a0" font-size="10" text-anchor="middle">1 Gbit/s</text>
+      <text id="stp-lab-bc" x="250" y="258" fill="#7880a0" font-size="10" text-anchor="middle" class="stp-bc-label">1 Gbit/s</text>
+
+      <!-- Switch A (top) -->
+      <g class="svg-node" transform="translate(250,55)">
+        <use href="#stp-icon-sw"/>
+      </g>
+      <text x="250" y="82" fill="#93c5fd" font-size="11" text-anchor="middle" font-weight="600">SW-A</text>
+      <text id="stp-root-label" x="250" y="30" fill="#fbbf24" font-size="10" text-anchor="middle" font-weight="700"></text>
+
+      <!-- Switch B (bottom-left) -->
+      <g class="svg-node" transform="translate(130,230)">
+        <use href="#stp-icon-sw"/>
+      </g>
+      <text x="130" y="258" fill="#93c5fd" font-size="11" text-anchor="middle" font-weight="600">SW-B</text>
+
+      <!-- Switch C (bottom-right) -->
+      <g class="svg-node" transform="translate(370,230)">
+        <use href="#stp-icon-sw"/>
+      </g>
+      <text x="370" y="258" fill="#93c5fd" font-size="11" text-anchor="middle" font-weight="600">SW-C</text>
+
+      <!-- Blocked indicator -->
+      <g id="stp-blocked-icon" style="display:none;">
+        <circle cx="250" cy="230" r="14" fill="#1e1010" stroke="#e05c5c" stroke-width="2"/>
+        <line x1="241" y1="221" x2="259" y2="239" stroke="#e05c5c" stroke-width="2.5"/>
+        <line x1="259" y1="221" x2="241" y2="239" stroke="#e05c5c" stroke-width="2.5"/>
+        <text x="250" y="272" fill="#e05c5c" font-size="10" text-anchor="middle" font-weight="600">BLOQUÉ (STP)</text>
+      </g>
+
+      <!-- Loop warning -->
+      <g id="stp-loop-warn" style="display:none;">
+        <text x="250" y="320" fill="#e05c5c" font-size="12" text-anchor="middle" font-weight="700">&#9888; BOUCLE — Tempête de broadcast !</text>
+      </g>
+    </svg>
+
+    <div class="nd-controls">
+      <button class="nd-btn" onclick="stpMode('off')">Sans STP (boucle)</button>
+      <button class="nd-btn" onclick="stpMode('on')">Avec STP</button>
+      <button class="nd-btn" onclick="stpMode('fail')">Panne d'un lien</button>
+    </div>
+    <div class="nd-msg" id="stp-msg">Cliquez sur un scénario pour visualiser le comportement du réseau.</div>
+  </div>
+
+  <div class="callout note">
+    <div class="callout-title">Note — RSTP</div>
+    <strong>RSTP</strong> (Rapid STP, 802.1w) est la version moderne : convergence en <strong>quelques secondes</strong> au lieu de 30–50 secondes avec STP classique. Activé par défaut sur la majorité des switches managés.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 3 : VLAN                                                              -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-vlan" class="tab-content">
+
+  <h2>VLAN (Virtual LAN)</h2>
+
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/Eh9INNkMM4I?si=36Y_npl6rMxiXSWw" title="YouTube video player" allowfullscreen></iframe>
+  </div>
+
+  <p>Un <strong>VLAN</strong> segmente logiquement un réseau physique en plusieurs réseaux virtuels indépendants, même sur un seul switch.</p>
+
+  <h3>Visualisation d'un switch avec VLANs</h3>
+  <p>Chaque port est affecté à un VLAN. Survolez les ports :</p>
+
+  <div class="vlan-switch">
+    <div class="vlan-ports">
+      <div class="vlan-port v10">Port 1<span class="port-label">VLAN 10</span></div>
+      <div class="vlan-port v10">Port 2<span class="port-label">VLAN 10</span></div>
+      <div class="vlan-port v20">Port 3<span class="port-label">VLAN 20</span></div>
+      <div class="vlan-port v20">Port 4<span class="port-label">VLAN 20</span></div>
+      <div class="vlan-port v30">Port 5<span class="port-label">VLAN 30</span></div>
+      <div class="vlan-port v30">Port 6<span class="port-label">VLAN 30</span></div>
+      <div class="vlan-port trunk">Port 7<span class="port-label">TRUNK</span></div>
+      <div class="vlan-port trunk">Port 8<span class="port-label">TRUNK</span></div>
+    </div>
+    <div class="vlan-legend">
+      <div class="vlan-legend-item"><div class="vlan-legend-color" style="background:#ef4444;"></div> VLAN 10 — Administration</div>
+      <div class="vlan-legend-item"><div class="vlan-legend-color" style="background:#3b82f6;"></div> VLAN 20 — Comptabilité</div>
+      <div class="vlan-legend-item"><div class="vlan-legend-color" style="background:#22c55e;"></div> VLAN 30 — Invités</div>
+      <div class="vlan-legend-item"><div class="vlan-legend-color" style="background:#a855f7;"></div> Trunk — Tous les VLANs</div>
+    </div>
+  </div>
+
+  <h3>Schéma réseau interactif — Communication inter-VLAN</h3>
+  <p>Cliquez sur un PC pour voir avec qui il peut communiquer :</p>
+
+  <div class="net-diagram">
+    <svg viewBox="0 0 700 480" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="icon-pc">
+          <rect x="-20" y="-22" width="40" height="28" rx="3" fill="#1a1d27" stroke-width="1.5"/>
+          <rect x="-16" y="-18" width="32" height="20" rx="1" fill="#0a0e1a"/>
+          <rect x="-3" y="6" width="6" height="6" stroke="none"/>
+          <rect x="-9" y="12" width="18" height="3" rx="1.5" stroke="none"/>
+        </g>
+        <g id="icon-sw">
+          <rect x="-55" y="-20" width="110" height="40" rx="5" fill="#1d4ed8" stroke="#3b82f6" stroke-width="2"/>
+          <rect x="-42" y="-8" width="8" height="10" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".8"/>
+          <rect x="-30" y="-8" width="8" height="10" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".8"/>
+          <rect x="-18" y="-8" width="8" height="10" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".8"/>
+          <rect x="-6" y="-8" width="8" height="10" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".8"/>
+          <rect x="6" y="-8" width="8" height="10" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".8"/>
+          <rect x="18" y="-8" width="8" height="10" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".8"/>
+          <rect x="30" y="-8" width="8" height="10" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".8"/>
+          <circle cx="-42" cy="12" r="2.5" fill="#4caf82"/>
+          <circle cx="-34" cy="12" r="2.5" fill="#4caf82"/>
+          <circle cx="-26" cy="12" r="2.5" fill="#60a5fa"/>
+        </g>
+        <g id="icon-swl3">
+          <rect x="-60" y="-22" width="120" height="44" rx="6" fill="#064e3b" stroke="#059669" stroke-width="2"/>
+          <rect x="-46" y="-10" width="8" height="10" rx="1" fill="#0d1220" stroke="#059669" stroke-width=".8"/>
+          <rect x="-34" y="-10" width="8" height="10" rx="1" fill="#0d1220" stroke="#059669" stroke-width=".8"/>
+          <rect x="-22" y="-10" width="8" height="10" rx="1" fill="#0d1220" stroke="#059669" stroke-width=".8"/>
+          <rect x="-10" y="-10" width="8" height="10" rx="1" fill="#0d1220" stroke="#059669" stroke-width=".8"/>
+          <rect x="2" y="-10" width="8" height="10" rx="1" fill="#0d1220" stroke="#059669" stroke-width=".8"/>
+          <rect x="14" y="-10" width="8" height="10" rx="1" fill="#0d1220" stroke="#059669" stroke-width=".8"/>
+          <rect x="26" y="-10" width="8" height="10" rx="1" fill="#0d1220" stroke="#059669" stroke-width=".8"/>
+          <rect x="38" y="-10" width="8" height="10" rx="1" fill="#0d1220" stroke="#059669" stroke-width=".8"/>
+          <circle cx="-46" cy="12" r="2.5" fill="#4caf82"/>
+          <circle cx="-38" cy="12" r="2.5" fill="#4caf82"/>
+          <circle cx="-30" cy="12" r="2.5" fill="#fbbf24"/>
+          <text x="42" y="16" fill="#6ee7b7" font-size="8" font-weight="700">L3</text>
+        </g>
+      </defs>
+
+      <!-- ══ LAYER: Links PCs → SW-Access ══ -->
+      <line id="vl-a1" class="svg-link" x1="80" y1="85" x2="155" y2="205" stroke="#ef4444" stroke-width="2"/>
+      <line id="vl-a2" class="svg-link" x1="185" y1="85" x2="185" y2="205" stroke="#3b82f6" stroke-width="2"/>
+      <line id="vl-a3" class="svg-link" x1="290" y1="85" x2="215" y2="205" stroke="#22c55e" stroke-width="2"/>
+      <line id="vl-b1" class="svg-link" x1="410" y1="85" x2="485" y2="205" stroke="#ef4444" stroke-width="2"/>
+      <line id="vl-b2" class="svg-link" x1="515" y1="85" x2="515" y2="205" stroke="#3b82f6" stroke-width="2"/>
+      <line id="vl-b3" class="svg-link" x1="620" y1="85" x2="545" y2="205" stroke="#22c55e" stroke-width="2"/>
+
+      <!-- ══ Trunk links SW → SW-L3 ══ -->
+      <line id="vlan-trunk" class="svg-link" x1="185" y1="245" x2="300" y2="345" stroke="#a855f7" stroke-width="3"/>
+      <line id="vlan-trunk2" class="svg-link" x1="515" y1="245" x2="400" y2="345" stroke="#a855f7" stroke-width="3"/>
+
+      <!-- Trunk labels -->
+      <g transform="translate(228,290) rotate(-37)">
+        <rect x="-26" y="-9" width="52" height="16" rx="3" fill="#12141f" stroke="#a855f7" stroke-width="1"/>
+        <text x="0" y="3" fill="#d8b4fe" font-size="8" text-anchor="middle" font-weight="600">TRUNK</text>
+      </g>
+      <g transform="translate(472,290) rotate(37)">
+        <rect x="-26" y="-9" width="52" height="16" rx="3" fill="#12141f" stroke="#a855f7" stroke-width="1"/>
+        <text x="0" y="3" fill="#d8b4fe" font-size="8" text-anchor="middle" font-weight="600">TRUNK</text>
+      </g>
+
+      <!-- ══ SW-A (accès) ══ -->
+      <g transform="translate(185,225)">
+        <use href="#icon-sw"/>
+      </g>
+      <text x="185" y="256" fill="#93c5fd" font-size="10" text-anchor="middle" font-weight="600">SW-A (accès)</text>
+
+      <!-- ══ SW-B (accès) ══ -->
+      <g transform="translate(515,225)">
+        <use href="#icon-sw"/>
+      </g>
+      <text x="515" y="256" fill="#93c5fd" font-size="10" text-anchor="middle" font-weight="600">SW-B (accès)</text>
+
+      <!-- ══ SW-L3 (coeur / routage inter-VLAN) ══ -->
+      <g id="vlan-router" style="opacity:.3;" transform="translate(350,360)">
+        <use href="#icon-swl3"/>
+      </g>
+      <text id="vlan-router-label" style="opacity:.3;" x="350" y="396" fill="#6ee7b7" font-size="10" text-anchor="middle" font-weight="600">SW-Core L3</text>
+      <text id="vlan-router-sub" style="opacity:.3;" x="350" y="410" fill="#7880a0" font-size="9" text-anchor="middle">Routage inter-VLAN</text>
+
+      <!-- Uplink to WAN (from L3) -->
+      <line id="vlan-wan-link" style="opacity:.15;" x1="350" y1="382" x2="350" y2="450" stroke="#7880a0" stroke-width="1.5" stroke-dasharray="5 3"/>
+      <text id="vlan-wan-label" style="opacity:.15;" x="350" y="465" fill="#7880a0" font-size="9" text-anchor="middle">vers WAN / Internet</text>
+
+      <!-- ══ PCs SW-A ══ -->
+      <g class="svg-node" id="vn-a1" onclick="vlanClick('a1')" transform="translate(80,60)">
+        <use href="#icon-pc" stroke="#ef4444" fill="#ef4444"/>
+        <text x="0" y="30" fill="#fca5a5" font-size="10" font-weight="600" text-anchor="middle">Admin1</text>
+        <text x="0" y="42" fill="#ef4444" font-size="8" text-anchor="middle">VLAN 10</text>
+      </g>
+      <g class="svg-node" id="vn-a2" onclick="vlanClick('a2')" transform="translate(185,60)">
+        <use href="#icon-pc" stroke="#3b82f6" fill="#3b82f6"/>
+        <text x="0" y="30" fill="#93c5fd" font-size="10" font-weight="600" text-anchor="middle">Compta1</text>
+        <text x="0" y="42" fill="#3b82f6" font-size="8" text-anchor="middle">VLAN 20</text>
+      </g>
+      <g class="svg-node" id="vn-a3" onclick="vlanClick('a3')" transform="translate(290,60)">
+        <use href="#icon-pc" stroke="#22c55e" fill="#22c55e"/>
+        <text x="0" y="30" fill="#86efac" font-size="10" font-weight="600" text-anchor="middle">Invit&#233;1</text>
+        <text x="0" y="42" fill="#22c55e" font-size="8" text-anchor="middle">VLAN 30</text>
+      </g>
+
+      <!-- ══ PCs SW-B ══ -->
+      <g class="svg-node" id="vn-b1" onclick="vlanClick('b1')" transform="translate(410,60)">
+        <use href="#icon-pc" stroke="#ef4444" fill="#ef4444"/>
+        <text x="0" y="30" fill="#fca5a5" font-size="10" font-weight="600" text-anchor="middle">Admin2</text>
+        <text x="0" y="42" fill="#ef4444" font-size="8" text-anchor="middle">VLAN 10</text>
+      </g>
+      <g class="svg-node" id="vn-b2" onclick="vlanClick('b2')" transform="translate(515,60)">
+        <use href="#icon-pc" stroke="#3b82f6" fill="#3b82f6"/>
+        <text x="0" y="30" fill="#93c5fd" font-size="10" font-weight="600" text-anchor="middle">Compta2</text>
+        <text x="0" y="42" fill="#3b82f6" font-size="8" text-anchor="middle">VLAN 20</text>
+      </g>
+      <g class="svg-node" id="vn-b3" onclick="vlanClick('b3')" transform="translate(620,60)">
+        <use href="#icon-pc" stroke="#22c55e" fill="#22c55e"/>
+        <text x="0" y="30" fill="#86efac" font-size="10" font-weight="600" text-anchor="middle">Invit&#233;2</text>
+        <text x="0" y="42" fill="#22c55e" font-size="8" text-anchor="middle">VLAN 30</text>
+      </g>
+    </svg>
+    <div class="nd-msg" id="vlan-msg">Cliquez sur un PC pour voir avec quels autres PC il peut communiquer dans le même VLAN.</div>
+  </div>
+
+  <h3>Avantages des VLANs</h3>
+  <ul>
+    <li><strong>Sécurité</strong> — isolement entre services (un VLAN ne voit pas les autres)</li>
+    <li><strong>Organisation</strong> — découpage par service, étage ou usage</li>
+    <li><strong>Souplesse</strong> — pas besoin de câblage physique séparé</li>
+  </ul>
+
+  <h3>Fonctionnement</h3>
+  <ul>
+    <li>Chaque port du switch est affecté à un VLAN</li>
+    <li>La norme <strong>IEEE 802.1Q</strong> ajoute un <strong>tag</strong> (identifiant VLAN, de 1 à 4094) dans la trame</li>
+    <li>Pour faire communiquer deux VLANs, il faut un <strong>routeur</strong> ou un switch de <strong>couche 3</strong></li>
+  </ul>
+
+  <h2>Port access vs Port trunk</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Type de port</th><th>VLANs transportés</th><th>Usage</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>Access</strong></td>
+          <td>Un seul VLAN</td>
+          <td>Connexion des PC, imprimantes, téléphones IP</td>
+        </tr>
+        <tr>
+          <td><strong>Trunk</strong></td>
+          <td>Tous les VLANs (tagged 802.1Q)</td>
+          <td>Liaison switch ↔ switch ou switch ↔ routeur</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="code-block">
+    <pre><code>Switch A ──[trunk 802.1Q]── Switch B
+  VLAN 10 ─────────────────── VLAN 10
+  VLAN 20 ─────────────────── VLAN 20
+  VLAN 30 ─────────────────── VLAN 30</code></pre>
+  </div>
+
+  <h2>Trame Ethernet 802.1Q (avec tag VLAN)</h2>
+  <p>Sur un port trunk, la trame Ethernet standard est modifiée : un <strong>tag 802.1Q de 4 octets</strong> est inséré entre la MAC source et l'EtherType. Cliquez sur les champs :</p>
+
+  <div class="frame-visual" id="vlan-frame">
+    <div class="frame-field mac-dst" onclick="showVlanInfo('vdst')">
+      <span class="ff-name">MAC Dest.</span>
+      <span class="ff-size">6 octets</span>
+    </div>
+    <div class="frame-field mac-src" onclick="showVlanInfo('vsrc')">
+      <span class="ff-name">MAC Source</span>
+      <span class="ff-size">6 octets</span>
+    </div>
+    <div class="frame-field" style="background:rgba(168,85,247,.18); border-color:#a855f7; color:#d8b4fe; min-width:50px;" onclick="showVlanInfo('tpid')">
+      <span class="ff-name">TPID</span>
+      <span class="ff-size">2 oct.</span>
+    </div>
+    <div class="frame-field" style="background:rgba(168,85,247,.18); border-color:#a855f7; color:#d8b4fe; min-width:50px;" onclick="showVlanInfo('tci')">
+      <span class="ff-name">TCI</span>
+      <span class="ff-size">2 oct.</span>
+    </div>
+    <div class="frame-field ethertype" onclick="showVlanInfo('vet')">
+      <span class="ff-name">EtherType</span>
+      <span class="ff-size">2 octets</span>
+    </div>
+    <div class="frame-field payload" onclick="showVlanInfo('vdata')">
+      <span class="ff-name">Données</span>
+      <span class="ff-size">46 – 1500 oct.</span>
+    </div>
+    <div class="frame-field fcs" onclick="showVlanInfo('vcrc')">
+      <span class="ff-name">FCS</span>
+      <span class="ff-size">4 octets</span>
+    </div>
+  </div>
+
+  <div class="frame-info" id="vfi-vdst">
+    <strong>MAC Destination</strong> (6 octets) — Identique à une trame Ethernet classique. Adresse de l'appareil destinataire.
+  </div>
+  <div class="frame-info" id="vfi-vsrc">
+    <strong>MAC Source</strong> (6 octets) — Identique à une trame Ethernet classique. Adresse de l'appareil émetteur.
+  </div>
+  <div class="frame-info" id="vfi-tpid">
+    <strong>TPID</strong> (Tag Protocol Identifier, 2 octets) — Toujours <code>0x8100</code>. Ce champ signale au switch que la trame contient un <strong>tag 802.1Q</strong>. Sans ce marqueur, la trame est traitée comme une trame Ethernet classique.
+  </div>
+  <div class="frame-info" id="vfi-tci">
+    <strong>TCI</strong> (Tag Control Information, 2 octets) — Contient : <strong>PCP</strong> (3 bits, priorité QoS de 0 à 7), <strong>DEI</strong> (1 bit, éligibilité à être jetée en cas de congestion) et <strong>VID</strong> (12 bits = identifiant VLAN de <strong>0 à 4094</strong>). C'est le VID qui détermine à quel VLAN appartient la trame.
+  </div>
+  <div class="frame-info" id="vfi-vet">
+    <strong>EtherType</strong> (2 octets) — Protocole encapsulé (ex. <code>0x0800</code> = IPv4). Identique à la trame classique, mais décalé de 4 octets à cause du tag.
+  </div>
+  <div class="frame-info" id="vfi-vdata">
+    <strong>Données</strong> (46 à 1500 octets) — Le contenu utile transporté. Identique à la trame classique.
+  </div>
+  <div class="frame-info" id="vfi-vcrc">
+    <strong>FCS</strong> (4 octets) — Contrôle d'intégrité recalculé pour inclure le tag 802.1Q. Si le CRC ne correspond pas, la trame est jetée.
+  </div>
+
+  <div class="callout note">
+    <div class="callout-title">Note</div>
+    Le tag 802.1Q ajoute <strong>4 octets</strong> à la trame. La taille maximale passe de 1518 à <strong>1522 octets</strong>. Les trames tagguées ne circulent que sur les <strong>ports trunk</strong> — le switch retire le tag avant de délivrer la trame sur un port access.
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-title">Important</div>
+    Deux machines dans des <strong>VLANs différents ne peuvent pas communiquer directement</strong>. Il faut un routeur ou du routage inter-VLAN (switch L3) pour passer d'un VLAN à l'autre.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 4 : LACP, LLDP & WLAN                                                -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-autres" class="tab-content">
+
+  <h2>Agrégation de liens (LACP)</h2>
+  <p>L'<strong>agrégation de liens</strong> regroupe plusieurs connexions physiques entre deux équipements en une seule liaison logique :</p>
+  <ul>
+    <li><strong>Augmenter le débit total</strong> — ex. 2 × 1 Gbit/s = 2 Gbit/s</li>
+    <li><strong>Garantir la continuité</strong> — si un lien tombe, le trafic passe par les autres</li>
+  </ul>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Protocole</th><th>Standard</th><th>Fonctionnement</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>LACP</strong></td><td>IEEE 802.3ad</td><td>Négociation automatique, universel (tous constructeurs)</td></tr>
+        <tr><td><strong>PAgP</strong></td><td>Cisco propriétaire</td><td>Équipements Cisco uniquement</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Schéma interactif — Agrégation de liens</h3>
+
+  <div class="net-diagram">
+    <svg viewBox="0 0 540 200" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <g id="lacp-icon-sw">
+          <rect x="-55" y="-20" width="110" height="40" rx="5" fill="#1d4ed8" stroke="#3b82f6" stroke-width="2"/>
+          <rect x="-42" y="-9" width="7" height="9" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".7"/>
+          <rect x="-32" y="-9" width="7" height="9" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".7"/>
+          <rect x="-22" y="-9" width="7" height="9" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".7"/>
+          <rect x="-12" y="-9" width="7" height="9" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".7"/>
+          <rect x="-2" y="-9" width="7" height="9" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".7"/>
+          <rect x="8" y="-9" width="7" height="9" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".7"/>
+          <rect x="18" y="-9" width="7" height="9" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".7"/>
+          <circle cx="-42" cy="10" r="2.5" fill="#4caf82"/>
+          <circle cx="-34" cy="10" r="2.5" fill="#4caf82"/>
+          <circle cx="-26" cy="10" r="2.5" fill="#60a5fa"/>
+        </g>
+      </defs>
+
+      <!-- Individual links -->
+      <line id="lacp-l1" class="svg-link" x1="195" y1="82" x2="345" y2="82" stroke="#60a5fa" stroke-width="2.5"/>
+      <line id="lacp-l2" class="svg-link" x1="195" y1="100" x2="345" y2="100" stroke="#60a5fa" stroke-width="2.5"/>
+      <line id="lacp-l3" class="svg-link" x1="195" y1="118" x2="345" y2="118" stroke="#60a5fa" stroke-width="2.5"/>
+
+      <!-- Aggregate bracket -->
+      <g id="lacp-bracket" style="display:none;">
+        <rect x="210" y="70" width="120" height="60" rx="6" fill="none" stroke="#4caf82" stroke-width="2" stroke-dasharray="6 3"/>
+        <text id="lacp-bracket-label" x="270" y="155" fill="#4caf82" font-size="11" text-anchor="middle" font-weight="600">LAG — 3 Gbit/s</text>
+      </g>
+
+      <!-- Speed labels -->
+      <text id="lacp-s1" x="270" y="78" fill="#7880a0" font-size="9" text-anchor="middle">1 Gbit/s</text>
+      <text id="lacp-s2" x="270" y="96" fill="#7880a0" font-size="9" text-anchor="middle">1 Gbit/s</text>
+      <text id="lacp-s3" x="270" y="114" fill="#7880a0" font-size="9" text-anchor="middle">1 Gbit/s</text>
+
+      <!-- Switch Core -->
+      <g transform="translate(140,100)">
+        <use href="#lacp-icon-sw"/>
+      </g>
+      <text x="140" y="132" fill="#93c5fd" font-size="11" text-anchor="middle" font-weight="600">SW-Core</text>
+
+      <!-- Switch Distrib -->
+      <g transform="translate(400,100)">
+        <use href="#lacp-icon-sw"/>
+      </g>
+      <text x="400" y="132" fill="#93c5fd" font-size="11" text-anchor="middle" font-weight="600">SW-Distrib</text>
+
+      <!-- Down link indicator -->
+      <g id="lacp-down" style="display:none;">
+        <line x1="195" y1="118" x2="345" y2="118" stroke="#e05c5c" stroke-width="2.5"/>
+        <circle cx="270" cy="118" r="8" fill="#1e1010" stroke="#e05c5c" stroke-width="1.5"/>
+        <text x="270" y="122" fill="#e05c5c" font-size="10" text-anchor="middle" font-weight="700">&#10005;</text>
+      </g>
+    </svg>
+
+    <div class="nd-controls">
+      <button class="nd-btn" onclick="lacpMode('off')">Sans LACP</button>
+      <button class="nd-btn" onclick="lacpMode('on')">Avec LACP</button>
+      <button class="nd-btn" onclick="lacpMode('fail')">Panne d'un lien</button>
+    </div>
+    <div class="nd-msg" id="lacp-msg">Cliquez sur un scénario pour voir l'effet de l'agrégation de liens.</div>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">Usage typique</div>
+    Liaison <strong>switch ↔ switch</strong> ou <strong>switch ↔ serveur critique</strong> pour doubler (ou plus) la bande passante et assurer la redondance.
+  </div>
+
+  <h2>Protocoles de découverte — LLDP et CDP</h2>
+  <p>Ces protocoles permettent aux équipements réseau de <strong>s'annoncer à leurs voisins</strong> directement connectés. Utile pour cartographier un réseau ou déboguer.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Protocole</th><th>Standard</th><th>Compatibilité</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>CDP</strong></td><td>Cisco propriétaire</td><td>Équipements Cisco uniquement</td></tr>
+        <tr><td><strong>LLDP</strong></td><td>IEEE 802.1AB (ouvert)</td><td>Tous constructeurs</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Informations partagées : nom de l'équipement, port, VLAN, modèle, version logicielle.</p>
+
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 5 : WLAN                                                              -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-wlan" class="tab-content">
+
+  <h2>WLAN — le Wi-Fi côté liaison</h2>
+
+  <div class="callout note">
+    <div class="callout-title">Rappel</div>
+    Les aspects physiques du Wi-Fi (fréquences, normes 802.11, portée) ont été vus au chapitre 1. Ici on se concentre sur la <strong>couche liaison</strong> : comment les trames circulent sans fil.
+  </div>
+
+  <p>Un <strong>WLAN</strong> (Wireless LAN) utilise les mêmes adresses MAC qu'Ethernet, mais sur des ondes radio. Cliquez sur un mode pour voir le schéma correspondant :</p>
+
+  <div class="net-diagram">
+    <div class="nd-controls" style="margin-top:0; margin-bottom:1rem;">
+      <button class="nd-btn active" onclick="wlanMode('infra')">Mode Infrastructure</button>
+      <button class="nd-btn" onclick="wlanMode('adhoc')">Mode Ad hoc</button>
+    </div>
+
+    <svg id="wlan-svg" viewBox="0 0 600 360" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <!-- Laptop icon centered at 0,0 -->
+        <g id="icon-laptop">
+          <rect x="-18" y="-12" width="36" height="24" rx="2" fill="#1a1d27" stroke-width="1.5"/>
+          <rect x="-14" y="-8" width="28" height="17" rx="1" fill="#0a0e1a"/>
+          <path d="M-24,12 L-18,12 L-18,12 L-14,15 L14,15 L18,12 L24,12 L24,15 Q24,17 22,17 L-22,17 Q-24,17 -24,15 Z" stroke-width="1.5"/>
+        </g>
+        <!-- Phone icon centered at 0,0 -->
+        <g id="icon-phone">
+          <rect x="-8" y="-14" width="16" height="28" rx="3" fill="#1a1d27" stroke-width="1.5"/>
+          <rect x="-5" y="-10" width="10" height="18" rx="1" fill="#0a0e1a"/>
+          <circle cx="0" cy="11" r="1.5" fill="none" stroke-width="1"/>
+        </g>
+        <!-- AP icon (antenna) centered at 0,0 -->
+        <g id="icon-ap">
+          <rect x="-30" y="0" width="60" height="14" rx="4" fill="#1d4ed8" stroke="#3b82f6" stroke-width="1.5"/>
+          <line x1="0" y1="0" x2="0" y2="-16" stroke="#3b82f6" stroke-width="2"/>
+          <circle cx="0" cy="-18" r="3" fill="#3b82f6"/>
+          <circle cx="-8" cy="-4" r="2" fill="#4caf82"/>
+          <circle cx="8" cy="-4" r="2" fill="#4caf82"/>
+        </g>
+        <!-- WiFi waves -->
+        <g id="wifi-waves">
+          <path d="M-12,-8 A16,16 0 0,1 12,-8" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity=".3"/>
+          <path d="M-20,-14 A26,26 0 0,1 20,-14" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity=".2"/>
+          <path d="M-28,-20 A36,36 0 0,1 28,-20" fill="none" stroke="#60a5fa" stroke-width="1.5" opacity=".12"/>
+        </g>
+      </defs>
+
+      <!-- ═══ INFRASTRUCTURE MODE ═══ -->
+      <g id="wlan-infra">
+        <!-- WiFi range circle -->
+        <circle cx="300" cy="115" r="130" fill="rgba(96,165,250,.04)" stroke="#60a5fa" stroke-width="1" stroke-dasharray="4 4" opacity=".4"/>
+        <text x="300" y="255" fill="#7880a0" font-size="9" text-anchor="middle">Zone de couverture Wi-Fi</text>
+
+        <!-- AP -->
+        <g transform="translate(300,90)">
+          <use href="#icon-ap"/>
+          <g transform="translate(0,-20)">
+            <use href="#wifi-waves"/>
+          </g>
+        </g>
+        <text x="300" y="120" fill="#93c5fd" font-size="11" text-anchor="middle" font-weight="600">Point d'accès (AP)</text>
+        <text x="300" y="133" fill="#7880a0" font-size="9" text-anchor="middle">BSSID: AA:BB:CC:00:11:22</text>
+
+        <!-- Uplink to switch -->
+        <line x1="300" y1="150" x2="300" y2="305" stroke="#3b82f6" stroke-width="2"/>
+        <g transform="translate(300,325)">
+          <rect x="-45" y="-16" width="90" height="32" rx="5" fill="#1d4ed8" stroke="#3b82f6" stroke-width="1.5"/>
+          <rect x="-34" y="-6" width="6" height="7" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".6"/>
+          <rect x="-25" y="-6" width="6" height="7" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".6"/>
+          <rect x="-16" y="-6" width="6" height="7" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".6"/>
+          <rect x="-7" y="-6" width="6" height="7" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".6"/>
+          <rect x="2" y="-6" width="6" height="7" rx="1" fill="#0d1220" stroke="#3b82f6" stroke-width=".6"/>
+          <circle cx="-34" cy="8" r="2" fill="#4caf82"/>
+          <circle cx="-27" cy="8" r="2" fill="#4caf82"/>
+        </g>
+        <text x="300" y="355" fill="#93c5fd" font-size="10" text-anchor="middle">Switch (réseau filaire)</text>
+        <text x="312" y="296" fill="#7880a0" font-size="9" text-anchor="start">Ethernet</text>
+
+        <!-- Wireless links (dashed = ondes) -->
+        <line x1="260" y1="95" x2="140" y2="130" stroke="#60a5fa" stroke-width="1.2" stroke-dasharray="4 3" opacity=".5"/>
+        <line x1="300" y1="80" x2="300" y2="35" stroke="#60a5fa" stroke-width="1.2" stroke-dasharray="4 3" opacity=".5"/>
+        <line x1="340" y1="95" x2="460" y2="130" stroke="#60a5fa" stroke-width="1.2" stroke-dasharray="4 3" opacity=".5"/>
+        <line x1="340" y1="100" x2="430" y2="50" stroke="#60a5fa" stroke-width="1.2" stroke-dasharray="4 3" opacity=".5"/>
+
+        <!-- Client devices -->
+        <g transform="translate(120,145)">
+          <use href="#icon-laptop" stroke="#60a5fa" fill="#60a5fa"/>
+          <text x="0" y="30" fill="#93c5fd" font-size="9" font-weight="600" text-anchor="middle">Laptop 1</text>
+        </g>
+        <g transform="translate(300,20)">
+          <use href="#icon-laptop" stroke="#60a5fa" fill="#60a5fa"/>
+          <text x="0" y="30" fill="#93c5fd" font-size="9" font-weight="600" text-anchor="middle">Laptop 2</text>
+        </g>
+        <g transform="translate(480,145)">
+          <use href="#icon-phone" stroke="#60a5fa" fill="#60a5fa"/>
+          <text x="0" y="30" fill="#93c5fd" font-size="9" font-weight="600" text-anchor="middle">Smartphone</text>
+        </g>
+        <g transform="translate(450,40)">
+          <use href="#icon-phone" stroke="#60a5fa" fill="#60a5fa"/>
+          <text x="0" y="30" fill="#93c5fd" font-size="9" font-weight="600" text-anchor="middle">Tablette</text>
+        </g>
+      </g>
+
+      <!-- ═══ AD HOC MODE ═══ -->
+      <g id="wlan-adhoc" style="display:none;">
+        <text x="300" y="30" fill="#7880a0" font-size="10" text-anchor="middle">Pas de point d'accès — communication directe entre appareils</text>
+
+        <!-- Devices in a circle -->
+        <g transform="translate(180,140)">
+          <use href="#icon-laptop" stroke="#f59e0b" fill="#f59e0b"/>
+          <text x="0" y="30" fill="#fbbf24" font-size="9" font-weight="600" text-anchor="middle">Laptop A</text>
+        </g>
+        <g transform="translate(420,140)">
+          <use href="#icon-laptop" stroke="#f59e0b" fill="#f59e0b"/>
+          <text x="0" y="30" fill="#fbbf24" font-size="9" font-weight="600" text-anchor="middle">Laptop B</text>
+        </g>
+        <g transform="translate(300,260)">
+          <use href="#icon-phone" stroke="#f59e0b" fill="#f59e0b"/>
+          <text x="0" y="30" fill="#fbbf24" font-size="9" font-weight="600" text-anchor="middle">Smartphone</text>
+        </g>
+
+        <!-- Mesh links -->
+        <line x1="200" y1="145" x2="400" y2="145" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5 3" opacity=".5"/>
+        <line x1="190" y1="155" x2="290" y2="255" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5 3" opacity=".5"/>
+        <line x1="410" y1="155" x2="310" y2="255" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="5 3" opacity=".5"/>
+
+        <!-- Wifi waves on each device -->
+        <g transform="translate(180,115)">
+          <use href="#wifi-waves" style="--wave-color:#f59e0b;"/>
+        </g>
+        <g transform="translate(420,115)">
+          <use href="#wifi-waves" style="--wave-color:#f59e0b;"/>
+        </g>
+        <g transform="translate(300,235)">
+          <use href="#wifi-waves" style="--wave-color:#f59e0b;"/>
+        </g>
+
+        <!-- Label -->
+        <text x="300" y="330" fill="#7880a0" font-size="10" text-anchor="middle">Chaque appareil émet et reçoit directement</text>
+        <text x="300" y="345" fill="#7880a0" font-size="10" text-anchor="middle">Usage : partage temporaire, sans infrastructure</text>
+      </g>
+    </svg>
+
+    <div class="nd-msg" id="wlan-msg"><strong>Mode Infrastructure :</strong> Les clients se connectent au point d'accès (AP) qui fait le relais vers le réseau filaire. C'est le mode standard en entreprise et à la maison.</div>
+  </div>
+
+  <h2>Trame Wi-Fi (802.11)</h2>
+  <p>Contrairement à Ethernet qui n'a que 2 adresses MAC, une trame Wi-Fi en contient <strong>3 en mode normal</strong>, et jusqu'à <strong>4 en mode WDS</strong> (pont entre AP). Cliquez sur un champ :</p>
+
+  <div class="frame-visual" id="wifi-frame">
+    <div class="frame-field preamble" onclick="showWifiInfo('fc')">
+      <span class="ff-name">Frame Ctrl</span>
+      <span class="ff-size">2 octets</span>
+    </div>
+    <div class="frame-field ethertype" onclick="showWifiInfo('dur')">
+      <span class="ff-name">Durée</span>
+      <span class="ff-size">2 octets</span>
+    </div>
+    <div class="frame-field mac-dst" onclick="showWifiInfo('a1')">
+      <span class="ff-name">MAC 1 (RA)</span>
+      <span class="ff-size">6 octets</span>
+    </div>
+    <div class="frame-field mac-src" onclick="showWifiInfo('a2')">
+      <span class="ff-name">MAC 2 (TA)</span>
+      <span class="ff-size">6 octets</span>
+    </div>
+    <div class="frame-field" style="border-color:#c084fc; color:#e9d5ff; background:rgba(192,132,252,.12);" onclick="showWifiInfo('a3')">
+      <span class="ff-name">MAC 3 (DA)</span>
+      <span class="ff-size">6 octets</span>
+    </div>
+    <div class="frame-field" style="border-color:#7880a0; color:#a0a8c0; background:rgba(120,128,160,.08); border-style:dashed;" onclick="showWifiInfo('a4')">
+      <span class="ff-name">MAC 4 (SA)</span>
+      <span class="ff-size">optionnel</span>
+    </div>
+    <div class="frame-field payload" onclick="showWifiInfo('wbody')">
+      <span class="ff-name">Données</span>
+      <span class="ff-size">0 – 2304 oct.</span>
+    </div>
+    <div class="frame-field fcs" onclick="showWifiInfo('wfcs')">
+      <span class="ff-name">FCS</span>
+      <span class="ff-size">4 octets</span>
+    </div>
+  </div>
+
+  <div class="frame-info" id="wfi-fc">
+    <strong>Frame Control</strong> (2 octets) — Contient le type de trame (données, gestion, contrôle) et deux bits cruciaux : <strong>To DS</strong> et <strong>From DS</strong>. Ces bits indiquent la direction de la trame et déterminent la signification des 4 champs MAC.
+  </div>
+  <div class="frame-info" id="wfi-dur">
+    <strong>Duration / ID</strong> (2 octets) — Temps (en microsecondes) que cette transmission va occuper sur le canal radio. Les autres stations lisent cette valeur pour savoir combien de temps attendre avant d'émettre (mécanisme <strong>NAV</strong> — Network Allocation Vector).
+  </div>
+  <div class="frame-info" id="wfi-a1">
+    <strong>MAC 1 — Receiver Address (RA)</strong> (6 octets) — MAC de l'appareil qui doit recevoir cette trame <strong>sur le lien radio</strong>. Exemple : quand un laptop envoie des données, MAC 1 = la MAC du <strong>point d'accès</strong>.
+  </div>
+  <div class="frame-info" id="wfi-a2">
+    <strong>MAC 2 — Transmitter Address (TA)</strong> (6 octets) — MAC de l'appareil qui <strong>émet physiquement</strong> cette trame sur le canal radio. Exemple : quand un laptop envoie, MAC 2 = la MAC du <strong>laptop</strong>.
+  </div>
+  <div class="frame-info" id="wfi-a3">
+    <strong>MAC 3 — Destination Address (DA)</strong> (6 octets) — MAC de la <strong>destination finale</strong> des données. Si un laptop envoie à un serveur via l'AP : MAC 1 = AP (récepteur radio), MAC 2 = laptop (émetteur radio), MAC 3 = <strong>serveur</strong> (destination finale sur le LAN filaire).
+  </div>
+  <div class="frame-info" id="wfi-a4">
+    <strong>MAC 4 — Source Address (SA)</strong> (6 octets, <em>optionnel</em>) — Présent <strong>uniquement en mode WDS</strong> (Wireless Distribution System) quand un AP relaie une trame vers un autre AP sans fil. Dans ce cas, les 4 adresses sont nécessaires pour distinguer émetteur/récepteur radio ET source/destination finale. <strong>En mode infrastructure normal, ce champ est absent.</strong>
+  </div>
+  <div class="frame-info" id="wfi-wbody">
+    <strong>Données</strong> (0 à 2304 octets) — Le contenu utile (paquet IP encapsulé). Le MTU Wi-Fi (2304) est plus grand qu'Ethernet (1500), mais en pratique on reste à 1500 pour la compatibilité avec le réseau filaire.
+  </div>
+  <div class="frame-info" id="wfi-wfcs">
+    <strong>FCS</strong> (4 octets) — Frame Check Sequence. Vérifie l'intégrité de la trame via un CRC-32, comme en Ethernet. Trame corrompue = jetée silencieusement.
+  </div>
+
+  <div class="callout note">
+    <div class="callout-title">Pourquoi 3 ou 4 adresses MAC ?</div>
+    En Ethernet filaire, une trame va directement de A à B : 2 adresses suffisent. En Wi-Fi, la trame passe par un <strong>intermédiaire</strong> (le point d'accès). Il faut donc distinguer :<br>
+    — <strong>Qui transmet/reçoit sur le canal radio</strong> (MAC 1 et 2 : l'AP et le client)<br>
+    — <strong>Qui est la source/destination finale</strong> (MAC 3, et MAC 4 en WDS)<br>
+    C'est comme une lettre postale : l'enveloppe porte l'adresse du bureau de poste (relais) <em>et</em> l'adresse du destinataire final.
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-title">Attention</div>
+    Le Wi-Fi est plus sensible aux interférences et aux obstacles physiques que l'Ethernet câblé. Le débit réel dépend de la norme, de l'environnement et du nombre de clients connectés.
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-title">Bon à savoir</div>
+    Le <strong>point d'accès</strong> joue un rôle similaire au switch : il centralise les connexions sans fil. Mais contrairement au switch, il partage la bande passante entre tous les clients connectés (half-duplex radio).
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 5 : Récapitulatif                                                     -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-recap" class="tab-content">
+
+  <h2>Récapitulatif — Couche liaison</h2>
+  <p>Filtrez par catégorie pour retrouver rapidement une notion.</p>
+
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterRecap('all', this)">Tout</button>
+    <button class="filter-btn" onclick="filterRecap('trame', this)">Trame & MAC</button>
+    <button class="filter-btn" onclick="filterRecap('switch', this)">Switch & STP</button>
+    <button class="filter-btn" onclick="filterRecap('vlan', this)">VLAN</button>
+    <button class="filter-btn" onclick="filterRecap('autre', this)">LACP / LLDP / WLAN</button>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr><th>Notion</th><th>Définition</th><th>Catégorie</th></tr>
+      </thead>
+      <tbody>
+        <tr class="recap-row" data-cat="trame"><td><strong>Trame Ethernet</strong></td><td>Unité de base de la communication LAN — 64 à 1518 octets</td><td>Trame & MAC</td></tr>
+        <tr class="recap-row" data-cat="trame"><td><strong>Adresse MAC</strong></td><td>Identifiant physique unique de 48 bits (6 octets), gravé dans la carte réseau</td><td>Trame & MAC</td></tr>
+        <tr class="recap-row" data-cat="trame"><td><strong>OUI + NIC</strong></td><td>MAC = 3 octets constructeur (OUI) + 3 octets identifiant carte (NIC)</td><td>Trame & MAC</td></tr>
+        <tr class="recap-row" data-cat="trame"><td><strong>Broadcast MAC</strong></td><td>FF:FF:FF:FF:FF:FF — trame envoyée à tous les appareils du LAN</td><td>Trame & MAC</td></tr>
+        <tr class="recap-row" data-cat="trame"><td><strong>EtherType</strong></td><td>Champ de 2 octets identifiant le protocole encapsulé (IPv4, ARP…)</td><td>Trame & MAC</td></tr>
+        <tr class="recap-row" data-cat="trame"><td><strong>FCS / CRC</strong></td><td>Contrôle d'intégrité de la trame — erreur = trame jetée</td><td>Trame & MAC</td></tr>
+        <tr class="recap-row" data-cat="switch"><td><strong>Switch</strong></td><td>Envoie les trames au bon port via sa table MAC — remplace le hub</td><td>Switch & STP</td></tr>
+        <tr class="recap-row" data-cat="switch"><td><strong>Table MAC</strong></td><td>Correspondance MAC ↔ port, apprise dynamiquement par le switch</td><td>Switch & STP</td></tr>
+        <tr class="recap-row" data-cat="switch"><td><strong>Flooding</strong></td><td>Si la MAC destination est inconnue, le switch envoie sur tous les ports</td><td>Switch & STP</td></tr>
+        <tr class="recap-row" data-cat="switch"><td><strong>STP</strong></td><td>Spanning Tree Protocol — désactive les liens redondants pour éviter les boucles</td><td>Switch & STP</td></tr>
+        <tr class="recap-row" data-cat="switch"><td><strong>RSTP</strong></td><td>Rapid STP — convergence en quelques secondes au lieu de 30–50 s</td><td>Switch & STP</td></tr>
+        <tr class="recap-row" data-cat="vlan"><td><strong>VLAN</strong></td><td>Segmentation logique d'un réseau physique en réseaux virtuels isolés</td><td>VLAN</td></tr>
+        <tr class="recap-row" data-cat="vlan"><td><strong>802.1Q</strong></td><td>Norme de tag VLAN ajouté dans la trame Ethernet (4 octets)</td><td>VLAN</td></tr>
+        <tr class="recap-row" data-cat="vlan"><td><strong>Port access</strong></td><td>Port affecté à un seul VLAN — pour les postes utilisateurs</td><td>VLAN</td></tr>
+        <tr class="recap-row" data-cat="vlan"><td><strong>Port trunk</strong></td><td>Transporte tous les VLANs (tagged) — liaison switch ↔ switch</td><td>VLAN</td></tr>
+        <tr class="recap-row" data-cat="autre"><td><strong>LACP</strong></td><td>Agrégation de liens (802.3ad) — débit cumulé + redondance</td><td>LACP / LLDP</td></tr>
+        <tr class="recap-row" data-cat="autre"><td><strong>LLDP</strong></td><td>Protocole ouvert de découverte des voisins réseau (802.1AB)</td><td>LACP / LLDP</td></tr>
+        <tr class="recap-row" data-cat="autre"><td><strong>CDP</strong></td><td>Protocole Cisco propriétaire de découverte des voisins</td><td>LACP / LLDP</td></tr>
+        <tr class="recap-row" data-cat="autre"><td><strong>Point d'accès (AP)</strong></td><td>Équipement centralisant les connexions Wi-Fi — rôle similaire au switch</td><td>WLAN</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 6 : Quiz                                                              -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-quiz" class="tab-content">
+
+  <h2>Quiz — Couche liaison</h2>
+  <p style="color:var(--text-dim); margin-bottom:1.5rem;">8 questions pour valider vos acquis.</p>
+
+  <div id="quiz-container">
+
+    <div class="quiz-question" id="q1">
+      <h4>Question 1 — Quelle est la taille d'une adresse MAC ?</h4>
+      <div class="quiz-options">
+        <button class="quiz-option" onclick="answer(1,'a')">a) 32 bits (4 octets)</button>
+        <button class="quiz-option" onclick="answer(1,'b')">b) 48 bits (6 octets)</button>
+        <button class="quiz-option" onclick="answer(1,'c')">c) 64 bits (8 octets)</button>
+        <button class="quiz-option" onclick="answer(1,'d')">d) 128 bits (16 octets)</button>
+      </div>
+      <div class="quiz-feedback" id="fb1"></div>
+    </div>
+
+    <div class="quiz-question" id="q2">
+      <h4>Question 2 — Quelle adresse MAC correspond à un broadcast ?</h4>
+      <div class="quiz-options">
+        <button class="quiz-option" onclick="answer(2,'a')">a) 00:00:00:00:00:00</button>
+        <button class="quiz-option" onclick="answer(2,'b')">b) FF:FF:FF:FF:FF:FF</button>
+        <button class="quiz-option" onclick="answer(2,'c')">c) 01:00:5E:00:00:01</button>
+        <button class="quiz-option" onclick="answer(2,'d')">d) 192.168.1.255</button>
+      </div>
+      <div class="quiz-feedback" id="fb2"></div>
+    </div>
+
+    <div class="quiz-question" id="q3">
+      <h4>Question 3 — Que fait un switch quand il reçoit une trame avec une MAC destination inconnue ?</h4>
+      <div class="quiz-options">
+        <button class="quiz-option" onclick="answer(3,'a')">a) Il jette la trame</button>
+        <button class="quiz-option" onclick="answer(3,'b')">b) Il la renvoie à l'émetteur</button>
+        <button class="quiz-option" onclick="answer(3,'c')">c) Il la diffuse sur tous les ports sauf celui d'origine (flooding)</button>
+        <button class="quiz-option" onclick="answer(3,'d')">d) Il l'envoie au routeur</button>
+      </div>
+      <div class="quiz-feedback" id="fb3"></div>
+    </div>
+
+    <div class="quiz-question" id="q4">
+      <h4>Question 4 — Quel est le rôle de STP ?</h4>
+      <div class="quiz-options">
+        <button class="quiz-option" onclick="answer(4,'a')">a) Chiffrer les trames Ethernet</button>
+        <button class="quiz-option" onclick="answer(4,'b')">b) Empêcher les boucles réseau en désactivant les liens redondants</button>
+        <button class="quiz-option" onclick="answer(4,'c')">c) Attribuer des adresses IP automatiquement</button>
+        <button class="quiz-option" onclick="answer(4,'d')">d) Augmenter le débit des liens</button>
+      </div>
+      <div class="quiz-feedback" id="fb4"></div>
+    </div>
+
+    <div class="quiz-question" id="q5">
+      <h4>Question 5 — Quel est l'objectif principal d'un VLAN ?</h4>
+      <div class="quiz-options">
+        <button class="quiz-option" onclick="answer(5,'a')">a) Accélérer le débit réseau</button>
+        <button class="quiz-option" onclick="answer(5,'b')">b) Segmenter logiquement un réseau physique en réseaux isolés</button>
+        <button class="quiz-option" onclick="answer(5,'c')">c) Remplacer le routeur</button>
+        <button class="quiz-option" onclick="answer(5,'d')">d) Chiffrer le trafic</button>
+      </div>
+      <div class="quiz-feedback" id="fb5"></div>
+    </div>
+
+    <div class="quiz-question" id="q6">
+      <h4>Question 6 — Quel type de port transporte plusieurs VLANs simultanément ?</h4>
+      <div class="quiz-options">
+        <button class="quiz-option" onclick="answer(6,'a')">a) Port access</button>
+        <button class="quiz-option" onclick="answer(6,'b')">b) Port trunk</button>
+        <button class="quiz-option" onclick="answer(6,'c')">c) Port console</button>
+        <button class="quiz-option" onclick="answer(6,'d')">d) Port WAN</button>
+      </div>
+      <div class="quiz-feedback" id="fb6"></div>
+    </div>
+
+    <div class="quiz-question" id="q7">
+      <h4>Question 7 — À quoi sert LACP ?</h4>
+      <div class="quiz-options">
+        <button class="quiz-option" onclick="answer(7,'a')">a) Découvrir les voisins réseau</button>
+        <button class="quiz-option" onclick="answer(7,'b')">b) Chiffrer les communications</button>
+        <button class="quiz-option" onclick="answer(7,'c')">c) Agréger plusieurs liens physiques en un lien logique</button>
+        <button class="quiz-option" onclick="answer(7,'d')">d) Attribuer des VLANs aux ports</button>
+      </div>
+      <div class="quiz-feedback" id="fb7"></div>
+    </div>
+
+    <div class="quiz-question" id="q8">
+      <h4>Question 8 — Quel champ de la trame Ethernet vérifie l'intégrité des données ?</h4>
+      <div class="quiz-options">
+        <button class="quiz-option" onclick="answer(8,'a')">a) EtherType</button>
+        <button class="quiz-option" onclick="answer(8,'b')">b) Préambule</button>
+        <button class="quiz-option" onclick="answer(8,'c')">c) FCS / CRC</button>
+        <button class="quiz-option" onclick="answer(8,'d')">d) MAC Source</button>
+      </div>
+      <div class="quiz-feedback" id="fb8"></div>
+    </div>
+
+  </div>
+
+  <div class="quiz-score" id="quiz-score">
+    <div class="score-num" id="score-display">0 / 8</div>
+    <p id="score-msg"></p>
+    <button class="btn-restart" onclick="restartQuiz()">Recommencer</button>
+  </div>
+</div>
+
+<script>
+// ─── TABS ───────────────────────────────────────────────────────────────────
+function showTab(id) {
+  document.querySelectorAll('.tab-content').forEach(function(el) { el.classList.remove('active'); });
+  document.querySelectorAll('nav button').forEach(function(el) { el.classList.remove('active'); });
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ─── COPY CODE ──────────────────────────────────────────────────────────────
+function copyCode(btn) {
+  var pre = btn.previousElementSibling;
+  navigator.clipboard.writeText(pre.textContent).then(function() {
+    btn.textContent = 'Copié !'; btn.classList.add('copied');
+    setTimeout(function() { btn.textContent = 'Copier'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+// ─── FRAME FIELDS ───────────────────────────────────────────────────────────
+function showFrameInfo(id) {
+  var info = document.getElementById('fi-' + id);
+  var isVisible = info.classList.contains('visible');
+  document.querySelectorAll('.frame-info').forEach(function(f) { f.classList.remove('visible'); });
+  document.querySelectorAll('.frame-field').forEach(function(f) { f.classList.remove('active'); });
+  if (!isVisible) {
+    info.classList.add('visible');
+    event.currentTarget.classList.add('active');
+  }
+}
+
+// ─── GENERIC CARDS ──────────────────────────────────────────────────────────
+function toggleCard(id) {
+  var detail = document.getElementById('detail-' + id);
+  var isVisible = detail.classList.contains('visible');
+  document.querySelectorAll('.card-detail').forEach(function(d) { d.classList.remove('visible'); });
+  document.querySelectorAll('.card').forEach(function(c) { c.classList.remove('selected'); });
+  if (!isVisible) {
+    detail.classList.add('visible');
+    event.currentTarget.classList.add('selected');
+  }
+}
+
+// ─── SWITCH SIMULATOR ──────────────────────────────────────────────────────
+function resetSwitch() {
+  ['sw-link1','sw-link2','sw-link3','sw-link4'].forEach(function(id) {
+    document.getElementById(id).classList.remove('active');
+  });
+  ['sw-pc1','sw-pc2','sw-srv','sw-pc3'].forEach(function(id) {
+    document.getElementById(id).classList.remove('highlight');
+  });
+  document.querySelectorAll('.sw-btn').forEach(function(b) { b.classList.remove('active'); });
+}
+
+function switchScenario(scenario) {
+  resetSwitch();
+  event.currentTarget.classList.add('active');
+  var msg = '';
+  switch(scenario) {
+    case 'learn':
+      document.getElementById('sw-link1').classList.add('active');
+      document.getElementById('sw-pc1').classList.add('highlight');
+      msg = '<strong>Apprentissage :</strong> PC1 envoie une trame. Le switch lit la MAC source (AA:AA) et l\'associe au port 1 dans sa <strong>table MAC</strong>.';
+      break;
+    case 'known':
+      document.getElementById('sw-link1').classList.add('active');
+      document.getElementById('sw-link3').classList.add('active');
+      document.getElementById('sw-pc1').classList.add('highlight');
+      document.getElementById('sw-srv').classList.add('highlight');
+      msg = '<strong>Envoi ciblé :</strong> PC1 envoie une trame vers le Serveur (CC:CC). Le switch connaît le port → il envoie <strong>uniquement sur le port 3</strong>. Les autres ports ne voient rien.';
+      break;
+    case 'flood':
+      ['sw-link1','sw-link2','sw-link3','sw-link4'].forEach(function(id) {
+        document.getElementById(id).classList.add('active');
+      });
+      document.getElementById('sw-pc1').classList.add('highlight');
+      msg = '<strong>Flooding :</strong> PC1 envoie une trame vers une MAC inconnue. Le switch ne sait pas où elle se trouve → il diffuse sur <strong>tous les ports sauf le port source</strong>.';
+      break;
+    case 'broadcast':
+      ['sw-link1','sw-link2','sw-link3','sw-link4'].forEach(function(id) {
+        document.getElementById(id).classList.add('active');
+      });
+      ['sw-pc1','sw-pc2','sw-srv','sw-pc3'].forEach(function(id) {
+        document.getElementById(id).classList.add('highlight');
+      });
+      msg = '<strong>Broadcast :</strong> PC1 envoie une trame vers FF:FF:FF:FF:FF:FF. Le switch la diffuse sur <strong>tous les ports</strong> — tous les appareils la reçoivent. Utilisé par ARP, DHCP.';
+      break;
+  }
+  document.getElementById('sw-msg').innerHTML = msg;
+}
+
+// ─── STP DIAGRAM ────────────────────────────────────────────────────────────
+function stpMode(mode) {
+  var ab = document.getElementById('stp-ab');
+  var ac = document.getElementById('stp-ac');
+  var bc = document.getElementById('stp-bc');
+  var blocked = document.getElementById('stp-blocked-icon');
+  var loopWarn = document.getElementById('stp-loop-warn');
+  var rootLabel = document.getElementById('stp-root-label');
+  var bcLabel = document.querySelector('.stp-bc-label');
+  var msg = document.getElementById('stp-msg');
+
+  document.querySelectorAll('.net-diagram .nd-btn').forEach(function(b) { b.classList.remove('active'); });
+  event.currentTarget.classList.add('active');
+
+  ab.className.baseVal = 'svg-link';
+  ac.className.baseVal = 'svg-link';
+  bc.className.baseVal = 'svg-link';
+  blocked.style.display = 'none';
+  loopWarn.style.display = 'none';
+  rootLabel.textContent = '';
+  if (bcLabel) bcLabel.style.display = '';
+
+  switch(mode) {
+    case 'off':
+      ab.className.baseVal = 'svg-link looping';
+      ac.className.baseVal = 'svg-link looping';
+      bc.className.baseVal = 'svg-link looping';
+      loopWarn.style.display = '';
+      msg.innerHTML = '<strong>Sans STP :</strong> Les 3 liens sont actifs → une trame broadcast <strong>tourne en boucle</strong> indéfiniment entre les switches. Le réseau est saturé (tempête de broadcast).';
+      break;
+    case 'on':
+      ab.className.baseVal = 'svg-link highlight';
+      ac.className.baseVal = 'svg-link highlight';
+      bc.className.baseVal = 'svg-link blocked';
+      blocked.style.display = '';
+      rootLabel.textContent = '★ ROOT BRIDGE';
+      if (bcLabel) bcLabel.style.display = 'none';
+      msg.innerHTML = '<strong>Avec STP :</strong> SW-A est élu <strong>root bridge</strong>. Le lien SW-B ↔ SW-C est <strong>bloqué</strong> pour casser la boucle. Les données passent par SW-A. Pas de tempête.';
+      break;
+    case 'fail':
+      ab.className.baseVal = 'svg-link blocked';
+      ac.className.baseVal = 'svg-link highlight';
+      bc.className.baseVal = 'svg-link highlight';
+      rootLabel.textContent = '★ ROOT BRIDGE';
+      msg.innerHTML = '<strong>Panne du lien SW-A ↔ SW-B :</strong> STP <strong>réactive automatiquement</strong> le lien SW-B ↔ SW-C qui était en réserve. Le réseau reste fonctionnel grâce à la redondance.';
+      break;
+  }
+}
+
+// ─── VLAN DIAGRAM ───────────────────────────────────────────────────────────
+var vlanMap = {
+  a1: { vlan: 10, peers: ['a1','b1'], color: '#ef4444' },
+  a2: { vlan: 20, peers: ['a2','b2'], color: '#3b82f6' },
+  a3: { vlan: 30, peers: ['a3','b3'], color: '#22c55e' },
+  b1: { vlan: 10, peers: ['a1','b1'], color: '#ef4444' },
+  b2: { vlan: 20, peers: ['a2','b2'], color: '#3b82f6' },
+  b3: { vlan: 30, peers: ['a3','b3'], color: '#22c55e' }
+};
+var allVlanNodes = ['a1','a2','a3','b1','b2','b3'];
+
+function vlanClick(id) {
+  var info = vlanMap[id];
+  allVlanNodes.forEach(function(nid) {
+    var el = document.getElementById('vn-' + nid);
+    if (info.peers.indexOf(nid) !== -1) {
+      el.classList.remove('dimmed');
+    } else {
+      el.classList.add('dimmed');
+    }
+  });
+
+  var trunk = document.getElementById('vlan-trunk');
+  var trunk2 = document.getElementById('vlan-trunk2');
+  trunk.setAttribute('stroke', info.color);
+  trunk.className.baseVal = 'svg-link highlight';
+  trunk2.setAttribute('stroke', info.color);
+  trunk2.className.baseVal = 'svg-link highlight';
+
+  var swl3 = document.getElementById('vlan-router');
+  var swl3Label = document.getElementById('vlan-router-label');
+  var swl3Sub = document.getElementById('vlan-router-sub');
+  var wanLink = document.getElementById('vlan-wan-link');
+  var wanLabel = document.getElementById('vlan-wan-label');
+  swl3.style.opacity = '1';
+  swl3Label.style.opacity = '1';
+  swl3Sub.style.opacity = '1';
+  wanLink.style.opacity = '.4';
+  wanLabel.style.opacity = '.4';
+
+  var names = { a1:'Admin1', a2:'Compta1', a3:'Invité1', b1:'Admin2', b2:'Compta2', b3:'Invité2' };
+  var peerNames = info.peers.map(function(p) { return names[p]; }).join(' et ');
+  var others = allVlanNodes.filter(function(n) { return info.peers.indexOf(n) === -1; });
+  var otherNames = others.map(function(p) { return names[p]; }).join(', ');
+
+  document.getElementById('vlan-msg').innerHTML =
+    '<strong>' + names[id] + '</strong> (VLAN ' + info.vlan + ') communique avec <strong>' + peerNames + '</strong> via les trunks → SW-Core L3. ' +
+    'Pour joindre ' + otherNames + ', il faut le <strong>routage inter-VLAN</strong> du switch L3.';
+}
+
+// ─── LACP DIAGRAM ───────────────────────────────────────────────────────────
+function lacpMode(mode) {
+  var l1 = document.getElementById('lacp-l1');
+  var l2 = document.getElementById('lacp-l2');
+  var l3 = document.getElementById('lacp-l3');
+  var bracket = document.getElementById('lacp-bracket');
+  var bracketLabel = document.getElementById('lacp-bracket-label');
+  var down = document.getElementById('lacp-down');
+  var msg = document.getElementById('lacp-msg');
+  var s1 = document.getElementById('lacp-s1');
+  var s2 = document.getElementById('lacp-s2');
+  var s3 = document.getElementById('lacp-s3');
+
+  document.querySelectorAll('#tab-autres .nd-btn').forEach(function(b) { b.classList.remove('active'); });
+  event.currentTarget.classList.add('active');
+
+  l1.className.baseVal = 'svg-link'; l2.className.baseVal = 'svg-link'; l3.className.baseVal = 'svg-link';
+  bracket.style.display = 'none'; down.style.display = 'none';
+  s1.style.display = ''; s2.style.display = ''; s3.style.display = '';
+
+  switch(mode) {
+    case 'off':
+      l1.className.baseVal = 'svg-link highlight';
+      l2.className.baseVal = 'svg-link blocked';
+      l3.className.baseVal = 'svg-link blocked';
+      msg.innerHTML = '<strong>Sans LACP :</strong> STP bloquerait 2 liens sur 3 pour éviter une boucle. Résultat : <strong>1 Gbit/s</strong> de bande passante utilisée, 2 liens gaspillés.';
+      break;
+    case 'on':
+      l1.className.baseVal = 'svg-link highlight';
+      l2.className.baseVal = 'svg-link highlight';
+      l3.className.baseVal = 'svg-link highlight';
+      bracket.style.display = '';
+      bracketLabel.textContent = 'LAG — 3 Gbit/s';
+      s1.style.display = 'none'; s2.style.display = 'none'; s3.style.display = 'none';
+      msg.innerHTML = '<strong>Avec LACP :</strong> Les 3 liens sont agrégés en un <strong>LAG</strong> (Link Aggregation Group). Bande passante totale : <strong>3 Gbit/s</strong>. Pas de boucle car vus comme un seul lien logique.';
+      break;
+    case 'fail':
+      l1.className.baseVal = 'svg-link highlight';
+      l2.className.baseVal = 'svg-link highlight';
+      l3.className.baseVal = 'svg-link';
+      bracket.style.display = '';
+      bracketLabel.textContent = 'LAG — 2 Gbit/s (dégradé)';
+      down.style.display = '';
+      s1.style.display = 'none'; s2.style.display = 'none'; s3.style.display = 'none';
+      msg.innerHTML = '<strong>Panne d\'un lien :</strong> Le LAG perd un membre mais <strong>reste actif</strong> avec les 2 liens restants. Débit réduit à <strong>2 Gbit/s</strong>. Aucune coupure ressentie par les utilisateurs.';
+      break;
+  }
+}
+
+// ─── VLAN FRAME FIELDS ──────────────────────────────────────────────────────
+function showVlanInfo(id) {
+  var info = document.getElementById('vfi-' + id);
+  var isVisible = info.classList.contains('visible');
+  document.querySelectorAll('#tab-vlan .frame-info').forEach(function(f) { f.classList.remove('visible'); });
+  document.querySelectorAll('#vlan-frame .frame-field').forEach(function(f) { f.classList.remove('active'); });
+  if (!isVisible) {
+    info.classList.add('visible');
+    event.currentTarget.classList.add('active');
+  }
+}
+
+// ─── WIFI FRAME FIELDS ──────────────────────────────────────────────────────
+function showWifiInfo(id) {
+  var info = document.getElementById('wfi-' + id);
+  var isVisible = info.classList.contains('visible');
+  document.querySelectorAll('#tab-wlan .frame-info').forEach(function(f) { f.classList.remove('visible'); });
+  document.querySelectorAll('#wifi-frame .frame-field').forEach(function(f) { f.classList.remove('active'); });
+  if (!isVisible) {
+    info.classList.add('visible');
+    event.currentTarget.classList.add('active');
+  }
+}
+
+// ─── WLAN MODE ──────────────────────────────────────────────────────────────
+function wlanMode(mode) {
+  var infra = document.getElementById('wlan-infra');
+  var adhoc = document.getElementById('wlan-adhoc');
+  var msg = document.getElementById('wlan-msg');
+
+  document.querySelectorAll('#tab-wlan .nd-btn').forEach(function(b) { b.classList.remove('active'); });
+  event.currentTarget.classList.add('active');
+
+  if (mode === 'infra') {
+    infra.style.display = '';
+    adhoc.style.display = 'none';
+    msg.innerHTML = '<strong>Mode Infrastructure :</strong> Les clients se connectent au point d\'accès (AP) qui fait le relais vers le réseau filaire. C\'est le mode standard en entreprise et à la maison.';
+  } else {
+    infra.style.display = 'none';
+    adhoc.style.display = '';
+    msg.innerHTML = '<strong>Mode Ad hoc :</strong> Les appareils communiquent directement entre eux, sans point d\'accès. Utilisé pour des partages temporaires ou dans des situations sans infrastructure réseau.';
+  }
+}
+
+// ─── RECAP FILTER ───────────────────────────────────────────────────────────
+function filterRecap(cat, btn) {
+  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  document.querySelectorAll('.recap-row').forEach(function(row) {
+    if (cat === 'all' || row.dataset.cat === cat) row.classList.remove('hidden');
+    else row.classList.add('hidden');
+  });
+}
+
+// ─── QUIZ ────────────────────────────────────────────────────────────────────
+var TOTAL_Q = 8;
+var correctAnswers = { 1:'b', 2:'b', 3:'c', 4:'b', 5:'b', 6:'b', 7:'c', 8:'c' };
+var feedbacks = {
+  1: { b: "Exact ! Une adresse MAC fait 48 bits, soit 6 octets (ex. C8:5A:CF:06:8C:67).", wrong: "Non. Une adresse MAC fait 48 bits (6 octets). Ne pas confondre avec l'adresse IP (32 bits) ou IPv6 (128 bits)." },
+  2: { b: "Correct ! FF:FF:FF:FF:FF:FF est l'adresse broadcast — elle cible tous les appareils du LAN.", wrong: "Non. L'adresse broadcast MAC est FF:FF:FF:FF:FF:FF. 192.168.1.255 est un broadcast IP, pas MAC." },
+  3: { c: "Exact ! Quand la MAC destination est inconnue, le switch fait du flooding : il envoie sur tous les ports sauf celui d'origine.", wrong: "Non. Le switch fait du flooding : il diffuse la trame sur tous les ports sauf le port source, en attendant d'apprendre où se trouve le destinataire." },
+  4: { b: "Correct ! STP (Spanning Tree Protocol) désactive les liens redondants pour empêcher les boucles réseau.", wrong: "Non. STP empêche les boucles réseau en désactivant les liens redondants, tout en les gardant en réserve en cas de panne." },
+  5: { b: "Exact ! Un VLAN segmente logiquement un réseau physique en réseaux virtuels isolés les uns des autres.", wrong: "Non. Le VLAN sert à segmenter logiquement un réseau physique en plusieurs réseaux virtuels isolés (sécurité, organisation)." },
+  6: { b: "Correct ! Un port trunk transporte plusieurs VLANs simultanément grâce aux tags 802.1Q.", wrong: "Non. C'est le port trunk qui transporte plusieurs VLANs (tagged 802.1Q). Le port access ne transporte qu'un seul VLAN." },
+  7: { c: "Exact ! LACP (802.3ad) agrège plusieurs liens physiques en un seul lien logique pour augmenter le débit et la redondance.", wrong: "Non. LACP sert à agréger plusieurs liens physiques en un lien logique (plus de débit + redondance)." },
+  8: { c: "Correct ! Le champ FCS (Frame Check Sequence) contient un CRC-32 pour vérifier l'intégrité de la trame.", wrong: "Non. C'est le champ FCS/CRC (4 octets) qui vérifie l'intégrité de la trame. Si le CRC ne correspond pas, la trame est jetée." }
+};
+var score = 0;
+var answered = {};
+
+function answer(qNum, choice) {
+  if (answered[qNum]) return;
+  answered[qNum] = true;
+  score += (choice === correctAnswers[qNum]) ? 1 : 0;
+  var qEl = document.getElementById('q' + qNum);
+  qEl.querySelectorAll('.quiz-option').forEach(function(btn) {
+    btn.disabled = true;
+    var ltr = btn.textContent.trim()[0].toLowerCase();
+    if (ltr === correctAnswers[qNum]) btn.classList.add('correct');
+    else if (ltr === choice) btn.classList.add('wrong');
+  });
+  document.getElementById('fb' + qNum).textContent = (feedbacks[qNum][choice] || feedbacks[qNum].wrong);
+  if (Object.keys(answered).length === TOTAL_Q) showScore();
+}
+
+function showScore() {
+  document.getElementById('quiz-score').style.display = 'block';
+  document.getElementById('score-display').textContent = score + ' / ' + TOTAL_Q;
+  var pct = score / TOTAL_Q;
+  var msg;
+  if (pct < 0.3) msg = 'Revoyez le cours avant de continuer.';
+  else if (pct < 0.5) msg = 'Plusieurs notions sont à revoir.';
+  else if (pct < 0.7) msg = 'Pas mal ! Relisez les points manqués.';
+  else if (pct < 1) msg = 'Très bien ! Vous maîtrisez presque tout.';
+  else msg = 'Parfait ! Toutes les réponses sont correctes.';
+  document.getElementById('score-msg').textContent = msg;
+}
+
+function restartQuiz() {
+  score = 0; answered = {};
+  document.getElementById('quiz-score').style.display = 'none';
+  document.querySelectorAll('.quiz-option').forEach(function(btn) { btn.disabled = false; btn.classList.remove('correct','wrong'); });
+  document.querySelectorAll('.quiz-feedback').forEach(function(fb) { fb.textContent = ''; });
+}
+</script>
+</body>
+</html>

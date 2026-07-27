@@ -1,0 +1,592 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Support interactif de formation Fondamentaux Réseaux : 04 — Couche transport">
+<title>04 — Couche transport</title>
+<style>
+:root{--bg:#0f1117;--surface:#1a1d27;--surface2:#232635;--border:#2e3148;--accent:#60a5fa;--accent2:#93c5fd;--warn:#f0a500;--danger:#e05c5c;--success:#4caf82;--text:#d4d8f0;--text-dim:#7880a0;--code-bg:#12141f;--radius:10px}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Segoe UI',system-ui,sans-serif;font-size:15px;line-height:1.7}
+header{background:linear-gradient(135deg,#080e1a,#0d1220);border-bottom:1px solid var(--border);padding:2.5rem 2rem 1.5rem;text-align:center}
+.badge{display:inline-block;background:var(--accent);color:#0a0e1a;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:.7rem}
+header h1{font-size:1.8rem;font-weight:700;color:#fff;line-height:1.2}header p{color:var(--text-dim);margin-top:.4rem;font-size:.95rem}
+nav{position:sticky;top:0;z-index:100;background:var(--surface);border-bottom:1px solid var(--border);display:flex;justify-content:center;flex-wrap:wrap;gap:.25rem;padding:.5rem 1rem}
+nav button{background:none;border:none;color:var(--text-dim);padding:.85rem 1.1rem;font-size:.88rem;font-weight:500;cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;transition:all .2s}
+nav button:hover{color:var(--text)}nav button.active{color:var(--accent);border-bottom-color:var(--accent)}
+.tab-content{display:none;padding:2rem;max-width:900px;margin:0 auto}.tab-content.active{display:block}
+h2{font-size:1.25rem;color:var(--accent2);margin:1.8rem 0 .8rem;border-left:3px solid var(--accent);padding-left:.75rem}h2:first-child{margin-top:0}
+h3{font-size:1.05rem;color:var(--text);margin:1.4rem 0 .6rem}p{margin-bottom:.9rem}ul,ol{padding-left:1.4rem;margin-bottom:.9rem}li{margin-bottom:.35rem}
+.callout{border-radius:var(--radius);padding:.9rem 1.1rem;margin:1.2rem 0;border-left:4px solid}
+.callout.note{background:#1a2035;border-color:var(--accent)}.callout.tip{background:#0e2018;border-color:var(--success)}.callout.warn{background:#1e1800;border-color:var(--warn)}
+.callout-title{font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.07em;margin-bottom:.4rem}
+.callout.note .callout-title{color:var(--accent)}.callout.tip .callout-title{color:var(--success)}.callout.warn .callout-title{color:var(--warn)}
+.table-wrap{overflow-x:auto;margin:1rem 0}table{width:100%;border-collapse:collapse;font-size:.9rem}
+th{background:var(--surface2);color:var(--accent2);text-align:left;padding:.6rem .9rem;font-weight:600;border:1px solid var(--border)}
+td{padding:.55rem .9rem;border:1px solid var(--border);vertical-align:top}tr:hover td{background:var(--surface2)}
+code{font-family:'Consolas','Cascadia Code',monospace;font-size:.88rem;color:#a8d8ff;background:var(--code-bg);padding:.15rem .4rem;border-radius:4px}
+.code-block{position:relative;margin:1rem 0}pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(--radius);padding:1rem 1.2rem;overflow-x:auto}pre code{background:none;padding:0}
+.copy-btn{position:absolute;top:.5rem;right:.5rem;background:var(--surface2);border:1px solid var(--border);color:var(--text-dim);padding:.25rem .6rem;font-size:.75rem;border-radius:5px;cursor:pointer;transition:all .2s}.copy-btn:hover{background:var(--accent);color:#000}.copy-btn.copied{background:var(--success);color:#000}
+
+/* ── SEGMENT VISUAL ── */
+.frame-visual{display:flex;gap:0;margin:1.5rem 0;overflow-x:auto;padding-bottom:.5rem}
+.frame-field{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:.6rem .5rem;text-align:center;border:1px solid;min-width:70px;cursor:pointer;transition:all .3s}
+.frame-field:first-child{border-radius:8px 0 0 8px}.frame-field:last-child{border-radius:0 8px 8px 0}
+.frame-field .ff-name{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em}.frame-field .ff-size{font-size:.65rem;opacity:.7;margin-top:.2rem}
+.frame-field:hover{filter:brightness(1.3);transform:translateY(-2px)}.frame-field.active{filter:brightness(1.4);transform:translateY(-4px);box-shadow:0 6px 20px rgba(0,0,0,.4)}
+.frame-info{background:var(--surface2);border:1px solid var(--accent);border-radius:var(--radius);padding:1rem;margin-top:.5rem;font-size:.88rem;display:none}.frame-info.visible{display:block}
+.ff-port-s{background:rgba(96,165,250,.12);border-color:#60a5fa;color:#93c5fd;flex-grow:1}
+.ff-port-d{background:rgba(249,115,22,.12);border-color:#f97316;color:#fdba74;flex-grow:1}
+.ff-seq{background:rgba(168,85,247,.12);border-color:#a855f7;color:#d8b4fe;flex-grow:1}
+.ff-ack{background:rgba(76,175,130,.12);border-color:#4caf82;color:#6ee7b7;flex-grow:1}
+.ff-flags{background:rgba(234,179,8,.1);border-color:#eab308;color:#fde68a}
+.ff-win{background:rgba(100,100,140,.15);border-color:#6366f1;color:#a5b4fc}
+.ff-data{background:rgba(34,197,94,.1);border-color:#22c55e;color:#86efac;flex-grow:3;min-width:120px}
+.ff-check{background:rgba(234,179,8,.1);border-color:#eab308;color:#fde68a}
+.ff-len{background:rgba(100,100,140,.15);border-color:#6366f1;color:#a5b4fc}
+
+/* ── HANDSHAKE ── */
+.hs-diagram{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem;margin:1.5rem 0}
+.hs-svg{width:100%;height:auto;display:block}
+.hs-controls{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem;justify-content:center}
+.hs-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:.45rem 1rem;border-radius:8px;cursor:pointer;font-size:.82rem;transition:all .2s}
+.hs-btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}.hs-btn.active{background:var(--accent);color:#000;font-weight:600}
+.hs-msg{font-size:.88rem;color:var(--text);margin-top:.8rem;padding:.6rem;background:var(--code-bg);border-radius:6px;min-height:2.5rem}
+
+/* ── VS BOX ── */
+.vs-container{display:grid;grid-template-columns:1fr auto 1fr;gap:0;margin:1.5rem 0;align-items:stretch}
+.vs-box{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.3rem;display:flex;flex-direction:column;align-items:center;text-align:center}
+.vs-box h4{font-size:1.1rem;margin-bottom:.6rem}
+.vs-box.tcp{border-color:#4caf82}.vs-box.tcp h4{color:#6ee7b7}
+.vs-box.udp{border-color:#60a5fa}.vs-box.udp h4{color:#93c5fd}
+.vs-stats{width:100%;margin-top:.6rem}.vs-stat{display:flex;justify-content:space-between;padding:.3rem 0;border-bottom:1px solid var(--border);font-size:.85rem}.vs-stat:last-child{border-bottom:none}
+.vs-stat .label{color:var(--text-dim)}.vs-stat .value{font-weight:600}
+.vs-divider{display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;color:var(--text-dim);padding:0 .8rem}
+
+/* ── FILTER / RECAP ── */
+.filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
+.filter-btn{background:var(--surface);border:1px solid var(--border);color:var(--text-dim);padding:.35rem .85rem;border-radius:20px;font-size:.82rem;cursor:pointer;transition:all .2s}
+.filter-btn:hover,.filter-btn.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:600}
+.recap-row.hidden{display:none}
+
+/* ── QUIZ ── */
+.quiz-question{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:1.2rem;margin-bottom:1.2rem}
+.quiz-question h4{color:var(--accent2);margin-bottom:.9rem;font-size:.98rem}
+.quiz-options{display:flex;flex-direction:column;gap:.5rem}
+.quiz-option{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:.6rem .9rem;cursor:pointer;font-size:.9rem;transition:all .2s;text-align:left;color:var(--text)}
+.quiz-option:hover:not(:disabled){border-color:var(--accent)}.quiz-option.correct{background:#0d2e1e;border-color:var(--success);color:var(--success)}.quiz-option.wrong{background:#2e0d0d;border-color:var(--danger);color:var(--danger)}.quiz-option:disabled{cursor:default}
+.quiz-feedback{margin-top:.6rem;font-size:.87rem;color:var(--text-dim);font-style:italic}
+.quiz-score{background:var(--surface2);border:1px solid var(--accent);border-radius:var(--radius);padding:1.5rem;text-align:center;margin-top:1.5rem;display:none}
+.quiz-score .score-num{font-size:2.5rem;font-weight:700;color:var(--accent)}.quiz-score p{color:var(--text-dim);margin-top:.4rem}
+.btn-restart{background:var(--accent);color:#000;border:none;padding:.6rem 1.4rem;border-radius:8px;font-weight:700;cursor:pointer;margin-top:1rem;font-size:.9rem}.btn-restart:hover{background:var(--accent2)}
+
+@media(max-width:600px){.vs-container{grid-template-columns:1fr}.vs-divider{padding:.5rem 0}.frame-field{min-width:50px;padding:.5rem .3rem}.frame-field .ff-name{font-size:.65rem}}
+</style>
+<link rel="stylesheet" href="../Ressources/html-assets/course-common.css">
+<script src="../Ressources/html-assets/course-common.js" defer></script>
+</head>
+<body>
+
+<header>
+  <div class="badge">Fondamentaux Réseaux</div>
+  <h1>04 — Couche transport</h1>
+  <p>TCP vs UDP, numéros de ports, handshake, et outils de diagnostic couche 4.</p>
+</header>
+
+<nav id="main-nav">
+  <button class="active" onclick="showTab('role')">Rôle &amp; Ports</button>
+  <button onclick="showTab('udp')">UDP</button>
+  <button onclick="showTab('tcp')">TCP</button>
+  <button onclick="showTab('diag')">Diagnostic</button>
+  <button onclick="showTab('recap')">Récapitulatif</button>
+  <button onclick="showTab('quiz')">Quiz</button>
+</nav>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 1 : Rôle & Ports                                                     -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-role" class="tab-content active">
+
+  <h2>Rôle de la couche transport</h2>
+  <p>La couche 4 assure le <strong>transfert des données entre deux applications</strong> sur des machines différentes :</p>
+  <ul>
+    <li><strong>Segmente</strong> les données en unités transportables</li>
+    <li><strong>Identifie les applications</strong> via les numéros de port</li>
+    <li>Choisit entre <strong>fiabilité</strong> (TCP) ou <strong>rapidité</strong> (UDP)</li>
+  </ul>
+
+  <p>Une <strong>socket</strong> = adresse IP + port. Exemple : <code>192.168.1.10:443</code> identifie un serveur HTTPS.</p>
+
+  <h2>TCP vs UDP — comparaison</h2>
+
+  <div class="vs-container">
+    <div class="vs-box tcp">
+      <h4>TCP</h4>
+      <div class="vs-stats">
+        <div class="vs-stat"><span class="label">Connexion</span><span class="value">Oui (handshake)</span></div>
+        <div class="vs-stat"><span class="label">Fiabilité</span><span class="value" style="color:var(--success)">Garantie</span></div>
+        <div class="vs-stat"><span class="label">Ordre</span><span class="value" style="color:var(--success)">Garanti</span></div>
+        <div class="vs-stat"><span class="label">Retransmission</span><span class="value" style="color:var(--success)">Oui</span></div>
+        <div class="vs-stat"><span class="label">Vitesse</span><span class="value" style="color:var(--warn)">Plus lent</span></div>
+        <div class="vs-stat"><span class="label">Usage</span><span class="value">Web, mail, fichiers</span></div>
+      </div>
+    </div>
+    <div class="vs-divider">VS</div>
+    <div class="vs-box udp">
+      <h4>UDP</h4>
+      <div class="vs-stats">
+        <div class="vs-stat"><span class="label">Connexion</span><span class="value">Non</span></div>
+        <div class="vs-stat"><span class="label">Fiabilité</span><span class="value" style="color:var(--danger)">Aucune</span></div>
+        <div class="vs-stat"><span class="label">Ordre</span><span class="value" style="color:var(--danger)">Non garanti</span></div>
+        <div class="vs-stat"><span class="label">Retransmission</span><span class="value" style="color:var(--danger)">Non</span></div>
+        <div class="vs-stat"><span class="label">Vitesse</span><span class="value" style="color:var(--success)">Rapide</span></div>
+        <div class="vs-stat"><span class="label">Usage</span><span class="value">VoIP, jeux, DNS</span></div>
+      </div>
+    </div>
+  </div>
+
+  <h2>Numéros de ports</h2>
+  <p>Un <strong>port</strong> identifie une application sur une machine. Plage : <strong>0 à 65535</strong>.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Plage</th><th>Type</th><th>Usage</th></tr></thead>
+      <tbody>
+        <tr><td><code>0 – 1023</code></td><td>Ports bien connus</td><td>Services standards (HTTP, SSH…)</td></tr>
+        <tr><td><code>1024 – 49151</code></td><td>Ports enregistrés</td><td>Applications éditeurs</td></tr>
+        <tr><td><code>49152 – 65535</code></td><td>Ports dynamiques</td><td>Utilisés temporairement par les clients</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Ports standards à connaître</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Service</th><th>Protocole</th><th>Port</th></tr></thead>
+      <tbody>
+        <tr><td><strong>HTTP</strong></td><td>TCP</td><td>80</td></tr>
+        <tr><td><strong>HTTPS</strong></td><td>TCP</td><td>443</td></tr>
+        <tr><td><strong>SSH</strong></td><td>TCP</td><td>22</td></tr>
+        <tr><td><strong>FTP</strong></td><td>TCP</td><td>21</td></tr>
+        <tr><td><strong>DNS</strong></td><td>UDP/TCP</td><td>53</td></tr>
+        <tr><td><strong>DHCP</strong></td><td>UDP</td><td>67/68</td></tr>
+        <tr><td><strong>SMTP</strong></td><td>TCP</td><td>25</td></tr>
+        <tr><td><strong>RDP</strong></td><td>TCP</td><td>3389</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout note">
+    <div class="callout-title">Session réseau</div>
+    Un serveur <strong>écoute</strong> sur un port fixe (ex. 443). Le client utilise un <strong>port temporaire</strong> (ex. 51324) pour la réponse. La session est identifiée par le quadruplet : <code>IP src + port src + IP dst + port dst</code>.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 2 : UDP                                                               -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-udp" class="tab-content">
+
+  <h2>UDP — User Datagram Protocol</h2>
+  <p><strong>UDP</strong> envoie des données <strong>sans établir de connexion</strong> et sans vérification de réception. C'est le protocole "fire and forget".</p>
+
+  <h3>Structure d'un datagramme UDP</h3>
+  <p>Cliquez sur un champ :</p>
+
+  <div class="frame-visual" id="udp-frame">
+    <div class="frame-field ff-port-s" onclick="showSegInfo('udp','ps')"><span class="ff-name">Port Source</span><span class="ff-size">16 bits</span></div>
+    <div class="frame-field ff-port-d" onclick="showSegInfo('udp','pd')"><span class="ff-name">Port Dest.</span><span class="ff-size">16 bits</span></div>
+    <div class="frame-field ff-len" onclick="showSegInfo('udp','len')"><span class="ff-name">Longueur</span><span class="ff-size">16 bits</span></div>
+    <div class="frame-field ff-check" onclick="showSegInfo('udp','ck')"><span class="ff-name">Checksum</span><span class="ff-size">16 bits</span></div>
+    <div class="frame-field ff-data" onclick="showSegInfo('udp','data')"><span class="ff-name">Données</span><span class="ff-size">variable</span></div>
+  </div>
+
+  <div class="frame-info" id="udpi-ps"><strong>Port Source</strong> (16 bits) — Port de l'application émettrice. Permet au destinataire de savoir où envoyer la réponse.</div>
+  <div class="frame-info" id="udpi-pd"><strong>Port Destination</strong> (16 bits) — Port de l'application réceptrice. Ex. : <code>53</code> pour DNS, <code>67</code> pour DHCP.</div>
+  <div class="frame-info" id="udpi-len"><strong>Longueur</strong> (16 bits) — Taille totale du datagramme (en-tête + données). L'en-tête UDP fait seulement <strong>8 octets</strong> → très léger.</div>
+  <div class="frame-info" id="udpi-ck"><strong>Checksum</strong> (16 bits) — Vérification d'intégrité optionnelle. Détecte les erreurs mais <strong>ne retransmet pas</strong> si le datagramme est corrompu.</div>
+  <div class="frame-info" id="udpi-data"><strong>Données</strong> (variable) — Le contenu utile envoyé par l'application (requête DNS, paquet VoIP, etc.).</div>
+
+  <div class="callout tip">
+    <div class="callout-title">Pourquoi UDP est si léger</div>
+    L'en-tête UDP ne fait que <strong>8 octets</strong> (vs 20+ pour TCP). Pas de handshake, pas de numéros de séquence, pas d'acquittements. Résultat : latence minimale et overhead quasi nul.
+  </div>
+
+  <h2>Cas d'usage d'UDP</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Application</th><th>Pourquoi UDP ?</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Streaming vidéo/audio</strong></td><td>Quelques pertes acceptables, la latence est prioritaire</td></tr>
+        <tr><td><strong>Jeux en ligne</strong></td><td>La vitesse prime sur la fiabilité</td></tr>
+        <tr><td><strong>DNS</strong></td><td>Requêtes courtes, réponse rapide attendue</td></tr>
+        <tr><td><strong>VoIP</strong></td><td>La latence est critique — une retransmission serait trop tardive</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 3 : TCP                                                               -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-tcp" class="tab-content">
+
+  <h2>TCP — Transmission Control Protocol</h2>
+  <p><strong>TCP</strong> garantit que les données arrivent <strong>dans l'ordre</strong>, <strong>sans perte</strong> et <strong>sans erreur</strong>.</p>
+
+  <h3>Structure d'un segment TCP</h3>
+  <p>Cliquez sur un champ :</p>
+
+  <div class="frame-visual" id="tcp-frame">
+    <div class="frame-field ff-port-s" onclick="showSegInfo('tcp','ps')"><span class="ff-name">Port Src</span><span class="ff-size">16 bits</span></div>
+    <div class="frame-field ff-port-d" onclick="showSegInfo('tcp','pd')"><span class="ff-name">Port Dst</span><span class="ff-size">16 bits</span></div>
+    <div class="frame-field ff-seq" onclick="showSegInfo('tcp','seq')"><span class="ff-name">N° Séquence</span><span class="ff-size">32 bits</span></div>
+    <div class="frame-field ff-ack" onclick="showSegInfo('tcp','ack')"><span class="ff-name">N° Acquit.</span><span class="ff-size">32 bits</span></div>
+    <div class="frame-field ff-flags" onclick="showSegInfo('tcp','flags')"><span class="ff-name">Flags</span><span class="ff-size">SYN ACK FIN…</span></div>
+    <div class="frame-field ff-win" onclick="showSegInfo('tcp','win')"><span class="ff-name">Fenêtre</span><span class="ff-size">16 bits</span></div>
+    <div class="frame-field ff-data" onclick="showSegInfo('tcp','data')"><span class="ff-name">Données</span><span class="ff-size">variable</span></div>
+  </div>
+
+  <div class="frame-info" id="tcpi-ps"><strong>Port Source</strong> (16 bits) — Port de l'application émettrice (souvent un port dynamique côté client).</div>
+  <div class="frame-info" id="tcpi-pd"><strong>Port Destination</strong> (16 bits) — Port de l'application réceptrice. Ex. : <code>443</code> pour HTTPS, <code>22</code> pour SSH.</div>
+  <div class="frame-info" id="tcpi-seq"><strong>Numéro de séquence</strong> (32 bits) — Identifie la position des données dans le flux. Permet au récepteur de <strong>réassembler les segments dans l'ordre</strong>, même s'ils arrivent dans le désordre.</div>
+  <div class="frame-info" id="tcpi-ack"><strong>Numéro d'acquittement</strong> (32 bits) — Indique le prochain octet attendu par le récepteur. Confirme la bonne réception de tous les octets précédents. Si un segment n'est pas acquitté → <strong>retransmission</strong>.</div>
+  <div class="frame-info" id="tcpi-flags"><strong>Flags</strong> — Bits de contrôle : <strong>SYN</strong> (ouverture), <strong>ACK</strong> (acquittement), <strong>FIN</strong> (fermeture), <strong>RST</strong> (reset), <strong>PSH</strong> (push immédiat), <strong>URG</strong> (urgent). Combinés pour gérer l'état de la connexion.</div>
+  <div class="frame-info" id="tcpi-win"><strong>Fenêtre</strong> (Window, 16 bits) — Nombre d'octets que le récepteur est prêt à accepter. C'est le mécanisme de <strong>contrôle de flux</strong> (fenêtre glissante) : empêche l'émetteur de saturer le récepteur.</div>
+  <div class="frame-info" id="tcpi-data"><strong>Données</strong> (variable) — Le contenu utile de l'application (page HTML, e-mail, fichier…).</div>
+
+  <h2>Handshake TCP — établissement de connexion</h2>
+  <p>Avant d'échanger des données, TCP établit la connexion en <strong>3 étapes</strong>. Cliquez étape par étape :</p>
+
+  <div class="hs-diagram">
+    <svg class="hs-svg" viewBox="0 0 500 280" xmlns="http://www.w3.org/2000/svg">
+      <!-- Columns -->
+      <line x1="120" y1="30" x2="120" y2="270" stroke="#3b82f6" stroke-width="2"/>
+      <line x1="380" y1="30" x2="380" y2="270" stroke="#059669" stroke-width="2"/>
+      <rect x="70" y="10" width="100" height="28" rx="6" fill="#1d4ed8" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="120" y="29" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">Client</text>
+      <rect x="330" y="10" width="100" height="28" rx="6" fill="#064e3b" stroke="#059669" stroke-width="1.5"/>
+      <text x="380" y="29" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">Serveur</text>
+
+      <!-- Step 1: SYN -->
+      <g id="hs-step1" opacity=".2">
+        <line x1="125" y1="75" x2="375" y2="95" stroke="#60a5fa" stroke-width="2.5"/>
+        <polygon points="370,91 375,95 367,98" fill="#60a5fa"/>
+        <rect x="195" y="70" width="110" height="22" rx="5" fill="#12141f" stroke="#60a5fa" stroke-width="1"/>
+        <text x="250" y="85" fill="#93c5fd" font-size="10" font-weight="700" text-anchor="middle">SYN (seq=100)</text>
+        <text x="115" y="80" fill="#60a5fa" font-size="8" text-anchor="end">1</text>
+      </g>
+
+      <!-- Step 2: SYN-ACK -->
+      <g id="hs-step2" opacity=".2">
+        <line x1="375" y1="135" x2="125" y2="155" stroke="#4caf82" stroke-width="2.5"/>
+        <polygon points="130,151 125,155 133,158" fill="#4caf82"/>
+        <rect x="170" y="128" width="160" height="22" rx="5" fill="#12141f" stroke="#4caf82" stroke-width="1"/>
+        <text x="250" y="143" fill="#6ee7b7" font-size="10" font-weight="700" text-anchor="middle">SYN-ACK (seq=300, ack=101)</text>
+        <text x="385" y="140" fill="#4caf82" font-size="8" text-anchor="start">2</text>
+      </g>
+
+      <!-- Step 3: ACK -->
+      <g id="hs-step3" opacity=".2">
+        <line x1="125" y1="195" x2="375" y2="215" stroke="#fbbf24" stroke-width="2.5"/>
+        <polygon points="370,211 375,215 367,218" fill="#fbbf24"/>
+        <rect x="195" y="190" width="110" height="22" rx="5" fill="#12141f" stroke="#fbbf24" stroke-width="1"/>
+        <text x="250" y="205" fill="#fbbf24" font-size="10" font-weight="700" text-anchor="middle">ACK (ack=301)</text>
+        <text x="115" y="200" fill="#fbbf24" font-size="8" text-anchor="end">3</text>
+      </g>
+
+      <!-- Established -->
+      <g id="hs-established" opacity="0">
+        <rect x="160" y="240" width="180" height="24" rx="6" fill="rgba(76,175,130,.15)" stroke="#4caf82" stroke-width="1.5"/>
+        <text x="250" y="256" fill="#6ee7b7" font-size="10" font-weight="700" text-anchor="middle">CONNEXION ÉTABLIE</text>
+      </g>
+    </svg>
+
+    <div class="hs-controls">
+      <button class="hs-btn" onclick="hsStep(1)">1. SYN</button>
+      <button class="hs-btn" onclick="hsStep(2)">2. SYN-ACK</button>
+      <button class="hs-btn" onclick="hsStep(3)">3. ACK</button>
+      <button class="hs-btn" onclick="hsStep(4)">Tout afficher</button>
+    </div>
+    <div class="hs-msg" id="hs-msg">Cliquez étape par étape pour voir le handshake TCP.</div>
+  </div>
+
+  <h2>Fermeture de connexion (4 étapes)</h2>
+  <p>Chaque côté ferme sa moitié de la connexion :</p>
+  <ol>
+    <li>Client → <strong>FIN</strong> → Serveur</li>
+    <li>Client ← <strong>ACK</strong> ← Serveur</li>
+    <li>Client ← <strong>FIN</strong> ← Serveur</li>
+    <li>Client → <strong>ACK</strong> → Serveur → le client passe en <strong>TIME_WAIT</strong></li>
+  </ol>
+
+  <div class="hs-diagram">
+    <svg class="hs-svg" viewBox="0 0 500 340" xmlns="http://www.w3.org/2000/svg">
+      <!-- Columns -->
+      <line x1="120" y1="30" x2="120" y2="330" stroke="#3b82f6" stroke-width="2"/>
+      <line x1="380" y1="30" x2="380" y2="330" stroke="#059669" stroke-width="2"/>
+      <rect x="70" y="10" width="100" height="28" rx="6" fill="#1d4ed8" stroke="#3b82f6" stroke-width="1.5"/>
+      <text x="120" y="29" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">Client</text>
+      <rect x="330" y="10" width="100" height="28" rx="6" fill="#064e3b" stroke="#059669" stroke-width="1.5"/>
+      <text x="380" y="29" fill="#fff" font-size="11" font-weight="700" text-anchor="middle">Serveur</text>
+
+      <!-- Step 1: FIN (Client → Serveur) -->
+      <g id="fin-step1" opacity=".2">
+        <line x1="125" y1="70" x2="375" y2="90" stroke="#e05c5c" stroke-width="2.5"/>
+        <polygon points="370,86 375,90 367,93" fill="#e05c5c"/>
+        <rect x="200" y="65" width="100" height="22" rx="5" fill="#12141f" stroke="#e05c5c" stroke-width="1"/>
+        <text x="250" y="80" fill="#f87171" font-size="10" font-weight="700" text-anchor="middle">FIN (seq=500)</text>
+        <text x="115" y="75" fill="#e05c5c" font-size="8" text-anchor="end">1</text>
+      </g>
+
+      <!-- Step 2: ACK (Serveur → Client) -->
+      <g id="fin-step2" opacity=".2">
+        <line x1="375" y1="130" x2="125" y2="150" stroke="#4caf82" stroke-width="2.5"/>
+        <polygon points="130,146 125,150 133,153" fill="#4caf82"/>
+        <rect x="200" y="125" width="100" height="22" rx="5" fill="#12141f" stroke="#4caf82" stroke-width="1"/>
+        <text x="250" y="140" fill="#6ee7b7" font-size="10" font-weight="700" text-anchor="middle">ACK (ack=501)</text>
+        <text x="385" y="135" fill="#4caf82" font-size="8" text-anchor="start">2</text>
+      </g>
+
+      <!-- Step 3: FIN (Serveur → Client) -->
+      <g id="fin-step3" opacity=".2">
+        <line x1="375" y1="190" x2="125" y2="210" stroke="#f0a500" stroke-width="2.5"/>
+        <polygon points="130,206 125,210 133,213" fill="#f0a500"/>
+        <rect x="195" y="185" width="110" height="22" rx="5" fill="#12141f" stroke="#f0a500" stroke-width="1"/>
+        <text x="250" y="200" fill="#fbbf24" font-size="10" font-weight="700" text-anchor="middle">FIN (seq=800)</text>
+        <text x="385" y="195" fill="#f0a500" font-size="8" text-anchor="start">3</text>
+      </g>
+
+      <!-- Step 4: ACK (Client → Serveur) -->
+      <g id="fin-step4" opacity=".2">
+        <line x1="125" y1="250" x2="375" y2="270" stroke="#60a5fa" stroke-width="2.5"/>
+        <polygon points="370,266 375,270 367,273" fill="#60a5fa"/>
+        <rect x="200" y="245" width="100" height="22" rx="5" fill="#12141f" stroke="#60a5fa" stroke-width="1"/>
+        <text x="250" y="260" fill="#93c5fd" font-size="10" font-weight="700" text-anchor="middle">ACK (ack=801)</text>
+        <text x="115" y="255" fill="#60a5fa" font-size="8" text-anchor="end">4</text>
+      </g>
+
+      <!-- Closed -->
+      <g id="fin-closed" opacity="0">
+        <rect x="160" y="295" width="180" height="24" rx="6" fill="rgba(224,92,92,.15)" stroke="#e05c5c" stroke-width="1.5"/>
+        <text x="250" y="311" fill="#f87171" font-size="10" font-weight="700" text-anchor="middle">CONNEXION FERMÉE</text>
+      </g>
+    </svg>
+
+    <div class="hs-controls">
+      <button class="hs-btn" onclick="finStep(1)">1. FIN →</button>
+      <button class="hs-btn" onclick="finStep(2)">2. ← ACK</button>
+      <button class="hs-btn" onclick="finStep(3)">3. ← FIN</button>
+      <button class="hs-btn" onclick="finStep(4)">4. ACK →</button>
+      <button class="hs-btn" onclick="finStep(5)">Tout afficher</button>
+    </div>
+    <div class="hs-msg" id="fin-msg">Cliquez étape par étape pour voir la fermeture TCP.</div>
+  </div>
+
+  <h2>Mécanismes clés de TCP</h2>
+  <ul>
+    <li><strong>Numéros de séquence</strong> — réassemblage des segments dans l'ordre</li>
+    <li><strong>Acquittements (ACK)</strong> — chaque segment reçu est confirmé</li>
+    <li><strong>Fenêtre glissante</strong> — contrôle de débit pour éviter la saturation du récepteur</li>
+    <li><strong>Retransmission</strong> — segment non acquitté → renvoi automatique</li>
+  </ul>
+
+  <h2>Cas d'usage de TCP</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Application</th><th>Pourquoi TCP ?</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Web (HTTP/HTTPS)</strong></td><td>La page doit être complète et intègre</td></tr>
+        <tr><td><strong>Email (SMTP, IMAP)</strong></td><td>Aucune perte de contenu tolérée</td></tr>
+        <tr><td><strong>Transfert de fichiers (FTP, SCP)</strong></td><td>Intégrité et ordre essentiels</td></tr>
+        <tr><td><strong>SSH</strong></td><td>Connexion fiable indispensable</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 4 : Diagnostic                                                        -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-diag" class="tab-content">
+
+  <h2>Outils de diagnostic couche 4</h2>
+
+  <h3>netstat / ss — voir les connexions actives</h3>
+  <div class="code-block"><pre><code>netstat -an       # Toutes les connexions (Windows / Linux)
+netstat -tulnp    # Linux : ports en écoute + processus
+ss -tulnp         # Linux : version moderne de netstat</code></pre><button class="copy-btn" onclick="copyCode(this)">Copier</button></div>
+
+  <h3>telnet / nc — tester un port distant</h3>
+  <div class="code-block"><pre><code>telnet 192.168.1.10 80   # Teste le port 80
+nc -zv 192.168.1.10 443  # Test TCP rapide (Linux)</code></pre><button class="copy-btn" onclick="copyCode(this)">Copier</button></div>
+
+  <h2>États TCP courants</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>État</th><th>Signification</th><th>Diagnostic</th></tr></thead>
+      <tbody>
+        <tr><td><code>LISTEN</code></td><td>Le service attend des connexions</td><td>Normal pour un serveur</td></tr>
+        <tr><td><code>ESTABLISHED</code></td><td>Connexion active en cours</td><td>Normal</td></tr>
+        <tr><td><code>SYN_SENT</code></td><td>Demande de connexion envoyée</td><td>Si bloqué ici → pare-feu ou cible injoignable</td></tr>
+        <tr><td><code>TIME_WAIT</code></td><td>Fermeture en cours (attente)</td><td>Excessif = charge serveur élevée</td></tr>
+        <tr><td><code>CLOSE_WAIT</code></td><td>Le pair distant a fermé</td><td>Beaucoup = application ne ferme pas ses sockets</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout note">
+    <div class="callout-title">Astuce</div>
+    Un port en <code>LISTEN</code> mais inaccessible de l'extérieur → problème de <strong>pare-feu</strong>. Beaucoup de <code>TIME_WAIT</code> → serveur très sollicité ou mal configuré.
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 5 : Récapitulatif                                                     -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-recap" class="tab-content">
+  <h2>Récapitulatif — Couche transport</h2>
+  <div class="filter-bar">
+    <button class="filter-btn active" onclick="filterRecap('all',this)">Tout</button>
+    <button class="filter-btn" onclick="filterRecap('general',this)">Général</button>
+    <button class="filter-btn" onclick="filterRecap('udp',this)">UDP</button>
+    <button class="filter-btn" onclick="filterRecap('tcp',this)">TCP</button>
+    <button class="filter-btn" onclick="filterRecap('diag',this)">Diagnostic</button>
+  </div>
+  <div class="table-wrap"><table><thead><tr><th>Notion</th><th>Définition</th><th>Catégorie</th></tr></thead><tbody>
+    <tr class="recap-row" data-cat="general"><td><strong>Socket</strong></td><td>IP + port — identifie une application sur le réseau</td><td>Général</td></tr>
+    <tr class="recap-row" data-cat="general"><td><strong>Port</strong></td><td>Numéro de 0 à 65535 identifiant une application</td><td>Général</td></tr>
+    <tr class="recap-row" data-cat="general"><td><strong>Ports bien connus</strong></td><td>0–1023 : HTTP(80), HTTPS(443), SSH(22), DNS(53)…</td><td>Général</td></tr>
+    <tr class="recap-row" data-cat="udp"><td><strong>UDP</strong></td><td>Sans connexion, rapide, sans fiabilité — VoIP, DNS, jeux</td><td>UDP</td></tr>
+    <tr class="recap-row" data-cat="udp"><td><strong>Datagramme UDP</strong></td><td>En-tête de 8 octets : port src/dst + longueur + checksum</td><td>UDP</td></tr>
+    <tr class="recap-row" data-cat="tcp"><td><strong>TCP</strong></td><td>Connecté, fiable, ordonné — web, mail, fichiers, SSH</td><td>TCP</td></tr>
+    <tr class="recap-row" data-cat="tcp"><td><strong>Handshake 3 étapes</strong></td><td>SYN → SYN-ACK → ACK — établit la connexion TCP</td><td>TCP</td></tr>
+    <tr class="recap-row" data-cat="tcp"><td><strong>N° de séquence</strong></td><td>Identifie la position des données pour le réassemblage</td><td>TCP</td></tr>
+    <tr class="recap-row" data-cat="tcp"><td><strong>Fenêtre glissante</strong></td><td>Contrôle de flux — limite le débit pour ne pas saturer le récepteur</td><td>TCP</td></tr>
+    <tr class="recap-row" data-cat="tcp"><td><strong>Retransmission</strong></td><td>Segment non acquitté → renvoi automatique</td><td>TCP</td></tr>
+    <tr class="recap-row" data-cat="tcp"><td><strong>Flags TCP</strong></td><td>SYN, ACK, FIN, RST, PSH, URG — contrôlent l'état de la connexion</td><td>TCP</td></tr>
+    <tr class="recap-row" data-cat="diag"><td><strong>netstat / ss</strong></td><td>Affiche les connexions actives et ports ouverts</td><td>Diagnostic</td></tr>
+    <tr class="recap-row" data-cat="diag"><td><strong>LISTEN</strong></td><td>État TCP : le service attend des connexions</td><td>Diagnostic</td></tr>
+    <tr class="recap-row" data-cat="diag"><td><strong>TIME_WAIT</strong></td><td>État TCP : fermeture en cours, attente de confirmation</td><td>Diagnostic</td></tr>
+  </tbody></table></div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- TAB 6 : Quiz                                                              -->
+<!-- ═══════════════════════════════════════════════════════════════════════════ -->
+<div id="tab-quiz" class="tab-content">
+  <h2>Quiz — Couche transport</h2>
+  <p style="color:var(--text-dim);margin-bottom:1.5rem;">8 questions pour valider vos acquis.</p>
+  <div id="quiz-container">
+    <div class="quiz-question" id="q1"><h4>Question 1 — Quel protocole de transport est sans connexion et sans fiabilité ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(1,'a')">a) TCP</button><button class="quiz-option" onclick="answer(1,'b')">b) UDP</button><button class="quiz-option" onclick="answer(1,'c')">c) ICMP</button><button class="quiz-option" onclick="answer(1,'d')">d) IP</button>
+    </div><div class="quiz-feedback" id="fb1"></div></div>
+
+    <div class="quiz-question" id="q2"><h4>Question 2 — Combien d'étapes comporte le handshake TCP ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(2,'a')">a) 2</button><button class="quiz-option" onclick="answer(2,'b')">b) 3</button><button class="quiz-option" onclick="answer(2,'c')">c) 4</button><button class="quiz-option" onclick="answer(2,'d')">d) 5</button>
+    </div><div class="quiz-feedback" id="fb2"></div></div>
+
+    <div class="quiz-question" id="q3"><h4>Question 3 — Quel port est utilisé par HTTPS ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(3,'a')">a) 80</button><button class="quiz-option" onclick="answer(3,'b')">b) 22</button><button class="quiz-option" onclick="answer(3,'c')">c) 443</button><button class="quiz-option" onclick="answer(3,'d')">d) 53</button>
+    </div><div class="quiz-feedback" id="fb3"></div></div>
+
+    <div class="quiz-question" id="q4"><h4>Question 4 — Qu'est-ce qu'une socket ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(4,'a')">a) Un câble réseau</button><button class="quiz-option" onclick="answer(4,'b')">b) Une adresse IP + un numéro de port</button><button class="quiz-option" onclick="answer(4,'c')">c) Un protocole de chiffrement</button><button class="quiz-option" onclick="answer(4,'d')">d) Un type de switch</button>
+    </div><div class="quiz-feedback" id="fb4"></div></div>
+
+    <div class="quiz-question" id="q5"><h4>Question 5 — Pourquoi UDP est-il préféré pour la VoIP ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(5,'a')">a) Il chiffre la voix automatiquement</button><button class="quiz-option" onclick="answer(5,'b')">b) La faible latence est prioritaire sur la fiabilité</button><button class="quiz-option" onclick="answer(5,'c')">c) Il garantit l'ordre des paquets</button><button class="quiz-option" onclick="answer(5,'d')">d) Il compresse mieux les données</button>
+    </div><div class="quiz-feedback" id="fb5"></div></div>
+
+    <div class="quiz-question" id="q6"><h4>Question 6 — Quel mécanisme TCP empêche la saturation du récepteur ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(6,'a')">a) Le TTL</button><button class="quiz-option" onclick="answer(6,'b')">b) La fenêtre glissante</button><button class="quiz-option" onclick="answer(6,'c')">c) Le checksum</button><button class="quiz-option" onclick="answer(6,'d')">d) Le flag RST</button>
+    </div><div class="quiz-feedback" id="fb6"></div></div>
+
+    <div class="quiz-question" id="q7"><h4>Question 7 — Quelle commande affiche les ports en écoute sous Linux ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(7,'a')">a) ping -l</button><button class="quiz-option" onclick="answer(7,'b')">b) traceroute</button><button class="quiz-option" onclick="answer(7,'c')">c) ss -tulnp</button><button class="quiz-option" onclick="answer(7,'d')">d) ip route show</button>
+    </div><div class="quiz-feedback" id="fb7"></div></div>
+
+    <div class="quiz-question" id="q8"><h4>Question 8 — Que signifie l'état TCP LISTEN ?</h4><div class="quiz-options">
+      <button class="quiz-option" onclick="answer(8,'a')">a) La connexion est active</button><button class="quiz-option" onclick="answer(8,'b')">b) Le service attend des connexions</button><button class="quiz-option" onclick="answer(8,'c')">c) La connexion est en cours de fermeture</button><button class="quiz-option" onclick="answer(8,'d')">d) Le port est bloqué par le pare-feu</button>
+    </div><div class="quiz-feedback" id="fb8"></div></div>
+  </div>
+  <div class="quiz-score" id="quiz-score"><div class="score-num" id="score-display">0 / 8</div><p id="score-msg"></p><button class="btn-restart" onclick="restartQuiz()">Recommencer</button></div>
+</div>
+
+<script>
+function showTab(id){document.querySelectorAll('.tab-content').forEach(function(e){e.classList.remove('active')});document.querySelectorAll('nav button').forEach(function(e){e.classList.remove('active')});document.getElementById('tab-'+id).classList.add('active');event.target.classList.add('active')}
+function copyCode(btn){var pre=btn.previousElementSibling;navigator.clipboard.writeText(pre.textContent).then(function(){btn.textContent='Copié !';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copier';btn.classList.remove('copied')},2000)})}
+
+// ─── SEGMENT FIELDS ─────────────────────────────────────────────────────────
+function showSegInfo(proto,id){
+  var prefix=proto==='tcp'?'tcpi-':'udpi-';
+  var frameId=proto==='tcp'?'tcp-frame':'udp-frame';
+  var info=document.getElementById(prefix+id);
+  var vis=info.classList.contains('visible');
+  var tab=proto==='tcp'?'#tab-tcp':'#tab-udp';
+  document.querySelectorAll(tab+' .frame-info').forEach(function(f){f.classList.remove('visible')});
+  document.querySelectorAll('#'+frameId+' .frame-field').forEach(function(f){f.classList.remove('active')});
+  if(!vis){info.classList.add('visible');event.currentTarget.classList.add('active')}
+}
+
+// ─── TCP HANDSHAKE ──────────────────────────────────────────────────────────
+var hsMessages={
+  1:'<strong>Étape 1 — SYN :</strong> Le client envoie un segment avec le flag <strong>SYN</strong> et un numéro de séquence initial (ISN = 100). Il dit : "Je veux me connecter, voici mon numéro de départ."',
+  2:'<strong>Étape 2 — SYN-ACK :</strong> Le serveur répond avec <strong>SYN + ACK</strong>. Il envoie son propre ISN (300) et acquitte le SYN du client (ack = 101 = seq client + 1). Il dit : "OK, voici mon numéro, et j\'ai bien reçu le tien."',
+  3:'<strong>Étape 3 — ACK :</strong> Le client confirme avec un <strong>ACK</strong> (ack = 301 = seq serveur + 1). Il dit : "J\'ai bien reçu ton numéro. On peut communiquer."',
+  4:'<strong>Connexion établie !</strong> Les deux côtés connaissent les numéros de séquence de l\'autre. Les données peuvent maintenant circuler de façon fiable et ordonnée.'
+};
+function hsStep(step){
+  document.querySelectorAll('.hs-btn').forEach(function(b){b.classList.remove('active')});
+  event.currentTarget.classList.add('active');
+  for(var i=1;i<=3;i++){
+    document.getElementById('hs-step'+i).setAttribute('opacity',i<=step?'1':'.2');
+  }
+  document.getElementById('hs-established').setAttribute('opacity',step>=3?'1':'0');
+  document.getElementById('hs-msg').innerHTML=hsMessages[step];
+}
+
+// ─── TCP FIN (fermeture) ────────────────────────────────────────────────────
+var finMessages={
+  1:'<strong>Étape 1 — FIN :</strong> Le client envoie un segment avec le flag <strong>FIN</strong> (seq=500). Il dit : "J\'ai fini d\'envoyer des données, je veux fermer ma moitié de la connexion."',
+  2:'<strong>Étape 2 — ACK :</strong> Le serveur acquitte le FIN du client avec un <strong>ACK</strong> (ack=501). Il dit : "Bien reçu, je sais que tu as fini." Le serveur peut encore envoyer des données.',
+  3:'<strong>Étape 3 — FIN :</strong> Le serveur envoie à son tour un <strong>FIN</strong> (seq=800) quand il a terminé. Il dit : "Moi aussi j\'ai fini, je ferme ma moitié."',
+  4:'<strong>Étape 4 — ACK :</strong> Le client acquitte le FIN du serveur avec un <strong>ACK</strong> (ack=801). Le client entre en <strong>TIME_WAIT</strong> avant de libérer la connexion.',
+  5:'<strong>Connexion fermée !</strong> Les deux côtés ont fermé leur moitié de connexion. Le client reste en TIME_WAIT (~2×MSL) pour s\'assurer que le dernier ACK est bien arrivé.'
+};
+function finStep(step){
+  document.querySelectorAll('#fin-msg').forEach(function(){});
+  var btns=event.currentTarget.parentElement.querySelectorAll('.hs-btn');
+  btns.forEach(function(b){b.classList.remove('active')});
+  event.currentTarget.classList.add('active');
+  for(var i=1;i<=4;i++){
+    document.getElementById('fin-step'+i).setAttribute('opacity',i<=step?'1':'.2');
+  }
+  document.getElementById('fin-closed').setAttribute('opacity',step>=4?'1':'0');
+  document.getElementById('fin-msg').innerHTML=finMessages[step];
+}
+
+// ─── RECAP ──────────────────────────────────────────────────────────────────
+function filterRecap(cat,btn){document.querySelectorAll('.filter-btn').forEach(function(b){b.classList.remove('active')});btn.classList.add('active');document.querySelectorAll('.recap-row').forEach(function(r){if(cat==='all'||r.dataset.cat===cat)r.classList.remove('hidden');else r.classList.add('hidden')})}
+
+// ─── QUIZ ───────────────────────────────────────────────────────────────────
+var TOTAL_Q=8;
+var correctAnswers={1:'b',2:'b',3:'c',4:'b',5:'b',6:'b',7:'c',8:'b'};
+var feedbacks={
+  1:{b:"Exact ! UDP est sans connexion et ne garantit ni la livraison ni l'ordre.",wrong:"Non. C'est UDP qui est sans connexion et sans fiabilité. TCP est fiable, ICMP et IP ne sont pas des protocoles de transport."},
+  2:{b:"Correct ! Le handshake TCP se fait en 3 étapes : SYN → SYN-ACK → ACK.",wrong:"Non. Le handshake TCP (établissement) se fait en 3 étapes. La fermeture en fait 4."},
+  3:{c:"Exact ! HTTPS utilise le port 443. HTTP utilise le port 80.",wrong:"Non. HTTPS = port 443, HTTP = 80, SSH = 22, DNS = 53."},
+  4:{b:"Correct ! Une socket = adresse IP + numéro de port, ex. 192.168.1.10:443.",wrong:"Non. Une socket est la combinaison d'une adresse IP et d'un numéro de port."},
+  5:{b:"Exact ! En VoIP, la latence est critique. Une retransmission TCP arriverait trop tard, mieux vaut perdre un paquet que retarder la conversation.",wrong:"Non. UDP est préféré pour la VoIP car la latence minimale est prioritaire — une retransmission serait trop tardive."},
+  6:{b:"Correct ! La fenêtre glissante (Window) contrôle le débit pour que l'émetteur n'envoie pas plus que ce que le récepteur peut traiter.",wrong:"Non. C'est la fenêtre glissante (Window) qui contrôle le flux. Le TTL est en couche 3, le checksum vérifie l'intégrité."},
+  7:{c:"Exact ! ss -tulnp affiche les sockets en écoute TCP/UDP avec le processus associé.",wrong:"Non. La commande ss -tulnp (ou netstat -tulnp) affiche les ports en écoute sous Linux."},
+  8:{b:"Correct ! LISTEN signifie que le service est démarré et attend des connexions entrantes.",wrong:"Non. LISTEN = le service attend des connexions. ESTABLISHED = connexion active. TIME_WAIT = fermeture en cours."}
+};
+var score=0,answered={};
+function answer(q,c){if(answered[q])return;answered[q]=true;score+=(c===correctAnswers[q])?1:0;var el=document.getElementById('q'+q);el.querySelectorAll('.quiz-option').forEach(function(b){b.disabled=true;var l=b.textContent.trim()[0].toLowerCase();if(l===correctAnswers[q])b.classList.add('correct');else if(l===c)b.classList.add('wrong')});document.getElementById('fb'+q).textContent=feedbacks[q][c]||feedbacks[q].wrong;if(Object.keys(answered).length===TOTAL_Q)showScore()}
+function showScore(){document.getElementById('quiz-score').style.display='block';document.getElementById('score-display').textContent=score+' / '+TOTAL_Q;var p=score/TOTAL_Q;var m;if(p<.3)m='Revoyez le cours.';else if(p<.5)m='Plusieurs notions à revoir.';else if(p<.7)m='Pas mal !';else if(p<1)m='Très bien !';else m='Parfait !';document.getElementById('score-msg').textContent=m}
+function restartQuiz(){score=0;answered={};document.getElementById('quiz-score').style.display='none';document.querySelectorAll('.quiz-option').forEach(function(b){b.disabled=false;b.classList.remove('correct','wrong')});document.querySelectorAll('.quiz-feedback').forEach(function(f){f.textContent=''})}
+</script>
+</body>
+</html>

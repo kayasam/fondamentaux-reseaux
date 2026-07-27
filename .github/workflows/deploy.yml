@@ -55,7 +55,7 @@ jobs:
 
       - name: Publish interactive HTML courses
         run: |
-          find content/cours -type f -name "*.html" -print0 | while IFS= read -r -d '' file; do
+          find content -type f -name "*.html" -print0 | while IFS= read -r -d '' file; do
             relative_path="${file#content/}"
             mkdir -p "public/$(dirname "$relative_path")"
             cp "$file" "public/$relative_path"
@@ -63,10 +63,22 @@ jobs:
           mkdir -p public/Ressources/html-assets
           cp -R content/Ressources/html-assets/. public/Ressources/html-assets/
 
+      - name: Publish individual Markdown downloads
+        run: |
+          mkdir -p public/telechargements
+          for chapter_dir in content/[0-9][0-9]-*; do
+            chapter_name="$(basename "$chapter_dir")"
+            course_file="$chapter_dir/$chapter_name.md"
+            if [ -f "$course_file" ]; then
+              cp "$course_file" "public/telechargements/$chapter_name.md"
+            fi
+          done
+
       - name: Create Obsidian archive
         run: |
+          mkdir -p download/Fondamentaux-Reseaux/cours
           mkdir -p download/Fondamentaux-Reseaux/Ressources
-          cp -R content/cours download/Fondamentaux-Reseaux/
+          cp -R content/[0-9][0-9]-* download/Fondamentaux-Reseaux/cours/
           cp -R content/Ressources/images download/Fondamentaux-Reseaux/Ressources/
           cp -R content/Ressources/html-assets download/Fondamentaux-Reseaux/Ressources/
           cd download

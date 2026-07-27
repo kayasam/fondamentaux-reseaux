@@ -1,0 +1,68 @@
+# TP 02 - VLAN et segmentation - Version debutant
+> Chapitre associé : [[02-couche-liaison]]
+
+## Objectifs
+
+- Comprendre le role d'un VLAN
+- Configurer des ports access
+- Verifier qu'un meme VLAN communique et qu'un autre reste isole
+
+## Contexte
+
+Tu dois segmenter un petit switch pour separer :
+
+- le service Administration en **VLAN 10**
+- le service Technique en **VLAN 20**
+
+## Materiel
+
+- 1 switch Cisco 2960
+- 4 PC
+
+## Plan d'adressage
+
+| Nom | IP | VLAN | Port |
+|---|---|---|---|
+| PC-ADMIN-1 | 192.168.10.11/24 | 10 | Fa0/1 |
+| PC-ADMIN-2 | 192.168.10.12/24 | 10 | Fa0/2 |
+| PC-TECH-1 | 192.168.20.11/24 | 20 | Fa0/23 |
+| PC-TECH-2 | 192.168.20.12/24 | 20 | Fa0/24 |
+
+## Travail demande
+
+### Partie 1 - Cabler
+
+Place les 4 PC et un switch 2960.
+
+### Partie 2 - Adresser
+
+Configure les IP sur les postes.
+
+### Partie 3 - Configurer le switch
+
+Configure :
+
+- le VLAN 10 nomme `ADMIN`
+- le VLAN 20 nomme `TECH`
+- les ports Fa0/1 a Fa0/2 dans le VLAN 10
+- les ports Fa0/23 a Fa0/24 dans le VLAN 20
+
+### Partie 4 - Verifier
+
+Teste :
+
+- `ping` entre PC-ADMIN-1 et PC-ADMIN-2
+- `ping` entre PC-TECH-1 et PC-TECH-2
+- `ping` entre un poste ADMIN et un poste TECH
+
+### Partie 5 - Questions
+
+1. Pourquoi le ping entre deux VLAN differents echoue-t-il ici ?
+2. Quel equipement faudrait-il ajouter pour permettre cette communication ?
+
+## Commandes utiles
+
+```text
+show vlan brief
+show mac address-table
+```

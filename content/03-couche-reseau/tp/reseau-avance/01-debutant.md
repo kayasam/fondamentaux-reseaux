@@ -1,0 +1,42 @@
+# TP 03B - ARP, VLSM et IPv6 - Version debutant
+> Chapitre associé : [[03-couche-reseau]]
+
+## Objectifs
+
+- Comprendre le role d'ARP
+- Renforcer la lecture des sous-reseaux
+- Reconnaître une adresse IPv6
+
+## Partie 1 - ARP
+
+Reponds simplement :
+
+1. A quoi sert ARP ?
+2. Pourquoi ARP est-il utile sur un LAN Ethernet ?
+3. Quelle difference entre une adresse IP et une adresse MAC ?
+
+## Partie 2 - Sous-reseaux
+
+Complete :
+
+| Reseau | Hotes utilisables |
+|---|---|
+| /30 | |
+| /29 | |
+| /28 | |
+| /27 | |
+
+## Partie 3 - IPv6
+
+Indique si l'adresse suivante est en IPv4 ou IPv6 :
+
+| Adresse | Type |
+|---|---|
+| 192.168.1.10 | |
+| 2001:db8::1 | |
+| fe80::1 | |
+| 10.0.0.5 | |
+
+## Partie 4 - Question
+
+Pourquoi IPv6 a-t-il ete cree ?

@@ -9,7 +9,9 @@ $projectRoot = "D:\Projet-git\fondamentaux-reseaux-web"
 $sourceCourses = Join-Path $sourceRoot "cours"
 $sourceImages = Join-Path $sourceRoot "Ressources\images"
 $sourceHtmlAssets = Join-Path $sourceRoot "Ressources\html-assets"
-$destinationCourses = Join-Path $projectRoot "content\cours"
+$destinationContent = Join-Path $projectRoot "content"
+$stagingRoot = Join-Path $projectRoot ".publication-stage"
+$stagingCourses = Join-Path $stagingRoot "cours"
 $destinationImages = Join-Path $projectRoot "content\Ressources\images"
 $destinationHtmlAssets = Join-Path $projectRoot "content\Ressources\html-assets"
 
@@ -64,21 +66,30 @@ Assert-Directory -Path $sourceImages -Description "Le dossier des images"
 Assert-Directory -Path $sourceHtmlAssets -Description "Le dossier des ressources HTML"
 Assert-Directory -Path (Join-Path $projectRoot ".git") -Description "Le dépôt Git"
 
-Write-Host "1/5 - Copie des cours depuis le coffre Obsidian..."
+if (Test-Path -LiteralPath $stagingRoot) {
+  $resolvedStage = (Resolve-Path -LiteralPath $stagingRoot).Path
+  $expectedStage = [IO.Path]::GetFullPath($stagingRoot)
+  if ($resolvedStage -ne $expectedStage -or -not $resolvedStage.StartsWith($projectRoot, [StringComparison]::OrdinalIgnoreCase)) {
+    throw "Le dossier de préparation n'est pas situé dans le projet : $resolvedStage"
+  }
+  Remove-Item -LiteralPath $resolvedStage -Recurse -Force
+}
+
+Write-Host "1/6 - Copie des cours depuis le coffre Obsidian..."
 Copy-MirroredDirectory `
   -Source $sourceCourses `
-  -Destination $destinationCourses `
+  -Destination $stagingCourses `
   -ExcludedFiles @("*.excalidraw", "*.excalidraw.md")
 
-Write-Host "2/5 - Copie des illustrations et des ressources HTML..."
+Write-Host "2/6 - Copie des illustrations et des ressources HTML..."
 Copy-MirroredDirectory -Source $sourceImages -Destination $destinationImages
 Copy-MirroredDirectory -Source $sourceHtmlAssets -Destination $destinationHtmlAssets
 
-Write-Host "3/5 - Adaptation des liens d'images pour le site..."
+Write-Host "3/6 - Adaptation des liens pour le site..."
 $imagePattern = '!\[\[([^]|]+\.(?:svg|jpe?g|png|webp))(?:\|[^]]+)?\]\]'
 $utf8WithoutBom = [Text.UTF8Encoding]::new($false)
 
-Get-ChildItem -LiteralPath $destinationCourses -Recurse -File -Filter "*.md" | ForEach-Object {
+Get-ChildItem -LiteralPath $stagingCourses -Recurse -File -Filter "*.md" | ForEach-Object {
   $markdownFile = $_
   $original = [IO.File]::ReadAllText($markdownFile.FullName)
   $updated = [regex]::Replace(
@@ -91,15 +102,26 @@ Get-ChildItem -LiteralPath $destinationCourses -Recurse -File -Filter "*.md" | F
     },
     [Text.RegularExpressions.RegexOptions]::IgnoreCase
   )
+  $updated = $updated.Replace("[[cours/", "[[")
 
   if ($updated -ne $original) {
     [IO.File]::WriteAllText($markdownFile.FullName, $updated, $utf8WithoutBom)
   }
 }
 
-Write-Host "4/5 - Masquage des documents privés et des corrections non publiées..."
+Get-ChildItem -LiteralPath $stagingCourses -Recurse -File -Filter "*.html" | ForEach-Object {
+  $htmlFile = $_
+  $original = [IO.File]::ReadAllText($htmlFile.FullName)
+  $updated = $original.Replace("../../Ressources/html-assets/", "../Ressources/html-assets/")
+
+  if ($updated -ne $original) {
+    [IO.File]::WriteAllText($htmlFile.FullName, $updated, $utf8WithoutBom)
+  }
+}
+
+Write-Host "4/6 - Masquage des documents privés et des corrections non publiées..."
 $hiddenDocuments = 0
-Get-ChildItem -LiteralPath $destinationCourses -Recurse -File -Filter "*.md" | ForEach-Object {
+Get-ChildItem -LiteralPath $stagingCourses -Recurse -File -Filter "*.md" | ForEach-Object {
   $documentContent = [IO.File]::ReadAllText($_.FullName)
   $isCorrection = $_.Name -like "*correction*.md"
   $isExplicitlyPublic = $documentContent -match '(?m)^publier:\s*true\s*$'
@@ -112,6 +134,38 @@ Get-ChildItem -LiteralPath $destinationCourses -Recurse -File -Filter "*.md" | F
 }
 Write-Host "$hiddenDocuments document(s) conservé(s) uniquement dans le coffre."
 
+Write-Host "5/6 - Organisation des chapitres à la racine du site..."
+$publishedChapterNames = @(
+  Get-ChildItem -LiteralPath $stagingCourses -Directory |
+    Where-Object { $_.Name -match '^\d{2}-' } |
+    Select-Object -ExpandProperty Name
+)
+
+Get-ChildItem -LiteralPath $destinationContent -Directory |
+  Where-Object { $_.Name -match '^\d{2}-' -and $_.Name -notin $publishedChapterNames } |
+  ForEach-Object {
+    $resolvedTarget = (Resolve-Path -LiteralPath $_.FullName).Path
+    if (-not $resolvedTarget.StartsWith($destinationContent, [StringComparison]::OrdinalIgnoreCase)) {
+      throw "Refus de supprimer un dossier hors de content : $resolvedTarget"
+    }
+    Remove-Item -LiteralPath $resolvedTarget -Recurse -Force
+  }
+
+$legacyCourses = Join-Path $destinationContent "cours"
+if (Test-Path -LiteralPath $legacyCourses -PathType Container) {
+  $resolvedLegacy = (Resolve-Path -LiteralPath $legacyCourses).Path
+  if ($resolvedLegacy -ne [IO.Path]::GetFullPath($legacyCourses)) {
+    throw "Chemin historique inattendu : $resolvedLegacy"
+  }
+  Remove-Item -LiteralPath $resolvedLegacy -Recurse -Force
+}
+
+foreach ($chapterName in $publishedChapterNames) {
+  Copy-MirroredDirectory `
+    -Source (Join-Path $stagingCourses $chapterName) `
+    -Destination (Join-Path $destinationContent $chapterName)
+}
+
 Push-Location $projectRoot
 try {
   & git diff --check
@@ -120,7 +174,7 @@ try {
   }
 
   $changes = @(
-    & git status --porcelain -- content/cours content/Ressources/images content/Ressources/html-assets
+    & git status --porcelain -- content
   )
 
   if ($changes.Count -eq 0) {
@@ -129,7 +183,7 @@ try {
     exit 0
   }
 
-  & git add -A -- content/cours content/Ressources/images content/Ressources/html-assets
+  & git add -A -- content
   if ($LASTEXITCODE -ne 0) {
     throw "Impossible de préparer les modifications Git."
   }
@@ -151,12 +205,12 @@ try {
     [string]::IsNullOrWhiteSpace($confirmation) -or
     $confirmation -notmatch '^(o|oui|y|yes)$'
   ) {
-    & git restore --staged -- content/cours content/Ressources/images content/Ressources/html-assets
+    & git restore --staged -- content
     Write-Host "Publication annulée. Les fichiers copiés restent disponibles localement." -ForegroundColor Yellow
     exit 0
   }
 
-  Write-Host "5/5 - Commit et envoi vers GitHub..."
+  Write-Host "6/6 - Commit et envoi vers GitHub..."
   & git commit -m $Message
   if ($LASTEXITCODE -ne 0) {
     throw "La création du commit a échoué."
@@ -174,4 +228,7 @@ try {
 }
 finally {
   Pop-Location
+  if (Test-Path -LiteralPath $stagingRoot) {
+    Remove-Item -LiteralPath $stagingRoot -Recurse -Force
+  }
 }
