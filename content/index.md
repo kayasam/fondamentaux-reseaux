@@ -7,6 +7,12 @@ description: Support de formation consacré aux fondamentaux des réseaux inform
 
 Ce site permet de consulter les cours et les travaux pratiques directement dans le navigateur.
 
+## Télécharger pour Obsidian
+
+[Télécharger la formation complète au format ZIP](fondamentaux-reseaux-obsidian.zip)
+
+L'archive contient les cours, les travaux pratiques et toutes les illustrations. Après l'avoir décompressée, ouvrez le dossier `Fondamentaux-Reseaux` dans Obsidian avec **Ouvrir un dossier comme coffre**.
+
 ## Cours
 
 1. [[01-introduction-reseaux|Introduction aux réseaux]]

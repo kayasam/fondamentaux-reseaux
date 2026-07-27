@@ -53,6 +53,14 @@ jobs:
       - name: Build Quartz
         run: npx quartz build
 
+      - name: Create Obsidian archive
+        run: |
+          mkdir -p download/Fondamentaux-Reseaux/Ressources
+          cp -R content/cours download/Fondamentaux-Reseaux/
+          cp -R content/Ressources/images download/Fondamentaux-Reseaux/Ressources/
+          cd download
+          zip -qr ../public/fondamentaux-reseaux-obsidian.zip Fondamentaux-Reseaux
+
       - name: Upload website
         uses: actions/upload-pages-artifact@v3
         with:
