@@ -1,5 +1,11 @@
 @use "./variables.scss" as *;
 
+@media all and ($desktop) {
+  .page > #quartz-body > .sidebar {
+    padding-top: 1rem;
+  }
+}
+
 body[data-slug$="/index"] article .markdown-preview-view > h1:first-child {
   display: none;
 }
