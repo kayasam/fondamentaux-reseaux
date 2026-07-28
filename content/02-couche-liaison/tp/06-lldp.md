@@ -30,7 +30,7 @@ hostname <nom>
 
 ### 1️ Activation de LLDP
 
-- Utilisez la même topologie que le TP 3.5 (S1 ↔ S2).
+- Utilisez la même topologie que le TP 05 (S1 ↔ S2).
 - Activez **LLDP** sur les deux switchs.
 - Vérifiez que le protocole est bien en fonctionnement.
 
