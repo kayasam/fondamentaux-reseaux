@@ -1,125 +1,206 @@
+# TP 4.2 simplifié — Comprendre les plages IP et les broadcast
+
+### Objectif
+
+- Comprendre ce qu’est un **réseau**, une **plage d’hôtes** et un **broadcast**
+    
+- Savoir **lire un masque CIDR** (/24, /25, /26…)
+    
+- Calculer **facilement** :
+    
+    - Adresse réseau
+        
+    - Première IP
+        
+    - Dernière IP
+        
+    - Broadcast
+        
+
 ---
-title: "TP guidé : plages IPv4 et broadcast"
-tags:
-  - fondamentaux-reseaux
-  - tp
-  - ipv4
-  - sous-reseaux
+
+## 1. Rappel simple
+
+Un réseau IP contient toujours :
+
+- **Adresse réseau** → première adresse (non utilisable)
+    
+- **Plage d’hôtes** → utilisables
+    
+- **Broadcast** → dernière adresse (non utilisable)
+    
+
+👉 Règle simple :
+
+```
+Réseau = première adresse
+Broadcast = dernière adresse
+Hôtes = tout ce qu’il y a entre les deux
+```
+
 ---
 
-# TP guidé — Comprendre les plages IPv4 et le broadcast
+## 2. Méthode simplifiée (à appliquer à chaque fois)
 
-> Chapitre associé : [[03-couche-reseau/03-couche-reseau|Couche réseau]]
+### Étape 1 — Identifier le masque
 
-> [!INFO] Durée indicative
-> 45 minutes.
+|CIDR|Masque|Nombre IP|Hôtes utilisables|
+|---|---|---|---|
+|/24|255.255.255.0|256|254|
+|/25|255.255.255.128|128|126|
+|/26|255.255.255.192|64|62|
+|/27|255.255.255.224|32|30|
+|/28|255.255.255.240|16|14|
+|/29|255.255.255.248|8|6|
+|/30|255.255.255.252|4|2|
 
-## Objectifs
+---
 
-- distinguer adresse réseau, plage d’hôtes et adresse de broadcast ;
-- lire les préfixes CIDR de `/24` à `/30` ;
-- trouver la taille et le pas d’un bloc ;
-- calculer la première et la dernière adresse utilisables.
+### Étape 2 — Trouver le “pas”
 
-## Rappel
+👉 Le **pas** = taille du bloc
 
-Un sous-réseau IPv4 contient :
+Exemples :
 
-- l’**adresse réseau**, première adresse du bloc ;
-- les **adresses hôtes**, situées entre les deux extrémités ;
-- l’**adresse de broadcast**, dernière adresse du bloc.
+- /24 → pas de 256
+    
+- /25 → pas de 128
+    
+- /26 → pas de 64
+    
+- /27 → pas de 32
+    
+- /28 → pas de 16
+    
+- /29 → pas de 8
+    
+- /30 → pas de 4
+    
 
-```text
-Adresse réseau | Première IP ... Dernière IP | Broadcast
+---
+
+### Étape 3 — Découper
+
+On ajoute le pas :
+
+Exemple en /26 :
+
+```
+0 → 64 → 128 → 192 → 256
 ```
 
-## Tableau de référence
+---
 
-| CIDR | Masque | Nombre total d’adresses | Hôtes utilisables |
-|---:|---|---:|---:|
-| `/24` | `255.255.255.0` | 256 | 254 |
-| `/25` | `255.255.255.128` | 128 | 126 |
-| `/26` | `255.255.255.192` | 64 | 62 |
-| `/27` | `255.255.255.224` | 32 | 30 |
-| `/28` | `255.255.255.240` | 16 | 14 |
-| `/29` | `255.255.255.248` | 8 | 6 |
-| `/30` | `255.255.255.252` | 4 | 2 |
+## 3. Exercice 1 (guidé)
 
-## Méthode
+### Réseau :
 
-### Étape 1 — Trouver la taille du bloc
+**192.168.10.0 /26**
 
-Pour les préfixes du tableau, la taille du bloc est le nombre total d’adresses.
+### Étape 1 — Taille
 
-### Étape 2 — Trouver le pas
+- /26 → 64 adresses
+    
+- 62 utilisables
+    
 
-Le pas correspond à la taille du bloc :
+### Étape 2 — Découpage
 
-```text
-/26 → pas de 64 → 0, 64, 128, 192
-/27 → pas de 32 → 0, 32, 64, 96, ...
-/28 → pas de 16 → 0, 16, 32, 48, ...
+```
+192.168.10.0
+192.168.10.64
+192.168.10.128
+192.168.10.192
 ```
 
-### Étape 3 — Déduire les adresses
+---
 
-```text
-Broadcast   = adresse précédant le réseau suivant
-Première IP = adresse réseau + 1
-Dernière IP = broadcast - 1
+### Compléter :
+
+|Réseau|Première IP|Dernière IP|Broadcast|
+|---|---|---|---|
+|192.168.10.0|?|?|?|
+|192.168.10.64|?|?|?|
+
+👉 Aide :
+
+- Broadcast = juste avant le réseau suivant
+    
+- Première IP = réseau + 1
+    
+- Dernière IP = broadcast - 1
+    
+
+---
+
+## 4. Exercice 2 (semi-guidé)
+
+### Réseau :
+
+**192.168.10.0 /27**
+
+### Étape 1 — Taille
+
+- 32 adresses
+    
+
+### Étape 2 — Pas
+
+- 32
+    
+
+### Étape 3 — Découpage
+
+```
+192.168.10.0
+192.168.10.32
+192.168.10.64
+192.168.10.96
 ```
 
-## Exercice A — Guidé
+---
 
-Travaillez sur `192.168.10.0/26`.
+### Compléter :
 
-1. Combien le bloc contient-il d’adresses ?
-2. Quel est le pas ?
-3. Quels sont les débuts des quatre sous-réseaux ?
-4. Complétez le tableau.
-
-| Réseau | Première IP | Dernière IP | Broadcast |
+|Réseau|Première IP|Dernière IP|Broadcast|
 |---|---|---|---|
-| `192.168.10.0/26` |  |  |  |
-| `192.168.10.64/26` |  |  |  |
-| `192.168.10.128/26` |  |  |  |
-| `192.168.10.192/26` |  |  |  |
+|192.168.10.0|?|?|?|
+|192.168.10.32|?|?|?|
+|192.168.10.64|?|?|?|
 
-## Exercice B — Semi-guidé
+---
 
-Travaillez sur `192.168.10.0/27`.
+## 5. Exercice 3 (autonomie)
 
-1. Déterminez la taille du bloc.
-2. Déterminez le pas.
-3. Complétez les trois premières lignes.
+### Réseau :
 
-| Réseau | Première IP | Dernière IP | Broadcast |
+**192.168.10.0 /28**
+
+👉 Faire :
+
+1. Trouver le pas
+    
+2. Découper
+    
+3. Compléter le tableau
+    
+
+|Réseau|Première IP|Dernière IP|Broadcast|
 |---|---|---|---|
-| `192.168.10.0/27` |  |  |  |
-| `192.168.10.32/27` |  |  |  |
-| `192.168.10.64/27` |  |  |  |
+|192.168.10.0|?|?|?|
+|192.168.10.16|?|?|?|
+|192.168.10.32|?|?|?|
 
-## Exercice C — Autonomie
+---
 
-Travaillez sur `192.168.10.0/28`.
+## 6. Astuce importante (à retenir)
 
-1. Trouvez le pas.
-2. Identifiez tous les sous-réseaux du `/24`.
-3. Complétez les trois premières lignes.
+Toujours penser :
 
-| Réseau | Première IP | Dernière IP | Broadcast |
-|---|---|---|---|
-| `192.168.10.0/28` |  |  |  |
-| `192.168.10.16/28` |  |  |  |
-| `192.168.10.32/28` |  |  |  |
+```
+Réseau = début du bloc
+Broadcast = fin du bloc
+Hôtes = entre les deux
+```
 
-## Vérification facultative
-
-Utilisez Packet Tracer pour configurer deux PC avec des adresses calculées :
-
-1. deux adresses du même sous-réseau doivent communiquer directement ;
-2. deux adresses de sous-réseaux différents nécessitent un routeur ;
-3. une adresse réseau ou de broadcast ne doit pas être attribuée à un poste.
-
-> [!TIP] À retenir
-> Réseau = début du bloc · Broadcast = fin du bloc · Hôtes = adresses situées entre les deux.
+---

@@ -1,138 +1,150 @@
----
-title: "TP Packet Tracer : route par défaut et NAT/PAT"
-tags:
-  - fondamentaux-reseaux
-  - tp
-  - packet-tracer
-  - nat
-  - pat
----
-
-# TP Packet Tracer — Route par défaut et NAT/PAT
-
-> Chapitres associés : [[03-couche-reseau/03-couche-reseau|Couche réseau]] et [[06-securite-et-acces/06-securite-et-acces|Sécurité et accès réseau]]
-
-> [!INFO] Durée indicative
-> 75 minutes.
+# TP 5.5 – Route par défaut et NAT (PAT)
 
 ## Objectifs
 
-- configurer une route statique par défaut ;
-- distinguer réseau interne et réseau externe ;
-- mettre en place un NAT avec surcharge ;
-- observer les traductions d’adresses et de ports.
+- Configurer une route statique par défaut.
+- Vérifier le fonctionnement d’un routage simple.
+- Mettre en place un NAT avec surcharge (PAT).
+- Tester la traduction d’adresses avec un ping ou une requête web.
 
-## Topologie et adressage
+## Commandes utiles à connaître avant de commencer
 
-| Équipement | Interface | Adresse IP | Connexion |
-|---|---|---|---|
-| R1 | G0/0 | `100.100.100.1/30` | R2 |
-| R1 | G0/1 | `80.80.80.254/24` | SRV-WEB |
-| R2 | G0/0 | `100.100.100.2/30` | R1 |
-| R2 | G0/1 | `192.168.30.254/24` | S1 |
-| PC1 | NIC | `192.168.30.1/24` | S1 |
-| PC2 | NIC | `192.168.30.2/24` | S1 |
-| S1 | VLAN 1 | `192.168.30.3/24` | R2, PC1, PC2 |
-| SRV-WEB | NIC | `80.80.80.80/24` | R1 |
+Avant de commencer le TP, voici les commandes essentielles que vous utiliserez :
 
-Passerelles :
+### Route par défaut
 
-- PC1 et PC2 : `192.168.30.254` ;
-- SRV-WEB : `80.80.80.254`.
+- Pour créer une route par défaut vers un prochain saut :
+    
+    ```
+    ip route 0.0.0.0 0.0.0.0 <adresse_next-hop>
+    ```
+    
 
-## Partie A — Configurer les interfaces
 
-1. Construisez la topologie.
-2. Configurez toutes les adresses et passerelles.
-3. Activez les interfaces des routeurs.
-4. Vérifiez :
+### NAT (PAT)
 
-```text
-show ip interface brief
-show ip route
-```
+- Pour déclarer une interface comme étant du côté interne :
+    
+    ```
+    ip nat inside
+    ```
+    
+- Pour déclarer une interface comme étant du côté externe :
+    
+    ```
+    ip nat outside
+    ```
+    
+- Pour créer une ACL permettant un réseau privé :
+    
+    ```
+    access-list <num> permit <réseau> <wildcard>
+    ```
+    
+- Pour activer la traduction NAT avec surcharge :
+    
+    ```
+    ip nat inside source list <num> interface <interface_externe> overload
+    ```
+    
 
-5. Depuis PC1, testez `100.100.100.1`.
+### Vérifications
 
-## Partie B — Ajouter la route par défaut
+- Pour afficher la table NAT :
+    
+    ```
+    show ip nat translations
+    ```
+    
+- Pour vérifier le statut du NAT :
+    
+    ```
+    show ip nat statistics
+    ```
+    
+- Pour vérifier les interfaces :
+    
+    ```
+    show ip interface brief
+    ```
+    
+- Pour vérifier la table de routage :
+    
+    ```
+    show ip route
+    ```
 
-Sur R2, configurez une route par défaut vers R1 :
+---
 
-```text
-ip route 0.0.0.0 0.0.0.0 100.100.100.1
-```
 
-1. Vérifiez la table de routage.
-2. Retestez `100.100.100.1`.
-3. Testez `80.80.80.80`.
-4. Expliquez pourquoi la route de retour reste importante.
 
-## Partie C — Préparer le serveur Web
+## Table d’adressage
 
-1. Activez HTTP sur SRV-WEB.
-2. Vérifiez sa page depuis un équipement du réseau externe.
-3. Conservez le serveur dans le réseau `80.80.80.0/24`.
+| Machine      | Adresse IP / Masque      | Interface        | Relié à                    |
+|--------------|---------------------------|------------------|-----------------------------|
+| R1           | 100.100.100.1 /30         | G0/0             | R2 |
+| R1           | 80.80.80.254 /24          | G0/1             | SRV-WEB |
+| R2           | 100.100.100.2 /30         | G0/0             | R1                          |
+| R2           | 192.168.30.254 /24        | G0/1             | S1        |
+| PC1          | 192.168.30.1 /24          | NIC              | S1          |
+| PC2          | 192.168.30.2 /24          | NIC              | S1          |
+| S1           | 192.168.30.3 /24          |               | R1, PC1, PC2          |
+| SRV-WEB | 80.80.80.80 /24  | NIC              | R1         |
 
-## Partie D — Configurer PAT sur R2
 
-1. Déclarez G0/1 comme interface interne :
+---
 
-```text
-interface gigabitEthernet0/1
-ip nat inside
-```
+## Partie 1 – Configuration des interfaces
 
-2. Déclarez G0/0 comme interface externe :
+1. Configurer les interfaces de chaque matériel
+2. Sur un PC du LAN, tester un ping vers 100.100.100.1.
+3. Observer et noter le résultat.
 
-```text
-interface gigabitEthernet0/0
-ip nat outside
-```
+---
 
-3. Autorisez le réseau privé avec une ACL standard :
+## Partie 2 – Route statique par défaut
 
-```text
-access-list 1 permit 192.168.30.0 0.0.0.255
-```
+1. Sur R2, ajouter une route par défaut pointant vers 100.100.100.1.
+2. Vérifier la table de routage.
+3. Sur un PC du LAN, tester un ping vers 100.100.100.1.
+4. Observer et noter le résultat.
 
-4. Activez la surcharge :
+---
 
-```text
-ip nat inside source list 1 interface gigabitEthernet0/0 overload
-```
 
-## Partie E — Tester et observer
-
-Depuis PC1 et PC2 :
-
-1. envoyez des `ping` vers une adresse externe ;
-2. ouvrez la page Web de `80.80.80.80` ;
-3. générez plusieurs connexions simultanées.
+## Partie 4 – Mise en place du NAT (PAT)
 
 Sur R2 :
 
-```text
-show ip nat translations
-show ip nat statistics
-show access-lists
-```
+1. Déclarer l’interface LAN comme interface inside.
+2. Déclarer l’interface externe (vers R1) comme interface outside.
+3. Créer une ACL permettant le trafic du réseau 192.168.30.0/24.
+4. Activer la traduction NAT  via l’interface externe.
 
-Relevez au moins deux traductions :
+Une fois terminé, vérifier la configuration.
 
-| Protocole | Inside local | Inside global | Outside local | Outside global |
-|---|---|---|---|---|
-|  |  |  |  |  |
-|  |  |  |  |  |
+---
 
-## Questions
+## Partie 5 – Tests de fonctionnement
 
-1. Quelle différence existe entre une route statique précise et une route par défaut ?
-2. Que représente l’adresse `inside local` ?
-3. Que représente l’adresse `inside global` ?
-4. Comment plusieurs postes partagent-ils la même adresse externe ?
-5. Quel rôle jouent les ports dans PAT ?
-6. NAT remplace-t-il un pare-feu ? Justifiez.
-7. Quelle commande permet de vérifier les traductions actives ?
+1. Depuis un PC du LAN, effectuer un ping vers une adresse externe.
+2. Depuis un PC du LAN, accéder à un serveur web sur le réseau externe (port 80).
+3. Sur R2, afficher la table NAT.
+4. Identifier au moins deux lignes correspondant à vos tests.
+5. Indiquer ce que représentent les colonnes « inside local », « inside global », « outside local » et « outside global ».
+    
 
-> [!TIP] Aide Cisco
-> Consultez [[Ressources/cisco-packet-tracer-commandes|la fiche pratique Cisco CLI]] et [[06-securite-et-acces/note-nat|la note NAT]].
+---
+
+## Partie 6 – Questions
+
+1. Explique la différence entre une route statique et une route par défaut.
+2. Pourquoi un réseau privé ne peut-il pas accéder directement à un réseau externe sans NAT ?
+3. Qu’est-ce que permet le NAT avec surcharge (PAT) ?
+4. Quel est l’intérêt des numéros de ports dans le cadre du PAT ?
+5. Comment vérifier que le NAT fonctionne correctement sur le routeur ?
+6. À quoi sert la commande permettant d’afficher la table NAT ?
+
+
+
+---

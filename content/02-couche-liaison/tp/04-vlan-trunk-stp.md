@@ -1,8 +1,8 @@
 ---
-title: "TP avancé : VLAN, trunk et STP"
+title: "04 - VLAN, trunk et STP (avancé)"
 ---
 
-# TP 02 - VLAN, trunk et STP - Version avancee
+# TP 04 - VLAN, trunk et STP - Version avancee
 > Chapitre associé : [[02-couche-liaison]]
 
 ## Objectifs

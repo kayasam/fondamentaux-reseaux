@@ -212,7 +212,7 @@ Switch# show spanning-tree interface gigabitEthernet0/1 detail
 ```
 
 > [!TIP] Mise en pratique
-> Le [[cours/02-couche-liaison/tp/02-avance|TP avancé de couche liaison]] permet d’observer l’élection du root bridge et le blocage d’un lien redondant.
+> Le [[cours/02-couche-liaison/tp/04-vlan-trunk-stp|TP avancé de couche liaison]] permet d’observer l’élection du root bridge et le blocage d’un lien redondant.
 
 ---
 

@@ -1,82 +1,53 @@
----
-title: "TP Packet Tracer : réseau physique d’une mairie"
-tags:
-  - fondamentaux-reseaux
-  - tp
-  - packet-tracer
-  - couche-physique
----
+# TP 1 – Projet : Réseau de la mairie de Bourg
 
-# TP Packet Tracer — Réseau physique d’une mairie
-
-> Chapitre associé : [[01-couche-physique/01-couche-physique|Couche physique]]
-
-> [!INFO] Durée indicative
-> 45 à 60 minutes.
-
-## Objectifs
-
-- choisir des équipements adaptés à une petite organisation ;
-- réaliser un câblage cohérent ;
-- distinguer les ports FastEthernet et GigabitEthernet ;
-- produire une topologie Packet Tracer lisible et correctement nommée.
-
-## Cahier des charges
+### Cahier des charges
 
 La mairie de Bourg souhaite modéliser son **réseau interne** dans Cisco Packet Tracer.
 
-Le bâtiment comprend trois salles principales, chacune disposant de son propre switch. Les salles doivent être reliées à un **switch cœur de réseau**, lui-même relié à un **routeur principal** qui assurera plus tard la sortie vers Internet.
+Le bâtiment comprend **3 salles principales**, chacune disposant de son propre **switch**.  
+Les salles doivent être reliées entre elles et à un **switch coeur de réseau** lui meme relié à un **routeur principal**, qui assurera plus tard la sortie vers Internet.
 
-## Description des salles
+---
 
-| Salle | Service | Équipements présents | Particularité |
+### Description des salles
+
+|Salle|Nom / Couleur|Équipements présents|Particularités|
 |---|---|---|---|
-| Salle rouge | Accueil | 2 PC fixes, 1 ordinateur portable, 1 imprimante | Équipements reliés à un switch local |
-| Salle bleue | Bureau du maire | 1 PC fixe, 1 ordinateur portable | Équipements reliés à un switch local |
-| Salle verte | Informatique | 3 serveurs Web, fichier et messagerie | Serveurs reliés à un switch local |
+|**Salle Rouge**|Accueil|2 PC fixes, 1 ordinateur portable, 1 imprimante|Connectés à un switch local|
+|**Salle Bleue**|Bureau du Maire|1 PC fixe, 1 ordinateur portable|Connectés à un switch local|
+|**Salle Verte**|Informatique|3 serveurs (Web, Fichier, Mail) + 1 switch|Reliée aux autres salles|
 
-## Travail demandé
+---
 
-### Partie A — Construire la topologie
+### Consignes de réalisation
 
-1. Créez le réseau complet correspondant aux trois salles.
-2. Ajoutez un switch cœur de réseau.
-3. Ajoutez le routeur principal.
-4. Choisissez des modèles d’équipements adaptés.
+- Créez le **réseau complet** de la mairie selon la description des trois salles. 
+- Faites attention au **choix du matériel** : sélectionnez des modèles adaptés aux besoins de chaque salle.
+- Les **liaisons entre équipements réseau** (switch ↔ switch, switch ↔ switch (coeur)) doivent être réalisées en **GigabitEthernet**.
+- Les **équipements terminaux** (PC, imprimantes, serveurs, etc.) doivent être connectés en **FastEthernet**.
+- Nommez clairement chaque équipement et chaque salle.
+- Aucune configuration IP n’est demandée pour ce TP : concentrez-vous sur la **couche physique** et le **câblage**.
+- Sauvegardez votre travail sous :  
+    **`TP2_Mairie_Nom.Prénom.pkt`**
+---
 
-### Partie B — Réaliser le câblage
+### Tableau à compléter
 
-1. Reliez les équipements terminaux à leur switch local en **FastEthernet**.
-2. Réalisez les liaisons entre équipements réseau en **GigabitEthernet** :
-   - switch local vers switch cœur ;
-   - switch cœur vers routeur.
-3. Vérifiez le type de câble utilisé et l’état des voyants.
-
-### Partie C — Documenter
-
-1. Nommez clairement chaque équipement.
-2. Identifiez visuellement les trois salles.
-3. Organisez le schéma afin que les liaisons ne se croisent pas inutilement.
-4. Complétez le tableau suivant.
-
-| Nom de l’équipement | Type | Modèle choisi | Rôle ou justification | Équipement et port reliés |
+|Nom de l’équipement|Type|Modèle choisi|Rôle / explication|Relié à (nom + port)|
 |---|---|---|---|---|
-|  |  |  |  |  |
-|  |  |  |  |  |
-|  |  |  |  |  |
+|…|…|…|…|…|
 
-## Contraintes
+_(À remplir directement dans vos notes ou sur une feuille annexe.)_
 
-- aucune configuration IP n’est demandée ;
-- le travail porte sur la **couche physique**, le choix du matériel et le câblage ;
-- le fichier doit être enregistré sous `TP-mairie-nom-prenom.pkt`.
+---
 
-> [!TIP] Voyants Packet Tracer
-> 🟢 lien actif · 🟠 initialisation ou convergence · 🔴 câble incorrect, interface désactivée ou défaut de liaison.
+### Aide
 
-## Questions de synthèse
-
-1. Pourquoi utiliser les ports GigabitEthernet entre les switches ?
-2. Quel est le rôle du switch cœur ?
-3. Quel équipement permettra plus tard de joindre un autre réseau ?
-4. Pourquoi faut-il documenter le nom et le port de chaque liaison ?
+- Les **ports FastEthernet (Fa)** servent généralement aux **postes utilisateurs** et aux **périphériques**.
+    
+- Les **ports GigabitEthernet (Gi)** sont souvent utilisés pour les **liaisons entre équipements réseau** (switch ↔ routeur, switch ↔ switch).
+    
+- Vérifiez les **voyants** dans Packet Tracer :  
+    🟢 = lien actif 🟠 = initialisation 🔴 = problème de câble ou de port.
+    
+- Pensez à nommer et organiser votre schéma pour qu’il reste **lisible** et **réaliste**.

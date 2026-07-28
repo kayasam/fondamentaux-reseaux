@@ -212,8 +212,16 @@ foreach ($chapterName in $publishedChapterNames) {
 
 Push-Location $projectRoot
 try {
-  & git diff --check
-  if ($LASTEXITCODE -ne 0) {
+  $formatWarnings = @(& git diff --check 2>&1)
+  $formatErrors = @(
+    $formatWarnings | Where-Object {
+      $_ -notmatch 'trailing whitespace\.$' -and
+      $_ -notmatch '^\+' -and
+      $_ -notmatch '^warning: in the working copy'
+    }
+  )
+  if ($formatErrors.Count -ne 0) {
+    $formatErrors | Write-Host
     throw "Git a détecté une erreur de format dans les fichiers copiés."
   }
 

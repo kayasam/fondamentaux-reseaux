@@ -1,5 +1,5 @@
 ---
-title: "TP débutant : VLAN et segmentation"
+title: "02 - VLAN et segmentation (débutant)"
 ---
 
 # TP 02 - VLAN et segmentation - Version debutant
