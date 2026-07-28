@@ -9,6 +9,8 @@ title: 05. Couche application
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/05-services-reseau.md" download>Télécharger ce cours en Markdown</a>
 > - [[05-services-reseau/tp/01-debutant|TP débutant]]
 > - [[05-services-reseau/tp/02-avance|TP avancé]]
+> - [[05-services-reseau/tp/04-dhcp-dns-packet-tracer|TP Packet Tracer : DHCP et DNS]]
+> - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 
 Les couches précédentes permettent de transmettre des données jusqu'au bon programme. La couche application définit maintenant **ce que les programmes se disent** et comment ils rendent un service à l'utilisateur.
 

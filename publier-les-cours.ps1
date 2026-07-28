@@ -11,6 +11,7 @@ $sourceImages = Join-Path $sourceRoot "Ressources\images"
 $sourceHtmlAssets = Join-Path $sourceRoot "Ressources\html-assets"
 $sourceRevisionIndexHtml = Join-Path $sourceRoot "Ressources\index-protocoles-et-notions.html"
 $sourceRevisionIndexMarkdown = Join-Path $sourceRoot "Ressources\index-protocoles-et-notions.md"
+$sourceCiscoCli = Join-Path $sourceRoot "Ressources\cisco-packet-tracer-commandes.md"
 $destinationContent = Join-Path $projectRoot "content"
 $stagingRoot = Join-Path $projectRoot ".publication-stage"
 $stagingCourses = Join-Path $stagingRoot "cours"
@@ -82,6 +83,7 @@ Assert-Directory -Path $sourceHtmlAssets -Description "Le dossier des ressources
 Assert-Directory -Path (Join-Path $projectRoot ".git") -Description "Le dépôt Git"
 Assert-File -Path $sourceRevisionIndexHtml -Description "L'index de révision HTML"
 Assert-File -Path $sourceRevisionIndexMarkdown -Description "L'index de révision Markdown"
+Assert-File -Path $sourceCiscoCli -Description "La fiche pratique Cisco CLI"
 
 if (Test-Path -LiteralPath $stagingRoot) {
   $resolvedStage = (Resolve-Path -LiteralPath $stagingRoot).Path
@@ -103,6 +105,7 @@ Copy-MirroredDirectory -Source $sourceImages -Destination $destinationImages
 Copy-MirroredDirectory -Source $sourceHtmlAssets -Destination $destinationHtmlAssets
 Copy-Item -LiteralPath $sourceRevisionIndexHtml -Destination $destinationRevisionIndexHtml -Force
 Copy-Item -LiteralPath $sourceRevisionIndexMarkdown -Destination $destinationResources -Force
+Copy-Item -LiteralPath $sourceCiscoCli -Destination $destinationResources -Force
 
 Write-Host "3/6 - Adaptation des liens pour le site..."
 $imagePattern = '!\[\[([^]|]+\.(?:svg|jpe?g|png|webp))(?:\|[^]]+)?\]\]'

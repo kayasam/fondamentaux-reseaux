@@ -10,6 +10,8 @@ title: 06. Sécurité réseau
 > - [[06-securite-et-acces/tp/01-debutant|TP débutant]]
 > - [[06-securite-et-acces/tp/02-avance|TP avancé]]
 > - [[06-securite-et-acces/note-nat|Note complémentaire sur le NAT]]
+> - [[06-securite-et-acces/tp/04-route-par-defaut-nat-pat|TP Packet Tracer : route par défaut et NAT/PAT]]
+> - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 
 Un réseau fonctionnel n'est pas automatiquement un réseau sûr. Chaque service accessible crée une possibilité d'usage légitime, mais aussi une **surface d'attaque**.
 

@@ -11,6 +11,10 @@ title: 03. Couche réseau
 > - [[03-couche-reseau/tp/02-avance|TP avancé : IPv4, VLSM et routage]]
 > - [[03-couche-reseau/tp/reseau-avance/01-debutant|TP complémentaire : ARP, VLSM et IPv6]]
 > - [[03-couche-reseau/tp/reseau-avance/02-avance|TP complémentaire : routage dynamique]]
+> - [[03-couche-reseau/tp/04-plages-ipv4|TP guidé : plages IPv4]]
+> - [[03-couche-reseau/tp/05-plan-adressage-vlsm|TP : plan d’adressage VLSM]]
+> - [[03-couche-reseau/tp/06-routage-ipv4|TP Packet Tracer : routage IPv4]]
+> - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 
 Les trames Ethernet étudiées au chapitre 2 circulent dans un réseau local. Pour atteindre un autre réseau, il faut une adresse logique et des équipements capables de choisir un chemin : c'est le rôle de la **couche réseau**.
 

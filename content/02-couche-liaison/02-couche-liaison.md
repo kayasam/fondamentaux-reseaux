@@ -9,6 +9,12 @@ title: 02. Couche liaison
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison.md" download>Télécharger ce cours en Markdown</a>
 > - [[02-couche-liaison/tp/01-debutant|TP débutant]]
 > - [[02-couche-liaison/tp/02-avance|TP avancé]]
+> - [[02-couche-liaison/tp/04-hub-switch-duplex|TP Packet Tracer : hub, switch et duplex]]
+> - [[02-couche-liaison/tp/05-vlan-access|TP Packet Tracer : VLAN et ports access]]
+> - [[02-couche-liaison/tp/06-vlan-trunk|TP Packet Tracer : trunk 802.1Q]]
+> - [[02-couche-liaison/tp/07-lacp|TP Packet Tracer : LACP]]
+> - [[02-couche-liaison/tp/08-lldp|TP Packet Tracer : LLDP]]
+> - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 
 > [!NOTE] Objectifs
 > Comprendre comment les bits deviennent des trames, comment un switch choisit un port et comment les VLAN, STP et LACP structurent un réseau local.

@@ -9,6 +9,8 @@ title: 01. Couche physique
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/01-couche-physique.md" download>Télécharger ce cours en Markdown</a>
 > - [[01-couche-physique/tp/01-debutant|TP débutant]]
 > - [[01-couche-physique/tp/02-avance|TP avancé]]
+> - [[01-couche-physique/tp/04-projet-mairie-cablage|TP Packet Tracer : projet de câblage d’une mairie]]
+> - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 
 > [!NOTE] Objectifs
 > Identifier les principaux supports de transmission, choisir un média adapté et reconnaître une panne de couche 1.

@@ -41,6 +41,13 @@ Après l'avoir décompressée, ouvrez le dossier `Fondamentaux-Reseaux` dans Obs
 
 L’index permet de rechercher et filtrer les protocoles, services, ports, équipements, notions et outils étudiés dans les sept chapitres. Un mode de révision aléatoire permet de s’auto-interroger.
 
+## Pratiquer avec Cisco Packet Tracer
+
+- [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI — switch et routeur]]
+- <a href="./telechargements/cisco-packet-tracer-commandes.md" download>Télécharger la fiche Cisco en Markdown</a>
+
+Les TP Packet Tracer sont classés dans le chapitre correspondant : câblage, hub et switch, VLAN, trunk, LACP, LLDP, adressage IPv4, VLSM, routage, DHCP/DNS et NAT/PAT.
+
 ## Travaux pratiques
 
 Les TP sont disponibles dans les sous-dossiers de chaque chapitre depuis l'explorateur du site.
