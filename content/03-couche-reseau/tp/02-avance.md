@@ -1,64 +1,71 @@
 ---
-title: "TP avancé : IPv4, VLSM et routage"
+title: "TP complémentaire : routage dynamique"
 ---
 
-# TP 03 - IPv4, VLSM et routage - Version avancee
+# TP 03B - Routage dynamique et notions avancees - Version avancee
 > Chapitre associé : [[03-couche-reseau]]
 
 ## Objectifs
 
-- Construire un plan d'adressage VLSM
-- Configurer un routeur avec plusieurs reseaux
-- Verifier la table de routage
+- Construire un mini-reseau a plusieurs routeurs
+- Activer un protocole de routage dynamique simple
+- Comparer IPv4 et IPv6
 
 ## Contexte
 
-Tu disposes du reseau principal :
+Tu dois interconnecter trois LAN via trois routeurs.
 
-`192.168.50.0/24`
+Chaque routeur possede :
 
-Tu dois creer :
-
-| Segment | Besoin en hotes |
-|---|---|
-| Administration | 50 |
-| Comptabilite | 25 |
-| Support | 12 |
-| Lien inter-routeur | 2 |
+- un LAN local
+- deux liaisons vers les autres routeurs
 
 ## Travail demande
 
-### Partie 1 - VLSM
+### Partie 1 - Topologie
 
-1. Classe les besoins du plus grand au plus petit.
-2. Propose un masque adapte a chaque segment.
-3. Complete le plan d'adressage :
+Construis :
 
-| Segment | Reseau | CIDR | Premiere IP | Derniere IP | Broadcast |
-|---|---|---|---|---|---|
-| Administration | | | | | |
-| Comptabilite | | | | | |
-| Support | | | | | |
-| Inter-routeur | | | | | |
+- 3 routeurs
+- 3 switches
+- 3 PC
 
-### Partie 2 - Routage
+### Partie 2 - Adressage
 
-Construis une topologie avec :
+Propose un plan d'adressage logique en IPv4 pour :
 
-- 2 routeurs
-- 3 LAN
-- 1 lien point a point entre routeurs
+- les 3 LAN
+- les liens inter-routeurs
 
-Configure les interfaces en respectant ton plan.
+### Partie 3 - Routage dynamique
 
-### Partie 3 - Verification
+Configure un protocole dynamique adapte a un TP de base, de preference **OSPF** si disponible dans ton environnement.
 
-1. Affiche la table de routage sur chaque routeur.
-2. Ajoute les routes statiques necessaires si besoin.
-3. Verifie la connectivite bout en bout.
+Tu dois verifier :
 
-### Partie 4 - Questions
+- les voisins
+- les routes apprises
+- la connectivite entre les trois LAN
 
-1. Pourquoi utilise-t-on VLSM ?
-2. Pourquoi un lien inter-routeur peut-il etre en `/30` ?
-3. A quoi sert la passerelle par defaut sur un poste ?
+### Partie 4 - Changement de topologie
+
+Coupe un lien entre deux routeurs et observe :
+
+1. si une autre route est apprise
+2. si le trafic continue a passer
+
+### Partie 5 - IPv6
+
+Reponds en quelques lignes :
+
+1. Cite deux differences importantes entre IPv4 et IPv6.
+2. Pourquoi le NAT est-il moins central en IPv6 ?
+3. Donne un exemple d'adresse IPv6 valide.
+
+## Commandes utiles
+
+```text
+show ip route
+show ip ospf neighbor
+show ipv6 interface brief
+```

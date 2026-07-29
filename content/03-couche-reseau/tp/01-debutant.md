@@ -1,74 +1,46 @@
 ---
-title: "TP débutant : IPv4, CIDR et routage"
+title: "TP complémentaire : ARP, VLSM et IPv6"
 ---
 
-# TP 03 - IPv4, CIDR et routage simple - Version debutant
+# TP 03B - ARP, VLSM et IPv6 - Version debutant
 > Chapitre associé : [[03-couche-reseau]]
 
 ## Objectifs
 
-- Lire une adresse IPv4 et son masque
-- Identifier reseau, hote, broadcast
-- Configurer un routage simple entre deux LAN
+- Comprendre le role d'ARP
+- Renforcer la lecture des sous-reseaux
+- Reconnaître une adresse IPv6
 
-## Partie A - Lecture d'adresses
+## Partie 1 - ARP
 
-Complete les tableaux suivants.
+Reponds simplement :
 
-### Exercice 1
+1. A quoi sert ARP ?
+2. Pourquoi ARP est-il utile sur un LAN Ethernet ?
+3. Quelle difference entre une adresse IP et une adresse MAC ?
 
-Reseau : `192.168.10.0/24`
+## Partie 2 - Sous-reseaux
 
-| Element | Valeur |
+Complete :
+
+| Reseau | Hotes utilisables |
 |---|---|
-| Adresse reseau | |
-| Premiere IP utilisable | |
-| Derniere IP utilisable | |
-| Broadcast | |
+| /30 | |
+| /29 | |
+| /28 | |
+| /27 | |
 
-### Exercice 2
+## Partie 3 - IPv6
 
-Reseau : `192.168.10.64/26`
+Indique si l'adresse suivante est en IPv4 ou IPv6 :
 
-| Element | Valeur |
+| Adresse | Type |
 |---|---|
-| Adresse reseau | |
-| Premiere IP utilisable | |
-| Derniere IP utilisable | |
-| Broadcast | |
+| 192.168.1.10 | |
+| 2001:db8::1 | |
+| fe80::1 | |
+| 10.0.0.5 | |
 
-## Partie B - Petit routage
+## Partie 4 - Question
 
-### Topologie
-
-- 1 routeur
-- 2 switches
-- 2 PC dans le LAN 1
-- 2 PC dans le LAN 2
-
-### Plan d'adressage
-
-| Equipement | Interface | Adresse |
-|---|---|---|
-| R1 | G0/0 | 192.168.10.254/24 |
-| R1 | G0/1 | 192.168.20.254/24 |
-| PC-A | NIC | 192.168.10.11/24 |
-| PC-B | NIC | 192.168.10.12/24 |
-| PC-C | NIC | 192.168.20.11/24 |
-| PC-D | NIC | 192.168.20.12/24 |
-
-### Travail demande
-
-1. Configure les IP sur les postes.
-2. Configure les interfaces du routeur.
-3. Renseigne la passerelle par defaut de chaque poste.
-4. Teste :
-   - ping vers la passerelle locale
-   - ping entre deux LAN
-
-## Commandes utiles
-
-```text
-show ip interface brief
-show ip route
-```
+Pourquoi IPv6 a-t-il ete cree ?
