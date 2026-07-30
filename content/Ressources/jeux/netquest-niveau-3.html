@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetQuest — Niveau 3 : L’arène des VLAN</title>
+<style>
+:root{color-scheme:light;--ink:#17233f;--muted:#61708c;--bg:#f4f9ff;--card:#fff;--line:#cbd8ea;
+  --cyan:#18bdd2;--cyan-soft:#dff8fb;--mint:#38c99b;--mint-soft:#e3f9f1;--coral:#ff6f73;
+  --coral-soft:#ffeaeb;--yellow:#ffd85c;--violet:#7768dc;--violet-soft:#eeebff;--orange:#ff9b51;
+  --shadow:0 15px 36px rgba(31,55,91,.14)}
+*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--ink);font:15px/1.45 "Segoe UI",system-ui,sans-serif;
+  background:radial-gradient(circle at 8% 5%,rgba(24,189,210,.16),transparent 23rem),
+  radial-gradient(circle at 92% 8%,rgba(255,155,81,.17),transparent 23rem),linear-gradient(145deg,#fbfdff,#f1f8ff 55%,#fff8ed)}
+button,input,select{font:inherit}.shell{width:min(1510px,100%);margin:auto;padding:13px}
+.topbar{display:grid;grid-template-columns:1fr auto auto;align-items:center;gap:12px;padding:10px 14px;border:2px solid var(--ink);border-radius:18px;background:rgba(255,255,255,.93);box-shadow:5px 5px 0 var(--ink)}
+.brand{display:flex;align-items:center;gap:10px}.brand-icon{width:40px;height:40px;display:grid;place-items:center;border:2px solid var(--ink);border-radius:12px;background:var(--yellow);font-size:1.25rem;transform:rotate(-3deg)}.brand b{display:block}.brand small{display:block;color:var(--muted)}
+.hud{display:flex;gap:15px}.stat{text-align:center;min-width:65px}.stat small{display:block;color:var(--muted);font-size:.59rem;font-weight:900;text-transform:uppercase}.stat b{font:900 1rem ui-monospace,Consolas,monospace}
+.back{border:1px solid var(--line);border-radius:10px;padding:.5rem .7rem;background:#fff;color:var(--ink);text-decoration:none;font-weight:850}.progress{grid-column:1/-1;height:6px;overflow:hidden;border-radius:8px;background:#e8eef7}.progress span{display:block;width:0;height:100%;background:linear-gradient(90deg,var(--cyan),var(--violet),var(--orange));transition:width .4s}
+.chapters{display:flex;gap:7px;margin:13px 2px 10px;padding:2px 1px 7px;overflow-x:auto}.chapter{position:relative;flex:1 0 125px;min-height:43px;padding:7px 8px 7px 34px;border:1px solid var(--line);border-radius:12px;background:rgba(255,255,255,.72);color:var(--muted)}
+.chapter i{position:absolute;left:7px;top:50%;width:21px;height:21px;display:grid;place-items:center;transform:translateY(-50%);border-radius:50%;background:#e9eef7;font-style:normal;font-size:.62rem;font-weight:900}.chapter b{display:block;font-size:.67rem}.chapter small{display:block;font-size:.55rem}
+.chapter.active{border:2px solid var(--orange);padding:6px 7px 6px 33px;background:#fff1e5;color:var(--ink)}.chapter.done{border-color:var(--mint);background:var(--mint-soft);color:#286b57}.chapter.done i{background:var(--mint);color:#fff}
+
+.grid{display:grid;grid-template-columns:minmax(760px,1.8fr) minmax(345px,.68fr);gap:13px;align-items:start}.panel{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.93);box-shadow:var(--shadow)}
+.world{min-width:0;padding:13px}.world-head{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:9px}.world-head h1{margin:0;font-size:1.05rem}.status-tag{padding:.28rem .55rem;border-radius:20px;background:var(--coral-soft);color:#a63d46;font-size:.62rem;font-weight:900}
+.story{display:grid;grid-template-columns:74px 1fr;gap:11px;align-items:center;min-height:91px;margin-bottom:10px;padding:8px 12px 8px 7px;border:2px solid var(--ink);border-radius:16px;background:#fff;box-shadow:4px 4px 0 rgba(23,35,63,.17)}
+.avatar{width:64px;height:64px;overflow:hidden;border:3px solid var(--ink);border-radius:50%;box-shadow:3px 3px 0 var(--yellow)}.avatar img{width:100%;height:100%;object-fit:cover}.speaker{color:var(--coral);font-size:.61rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.story p{margin:.15rem 0 0;font-size:.78rem;font-weight:650}
+.canvas-wrap{overflow-x:auto}.topology{position:relative;min-width:900px;height:490px;overflow:hidden;border:1px solid #b8d5e6;border-radius:18px;background:
+  linear-gradient(rgba(255,255,255,.7),rgba(255,255,255,.7)),repeating-linear-gradient(0deg,transparent 0 29px,rgba(24,189,210,.12) 29px 30px),
+  repeating-linear-gradient(90deg,transparent 0 29px,rgba(24,189,210,.12) 29px 30px),linear-gradient(135deg,#e8faff,#fff9e8)}
+.topology canvas{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.map-label{position:absolute;left:13px;top:11px;padding:.25rem .48rem;border-radius:7px;background:var(--ink);color:#fff;font-size:.59rem;font-weight:900}
+.zone-label{position:absolute;padding:.2rem .45rem;border-radius:15px;font-size:.55rem;font-weight:900}.zone-admin{left:2%;top:23%;background:var(--cyan-soft);color:#19778a}.zone-tech{left:2%;top:52%;background:var(--violet-soft);color:#5146a4}.zone-guest{left:2%;top:81%;background:#fff0df;color:#a45820}
+.node{position:absolute;z-index:3;width:128px;border:0;background:transparent;color:inherit;font:inherit;text-align:center;transform:translate(-50%,-50%);cursor:pointer}.node-card{position:relative;width:70px;height:70px;margin:auto;display:grid;place-items:center;border:3px solid var(--ink);border-radius:18px;background:#fff;box-shadow:5px 5px 0 rgba(23,35,63,.17);font-size:1.7rem;transition:.2s}
+.node:hover .node-card{transform:translateY(-3px)}.node.switch .node-card{width:92px;height:78px;border-radius:14px;background:#273451;color:#fff}.node.router .node-card{border-radius:50%;background:var(--cyan-soft)}.node.sw2 .node-card{background:var(--violet-soft)}
+.node b{display:block;margin-top:7px;font-size:.7rem}.node small{display:block;color:var(--muted);font-size:.55rem}.port-label{position:absolute;right:-16px;top:50%;transform:translateY(-50%);padding:.15rem .3rem;border-radius:5px;background:var(--ink);color:#fff;font-size:.48rem}
+.vlan-badge{position:absolute;left:50%;bottom:-16px;transform:translateX(-50%);min-width:58px;padding:.13rem .3rem;border:2px solid #fff;border-radius:10px;background:#9aa8bc;color:#fff;font-size:.5rem;font-weight:900;box-shadow:0 2px 6px rgba(0,0,0,.16)}
+.vlan-badge.v10{background:var(--cyan)}.vlan-badge.v20{background:var(--violet)}.vlan-badge.v30{background:var(--orange)}.node.switch::after{content:"CLI / WEB";position:absolute;left:50%;top:-9px;transform:translateX(-50%) rotate(-2deg);padding:.13rem .33rem;border:2px solid var(--ink);background:var(--yellow);font-size:.48rem;font-weight:950}
+.node.hidden-node{display:none}.link-state{position:absolute;z-index:4;padding:.15rem .32rem;border-radius:6px;background:var(--mint);color:#fff;font-size:.5rem;font-weight:900}.link-state.blocked{background:var(--coral)}
+.flow-dot{position:absolute;z-index:10;width:24px;height:24px;display:grid;place-items:center;border:2px solid var(--ink);border-radius:50%;background:var(--yellow);font-size:.62rem;pointer-events:none;box-shadow:0 0 0 5px rgba(255,216,92,.25)}
+.blocked-flash{animation:blocked .75s 2}.legend{position:absolute;right:12px;bottom:10px;display:flex;gap:8px;padding:.3rem .45rem;border-radius:9px;background:rgba(255,255,255,.9);font-size:.51rem}.legend span::before{content:"";display:inline-block;width:8px;height:4px;margin-right:3px;border-radius:4px;background:var(--c)}
+
+.mission{position:sticky;top:12px;overflow:hidden}.mission-head{padding:13px 15px;background:linear-gradient(135deg,var(--ink),#324877);color:#fff}.kicker{color:#79e8f3;font-size:.6rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}.mission-head h2{margin:.25rem 0 0;font-size:.98rem}.mission-body{padding:13px 15px}.objective{margin:0 0 10px;font-size:.76rem;font-weight:700}.instruction{padding:9px 10px;border-left:3px solid var(--orange);background:#fff6e9;font-size:.67rem}
+.open-switch{width:100%;margin-top:10px;border:2px solid var(--ink);border-radius:11px;padding:.62rem;background:var(--yellow);color:var(--ink);font-weight:950;box-shadow:3px 3px 0 var(--ink);cursor:pointer}.check-btn{width:100%;margin-top:10px;border:2px solid var(--ink);border-radius:11px;padding:.62rem;background:var(--mint);color:var(--ink);font-weight:950;box-shadow:3px 3px 0 var(--ink);cursor:pointer}
+.pc-actions{display:grid;gap:7px;margin-top:10px}.pc-action{display:flex;justify-content:space-between;align-items:center;padding:8px 9px;border:1px solid var(--line);border-radius:10px;background:#f8fbff;font-size:.67rem;cursor:pointer}.pc-action.done{border-color:var(--mint);background:var(--mint-soft)}.pc-action b{color:var(--violet)}
+.choice-list{display:grid;gap:7px;margin-top:9px}.choice{display:flex;gap:8px;padding:8px 9px;border:1px solid var(--line);border-radius:10px;background:#f8fbff;cursor:pointer}.choice:has(input:checked){border:2px solid var(--orange);padding:7px 8px;background:#fff1e5}.choice input{accent-color:var(--orange)}.choice span{font-size:.67rem}
+.feedback,.hint-box{display:none;margin-top:10px;padding:8px 9px;border-radius:10px;font-size:.66rem}.feedback.show,.hint-box.show{display:block}.feedback.good{border:1px solid var(--mint);background:var(--mint-soft);color:#24634f}.feedback.bad{border:1px solid var(--coral);background:var(--coral-soft);color:#923941}.hint-box{border-left:3px solid var(--yellow);background:#fff9de}.actions{display:flex;gap:8px;margin-top:10px}.hint-btn,.next-btn{border-radius:10px;padding:.55rem .65rem;font-weight:900;cursor:pointer}.hint-btn{border:1px solid var(--line);background:#fff;color:var(--muted)}.next-btn{flex:1;border:2px solid var(--ink);background:var(--yellow);color:var(--ink);box-shadow:3px 3px 0 var(--ink)}.reward{display:flex;justify-content:space-between;margin-top:10px;padding-top:8px;border-top:1px solid var(--line);color:var(--muted);font-size:.58rem}.reward b{color:var(--violet)}
+
+.switch-overlay{position:fixed;inset:0;z-index:40;display:none;place-items:center;padding:18px;background:rgba(23,35,63,.48);backdrop-filter:blur(7px)}.switch-overlay.show{display:grid}.switch-ui{width:min(980px,100%);max-height:92vh;overflow:hidden;border:3px solid var(--ink);border-radius:20px;background:#f6f9fd;box-shadow:9px 9px 0 var(--ink)}
+.switch-top{display:flex;justify-content:space-between;align-items:center;padding:11px 14px;background:#202d4a;color:#fff}.switch-brand{display:flex;align-items:center;gap:10px}.switch-logo{width:38px;height:32px;display:grid;place-items:center;border-radius:7px;background:var(--cyan);font-weight:950}.switch-brand b{display:block;font-size:.78rem}.switch-brand small{display:block;color:#afbdd3;font-size:.55rem}.close-ui{border:1px solid #64738f;border-radius:8px;padding:.35rem .55rem;background:#30405f;color:#fff;cursor:pointer}
+.switch-layout{display:grid;grid-template-columns:175px 1fr;min-height:500px}.switch-nav{padding:12px;background:#e8eef7;border-right:1px solid var(--line)}.tab{width:100%;margin-bottom:6px;border:0;border-radius:8px;padding:.55rem .65rem;background:transparent;color:var(--muted);text-align:left;font-size:.67rem;font-weight:850;cursor:pointer}.tab.active{background:#fff;color:var(--ink);box-shadow:0 3px 10px rgba(31,55,91,.1)}.switch-content{overflow-y:auto;padding:18px;background:#fff}.switch-content h3{margin:0 0 4px;font-size:1rem}.switch-content>.sub{margin:0 0 15px;color:var(--muted);font-size:.65rem}
+.dashboard{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}.dash-card{padding:13px;border:1px solid var(--line);border-radius:11px;background:#f8fbff}.dash-card small{display:block;color:var(--muted);font-size:.58rem}.dash-card b{font:900 1.05rem ui-monospace,Consolas,monospace}
+.ui-table{width:100%;border-collapse:collapse;font-size:.65rem}.ui-table th,.ui-table td{padding:8px;border-bottom:1px solid var(--line);text-align:left}.ui-table th{color:var(--muted);font-size:.56rem;text-transform:uppercase}.ui-table select,.ui-table input{max-width:130px;border:1px solid var(--line);border-radius:7px;padding:.35rem;background:#fff;color:var(--ink)}
+.form-row{display:flex;gap:8px;align-items:end;flex-wrap:wrap;margin:12px 0}.field{display:grid;gap:3px}.field label{color:var(--muted);font-size:.57rem;font-weight:800}.field input,.field select{border:1px solid var(--line);border-radius:8px;padding:.48rem;background:#fff}.ui-btn{border:1px solid var(--ink);border-radius:8px;padding:.48rem .65rem;background:var(--cyan);color:var(--ink);font-weight:900;cursor:pointer}.ui-btn.save{background:var(--mint)}.ui-note{margin-top:12px;padding:9px;border-left:3px solid var(--cyan);background:var(--cyan-soft);font-size:.63rem}.empty{padding:25px;text-align:center;color:var(--muted);font-size:.68rem}
+.state-forward{color:#16815f;font-weight:900}.state-block{color:#c2454e;font-weight:900}
+
+.intro,.victory{position:fixed;inset:0;z-index:60;display:grid;place-items:center;padding:18px;background:rgba(23,35,63,.46);backdrop-filter:blur(8px)}.intro.hidden,.victory{display:none}.victory.show{display:grid}.intro-card{width:min(820px,100%);overflow:hidden;border:3px solid var(--ink);border-radius:24px;background:#fff;box-shadow:9px 9px 0 var(--ink)}.intro-grid{display:grid;grid-template-columns:40% 60%;min-height:420px}.intro-art{position:relative;overflow:hidden;background:#fff0df}.intro-art img{width:100%;height:100%;object-fit:cover}.stamp{position:absolute;left:14px;bottom:14px;padding:.35rem .55rem;border:2px solid var(--ink);background:var(--yellow);font-weight:950;transform:rotate(-3deg)}.intro-copy{padding:30px}.eyebrow{color:var(--coral);font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.09em}.intro-copy h2{margin:.4rem 0 .7rem;font-size:clamp(1.45rem,4vw,2.25rem);line-height:1.08}.intro-copy p{color:var(--muted)}.brief{display:grid;gap:7px;margin:16px 0}.brief div{font-size:.7rem;font-weight:700}.brief b{color:var(--orange);margin-right:7px}.start{width:100%;border:2px solid var(--ink);border-radius:11px;padding:.72rem;background:var(--coral);color:#fff;font-weight:950;box-shadow:4px 4px 0 var(--ink);cursor:pointer}
+.victory-card{width:min(570px,100%);padding:24px;border:3px solid var(--ink);border-radius:22px;background:#fff;text-align:center;box-shadow:9px 9px 0 var(--ink)}.win-avatar{width:92px;height:92px;margin:auto;overflow:hidden;border:3px solid var(--ink);border-radius:50%;box-shadow:4px 4px 0 var(--yellow)}.win-avatar img{width:100%;height:100%;object-fit:cover}.stars{color:#f0b800;font-size:2rem}.final-score{margin:9px;font:900 1.45rem ui-monospace,Consolas,monospace;color:var(--violet)}.next-level{display:block;margin-bottom:10px;border:2px solid var(--ink);border-radius:11px;padding:.72rem;background:var(--mint);color:var(--ink);text-decoration:none;font-weight:950;box-shadow:4px 4px 0 var(--ink)}
+@keyframes blocked{50%{filter:drop-shadow(0 0 9px var(--coral));transform:translate(-50%,-50%) scale(1.08)}}
+@media(max-width:1120px){.grid{grid-template-columns:1fr}.mission{position:static}}@media(max-width:700px){.shell{padding:7px}.topbar{grid-template-columns:1fr auto}.hud{grid-row:2;grid-column:1/-1;justify-content:space-around}.back{grid-column:2;grid-row:1}.story{grid-template-columns:57px 1fr}.avatar{width:52px;height:52px}.switch-layout{grid-template-columns:1fr}.switch-nav{display:flex;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line)}.tab{min-width:110px;margin:0}.switch-content{padding:12px}.dashboard{grid-template-columns:1fr 1fr}.intro-grid{grid-template-columns:1fr}.intro-art{height:175px}.intro-copy{padding:21px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <header class="topbar">
+    <div class="brand"><div class="brand-icon">⇄</div><div><b>NETQUEST — NIVEAU 3</b><small>L’arène des VLAN • Commutation administrable</small></div></div>
+    <div class="hud"><div class="stat"><small>Score</small><b id="score">0000</b></div><div class="stat"><small>Combo</small><b id="combo">×1</b></div><div class="stat"><small>Record</small><b id="best">0000</b></div></div>
+    <a class="back" href="netquest-niveau-2.html">← Niveau 2</a>
+    <div class="progress"><span id="progress"></span></div>
+  </header>
+  <nav class="chapters" id="chapters" aria-label="Étapes de configuration du switch"></nav>
+  <main class="grid">
+    <section class="panel world">
+      <div class="world-head"><h1>Salle Arena — topologie physique en étoile</h1><span class="status-tag" id="status-tag">Réseau non segmenté</span></div>
+      <div class="story"><div class="avatar"><img src="assets/lina-technicienne-reseau.png" alt="Lina, technicienne réseau"></div><div><span class="speaker">Lina • responsable réseau</span><p id="dialogue"></p></div></div>
+      <div class="canvas-wrap"><div class="topology" id="topology">
+        <canvas id="cables" aria-hidden="true"></canvas><span class="map-label">SCHÉMA LOGIQUE ET PHYSIQUE</span>
+        <span class="zone-label zone-admin">ADMINISTRATION</span><span class="zone-label zone-tech">TECHNIQUE</span><span class="zone-label zone-guest">INVITÉS</span>
+        <button class="node pc" data-pc="0" style="left:16%;top:27%" aria-label="PC Administration"><span class="node-card">💻<span class="port-label">Fa0/1</span><span class="vlan-badge" id="badge-0">VLAN 1</span></span><b>PC Admin</b><small>192.168.10.10 • A0:10</small></button>
+        <button class="node pc" data-pc="1" style="left:16%;top:55%" aria-label="PC Technique"><span class="node-card">💻<span class="port-label">Fa0/2</span><span class="vlan-badge" id="badge-1">VLAN 1</span></span><b>PC Technique</b><small>192.168.20.10 • B0:20</small></button>
+        <button class="node pc" data-pc="2" style="left:16%;top:83%" aria-label="PC Invité"><span class="node-card">💻<span class="port-label">Fa0/3</span><span class="vlan-badge" id="badge-2">VLAN 1</span></span><b>PC Invité</b><small>192.168.30.10 • C0:30</small></button>
+        <button class="node switch" id="switch-node" style="left:49%;top:55%" aria-label="Ouvrir l’interface Web de SW1"><span class="node-card">⇄</span><b>SW1 administrable</b><small>192.168.99.2</small></button>
+        <div class="node router" style="left:82%;top:55%"><span class="node-card">↗<span class="port-label">Gi0/1</span></span><b>R1</b><small>routage inter-VLAN</small></div>
+        <button class="node switch sw2 hidden-node" id="sw2-node" style="left:62%;top:84%" aria-label="Switch redondant SW2"><span class="node-card">⇄</span><b>SW2 secours</b><small>RSTP</small></button>
+        <span class="link-state hidden-node" id="forward-label" style="left:51%;top:72%">FORWARDING</span><span class="link-state blocked hidden-node" id="blocked-label" style="left:67%;top:71%">BLOCKING</span>
+        <div class="legend"><span style="--c:#9aa8bc">VLAN 1</span><span style="--c:var(--cyan)">VLAN 10</span><span style="--c:var(--violet)">VLAN 20</span><span style="--c:var(--orange)">VLAN 30</span></div>
+      </div></div>
+    </section>
+    <aside class="panel mission" aria-live="polite"><div class="mission-head"><div class="kicker" id="kicker"></div><h2 id="title"></h2></div><div class="mission-body">
+      <p class="objective" id="objective"></p><div class="instruction" id="instruction"></div><div id="challenge"></div>
+      <div class="hint-box" id="hint-box"></div><div class="feedback" id="feedback"></div>
+      <div class="actions"><button class="hint-btn" id="hint" type="button">Indice −25</button><button class="next-btn" id="primary" type="button">Vérifier</button></div>
+      <div class="reward"><span>Premier essai : <b>+170</b></span><span id="reward-state">Configuration progressive</span></div>
+    </div></aside>
+  </main>
+</div>
+
+<div class="switch-overlay" id="switch-overlay" role="dialog" aria-modal="true" aria-label="Interface Web du switch SW1">
+  <div class="switch-ui"><header class="switch-top"><div class="switch-brand"><div class="switch-logo">SW</div><div><b>SW1 • Smart Managed Switch</b><small>192.168.99.2 • session administrateur locale</small></div></div><button class="close-ui" id="close-ui" type="button">× Fermer</button></header>
+    <div class="switch-layout"><nav class="switch-nav"><button class="tab active" data-tab="dashboard">▦ Tableau de bord</button><button class="tab" data-tab="vlans">◫ VLAN</button><button class="tab" data-tab="ports">⌁ Ports</button><button class="tab" data-tab="mac">≡ Table MAC</button><button class="tab" data-tab="stp">⑂ Spanning Tree</button></nav><section class="switch-content" id="switch-content"></section></div>
+  </div>
+</div>
+
+<div class="intro" id="intro"><div class="intro-card"><div class="intro-grid"><div class="intro-art"><img src="assets/lina-technicienne-reseau.png" alt=""><span class="stamp">NIVEAU 3</span></div><div class="intro-copy">
+  <span class="eyebrow">Mission de déploiement • 13:30</span><h2>L’arène des VLAN</h2><p>Trois équipes partagent le même switch : administration, technique et invités. Construis une segmentation propre sans changer le câblage physique.</p>
+  <div class="brief"><div><b>01</b> Administrer un véritable switch Web simulé</div><div><b>02</b> Créer VLAN, ports access et trunk 802.1Q</div><div><b>03</b> Observer table MAC, broadcast et RSTP</div></div><button class="start" id="start" type="button">Entrer dans la salle Arena →</button>
+</div></div></div></div>
+<div class="victory" id="victory"><div class="victory-card"><div class="win-avatar"><img src="assets/lina-technicienne-reseau.png" alt=""></div><div class="stars" id="stars">★★★</div><h2>Arène segmentée !</h2><p>Les trois équipes partagent le switch physique tout en restant dans des domaines de broadcast distincts. Le trunk transporte leurs VLAN et RSTP protège la redondance.</p><div class="final-score" id="final-score"></div><a class="next-level" href="netquest-niveau-4.html">Débloquer le niveau 4 →</a><button class="start" id="replay" type="button">Rejouer le niveau 3</button></div></div>
+
+<script>
+const PCS=[
+  {name:"PC Admin",port:"Fa0/1",vlan:10,mac:"02:00:00:A0:00:10",color:"#18bdd2"},
+  {name:"PC Technique",port:"Fa0/2",vlan:20,mac:"02:00:00:B0:00:20",color:"#7768dc"},
+  {name:"PC Invité",port:"Fa0/3",vlan:30,mac:"02:00:00:C0:00:30",color:"#ff9b51"}
+];
+const MISSIONS=[
+  {short:"Connexion",sub:"Administration",title:"Entrer dans SW1",dialogue:"Le câblage en étoile est prêt, mais le switch utilise encore sa configuration par défaut. Ouvre son interface Web depuis le schéma.",objective:"Accéder à l’interface d’administration de SW1.",instruction:"Clique directement sur le switch central. Un équipement administrable possède une interface de configuration, contrairement à un switch non managé.",kind:"open",hint:"Le switch sombre placé au centre porte l’étiquette « CLI / WEB »."},
+  {short:"Créer",sub:"VLAN",title:"Créer trois domaines logiques",dialogue:"Nous conservons un seul switch physique, mais chaque équipe doit posséder son propre domaine de broadcast.",objective:"Créer VLAN 10 ADMIN, VLAN 20 TECHNIQUE et VLAN 30 INVITES.",instruction:"Dans l’interface du switch, ouvre l’onglet VLAN et ajoute les trois identifiants avec leur nom.",kind:"vlans",hint:"Un VLAN est identifié par un nombre. Les trois couples attendus sont affichés dans l’objectif."},
+  {short:"Affecter",sub:"Ports access",title:"Raccorder chaque PC à son VLAN",dialogue:"Les VLAN existent, mais les ports Fa0/1 à Fa0/3 appartiennent encore au VLAN 1. Chaque PC envoie des trames ordinaires, sans tag.",objective:"Configurer Fa0/1 en VLAN 10, Fa0/2 en VLAN 20 et Fa0/3 en VLAN 30.",instruction:"Dans Ports, conserve le mode access pour les trois ports des PC et choisis leur VLAN d’accès.",kind:"access",hint:"Un port access transporte un seul VLAN vers un poste. Le poste n’ajoute pas lui-même le tag 802.1Q."},
+  {short:"Transporter",sub:"Trunk 802.1Q",title:"Configurer la liaison vers R1",dialogue:"R1 doit recevoir les trois VLAN pour assurer le routage inter-VLAN. Un port access ne peut en transporter qu’un.",objective:"Configurer Gi0/1 en trunk et autoriser les VLAN 10, 20 et 30.",instruction:"Dans Ports, passe Gi0/1 en mode trunk et saisis la liste des VLAN autorisés.",kind:"trunk",hint:"Un trunk transporte plusieurs VLAN. Écris la liste sous la forme 10,20,30."},
+  {short:"Apprendre",sub:"Table MAC",title:"Faire apprendre les sources",dialogue:"Un switch ne connaît pas les machines à son démarrage. Il construit sa table en observant la MAC source des trames reçues.",objective:"Faire émettre chacun des trois PC afin de remplir la table MAC.",instruction:"Ferme l’interface puis utilise les trois boutons « Émettre vers la passerelle ». Consulte ensuite l’onglet Table MAC si tu le souhaites.",kind:"learn",hint:"Le switch apprend sur le port d’entrée. Une trame émise par chaque PC suffit pour créer trois entrées."},
+  {short:"Isoler",sub:"Broadcast",title:"Tester le domaine de diffusion",dialogue:"Le PC Invité cherche la MAC de sa passerelle avec ARP. Sa requête utilise une destination Ethernet de broadcast.",objective:"Déterminer où SW1 doit diffuser cette trame appartenant au VLAN 30.",instruction:"Sélectionne la réponse exacte. Le VLAN doit limiter la diffusion, même si tous les PC utilisent le même switch.",kind:"choice",options:["Vers Fa0/1, Fa0/2, Fa0/3 et Gi0/1","Uniquement dans le VLAN 30 : vers le trunk Gi0/1, jamais vers les PC des VLAN 10 et 20","Uniquement vers Fa0/2 car sa MAC est la plus proche","Le switch envoie le broadcast sur Internet"],correct:1,hint:"Chaque VLAN constitue un domaine de broadcast distinct. Le trunk peut transporter le VLAN 30 vers la passerelle."},
+  {short:"Protéger",sub:"RSTP",title:"Maîtriser la redondance",dialogue:"Un second switch et deux liens de secours sont ajoutés. Sans Spanning Tree, une trame de broadcast pourrait tourner indéfiniment.",objective:"Activer RSTP sur SW1 et choisir une priorité de 4096 pour en faire la racine souhaitée.",instruction:"Rouvre SW1, onglet Spanning Tree. Active RSTP, sélectionne la priorité 4096 puis applique.",kind:"stp",hint:"RSTP conserve la redondance physique mais bloque logiquement un chemin excédentaire. La priorité la plus faible est préférée."}
+];
+const state={vlans:{1:"default"},ports:{
+  "Fa0/1":{mode:"access",vlan:1,allowed:""},"Fa0/2":{mode:"access",vlan:1,allowed:""},"Fa0/3":{mode:"access",vlan:1,allowed:""},"Gi0/1":{mode:"access",vlan:1,allowed:""}
+},macs:[],rstp:false,priority:32768};
+let current=0,score=0,combo=1,wrong=0,hintUsed=false,done=false,activeTab="dashboard",learned=new Set();
+const $=id=>document.getElementById(id),bestKey="netquest-level-3-best";
+
+function buildChapters(){$("chapters").innerHTML=MISSIONS.map((m,i)=>`<div class="chapter"><i>${i+1}</i><b>${m.short}</b><small>${m.sub}</small></div>`).join("")}
+function renderMission(){
+  const m=MISSIONS[current];wrong=0;hintUsed=false;done=false;
+  document.querySelectorAll(".chapter").forEach((c,i)=>{c.classList.toggle("active",i===current);c.classList.toggle("done",i<current);c.querySelector("i").textContent=i<current?"✓":i+1});
+  $("kicker").textContent=`Chapitre ${current+1} sur ${MISSIONS.length} • ${m.sub}`;$("title").textContent=m.title;$("dialogue").textContent=m.dialogue;$("objective").textContent=m.objective;$("instruction").textContent=m.instruction;
+  $("hint-box").className="hint-box";$("hint-box").textContent=m.hint;$("feedback").className="feedback";$("feedback").innerHTML="";$("hint").disabled=false;$("primary").disabled=false;$("primary").textContent=m.kind==="open"?"Ouvrir SW1":m.kind==="choice"?"Valider":"Vérifier la configuration";
+  renderChallenge(m);updateBadges();drawCables();updateHud();
+}
+function renderChallenge(m){
+  if(m.kind==="learn"){$("challenge").innerHTML=`<div class="pc-actions">${PCS.map((p,i)=>`<button class="pc-action ${learned.has(i)?"done":""}" data-send="${i}" type="button"><span>${p.name} • ${p.port}</span><b>${learned.has(i)?"MAC apprise ✓":"Émettre →"}</b></button>`).join("")}</div>`;document.querySelectorAll("[data-send]").forEach(b=>b.addEventListener("click",()=>learnMac(Number(b.dataset.send))))}
+  else if(m.kind==="choice"){$("challenge").innerHTML=`<div class="choice-list">${m.options.map((x,i)=>`<label class="choice"><input type="radio" name="broadcast" value="${i}"><span>${x}</span></label>`).join("")}</div>`}
+  else $("challenge").innerHTML=`<button class="open-switch" type="button" id="mission-open">⚙ Ouvrir l’interface Web de SW1</button>`;
+  const open=$("mission-open");if(open)open.addEventListener("click",openSwitch);
+}
+function primary(){
+  if(done){next();return}const kind=MISSIONS[current].kind;
+  if(kind==="open"){openSwitch();return}if(kind==="choice"){checkChoice();return}
+  if(kind==="learn"){if(learned.size===3)succeed("Les trois MAC sources sont maintenant associées à leur port et à leur VLAN.");else fail("Fais émettre les trois PC pour remplir toute la table.");return}
+  verifyConfig(kind);
+}
+function openSwitch(){
+  $("switch-overlay").classList.add("show");renderSwitch();
+  if(MISSIONS[current].kind==="open"&&!done)succeed("Connexion HTTPS locale établie avec l’interface d’administration de SW1.");
+}
+function closeSwitch(){$("switch-overlay").classList.remove("show");drawCables()}
+function renderSwitch(){
+  document.querySelectorAll(".tab").forEach(t=>t.classList.toggle("active",t.dataset.tab===activeTab));
+  const host=$("switch-content");
+  if(activeTab==="dashboard")host.innerHTML=`<h3>Tableau de bord</h3><p class="sub">État général du switch</p><div class="dashboard"><div class="dash-card"><small>Modèle</small><b>SW-8G</b></div><div class="dash-card"><small>Ports actifs</small><b>4 / 8</b></div><div class="dash-card"><small>VLAN configurés</small><b>${Object.keys(state.vlans).length}</b></div><div class="dash-card"><small>Entrées MAC</small><b>${state.macs.length}</b></div><div class="dash-card"><small>RSTP</small><b>${state.rstp?"ON":"OFF"}</b></div><div class="dash-card"><small>IP gestion</small><b>99.2</b></div></div><div class="ui-note">Clique les onglets à gauche pour modifier la configuration logique sans déplacer les câbles.</div>`;
+  if(activeTab==="vlans")renderVlans(host);
+  if(activeTab==="ports")renderPorts(host);
+  if(activeTab==="mac")renderMac(host);
+  if(activeTab==="stp")renderStp(host);
+}
+function renderVlans(host){
+  host.innerHTML=`<h3>Configuration des VLAN</h3><p class="sub">Un VLAN crée un domaine de broadcast logique.</p><table class="ui-table"><thead><tr><th>ID</th><th>Nom</th><th>État</th></tr></thead><tbody>${Object.entries(state.vlans).map(([id,n])=>`<tr><td>${id}</td><td>${n}</td><td class="state-forward">ACTIVE</td></tr>`).join("")}</tbody></table><div class="form-row"><div class="field"><label for="vlan-id">Identifiant</label><input id="vlan-id" type="number" min="2" max="4094"></div><div class="field"><label for="vlan-name">Nom</label><input id="vlan-name" maxlength="16"></div><button class="ui-btn" id="add-vlan" type="button">Ajouter le VLAN</button></div><div class="ui-note">VLAN 1 existe par défaut. Les ports y restent tant qu’aucune affectation différente n’est appliquée.</div>`;
+  $("add-vlan").addEventListener("click",()=>{const id=Number($("vlan-id").value),name=$("vlan-name").value.trim().toUpperCase();if(id<2||id>4094||!name)return;state.vlans[id]=name;renderSwitch();if(MISSIONS[current].kind==="vlans"&&validVlans())succeed("Les VLAN 10, 20 et 30 sont actifs. Trois domaines de broadcast existent désormais.")});
+}
+function vlanOptions(selected){return Object.entries(state.vlans).map(([id,n])=>`<option value="${id}" ${Number(id)===Number(selected)?"selected":""}>${id} — ${n}</option>`).join("")}
+function renderPorts(host){
+  host.innerHTML=`<h3>Configuration des ports</h3><p class="sub">Access pour les hôtes ; trunk 802.1Q entre équipements réseau.</p><table class="ui-table"><thead><tr><th>Port</th><th>Lien</th><th>Mode</th><th>VLAN access</th><th>VLAN autorisés</th></tr></thead><tbody>${Object.entries(state.ports).map(([port,p])=>`<tr data-port-row="${port}"><td><b>${port}</b></td><td class="state-forward">UP</td><td><select class="port-mode"><option value="access" ${p.mode==="access"?"selected":""}>access</option><option value="trunk" ${p.mode==="trunk"?"selected":""}>trunk</option></select></td><td><select class="port-vlan">${vlanOptions(p.vlan)}</select></td><td><input class="port-allowed" value="${p.allowed}" placeholder="10,20,30"></td></tr>`).join("")}</tbody></table><div class="form-row"><button class="ui-btn save" id="save-ports" type="button">Appliquer les ports</button></div><div class="ui-note">Un poste raccordé à un port access reçoit des trames non taguées. Le tag 802.1Q est utilisé sur le trunk.</div>`;
+  $("save-ports").addEventListener("click",()=>{document.querySelectorAll("[data-port-row]").forEach(r=>{const p=state.ports[r.dataset.portRow];p.mode=r.querySelector(".port-mode").value;p.vlan=Number(r.querySelector(".port-vlan").value);p.allowed=r.querySelector(".port-allowed").value.replace(/\s/g,"")});updateBadges();drawCables();renderSwitch();const k=MISSIONS[current].kind;if(k==="access"&&validAccess())succeed("Les trois ports access sont isolés dans leur VLAN respectif. Aucun tag n’est nécessaire sur les PC.");if(k==="trunk"&&validTrunk())succeed("Gi0/1 transporte maintenant les VLAN 10, 20 et 30 vers le routeur avec 802.1Q.")});
+}
+function renderMac(host){host.innerHTML=`<h3>Table d’adresses MAC</h3><p class="sub">Entrées apprises dynamiquement à partir des MAC sources.</p>${state.macs.length?`<table class="ui-table"><thead><tr><th>VLAN</th><th>Adresse MAC</th><th>Port</th><th>Type</th></tr></thead><tbody>${state.macs.map(x=>`<tr><td>${x.vlan}</td><td><code>${x.mac}</code></td><td>${x.port}</td><td>DYNAMIC</td></tr>`).join("")}</tbody></table>`:`<div class="empty">Aucune adresse apprise. Faites émettre une machine.</div>`}<div class="ui-note">Le switch apprend la source à l’entrée, puis cherche la destination pour décider du port de sortie.</div>`}
+function renderStp(host){
+  host.innerHTML=`<h3>Spanning Tree</h3><p class="sub">Éviter les boucles tout en conservant la redondance physique.</p><div class="form-row"><label class="field"><span>Protocole</span><select id="stp-mode"><option value="off" ${!state.rstp?"selected":""}>Désactivé</option><option value="rstp" ${state.rstp?"selected":""}>RSTP (802.1w)</option></select></label><label class="field"><span>Priorité du bridge</span><select id="stp-priority">${[0,4096,8192,16384,32768,61440].map(n=>`<option value="${n}" ${state.priority===n?"selected":""}>${n}</option>`).join("")}</select></label><button class="ui-btn save" id="save-stp" type="button">Appliquer</button></div><table class="ui-table"><thead><tr><th>Port</th><th>Rôle</th><th>État</th></tr></thead><tbody><tr><td>Gi0/1</td><td>Designated</td><td class="state-forward">FORWARDING</td></tr><tr><td>Gi0/2</td><td>${state.rstp?"Alternate":"—"}</td><td class="${state.rstp?"state-block":"state-forward"}">${state.rstp?"DISCARDING":"FORWARDING"}</td></tr></tbody></table><div class="ui-note">Une priorité plus faible augmente la probabilité que SW1 devienne root bridge. RSTP bloque un chemin redondant, pas le câble physique.</div>`;
+  $("save-stp").addEventListener("click",()=>{state.rstp=$("stp-mode").value==="rstp";state.priority=Number($("stp-priority").value);renderSwitch();drawCables();if(MISSIONS[current].kind==="stp"&&state.rstp&&state.priority===4096)succeed("SW1 est la racine voulue. Un lien redondant reste physiquement présent mais passe en état DISCARDING.")});
+}
+function validVlans(){return state.vlans[10]==="ADMIN"&&state.vlans[20]==="TECHNIQUE"&&state.vlans[30]==="INVITES"}
+function validAccess(){return PCS.every(p=>state.ports[p.port].mode==="access"&&state.ports[p.port].vlan===p.vlan)}
+function validTrunk(){const p=state.ports["Gi0/1"],a=p.allowed.split(",").map(Number).sort((x,y)=>x-y);return p.mode==="trunk"&&[10,20,30].every((x,i)=>a[i]===x)&&a.length===3}
+function verifyConfig(kind){if(kind==="vlans"&&validVlans())succeed("Les trois VLAN sont actifs.");else if(kind==="access"&&validAccess())succeed("Les ports access sont corrects.");else if(kind==="trunk"&&validTrunk())succeed("Le trunk est correct.");else if(kind==="stp"&&state.rstp&&state.priority===4096)succeed("RSTP est correctement configuré.");else{wrong++;combo=1;score=Math.max(0,score-10);fail("La configuration n’est pas encore conforme à l’objectif. Ouvre SW1 et vérifie chaque champ.");updateHud()}}
+function learnMac(i){if(learned.has(i))return;learned.add(i);const p=PCS[i];state.macs.push({vlan:p.vlan,mac:p.mac,port:p.port});animateFlow(i,true);renderChallenge(MISSIONS[current]);if(learned.size===3)setTimeout(()=>succeed("SW1 a appris trois associations VLAN + MAC + port à partir des sources reçues."),700)}
+function checkChoice(){const v=document.querySelector('input[name="broadcast"]:checked');if(!v){fail("Sélectionne une réponse.");return}if(Number(v.value)!==MISSIONS[current].correct){wrong++;combo=1;score=Math.max(0,score-12);flashBlocked();fail("Cette diffusion franchirait une limite de VLAN ou ne correspond pas au fonctionnement d’un switch.");updateHud();return}animateFlow(2,true);setTimeout(()=>succeed("La requête ARP reste dans le VLAN 30. Elle peut emprunter le trunk vers R1, mais SW1 ne la transmet pas aux VLAN 10 et 20."),850)}
+function succeed(text){if(done)return;const gain=Math.max(90,170-wrong*25-(hintUsed?25:0))+(combo-1)*20;score+=gain;combo=Math.min(5,combo+1);done=true;feedback(true,`${text}<br><b>+${gain} points</b>`);$("hint").disabled=true;$("primary").textContent=current===MISSIONS.length-1?"Configuration terminée":"Continuer →";updateHud();if(current===MISSIONS.length-1){$("primary").disabled=true;setTimeout(showVictory,900)}}
+function fail(text){feedback(false,text)}
+function feedback(good,text){const f=$("feedback");f.className=`feedback show ${good?"good":"bad"}`;f.innerHTML=`<b>${good?"Configuration validée":"À vérifier"}</b><br>${text}`}
+function showHint(){if(hintUsed)return;hintUsed=true;$("hint-box").classList.add("show");$("hint").disabled=true}
+function next(){if(current<MISSIONS.length-1){current++;renderMission();if(MISSIONS[current].kind==="stp"){$("sw2-node").classList.remove("hidden-node");$("forward-label").classList.remove("hidden-node");$("blocked-label").classList.remove("hidden-node");drawCables()}}}
+function updateBadges(){PCS.forEach((pc,i)=>{const v=state.ports[pc.port].vlan,b=$(`badge-${i}`);b.textContent=`VLAN ${v}`;b.className=`vlan-badge ${v===10?"v10":v===20?"v20":v===30?"v30":""}`});$("status-tag").textContent=validTrunk()?"3 VLAN • trunk actif":validAccess()?"3 VLAN • ports isolés":"Réseau non segmenté"}
+function updateHud(){$("score").textContent=String(score).padStart(4,"0");$("combo").textContent=`×${combo}`;$("best").textContent=String(Number(localStorage.getItem(bestKey)||0)).padStart(4,"0");$("progress").style.width=`${(current+(done?1:0))/MISSIONS.length*100}%`;$("reward-state").textContent=combo>1?`Combo ×${combo}`:"Configuration progressive"}
+function cableColor(i){const v=state.ports[PCS[i].port].vlan;return v===10?"#18bdd2":v===20?"#7768dc":v===30?"#ff9b51":"#9aa8bc"}
+function center(el,rect){const r=el.getBoundingClientRect();return{x:r.left-rect.left+r.width/2,y:r.top-rect.top+r.height/2}}
+function drawCables(){
+  const canvas=$("cables"),box=$("topology"),r=box.getBoundingClientRect(),dpr=devicePixelRatio||1;canvas.width=r.width*dpr;canvas.height=r.height*dpr;const c=canvas.getContext("2d");c.scale(dpr,dpr);c.lineCap="round";
+  const sw=center($("switch-node"),r),router=center(document.querySelector(".node.router"),r);
+  document.querySelectorAll("[data-pc]").forEach((el,i)=>{const p=center(el,r);line(c,p,sw,cableColor(i),6)});
+  line(c,sw,router,validTrunk()?"#38c99b":"#9aa8bc",7);
+  if(!$("sw2-node").classList.contains("hidden-node")){const s2=center($("sw2-node"),r),label=$("blocked-label");line(c,{x:sw.x-12,y:sw.y+20},{x:s2.x-10,y:s2.y-20},"#38c99b",6);line(c,{x:sw.x+20,y:sw.y+18},{x:s2.x+22,y:s2.y-20},state.rstp?"#ff6f73":"#38c99b",6,state.rstp);label.textContent=state.rstp?"DISCARDING":"FORWARDING !";label.classList.toggle("blocked",state.rstp)}
+}
+function line(c,a,b,color,width,dashed=false){c.beginPath();c.setLineDash(dashed?[8,7]:[]);c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.strokeStyle="#17233f";c.lineWidth=width+4;c.stroke();c.beginPath();c.moveTo(a.x,a.y);c.lineTo(b.x,b.y);c.strokeStyle=color;c.lineWidth=width;c.stroke();c.setLineDash([])}
+function animateFlow(i,toRouter=false){const box=$("topology"),r=box.getBoundingClientRect(),from=center(document.querySelector(`[data-pc="${i}"]`),r),sw=center($("switch-node"),r),router=center(document.querySelector(".node.router"),r),dot=document.createElement("div");dot.className="flow-dot";dot.textContent="✉";box.appendChild(dot);dot.style.left=(from.x-12)+"px";dot.style.top=(from.y-12)+"px";const pts=[{left:from.x-12+"px",top:from.y-12+"px"},{left:sw.x-12+"px",top:sw.y-12+"px"}];if(toRouter)pts.push({left:router.x-12+"px",top:router.y-12+"px"});dot.animate(pts,{duration:toRouter?800:500,easing:"ease-in-out"}).finished.then(()=>dot.remove())}
+function flashBlocked(){[0,1].forEach(i=>{const n=document.querySelector(`[data-pc="${i}"]`);n.classList.add("blocked-flash");setTimeout(()=>n.classList.remove("blocked-flash"),1600)})}
+function showVictory(){const best=Number(localStorage.getItem(bestKey)||0);if(score>best)localStorage.setItem(bestKey,String(score));const ratio=score/1350;$("stars").textContent=ratio>.8?"★★★":ratio>.58?"★★☆":"★☆☆";$("final-score").textContent=`${score} points`;$("victory").classList.add("show");updateHud()}
+function reset(){location.reload()}
+
+buildChapters();renderMission();
+$("start").addEventListener("click",()=>$("intro").classList.add("hidden"));$("switch-node").addEventListener("click",openSwitch);$("close-ui").addEventListener("click",closeSwitch);$("switch-overlay").addEventListener("click",e=>{if(e.target===$("switch-overlay"))closeSwitch()});
+document.querySelectorAll(".tab").forEach(t=>t.addEventListener("click",()=>{activeTab=t.dataset.tab;renderSwitch()}));document.querySelectorAll("[data-pc]").forEach(n=>n.addEventListener("click",()=>{if(MISSIONS[current].kind==="learn")learnMac(Number(n.dataset.pc))}));
+$("primary").addEventListener("click",primary);$("hint").addEventListener("click",showHint);$("replay").addEventListener("click",reset);document.addEventListener("keydown",e=>{if(e.key==="Escape")closeSwitch()});window.addEventListener("resize",drawCables);requestAnimationFrame(drawCables);
+</script>
+</body>
+</html>

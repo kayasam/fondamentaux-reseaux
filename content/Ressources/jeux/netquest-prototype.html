@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NetQuest — Le portail disparu</title>
+<style>
+:root{
+  color-scheme:light;
+  --ink:#17233f;--muted:#60708f;--paper:#fbfdff;--panel:#ffffff;
+  --cyan:#18bdd2;--cyan-soft:#dff8fb;--mint:#38c99b;--mint-soft:#e4f9f2;
+  --coral:#ff6f73;--coral-soft:#ffeaeb;--yellow:#ffd85c;--violet:#7768dc;
+  --line:#cbd8ea;--shadow:0 14px 35px rgba(31,55,91,.13);
+}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;color:var(--ink);font:15px/1.45 "Segoe UI",system-ui,sans-serif;
+  background:
+    radial-gradient(circle at 8% 8%,rgba(24,189,210,.17),transparent 22rem),
+    radial-gradient(circle at 92% 12%,rgba(255,216,92,.2),transparent 20rem),
+    linear-gradient(150deg,#f6fbff,#eef7ff 48%,#fff8f5)}
+button,input{font:inherit}
+button{touch-action:manipulation}
+.game-shell{width:min(1480px,100%);margin:auto;padding:14px}
+.topbar{display:grid;grid-template-columns:1fr auto auto;gap:12px;align-items:center;padding:10px 14px;
+  border:2px solid var(--ink);border-radius:18px;background:rgba(255,255,255,.9);box-shadow:5px 5px 0 var(--ink)}
+.brand{display:flex;align-items:center;gap:10px;min-width:0}
+.brand-mark{width:40px;height:40px;display:grid;place-items:center;border:2px solid var(--ink);border-radius:12px;
+  background:var(--yellow);font-size:21px;transform:rotate(-3deg)}
+.brand strong{display:block;font-size:1.05rem}.brand span{display:block;color:var(--muted);font-size:.7rem}
+.score-box{display:flex;gap:14px;align-items:center}
+.metric{min-width:72px;text-align:center}.metric small{display:block;color:var(--muted);font-size:.62rem;font-weight:800;text-transform:uppercase}
+.metric b{font:900 1.05rem ui-monospace,Consolas,monospace}
+.restart-btn{border:1px solid var(--line);border-radius:11px;padding:.55rem .75rem;background:#fff;color:var(--ink);font-weight:800;cursor:pointer}
+.restart-btn:hover{border-color:var(--coral);color:var(--coral)}
+.xp-track{grid-column:1/-1;height:6px;overflow:hidden;border-radius:10px;background:#e7edf6}
+.xp-fill{height:100%;width:0;background:linear-gradient(90deg,var(--cyan),var(--mint));transition:width .45s ease}
+
+.chapter-map{display:flex;align-items:center;gap:7px;margin:13px 2px 10px;overflow-x:auto;padding:3px 2px 7px}
+.chapter{position:relative;flex:1 0 130px;min-height:46px;padding:7px 9px 7px 38px;border:1px solid var(--line);
+  border-radius:13px;background:rgba(255,255,255,.68);color:var(--muted);text-align:left}
+.chapter-num{position:absolute;left:8px;top:50%;width:23px;height:23px;display:grid;place-items:center;transform:translateY(-50%);
+  border:1px solid var(--line);border-radius:50%;background:#eef3fa;font-size:.68rem;font-weight:900}
+.chapter strong{display:block;font-size:.72rem}.chapter small{display:block;font-size:.58rem}
+.chapter.active{border:2px solid var(--cyan);padding:6px 8px 6px 37px;background:var(--cyan-soft);color:var(--ink);box-shadow:0 6px 16px rgba(24,189,210,.15)}
+.chapter.done{border-color:rgba(56,201,155,.55);background:var(--mint-soft);color:#28705b}
+.chapter.done .chapter-num{border-color:var(--mint);background:var(--mint);color:#fff}
+
+.play-grid{display:grid;grid-template-columns:minmax(720px,1.8fr) minmax(330px,.72fr);gap:13px;align-items:start}
+.panel{border:1px solid var(--line);border-radius:20px;background:rgba(255,255,255,.9);box-shadow:var(--shadow)}
+.world-panel{min-width:0;padding:14px;overflow:hidden}
+.world-heading{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:10px}
+.world-heading h1{margin:0;font-size:1.08rem}.mission-tag{padding:.3rem .55rem;border-radius:20px;background:var(--coral-soft);color:#b8434c;font-size:.68rem;font-weight:900}
+
+.story-strip{position:relative;display:grid;grid-template-columns:92px 1fr;gap:12px;align-items:center;min-height:112px;
+  margin-bottom:12px;padding:10px 14px 10px 8px;border:2px solid var(--ink);border-radius:17px;background:#fff;box-shadow:4px 4px 0 rgba(23,35,63,.18)}
+.story-strip::after{content:"";position:absolute;inset:0;z-index:0;pointer-events:none;border-radius:15px;opacity:.16;
+  background-image:radial-gradient(var(--cyan) 1px,transparent 1px);background-size:10px 10px}
+.avatar{position:relative;z-index:1;width:82px;height:82px;overflow:hidden;border:3px solid var(--ink);border-radius:50%;background:var(--cyan-soft);box-shadow:3px 3px 0 var(--yellow)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.speech{position:relative;z-index:1}.speaker{color:var(--coral);font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+.speech p{margin:.2rem 0 0;font-size:.9rem;font-weight:650}
+
+.network-scene{position:relative;min-width:900px;height:310px;overflow:hidden;border:1px solid #b9d9e7;border-radius:18px;
+  background:
+    linear-gradient(rgba(255,255,255,.68),rgba(255,255,255,.68)),
+    repeating-linear-gradient(0deg,transparent 0 29px,rgba(24,189,210,.12) 29px 30px),
+    repeating-linear-gradient(90deg,transparent 0 29px,rgba(24,189,210,.12) 29px 30px),
+    linear-gradient(135deg,#e8faff,#fff9e8)}
+.scene-label{position:absolute;left:14px;top:12px;padding:.28rem .55rem;border-radius:8px;background:var(--ink);color:#fff;font-size:.64rem;font-weight:800}
+.network-row{position:absolute;inset:54px 26px 35px;display:flex;align-items:center;justify-content:center}
+.device{position:relative;z-index:3;flex:0 0 118px;text-align:center;transition:filter .35s,opacity .35s,transform .35s}
+.device.locked{filter:grayscale(1);opacity:.2;transform:scale(.88)}
+.device.reveal{animation:pop .65s cubic-bezier(.2,1.5,.4,1)}
+.device-icon{position:relative;width:74px;height:74px;margin:auto;display:grid;place-items:center;border:3px solid var(--ink);
+  border-radius:20px;background:#fff;box-shadow:5px 5px 0 rgba(23,35,63,.18);font-size:2rem}
+.device.router .device-icon{border-radius:50%;background:var(--cyan-soft)}.device.cloud .device-icon{background:#eeeaff}.device.server .device-icon{background:var(--mint-soft)}
+.device b{display:block;margin-top:8px;font-size:.78rem}.device small{display:block;color:var(--muted);font-size:.6rem}
+.device-status{position:absolute;right:14px;top:-5px;width:21px;height:21px;display:grid;place-items:center;border:2px solid #fff;border-radius:50%;
+  background:var(--mint);color:#fff;font-size:.64rem;font-weight:900;box-shadow:0 2px 7px rgba(0,0,0,.16)}
+.device.locked .device-status{background:#a9b4c5}
+.link{position:relative;z-index:2;flex:1 1 75px;height:6px;margin:0 -7px;border:2px solid var(--ink);border-radius:7px;background:var(--cyan);transition:opacity .35s,transform .35s}
+.link.locked{opacity:.1;transform:scaleX(.3)}.link::after{content:"";position:absolute;left:8%;right:8%;top:-8px;border-top:2px dashed rgba(255,255,255,.9)}
+.packet{position:absolute;z-index:9;left:7%;top:115px;width:34px;height:34px;display:none;place-items:center;border:2px solid var(--ink);border-radius:50%;
+  background:var(--yellow);box-shadow:0 0 0 6px rgba(255,216,92,.28),0 7px 15px rgba(23,35,63,.2);font-size:1rem}
+.packet.fly{display:grid;animation:packet-run 4.2s cubic-bezier(.45,0,.3,1) forwards}
+.packet-label{position:absolute;left:50%;top:39px;transform:translateX(-50%);padding:.15rem .35rem;border-radius:6px;background:var(--ink);color:#fff;white-space:nowrap;font-size:.55rem;font-weight:800}
+.zone{position:absolute;bottom:12px;padding:.25rem .5rem;border-radius:20px;font-size:.59rem;font-weight:850}
+.zone-a{left:4%;background:var(--cyan-soft);color:#15788a}.zone-public{left:50%;transform:translateX(-50%);background:#eeeaff;color:#5145a7}.zone-b{right:4%;background:var(--mint-soft);color:#24745d}
+.scene-spark{position:absolute;right:25px;top:18px;color:var(--coral);font-size:1.3rem;transform:rotate(12deg)}
+
+.challenge-panel{position:sticky;top:12px;overflow:hidden}
+.challenge-head{padding:14px 16px;background:linear-gradient(135deg,var(--ink),#273a66);color:#fff}
+.challenge-kicker{color:#79e9f4;font-size:.64rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+.challenge-head h2{margin:.28rem 0 0;font-size:1rem;line-height:1.25}
+.challenge-body{padding:14px 16px}.question{margin:0 0 12px;font-size:.82rem;font-weight:700}
+.answers{display:grid;gap:8px}
+.answer{display:flex;align-items:flex-start;gap:9px;padding:9px 10px;border:1px solid var(--line);border-radius:11px;background:#f8fbff;cursor:pointer;transition:.18s}
+.answer:hover{border-color:var(--cyan);transform:translateY(-1px)}.answer:has(input:checked){border:2px solid var(--cyan);padding:8px 9px;background:var(--cyan-soft)}
+.answer input{margin-top:3px;accent-color:var(--cyan)}.answer span{font-size:.75rem}
+.order-bank,.order-picked{display:flex;flex-wrap:wrap;gap:7px;min-height:45px;padding:8px;border:1px dashed var(--line);border-radius:10px}
+.order-picked{margin-top:8px;background:var(--cyan-soft)}.order-chip{border:1px solid var(--line);border-radius:9px;padding:.45rem .55rem;background:#fff;color:var(--ink);font-size:.68rem;font-weight:750;cursor:pointer}
+.order-chip:hover{border-color:var(--violet)}.order-caption{margin:.45rem 0 .15rem;color:var(--muted);font-size:.62rem;font-weight:800;text-transform:uppercase}
+.action-row{display:flex;gap:8px;margin-top:13px}.primary,.secondary{border-radius:11px;padding:.6rem .75rem;font-weight:900;cursor:pointer}
+.primary{flex:1;border:2px solid var(--ink);background:var(--yellow);color:var(--ink);box-shadow:3px 3px 0 var(--ink)}
+.primary:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}.primary:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.secondary{border:1px solid var(--line);background:#fff;color:var(--muted)}.secondary:hover{border-color:var(--violet);color:var(--violet)}
+.feedback{display:none;margin-top:12px;padding:10px 11px;border-radius:11px;font-size:.72rem}
+.feedback.show{display:block}.feedback.good{background:var(--mint-soft);color:#1d654f;border:1px solid rgba(56,201,155,.5)}
+.feedback.bad{background:var(--coral-soft);color:#9b3941;border:1px solid rgba(255,111,115,.5)}
+.feedback strong{display:block;margin-bottom:2px}
+.reward{display:flex;align-items:center;justify-content:space-between;margin-top:12px;padding-top:10px;border-top:1px solid var(--line);color:var(--muted);font-size:.66rem}
+.combo{color:var(--violet);font-weight:900}.hint-box{display:none;margin-top:9px;padding:8px 10px;border-left:3px solid var(--yellow);background:#fff9df;font-size:.69rem}
+.hint-box.show{display:block}
+
+.intro{position:fixed;inset:0;z-index:50;display:grid;place-items:center;padding:18px;background:rgba(23,35,63,.42);backdrop-filter:blur(8px)}
+.intro.hidden{display:none}.intro-card{position:relative;width:min(780px,100%);overflow:hidden;border:3px solid var(--ink);border-radius:25px;background:#fff;box-shadow:10px 10px 0 var(--ink)}
+.intro-grid{display:grid;grid-template-columns:42% 58%;min-height:430px}.intro-art{position:relative;overflow:hidden;background:var(--cyan-soft)}
+.intro-art img{width:100%;height:100%;object-fit:cover}.intro-art::after{content:"MISSION 01";position:absolute;left:15px;bottom:15px;padding:.35rem .6rem;border:2px solid var(--ink);background:var(--yellow);font-weight:950;transform:rotate(-3deg)}
+.intro-copy{padding:32px}.intro-copy .eyebrow{color:var(--coral);font-weight:900;text-transform:uppercase;letter-spacing:.1em;font-size:.68rem}
+.intro-copy h2{margin:.45rem 0 .8rem;font-size:clamp(1.5rem,4vw,2.35rem);line-height:1.05}.intro-copy p{color:var(--muted)}
+.brief{display:grid;gap:7px;margin:18px 0}.brief div{display:flex;gap:8px;align-items:center;font-size:.74rem;font-weight:700}.brief b{color:var(--cyan)}
+.start-btn{width:100%;border:2px solid var(--ink);border-radius:12px;padding:.75rem;background:var(--coral);color:#fff;font-weight:950;cursor:pointer;box-shadow:4px 4px 0 var(--ink)}
+
+.victory{display:none;position:fixed;inset:0;z-index:60;place-items:center;padding:18px;background:rgba(23,35,63,.48);backdrop-filter:blur(8px)}
+.victory.show{display:grid}.victory-card{width:min(560px,100%);padding:25px;border:3px solid var(--ink);border-radius:23px;background:#fff;text-align:center;box-shadow:9px 9px 0 var(--ink)}
+.victory-avatar{width:100px;height:100px;margin:auto;overflow:hidden;border:3px solid var(--ink);border-radius:50%;box-shadow:4px 4px 0 var(--yellow)}
+.victory-avatar img{width:100%;height:100%;object-fit:cover}.victory h2{margin:.8rem 0 .3rem}.stars{color:#f5b900;font-size:2rem;letter-spacing:.15em}
+.final-score{margin:12px 0;font:900 1.5rem ui-monospace,Consolas,monospace;color:var(--violet)}
+.next-level{display:block;margin-top:10px;border:2px solid var(--ink);border-radius:12px;padding:.75rem;background:var(--mint);color:var(--ink);
+  text-decoration:none;font-weight:950;box-shadow:4px 4px 0 var(--ink)}
+
+@keyframes pop{0%{transform:scale(.65) rotate(-5deg);opacity:.2}70%{transform:scale(1.08) rotate(2deg)}100%{transform:scale(1);opacity:1}}
+@keyframes packet-run{0%{left:7%;top:115px}18%{left:25%;top:115px}38%{left:44%;top:115px}58%{left:61%;top:115px}78%{left:78%;top:115px}100%{left:91%;top:115px}}
+@media(max-width:1080px){.play-grid{grid-template-columns:1fr}.challenge-panel{position:static}.network-scroll{overflow-x:auto}.challenge-body{display:grid;grid-template-columns:1fr auto;gap:0 14px}.question,.answers,.order-area,.feedback,.hint-box,.reward{grid-column:1}.action-row{grid-column:2;grid-row:1/5;flex-direction:column;min-width:160px;margin-top:0}}
+@media(max-width:700px){.game-shell{padding:8px}.topbar{grid-template-columns:1fr auto}.score-box{grid-row:2;grid-column:1/-1;justify-content:space-around}.restart-btn{grid-column:2;grid-row:1}.play-grid{display:block}.world-panel{padding:9px}.story-strip{grid-template-columns:64px 1fr}.avatar{width:58px;height:58px}.speech p{font-size:.78rem}.challenge-panel{margin-top:10px}.challenge-body{display:block}.action-row{flex-direction:row;margin-top:13px}.intro-grid{grid-template-columns:1fr}.intro-art{height:190px}.intro-copy{padding:22px}.network-scene{height:285px}.chapter{flex-basis:116px}}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}.device.reveal{animation:none}.packet.fly{animation-duration:.01ms}}
+</style>
+</head>
+<body>
+<div class="game-shell" id="game">
+  <header class="topbar">
+    <div class="brand">
+      <div class="brand-mark">⚡</div>
+      <div><strong>NETQUEST</strong><span>Le portail disparu • Mission 01</span></div>
+    </div>
+    <div class="score-box">
+      <div class="metric"><small>Score</small><b id="score">0000</b></div>
+      <div class="metric"><small>Combo</small><b id="combo">×1</b></div>
+      <div class="metric"><small>Record</small><b id="best">0000</b></div>
+    </div>
+    <button class="restart-btn" id="restart" type="button">↻ Recommencer</button>
+    <div class="xp-track" aria-label="Progression de la mission"><div class="xp-fill" id="xp-fill"></div></div>
+  </header>
+
+  <nav class="chapter-map" id="chapter-map" aria-label="Chapitres de la mission"></nav>
+
+  <main class="play-grid">
+    <section class="panel world-panel">
+      <div class="world-heading">
+        <h1>Campus Nébula — réseau pédagogique</h1>
+        <span class="mission-tag" id="mission-tag">Réseau construit : 1/5</span>
+      </div>
+
+      <div class="story-strip">
+        <div class="avatar"><img src="assets/lina-technicienne-reseau.png" alt="Lina, technicienne réseau"></div>
+        <div class="speech"><span class="speaker">Lina • technicienne réseau</span><p id="dialogue"></p></div>
+      </div>
+
+      <div class="network-scroll">
+        <div class="network-scene" aria-label="Réseau qui se construit au fil de la mission">
+          <span class="scene-label">TOPOLOGIE EN CONSTRUCTION</span><span class="scene-spark">✦</span>
+          <div class="network-row">
+            <div class="device client" data-device="0"><div class="device-icon">💻<span class="device-status">✓</span></div><b>Client</b><small>192.168.10.42</small></div>
+            <div class="link locked" data-link="0"></div>
+            <div class="device locked switch" data-device="1"><div class="device-icon">⇄<span class="device-status">?</span></div><b>SW1</b><small>commutation L2</small></div>
+            <div class="link locked" data-link="1"></div>
+            <div class="device locked router" data-device="2"><div class="device-icon">↗<span class="device-status">?</span></div><b>R1</b><small>passerelle + NAT</small></div>
+            <div class="link locked" data-link="2"></div>
+            <div class="device locked cloud" data-device="3"><div class="device-icon">☁<span class="device-status">?</span></div><b>Internet</b><small>DNS + transit</small></div>
+            <div class="link locked" data-link="3"></div>
+            <div class="device locked server" data-device="4"><div class="device-icon">▤<span class="device-status">?</span></div><b>Serveur web</b><small>203.0.113.80:443</small></div>
+          </div>
+          <div class="packet" id="packet">✉<span class="packet-label">requête HTTPS</span></div>
+          <span class="zone zone-a">LAN du campus</span><span class="zone zone-public">Internet</span><span class="zone zone-b">Datacenter</span>
+        </div>
+      </div>
+    </section>
+
+    <aside class="panel challenge-panel" aria-live="polite">
+      <div class="challenge-head"><div class="challenge-kicker" id="challenge-kicker"></div><h2 id="challenge-title"></h2></div>
+      <div class="challenge-body">
+        <p class="question" id="question"></p>
+        <div class="answers" id="answers"></div>
+        <div class="order-area" id="order-area"></div>
+        <div class="hint-box" id="hint-box"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="action-row">
+          <button class="secondary" id="hint" type="button">Indice −25</button>
+          <button class="primary" id="validate" type="button">Valider</button>
+        </div>
+        <div class="reward"><span>Bonne réponse du premier coup : <b>+150</b></span><span class="combo" id="combo-label">Combo prêt !</span></div>
+      </div>
+    </aside>
+  </main>
+
+  <div class="intro" id="intro">
+    <div class="intro-card">
+      <div class="intro-grid">
+        <div class="intro-art"><img src="assets/lina-technicienne-reseau.png" alt=""></div>
+        <div class="intro-copy">
+          <span class="eyebrow">Alerte réseau • 08:47</span>
+          <h2>Le portail du campus a disparu !</h2>
+          <p>Les portes ouvertes commencent dans douze minutes. Lina doit reconstruire le chemin réseau qui permettra à Maya d’accéder au portail sécurisé.</p>
+          <div class="brief">
+            <div><b>01</b> Construire le réseau équipement après équipement</div>
+            <div><b>02</b> Résoudre six défis issus des fondamentaux réseau</div>
+            <div><b>03</b> Faire voyager la requête jusqu’au serveur</div>
+          </div>
+          <button class="start-btn" id="start" type="button">Commencer la mission →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="victory" id="victory">
+    <div class="victory-card">
+      <div class="victory-avatar"><img src="assets/lina-technicienne-reseau.png" alt=""></div>
+      <div class="stars" id="stars">★★★</div>
+      <h2>Portail rétabli !</h2>
+      <p>Lina a suivi la requête de la couche physique jusqu’au service HTTPS. Le campus peut ouvrir ses portes.</p>
+      <div class="final-score" id="final-score">0 points</div>
+      <a class="next-level" href="netquest-niveau-2.html">Débloquer le niveau 2 →</a>
+      <button class="start-btn" id="play-again" type="button">Rejouer et battre le record</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const MISSIONS=[
+  {
+    short:"Connexion",subtitle:"Couche physique",title:"Choisir le premier lien",type:"single",
+    dialogue:"Maya est devant son poste, mais aucun chemin n’existe encore. Commençons par relier son ordinateur au switch.",
+    question:"Quel support convient pour raccorder un poste Ethernet classique au switch de la salle ?",
+    options:["Un câble console RJ45","Un câble Ethernet cuivre à paires torsadées","Un câble HDMI","Une fibre monomode branchée directement sans transceiver"],
+    correct:[1],hint:"Le poste et le switch utilisent leurs interfaces Ethernet, pas le port console.",
+    success:"Le lien physique est établi. Des bits peuvent maintenant circuler entre le client et SW1.",unlock:1
+  },
+  {
+    short:"Switch",subtitle:"Couche liaison",title:"Faire travailler SW1",type:"multi",
+    dialogue:"Le switch reçoit la trame. Pour l’envoyer au bon endroit, il doit apprendre et décider sans faire le travail d’un routeur.",
+    question:"Quelles opérations appartiennent au comportement normal du switch ? Plusieurs réponses sont attendues.",
+    options:["Apprendre la MAC source sur le port d’entrée","Consulter la MAC destination pour choisir un port","Décrémenter le TTL du paquet IP","Remplacer l’adresse IP source par sa propre adresse"],
+    correct:[0,1],hint:"Reste à la couche 2 : table MAC, port d’entrée et port de sortie.",
+    success:"SW1 connaît désormais le port du client et transfère la trame vers la passerelle.",unlock:2
+  },
+  {
+    short:"Passerelle",subtitle:"Couche réseau",title:"Quitter le réseau local",type:"single",
+    dialogue:"Le serveur n’est pas dans le LAN 192.168.10.0/24. Le client doit remettre la trame à R1 sans perdre la destination finale.",
+    question:"Lorsqu’il contacte un serveur situé sur un autre réseau, quelles adresses de destination le client utilise-t-il ?",
+    options:["En-tête Ethernet : MAC du serveur • En-tête IP : IP de R1","En-tête Ethernet : MAC de R1 • En-tête IP : IP du serveur web","En-têtes Ethernet et IP : adresses du switch","En-tête Ethernet : MAC de R1 • En-tête IP : IP de R1"],
+    correct:[1],hint:"La trame sert à joindre le prochain saut local. Le paquet qu’elle transporte conserve l’adresse IP de la destination finale.",
+    success:"Exact : l’en-tête Ethernet vise la MAC de R1, tandis que le paquet encapsulé conserve l’IP du serveur. R1 retire ensuite la trame et route le paquet.",unlock:3
+  },
+  {
+    short:"DNS",subtitle:"Service applicatif",title:"Retrouver le portail",type:"order",
+    dialogue:"Maya connaît le nom portail.campus.test, mais un routeur ne sait acheminer que vers une adresse IP. Remets la résolution DNS dans l’ordre.",
+    question:"Clique les événements dans leur ordre réel.",
+    items:["Le client interroge son résolveur DNS","Le résolveur recherche la réponse","Le serveur DNS renvoie 203.0.113.80","Le client utilise cette IP comme destination"],
+    correct:[0,1,2,3],hint:"On demande d’abord, le résolveur cherche, puis il répond et le client peut utiliser l’adresse.",
+    success:"Le nom est résolu : portail.campus.test correspond à 203.0.113.80.",unlock:4
+  },
+  {
+    short:"TCP",subtitle:"Couche transport",title:"Ouvrir la connexion",type:"order",
+    dialogue:"Le serveur est enfin visible. Avant d’envoyer HTTPS, les deux machines doivent établir une connexion TCP fiable.",
+    question:"Construis le three-way handshake TCP.",
+    items:["SYN : le client demande l’ouverture","SYN-ACK : le serveur accepte et répond","ACK : le client confirme"],
+    correct:[0,1,2],hint:"Demande, acceptation accompagnée d’une demande en retour, puis confirmation finale.",
+    success:"La connexion TCP est établie. Les numéros de séquence sont synchronisés.",unlock:4
+  },
+  {
+    short:"HTTPS",subtitle:"Encapsulation",title:"Lancer la requête finale",type:"multi",
+    dialogue:"Dernière vérification avant l’envoi ! Sélectionne toutes les affirmations exactes, puis observe le paquet traverser le réseau.",
+    question:"Qu’est-ce qui est vrai pendant ce trajet vers le serveur ?",
+    options:["Le switch choisit un port grâce aux adresses MAC","Chaque routeur peut créer une nouvelle trame Ethernet","Les ports TCP identifient les applications","L’adresse MAC du client reste utilisée jusqu’au serveur distant"],
+    correct:[0,1,2],hint:"La trame est locale à chaque lien. Le paquet et le segment transportent les informations de bout en bout, sauf traduction NAT.",
+    success:"Tout est cohérent. La requête HTTPS peut traverser le réseau jusqu’au service web.",unlock:4,final:true
+  }
+];
+
+let current=0,score=0,combo=1,attempts=0,hintUsed=false,completed=false,selectedOrder=[];
+const bestKey="netquest-best-score";
+const $=id=>document.getElementById(id);
+
+function buildChapters(){
+  $("chapter-map").innerHTML=MISSIONS.map((m,i)=>`<div class="chapter" data-chapter="${i}">
+    <span class="chapter-num">${i+1}</span><strong>${m.short}</strong><small>${m.subtitle}</small></div>`).join("");
+}
+
+function renderMission(){
+  const m=MISSIONS[current];
+  document.querySelectorAll(".chapter").forEach((c,i)=>{
+    c.classList.toggle("active",i===current);c.classList.toggle("done",i<current);
+    c.querySelector(".chapter-num").textContent=i<current?"✓":i+1;
+  });
+  $("challenge-kicker").textContent=`Chapitre ${current+1} sur ${MISSIONS.length} • ${m.subtitle}`;
+  $("challenge-title").textContent=m.title;
+  $("dialogue").textContent=m.dialogue;
+  $("question").textContent=m.question;
+  $("feedback").className="feedback";$("feedback").innerHTML="";
+  $("hint-box").className="hint-box";$("hint-box").textContent=m.hint;
+  $("hint").disabled=false;$("validate").disabled=false;$("validate").textContent=m.final?"Lancer la requête":"Valider";
+  selectedOrder=[];attempts=0;hintUsed=false;
+  $("answers").innerHTML="";$("order-area").innerHTML="";
+  if(m.type==="single"||m.type==="multi"){
+    const type=m.type==="single"?"radio":"checkbox";
+    $("answers").innerHTML=m.options.map((option,i)=>`<label class="answer"><input type="${type}" name="answer" value="${i}"><span>${option}</span></label>`).join("");
+  }else{
+    const shuffled=m.items.map((_,i)=>i).sort(()=>Math.random()-.5);
+    $("order-area").innerHTML=`<div class="order-caption">Éléments disponibles</div><div class="order-bank" id="order-bank">
+      ${shuffled.map(i=>`<button class="order-chip" type="button" data-order="${i}">${m.items[i]}</button>`).join("")}
+      </div><div class="order-caption">Ta séquence</div><div class="order-picked" id="order-picked"></div>`;
+    $("order-bank").addEventListener("click",pickOrder);
+    $("order-picked").addEventListener("click",unpickOrder);
+  }
+  updateHud();
+}
+
+function pickOrder(e){
+  const btn=e.target.closest("[data-order]");if(!btn)return;
+  selectedOrder.push(Number(btn.dataset.order));$("order-picked").appendChild(btn);
+}
+function unpickOrder(e){
+  const btn=e.target.closest("[data-order]");if(!btn)return;
+  selectedOrder=selectedOrder.filter(x=>x!==Number(btn.dataset.order));$("order-bank").appendChild(btn);
+}
+
+function chosenAnswers(){
+  const m=MISSIONS[current];
+  if(m.type==="order")return selectedOrder;
+  return [...document.querySelectorAll("#answers input:checked")].map(x=>Number(x.value)).sort((a,b)=>a-b);
+}
+function sameAnswer(a,b){return a.length===b.length&&a.every((x,i)=>x===b[i])}
+
+function validate(){
+  if(completed)return;
+  const m=MISSIONS[current],chosen=chosenAnswers();
+  if(!chosen.length){showFeedback(false,"Choisis au moins une réponse avant de valider.");return}
+  attempts++;
+  if(!sameAnswer(chosen,m.correct)){
+    score=Math.max(0,score-15);combo=1;
+    showFeedback(false,m.type==="multi"?"Une partie de ta sélection est incorrecte ou incomplète. Réessaie.":"Ce n’est pas encore le bon ordre. Observe le rôle de chaque étape.");
+    updateHud();return;
+  }
+  const gained=Math.max(70,150-(attempts-1)*25-(hintUsed?25:0))+(combo-1)*20;
+  score+=gained;combo=Math.min(5,combo+1);completed=true;
+  showFeedback(true,`${m.success}<br><b>+${gained} points</b>`);
+  $("validate").disabled=true;$("hint").disabled=true;
+  unlockNetwork(m.unlock);
+  if(m.final){
+    $("packet").classList.remove("fly");void $("packet").offsetWidth;$("packet").classList.add("fly");
+    setTimeout(showVictory,4350);
+  }else{
+    $("validate").disabled=false;$("validate").textContent="Continuer →";
+  }
+  updateHud();
+}
+
+function nextMission(){
+  if(current<MISSIONS.length-1){current++;completed=false;$("validate").onclick=validate;renderMission()}
+}
+function showFeedback(good,text){
+  const box=$("feedback");box.className=`feedback show ${good?"good":"bad"}`;
+  box.innerHTML=`<strong>${good?"Bien joué !":"Pas encore…"}</strong>${text}`;
+}
+function showHint(){
+  if(hintUsed)return;
+  hintUsed=true;$("hint-box").classList.add("show");$("hint").disabled=true;updateHud();
+}
+
+function unlockNetwork(maxIndex,instant=false){
+  document.querySelectorAll("[data-device]").forEach((device,i)=>{
+    const wasLocked=device.classList.contains("locked");
+    device.classList.toggle("locked",i>maxIndex);
+    const badge=device.querySelector(".device-status");
+    badge.textContent=i<=maxIndex?"✓":"?";
+    if(wasLocked&&i<=maxIndex&&!instant){device.classList.remove("reveal");void device.offsetWidth;device.classList.add("reveal")}
+  });
+  document.querySelectorAll("[data-link]").forEach((link,i)=>link.classList.toggle("locked",i>=maxIndex));
+  $("mission-tag").textContent=`Réseau construit : ${Math.min(maxIndex+1,5)}/5`;
+}
+
+function updateHud(){
+  $("score").textContent=String(score).padStart(4,"0");
+  $("combo").textContent=`×${combo}`;
+  $("best").textContent=String(Number(localStorage.getItem(bestKey)||0)).padStart(4,"0");
+  $("combo-label").textContent=combo>1?`Combo ×${combo} actif`:"Combo prêt !";
+  $("xp-fill").style.width=`${(current+(completed?1:0))/MISSIONS.length*100}%`;
+}
+function showVictory(){
+  const previous=Number(localStorage.getItem(bestKey)||0);
+  if(score>previous)localStorage.setItem(bestKey,String(score));
+  const ratio=score/1050;
+  $("stars").textContent=ratio>=.82?"★★★":ratio>=.58?"★★☆":"★☆☆";
+  $("final-score").textContent=`${score} points`;
+  $("victory").classList.add("show");updateHud();
+}
+function resetGame(showIntro=false){
+  current=0;score=0;combo=1;attempts=0;hintUsed=false;completed=false;selectedOrder=[];
+  $("packet").classList.remove("fly");$("victory").classList.remove("show");
+  unlockNetwork(0,true);renderMission();
+  if(showIntro)$("intro").classList.remove("hidden");
+}
+function primaryAction(){completed&&!MISSIONS[current].final?nextMission():validate()}
+
+buildChapters();resetGame();
+$("start").addEventListener("click",()=>$("intro").classList.add("hidden"));
+$("restart").addEventListener("click",()=>resetGame(true));
+$("play-again").addEventListener("click",()=>resetGame());
+$("hint").addEventListener("click",showHint);
+$("validate").addEventListener("click",primaryAction);
+</script>
+</body>
+</html>

@@ -7,6 +7,8 @@ $ErrorActionPreference = "Stop"
 $sourceRoot = "C:\Users\kayaw\Nextcloud\Obsidian\CoffreSam\Formations\fondamentaux-reseaux"
 $projectRoot = "D:\Projet-git\fondamentaux-reseaux-web"
 $sourceCourses = Join-Path $sourceRoot "cours"
+$sourceGames = Join-Path $sourceRoot "jeux"
+$sourceSchemas = Join-Path $sourceRoot "schema"
 $sourceImages = Join-Path $sourceRoot "Ressources\images"
 $sourceHtmlAssets = Join-Path $sourceRoot "Ressources\html-assets"
 $sourceRevisionIndexHtml = Join-Path $sourceRoot "Ressources\index-protocoles-et-notions.html"
@@ -16,6 +18,8 @@ $destinationContent = Join-Path $projectRoot "content"
 $stagingRoot = Join-Path $projectRoot ".publication-stage"
 $stagingCourses = Join-Path $stagingRoot "cours"
 $destinationResources = Join-Path $projectRoot "content\Ressources"
+$destinationGames = Join-Path $destinationResources "jeux"
+$destinationSchemas = Join-Path $destinationResources "schema"
 $destinationRevisionIndexHtml = Join-Path $destinationResources "index-protocoles-et-notions-interactif.html"
 $destinationImages = Join-Path $projectRoot "content\Ressources\images"
 $destinationHtmlAssets = Join-Path $projectRoot "content\Ressources\html-assets"
@@ -78,6 +82,8 @@ Write-Host "Publication de Fondamentaux Réseaux" -ForegroundColor Cyan
 Write-Host "===================================" -ForegroundColor Cyan
 
 Assert-Directory -Path $sourceCourses -Description "Le dossier des cours"
+Assert-Directory -Path $sourceGames -Description "Le dossier des jeux"
+Assert-Directory -Path $sourceSchemas -Description "Le dossier des schémas"
 Assert-Directory -Path $sourceImages -Description "Le dossier des images"
 Assert-Directory -Path $sourceHtmlAssets -Description "Le dossier des ressources HTML"
 Assert-Directory -Path (Join-Path $projectRoot ".git") -Description "Le dépôt Git"
@@ -100,9 +106,11 @@ Copy-MirroredDirectory `
   -Destination $stagingCourses `
   -ExcludedFiles @("*.excalidraw", "*.excalidraw.md")
 
-Write-Host "2/6 - Copie des illustrations et des ressources HTML..."
+Write-Host "2/6 - Copie des illustrations, jeux et schémas interactifs..."
 Copy-MirroredDirectory -Source $sourceImages -Destination $destinationImages
 Copy-MirroredDirectory -Source $sourceHtmlAssets -Destination $destinationHtmlAssets
+Copy-MirroredDirectory -Source $sourceGames -Destination $destinationGames
+Copy-MirroredDirectory -Source $sourceSchemas -Destination $destinationSchemas
 Copy-Item -LiteralPath $sourceRevisionIndexHtml -Destination $destinationRevisionIndexHtml -Force
 Copy-Item -LiteralPath $sourceRevisionIndexMarkdown -Destination $destinationResources -Force
 Copy-Item -LiteralPath $sourceCiscoCli -Destination $destinationResources -Force
@@ -125,6 +133,28 @@ Get-ChildItem -LiteralPath $stagingCourses -Recurse -File -Filter "*.md" | ForEa
     [Text.RegularExpressions.RegexOptions]::IgnoreCase
   )
   $updated = $updated.Replace("[[cours/", "[[")
+
+  $relativeMarkdownPath = [IO.Path]::GetRelativePath($stagingCourses, $markdownFile.FullName).Replace("\", "/")
+  if (
+    $relativeMarkdownPath -match '^[^/]+/tp/.+\.md$' -and
+    $updated -notmatch 'https://kayasam\.github\.io/fondamentaux-reseaux/telechargements/.+\.md'
+  ) {
+    $isCorrection = $markdownFile.Name -like "*correction*.md"
+    $resourceTitle = if ($isCorrection) { "Ressource de la correction" } else { "Ressource du TP" }
+    $downloadLabel = if ($isCorrection) {
+      "Télécharger cette correction en Markdown"
+    } else {
+      "Télécharger ce TP en Markdown"
+    }
+    $downloadUrl = "https://kayasam.github.io/fondamentaux-reseaux/telechargements/$relativeMarkdownPath"
+    $downloadBlock = "`n`n> [!TIP] $resourceTitle`n> - <a href=`"$downloadUrl`" download>$downloadLabel</a>`n"
+    $h1Pattern = [regex]::new('(?m)^(#\s+.+)\r?$')
+    $updated = $h1Pattern.Replace(
+      $updated,
+      { param($match) $match.Value + $downloadBlock },
+      1
+    )
+  }
 
   if ($updated -ne $original) {
     [IO.File]::WriteAllText($markdownFile.FullName, $updated, $utf8WithoutBom)

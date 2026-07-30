@@ -49,10 +49,6 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
 /* Réseau */
 .network-scroll{overflow-x:auto;padding:1rem .25rem .4rem;scrollbar-color:var(--border) transparent}
 .network{position:relative;min-width:1040px;height:480px;padding:0 28px}
-.backbone{position:absolute;left:7%;right:7%;top:118px;height:5px;border-radius:9px;
-  background:linear-gradient(90deg,#4f81bd 0 28%,#f59e0b 28% 70%,#4f81bd 70% 100%);
-  box-shadow:0 0 14px rgba(96,165,250,.22)}
-.arrowheads{position:absolute;left:7%;right:7%;top:105px;color:#dae9ff;font-weight:900;letter-spacing:86px;overflow:hidden;white-space:nowrap;opacity:.7}
 .nodes{position:relative;z-index:2;display:grid;grid-template-columns:1.2fr .8fr 1fr .8fr 1fr .8fr 1.2fr;align-items:start}
 .node{text-align:center;transition:.25s;opacity:.45}
 .node.active,.node.passed{opacity:1}.node.active{transform:translateY(-5px)}
@@ -60,12 +56,15 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
   border-radius:16px;background:#0b1628;font-size:1.85rem;box-shadow:0 8px 18px rgba(0,0,0,.25);transition:.25s}
 .node.active .node-icon{border-color:var(--cyan);box-shadow:0 0 0 5px rgba(34,211,238,.1),0 0 24px rgba(34,211,238,.25)}
 .node.router .node-icon{border-radius:50%;background:#10283a}
-.node.switch .node-icon{width:58px;height:58px;margin-top:5px;border-radius:10px;background:#24233d}
+.node.switch .node-icon{width:58px;height:58px;margin-top:5px;margin-bottom:5px;border-radius:10px;background:#24233d}
+.router-symbol{position:relative;width:48px;height:48px;color:#e7f5ff;font-size:1.35rem;font-weight:900}
+.router-symbol span{position:absolute;line-height:1}.router-symbol .ne{right:2px;top:0}.router-symbol .sw{left:2px;bottom:0}
+.router-symbol .nw{left:2px;top:0}.router-symbol .se{right:2px;bottom:0}
 .node-name{display:block;margin-top:.42rem;font-weight:800;font-size:.85rem}
 .node-role{display:block;color:var(--muted);font-size:.67rem}
 .node-address{display:block;min-height:40px;margin-top:.32rem;color:#c7d7ed;font:600 .63rem/1.45 ui-monospace,Consolas,monospace}
 .node-address em{color:var(--muted);font-style:normal}
-.layer-stack{width:104px;margin:.55rem auto 0;display:flex;flex-direction:column;gap:3px}
+.layer-stack{width:104px;height:215px;margin:.55rem auto 0;display:flex;flex-direction:column;justify-content:flex-end;gap:3px}
 .layer{min-height:25px;display:flex;align-items:center;gap:.3rem;padding:.22rem .32rem;border:1px solid rgba(255,255,255,.12);
   border-radius:5px;color:rgba(255,255,255,.55);font-size:.57rem;font-weight:700;text-align:left;opacity:.35;transition:.25s}
 .layer b{width:14px;display:grid;place-items:center;border-radius:3px;background:rgba(0,0,0,.22);font-size:.55rem}
@@ -74,15 +73,16 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
 .node.active .layer{opacity:.18}
 .node .layer.active-layer{opacity:1;transform:scale(1.06);border-color:rgba(255,255,255,.65);
   box-shadow:0 0 13px rgba(255,255,255,.18);color:#fff}
+.node .layer.processed-layer{opacity:.62}
 .node.passed .layer{opacity:.48}
 .layer-limit{margin:.35rem auto 0;color:var(--muted);font-size:.57rem;font-weight:700}
-.packet{--packet-left:5.5%;position:absolute;z-index:5;top:99px;left:var(--packet-left);
-  width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:var(--amber);
-  color:#171008;font-size:1.2rem;box-shadow:0 0 0 5px rgba(251,191,36,.18),0 0 24px rgba(251,191,36,.65);
-  transform:translateX(-50%);transition:left .65s cubic-bezier(.2,.8,.2,1)}
-.packet::after{content:attr(data-label);position:absolute;top:46px;left:50%;transform:translateX(-50%);
-  white-space:nowrap;color:var(--amber);font-size:.67rem;font-weight:800}
-.zone-label{position:absolute;top:447px;padding:.2rem .55rem;border-radius:20px;color:var(--muted);
+.packet{--packet-left:5.5%;position:absolute;z-index:8;top:360px;left:var(--packet-left);
+  width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:var(--amber);
+  color:#171008;font-size:1rem;box-shadow:0 0 0 5px rgba(251,191,36,.18),0 0 24px rgba(251,191,36,.65);
+  transform:translate(-50%,-50%);transition:left .6s cubic-bezier(.2,.8,.2,1),top .45s cubic-bezier(.2,.8,.2,1)}
+.packet::after{content:attr(data-label);position:absolute;top:38px;left:50%;transform:translateX(-50%);
+  padding:.12rem .35rem;border-radius:5px;background:#07101f;white-space:nowrap;color:var(--amber);font-size:.61rem;font-weight:900}
+.zone-label{position:absolute;top:405px;padding:.2rem .55rem;border-radius:20px;color:var(--muted);
   background:#0b1628;border:1px solid var(--border);font-size:.64rem;font-weight:700}
 .zone-a{left:9%}.zone-wan{left:45%}.zone-b{right:9%}
 
@@ -103,11 +103,17 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
   font-size:.73rem}.invariant strong{color:var(--green)}.invariant code{color:#d7fff0}
 
 /* Navigation */
-.timeline{display:grid;grid-template-columns:repeat(7,1fr);gap:.35rem;margin-top:1rem}
-.stage-btn{position:relative;min-height:56px;padding:.45rem .25rem;border:1px solid var(--border);border-radius:9px;
-  color:var(--muted);background:var(--surface-2);font-size:.68rem;font-weight:700;cursor:pointer;transition:.2s}
+.journey-nav{display:grid;grid-template-columns:38px minmax(0,1fr) 38px;gap:.4rem;align-items:stretch;margin-top:1rem}
+.timeline-viewport{min-width:0;overflow-x:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;scroll-snap-type:x proximity}
+.timeline{display:flex;gap:.35rem;width:max-content;padding:0 .1rem .3rem}
+.timeline-arrow{border:1px solid var(--border);border-radius:9px;background:var(--surface-2);color:var(--text);
+  font-weight:900;cursor:pointer}.timeline-arrow:hover{border-color:var(--cyan);color:var(--cyan)}
+.stage-btn{position:relative;flex:0 0 126px;min-height:60px;padding:.42rem .38rem;border:1px solid var(--border);border-radius:9px;
+  color:var(--muted);background:var(--surface-2);font-size:.67rem;font-weight:700;cursor:pointer;transition:.2s;scroll-snap-align:center}
 .stage-btn:hover{color:#fff;border-color:var(--blue)}.stage-btn.active{color:#07101f;background:var(--cyan);border-color:var(--cyan)}
-.stage-btn .num{display:block;font-size:.6rem;opacity:.7}.stage-btn.done:not(.active){color:#d8e6f8;border-color:#3d5f80}
+.stage-btn .num{display:block;font-size:.58rem;opacity:.7}.stage-btn .stop-layer{display:block;font-size:.8rem;font-weight:900}
+.stage-btn .stop-device{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.57rem;opacity:.78}
+.stage-btn.done:not(.active){color:#d8e6f8;border-color:#3d5f80}
 .controls{display:flex;align-items:center;justify-content:space-between;gap:.7rem;margin-top:.75rem}
 .nav-btn{padding:.56rem .9rem;border:1px solid var(--border);border-radius:9px;background:var(--surface-2);
   color:#fff;font-weight:800;font-size:.78rem;cursor:pointer}.nav-btn:hover:not(:disabled){border-color:var(--cyan);color:var(--cyan)}
@@ -119,6 +125,13 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
 .explain-head h2{font-size:1.12rem;line-height:1.3}
 .explain-body{padding:1rem 1.1rem}
 .lead{margin:0 0 .9rem;color:#dbe7f7;font-size:.92rem}
+.layer-focus{margin:0 0 .8rem;padding:.75rem .8rem;border:1px solid rgba(34,211,238,.4);border-radius:11px;
+  background:linear-gradient(120deg,rgba(8,145,178,.16),rgba(37,99,235,.1))}
+.layer-focus-top{display:flex;align-items:center;gap:.55rem;margin-bottom:.28rem}
+.layer-chip{min-width:2.2rem;padding:.22rem .4rem;border-radius:6px;background:var(--cyan);color:#06111f;
+  text-align:center;font-size:.7rem;font-weight:900}
+.layer-phase{color:var(--cyan);font-size:.67rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase}
+.layer-focus h3{margin:0 0 .18rem;font-size:.87rem}.layer-focus p{margin:0;color:#c9d8eb;font-size:.76rem}
 .watch{margin:.7rem 0;padding:.7rem .8rem;border-left:4px solid var(--amber);background:rgba(251,191,36,.08);font-size:.78rem}
 .watch strong{color:var(--amber)}
 .flow-facts{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.9rem}
@@ -158,7 +171,7 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
 @media(max-width:760px){
   .header-inner{align-items:flex-start;flex-direction:column}.protocol-switch{width:100%}.protocol-btn{flex:1}
   .lesson{padding-inline:.6rem}.visual-panel{padding:.7rem}.link-frames{grid-template-columns:1fr}
-  .timeline{grid-template-columns:repeat(4,1fr)}.explain-body{display:block}.pdu-now{margin-top:.9rem}
+  .stage-btn{flex-basis:112px}.explain-body{display:block}.pdu-now{margin-top:.9rem}
   .summary-grid{grid-template-columns:1fr 1fr}.invariant{grid-template-columns:auto 1fr}
 }
 @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
@@ -194,8 +207,6 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
 
       <div class="network-scroll">
         <div class="network">
-          <div class="backbone"></div>
-          <div class="arrowheads">› › › › › › › › ›</div>
           <div class="packet" id="packet" data-label="flux SSH">✉</div>
           <div class="nodes">
             <div class="node client active" data-node="0">
@@ -221,7 +232,7 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
               <div class="layer-limit">Ne monte pas à L3</div>
             </div>
             <div class="node router" data-node="2">
-              <div class="node-icon">↗</div><span class="node-name">R1</span><span class="node-role">couches 1–3</span>
+              <div class="node-icon"><span class="router-symbol" aria-hidden="true"><span class="ne">↗</span><span class="sw">↙</span><span class="nw">↖</span><span class="se">↘</span></span></div><span class="node-name">R1</span><span class="node-role">couches 1–3</span>
               <span class="node-address"><em>LAN</em> BB:11<br><em>WAN</em> BB:22</span>
               <div class="layer-stack" aria-label="Couches OSI du routeur 1">
                 <span class="layer l3" data-layer="3"><b>3</b>Réseau / IP</span>
@@ -239,7 +250,7 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
               </div>
             </div>
             <div class="node router" data-node="4">
-              <div class="node-icon">↘</div><span class="node-name">R2</span><span class="node-role">couches 1–3</span>
+              <div class="node-icon"><span class="router-symbol" aria-hidden="true"><span class="ne">↗</span><span class="sw">↙</span><span class="nw">↖</span><span class="se">↘</span></span></div><span class="node-name">R2</span><span class="node-role">couches 1–3</span>
               <span class="node-address"><em>WAN</em> CC:11<br><em>LAN</em> CC:22</span>
               <div class="layer-stack" aria-label="Couches OSI du routeur 2">
                 <span class="layer l3" data-layer="3"><b>3</b>Réseau / IP</span>
@@ -280,17 +291,17 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
       <div class="link-frames" aria-label="Comparaison des trames sur chaque lien">
         <article class="frame-card active" data-link="0">
           <h3>Lien 1 • LAN A <span>Client → R1</span></h3>
-          <div class="mini-pdu"><span class="mini-eth">ETH</span><span class="mini-ip">IP</span><span class="mini-tcp">TCP</span><span class="mini-data">DATA</span></div>
+          <div class="mini-pdu"><span class="mini-eth">TRAME</span><span class="mini-ip">PAQUET</span><span class="mini-tcp">SEGMENT</span><span class="mini-data">DONNÉES</span></div>
           <div class="mac-line"><b>MAC</b> AA:11 → BB:11</div>
         </article>
         <article class="frame-card" data-link="1">
           <h3>Lien 2 • Transit <span>R1 → R2</span></h3>
-          <div class="mini-pdu"><span class="mini-eth">NOUVEL ETH</span><span class="mini-ip">IP</span><span class="mini-tcp">TCP</span><span class="mini-data">DATA</span></div>
+          <div class="mini-pdu"><span class="mini-eth">NOUVELLE TRAME</span><span class="mini-ip">PAQUET</span><span class="mini-tcp">SEGMENT</span><span class="mini-data">DONNÉES</span></div>
           <div class="mac-line"><b>MAC</b> BB:22 → CC:11</div>
         </article>
         <article class="frame-card" data-link="2">
           <h3>Lien 3 • LAN B <span>R2 → Serveur</span></h3>
-          <div class="mini-pdu"><span class="mini-eth">NOUVEL ETH</span><span class="mini-ip">IP</span><span class="mini-tcp">TCP</span><span class="mini-data">DATA</span></div>
+          <div class="mini-pdu"><span class="mini-eth">NOUVELLE TRAME</span><span class="mini-ip">PAQUET</span><span class="mini-tcp">SEGMENT</span><span class="mini-data">DONNÉES</span></div>
           <div class="mac-line"><b>MAC</b> CC:22 → DD:11</div>
         </article>
       </div>
@@ -300,18 +311,16 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
         <strong>IP destination</strong><code>10.0.0.50</code>
       </div>
 
-      <nav class="timeline" aria-label="Étapes du trajet">
-        <button class="stage-btn active" data-step="0"><span class="num">01</span>Application</button>
-        <button class="stage-btn" data-step="1"><span class="num">02</span>Encapsulation</button>
-        <button class="stage-btn" data-step="2"><span class="num">03</span>LAN A</button>
-        <button class="stage-btn" data-step="3"><span class="num">04</span>Routeur R1</button>
-        <button class="stage-btn" data-step="4"><span class="num">05</span>Routeur R2</button>
-        <button class="stage-btn" data-step="5"><span class="num">06</span>LAN B</button>
-        <button class="stage-btn" data-step="6"><span class="num">07</span>Serveur</button>
-      </nav>
+      <div class="journey-nav">
+        <button class="timeline-arrow" id="timeline-left" aria-label="Faire défiler les étapes vers la gauche">‹</button>
+        <div class="timeline-viewport" id="timeline-viewport">
+          <nav class="timeline" id="timeline" aria-label="Les 35 étapes détaillées du trajet"></nav>
+        </div>
+        <button class="timeline-arrow" id="timeline-right" aria-label="Faire défiler les étapes vers la droite">›</button>
+      </div>
       <div class="controls">
         <button class="nav-btn" id="previous" disabled>← Précédent</button>
-        <span class="progress-text">Étape <b id="step-number">1</b> sur 7</span>
+        <span class="progress-text">Arrêt <b id="step-number">1</b> sur <span id="step-total">35</span> • <span id="current-layer">Couche 7</span></span>
         <button class="nav-btn" id="next">Suivant →</button>
       </div>
     </section>
@@ -323,8 +332,12 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
       </div>
       <div class="explain-body">
         <p class="lead" id="step-lead"></p>
+        <div class="layer-focus" id="layer-focus">
+          <div class="layer-focus-top"><span class="layer-chip" id="layer-chip">L7</span><span class="layer-phase" id="layer-phase">Création</span></div>
+          <h3 id="layer-title"></h3>
+          <p id="layer-text"></p>
+        </div>
         <div class="flow-facts" id="flow-facts"></div>
-        <div class="process" id="process"></div>
         <div class="watch" id="watch"></div>
         <div class="pdu-now">
           <div class="pdu-now-title"><span>Contenu transporté à cette étape</span><strong id="pdu-name">Données</strong></div>
@@ -335,9 +348,9 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
   </div>
 
   <div class="legend" aria-label="Légende des couleurs">
-    <span style="--c:var(--eth)">Ethernet / couche 2</span>
-    <span style="--c:var(--ip)">IP / couche 3</span>
-    <span style="--c:var(--tcp)">TCP / couche 4</span>
+    <span style="--c:var(--eth)">Trame Ethernet / couche 2</span>
+    <span style="--c:var(--ip)">Paquet IP / couche 3</span>
+    <span style="--c:var(--tcp)">Segment TCP / couche 4</span>
     <span style="--c:var(--app)">Données applicatives</span>
   </div>
 
@@ -355,12 +368,12 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
 <script>
 const FLOWS = {
   ssh: {
-    name:"SSH", port:"22", sourcePort:"51432", data:"commande « uname -a »",
-    app:"Le client SSH chiffre la session et prépare une commande destinée au service SSH du serveur.",
+    name:"SSH", port:"22", sourcePort:"51432", data:"message applicatif SSH", context:"session TCP et SSH déjà établies",
+    app:"Après la connexion et l’authentification, le client prépare un message de la session SSH interactive.",
     delivery:"Le serveur remet les données au processus sshd qui écoute sur le port TCP 22."
   },
   http: {
-    name:"HTTP", port:"80", sourcePort:"52118", data:"GET / HTTP/1.1",
+    name:"HTTP", port:"80", sourcePort:"52118", data:"GET / HTTP/1.1", context:"connexion TCP déjà établie",
     app:"Le navigateur construit une requête HTTP demandant la ressource « / » au serveur web.",
     delivery:"Le serveur remet la requête au service web qui écoute sur le port TCP 80."
   }
@@ -368,9 +381,14 @@ const FLOWS = {
 
 const STEPS = [
   {
-    node:0, layers:[7,6,5], link:0, kicker:"Étape 1 • Client", title:"L’application crée les données", pdu:"Données applicatives",
+    node:0, link:0, kicker:"Étape 1 • Client", title:"L’application crée les données", pdu:"Données applicatives",
+    stops:[
+      {layer:7,phase:"Création",title:"Couche 7 — Application",text:f=>f.name==="SSH"?"Le client SSH prépare les caractères ou les données échangés dans la session interactive.":"HTTP produit la requête applicative : "+f.data+".",state:"data"},
+      {layer:6,phase:"Préparation",title:"Couche 6 — Présentation",text:f=>f.name==="SSH"?"SSH chiffre et encode le contenu avant son transport.":"Le texte HTTP est encodé dans un format compréhensible par les deux applications.",state:"data"},
+      {layer:5,phase:"Dialogue",title:"Couche 5 — Session",text:f=>"La session "+f.name+" maintient le dialogue logique entre le client et le serveur.",state:"data"}
+    ],
     lead:f=>f.app,
-    facts:f=>[["Protocole applicatif",f.name],["Donnée",f.data]],
+    facts:f=>[["Protocole applicatif",f.name],["Donnée",f.data],["Contexte",f.context]],
     process:f=>[
       ["application","1","Application","Elle produit les données utiles : "+f.data+"."],
       ["decision","2","Destination logique","Le service visé est "+f.name+" sur le serveur 10.0.0.50."]
@@ -379,7 +397,13 @@ const STEPS = [
     blocks:f=>[["data",f.data,"Données"]]
   },
   {
-    node:0, layers:[7,6,5,4,3,2,1], link:0, kicker:"Étape 2 • Client", title:"Le client encapsule de L4 vers L2", pdu:"Trame Ethernet",
+    node:0, link:0, kicker:"Étape 2 • Client", title:"Le client encapsule de L4 vers L2", pdu:"Trame Ethernet",
+    stops:[
+      {layer:4,phase:"Encapsulation",title:"Couche 4 — Segment TCP",text:f=>"TCP ajoute les ports "+f.sourcePort+" → "+f.port+" ainsi que séquence, acquittement et indicateurs.",state:"tcp"},
+      {layer:3,phase:"Encapsulation",title:"Couche 3 — Paquet IP",text:()=>"IP ajoute 192.168.1.42 → 10.0.0.50. Ces adresses désignent les deux extrémités.",state:"ip"},
+      {layer:2,phase:"Encapsulation",title:"Couche 2 — Trame Ethernet",text:()=>"Ethernet ajoute AA:11 → BB:11 et un contrôle FCS. BB:11 est la passerelle R1.",state:"frameA"},
+      {layer:1,phase:"Émission",title:"Couche 1 — Bits et signal",text:()=>"La trame devient une suite de bits portée par un signal électrique, lumineux ou radio.",state:"bitsA"}
+    ],
     lead:f=>"Chaque couche ajoute les informations nécessaires devant les données "+f.name+".",
     facts:f=>[["Ports TCP",f.sourcePort+" → "+f.port],["Adresses IP","192.168.1.42 → 10.0.0.50"]],
     process:f=>[
@@ -391,7 +415,13 @@ const STEPS = [
     blocks:f=>[["eth","AA:11 → BB:11","Ethernet"],["ip",".1.42 → .0.50","IP"],["tcp",f.sourcePort+" → "+f.port,"TCP"],["data",f.data,"Données"]]
   },
   {
-    node:1, layers:[2,1], link:0, kicker:"Étape 3 • LAN A", title:"Le switch transfère la trame sans la modifier", pdu:"Trame Ethernet identique",
+    node:1, link:0, kicker:"Étape 3 • LAN A", title:"Le switch transfère la trame sans la modifier", pdu:"Trame Ethernet identique",
+    stops:[
+      {layer:1,phase:"Entrée",title:"Couche 1 — Réception du signal",text:()=>"SW1 reçoit le signal sur un port et reconstitue les bits de la trame.",state:"bitsA"},
+      {layer:2,phase:"Remontée",title:"Couche 2 — Reconstruction de la trame",text:()=>"Les bits reçus en couche 1 sont assemblés pour retrouver la trame Ethernet complète AA:11 → BB:11.",state:"frameA"},
+      {layer:2,phase:"Décision",title:"Couche 2 — Lecture de la MAC",text:()=>"SW1 lit BB:11, consulte sa table MAC et choisit le port menant à R1.",state:"frameA"},
+      {layer:1,phase:"Sortie",title:"Couche 1 — Réémission",text:()=>"La même trame est réémise sous forme de signal. Le switch ne change aucune adresse.",state:"bitsA"}
+    ],
     lead:()=>"SW1 reçoit les bits, reconstitue la trame et travaille à la couche 2.",
     facts:()=>[["MAC lue","BB:11"],["Action","Transfert vers R1"]],
     process:()=>[
@@ -403,7 +433,16 @@ const STEPS = [
     blocks:f=>[["eth","AA:11 → BB:11","Ethernet"],["ip",".1.42 → .0.50","IP"],["tcp",f.sourcePort+" → "+f.port,"TCP"],["data",f.data,"Données"]]
   },
   {
-    node:2, layers:[3,2,1], link:1, kicker:"Étape 4 • Zoom routeur R1", title:"Entrée → décision L3 → nouvelle sortie L2", pdu:"Nouvelle trame Ethernet",
+    node:2, link:1, kicker:"Étape 4 • Zoom routeur R1", title:"Entrée → décision L3 → nouvelle sortie L2", pdu:"Nouvelle trame Ethernet",
+    stops:[
+      {layer:1,phase:"Entrée",title:"Couche 1 — Réception",text:()=>"L’interface LAN de R1 reçoit le signal envoyé par SW1 et reconstitue la trame.",state:"bitsA"},
+      {layer:2,phase:"Contrôle",title:"Couche 2 — Lecture de la trame entrante",text:()=>"R1 vérifie que BB:11 correspond à son interface LAN et contrôle l’intégrité de la trame avec le FCS.",state:"frameA"},
+      {layer:2,phase:"Décapsulation",title:"Couche 2 — Retrait d’Ethernet",text:()=>"R1 retire entièrement l’en-tête Ethernet AA:11 → BB:11. Il ne conserve que le paquet IP.",state:"packet"},
+      {layer:3,phase:"Routage",title:"Couche 3 — Décision IP",text:()=>"R1 lit 10.0.0.50, décrémente le TTL, recalcule le checksum IPv4 et choisit son interface WAN.",state:"packet"},
+      {layer:2,phase:"Ré-encapsulation",title:"Couche 2 — Nouvel Ethernet",text:()=>"R1 crée une nouvelle trame BB:22 → CC:11 pour le prochain saut R2.",state:"frameTransit"},
+      {layer:1,phase:"Sortie",title:"Couche 1 — Émission WAN",text:()=>"La nouvelle trame est convertie en signal et transmise sur le réseau de transit.",state:"bitsTransit"},
+      {node:3,layer:1,phase:"Transit",title:"Couche 1 — Traversée du lien",text:()=>"Le signal transporte les bits de la trame BB:22 → CC:11 jusqu’à l’interface de R2.",state:"bitsTransit"}
+    ],
     lead:()=>"R1 ne peut pas réutiliser la trame du LAN A sur le réseau de transit. Il conserve le paquet IP, mais remplace son enveloppe Ethernet.",
     facts:()=>[["Trame entrante","AA:11 → BB:11"],["Trame sortante","BB:22 → CC:11"]],
     process:()=>[
@@ -415,7 +454,15 @@ const STEPS = [
     blocks:f=>[["eth","AA:11 → BB:11","ancien Ethernet","removed"],["eth","BB:22 → CC:11","nouvel Ethernet","fresh"],["ip",".1.42 → .0.50","IP"],["tcp",f.sourcePort+" → "+f.port,"TCP"],["data",f.data,"Données"]]
   },
   {
-    node:4, layers:[3,2,1], link:2, kicker:"Étape 5 • Zoom routeur R2", title:"R2 répète le même mécanisme", pdu:"Nouvelle trame Ethernet",
+    node:4, link:2, kicker:"Étape 5 • Zoom routeur R2", title:"R2 répète le même mécanisme", pdu:"Nouvelle trame Ethernet",
+    stops:[
+      {layer:1,phase:"Entrée",title:"Couche 1 — Réception WAN",text:()=>"L’interface WAN de R2 reçoit le signal et reconstitue la trame du réseau de transit.",state:"bitsTransit"},
+      {layer:2,phase:"Contrôle",title:"Couche 2 — Lecture de la trame entrante",text:()=>"R2 vérifie que CC:11 est sa MAC et contrôle le FCS de la trame reçue.",state:"frameTransit"},
+      {layer:2,phase:"Décapsulation",title:"Couche 2 — Retrait d’Ethernet",text:()=>"R2 retire l’en-tête BB:22 → CC:11 reçu de R1 et expose le paquet IP.",state:"packet"},
+      {layer:3,phase:"Routage",title:"Couche 3 — Réseau directement connecté",text:()=>"10.0.0.50 appartient au LAN 10.0.0.0/24. R2 choisit son interface LAN et décrémente le TTL.",state:"packet"},
+      {layer:2,phase:"Ré-encapsulation",title:"Couche 2 — Nouvel Ethernet",text:()=>"R2 utilise ARP si nécessaire, puis crée CC:22 → DD:11 vers le serveur.",state:"frameB"},
+      {layer:1,phase:"Sortie",title:"Couche 1 — Émission LAN",text:()=>"La trame finale est convertie en signal et envoyée vers SW2.",state:"bitsB"}
+    ],
     lead:()=>"R2 reçoit la trame du transit. Le réseau 10.0.0.0/24 est directement connecté à son interface LAN.",
     facts:()=>[["Trame entrante","BB:22 → CC:11"],["Trame sortante","CC:22 → DD:11"]],
     process:()=>[
@@ -427,7 +474,13 @@ const STEPS = [
     blocks:f=>[["eth","BB:22 → CC:11","ancien Ethernet","removed"],["eth","CC:22 → DD:11","nouvel Ethernet","fresh"],["ip",".1.42 → .0.50","IP"],["tcp",f.sourcePort+" → "+f.port,"TCP"],["data",f.data,"Données"]]
   },
   {
-    node:5, layers:[2,1], link:2, kicker:"Étape 6 • LAN B", title:"SW2 livre la trame au serveur", pdu:"Trame Ethernet identique",
+    node:5, link:2, kicker:"Étape 6 • LAN B", title:"SW2 livre la trame au serveur", pdu:"Trame Ethernet identique",
+    stops:[
+      {layer:1,phase:"Entrée",title:"Couche 1 — Réception du signal",text:()=>"SW2 reçoit le signal de R2 et reconstitue la trame Ethernet.",state:"bitsB"},
+      {layer:2,phase:"Remontée",title:"Couche 2 — Reconstruction de la trame",text:()=>"Les bits sont regroupés pour retrouver la trame Ethernet CC:22 → DD:11.",state:"frameB"},
+      {layer:2,phase:"Décision",title:"Couche 2 — Lecture de DD:11",text:()=>"SW2 consulte sa table MAC et identifie le port sur lequel se trouve le serveur.",state:"frameB"},
+      {layer:1,phase:"Sortie",title:"Couche 1 — Transmission",text:()=>"SW2 réémet la trame sans modification vers le serveur.",state:"bitsB"}
+    ],
     lead:()=>"SW2 voit DD:11 comme MAC destination et transfère la trame sur le port du serveur.",
     facts:()=>[["MAC lue","DD:11"],["Action","Transfert vers serveur"]],
     process:()=>[
@@ -439,7 +492,16 @@ const STEPS = [
     blocks:f=>[["eth","CC:22 → DD:11","Ethernet"],["ip",".1.42 → .0.50","IP"],["tcp",f.sourcePort+" → "+f.port,"TCP"],["data",f.data,"Données"]]
   },
   {
-    node:6, layers:[1,2,3,4,5,6,7], link:2, kicker:"Étape 7 • Serveur", title:"Le serveur décapsule et livre au bon service", pdu:"Données livrées à l’application",
+    node:6, link:2, kicker:"Étape 7 • Serveur", title:"Le serveur décapsule et livre au bon service", pdu:"Données livrées à l’application",
+    stops:[
+      {layer:1,phase:"Réception",title:"Couche 1 — Signal vers bits",text:()=>"La carte réseau du serveur reçoit le signal et reconstitue la trame.",state:"bitsB"},
+      {layer:2,phase:"Décapsulation",title:"Couche 2 — Retrait d’Ethernet",text:()=>"Le serveur vérifie que DD:11 est sa MAC, contrôle le FCS, puis retire Ethernet.",state:"packet"},
+      {layer:3,phase:"Décapsulation",title:"Couche 3 — Retrait d’IP",text:()=>"Il vérifie que 10.0.0.50 est son IP, puis remet le segment à TCP.",state:"tcp"},
+      {layer:4,phase:"Démultiplexage",title:"Couche 4 — Port destination",text:f=>"TCP vérifie et réassemble le flux, puis utilise le port "+f.port+" pour identifier "+f.name+".",state:"data"},
+      {layer:5,phase:"Dialogue",title:"Couche 5 — Session",text:f=>"La session "+f.name+" rattache les données au bon dialogue applicatif.",state:"data"},
+      {layer:6,phase:"Interprétation",title:"Couche 6 — Présentation",text:f=>f.name==="SSH"?"Le contenu SSH est déchiffré et décodé.":"Les octets sont décodés pour retrouver la requête HTTP.",state:"data"},
+      {layer:7,phase:"Livraison",title:"Couche 7 — Application",text:f=>f.delivery+" Donnée reçue : "+f.data+".",state:"data"}
+    ],
     lead:f=>f.delivery,
     facts:f=>[["IP vérifiée","10.0.0.50"],["Port vérifié","TCP "+f.port+" ("+f.name+")"]],
     process:f=>[
@@ -454,35 +516,138 @@ const STEPS = [
 ];
 
 let currentStep=0;
+let currentStop=0;
 let currentProtocol="ssh";
+
+function pduFor(state,f){
+  const data=["data",f.data,"Données"];
+  const tcp=["tcp",f.sourcePort+" → "+f.port,"Segment"];
+  const ip=["ip",".1.42 → .0.50","Paquet"];
+  const frames={
+    frameA:["eth","AA:11 → BB:11","Trame"],
+    frameTransit:["eth","BB:22 → CC:11","Trame"],
+    frameB:["eth","CC:22 → DD:11","Trame"]
+  };
+  const frameState=state==="bitsA"?"frameA":state==="bitsTransit"?"frameTransit":state==="bitsB"?"frameB":state;
+  if(state==="data")return {name:"Données applicatives",parts:[data]};
+  if(state==="tcp")return {name:"Segment TCP",parts:[tcp,data]};
+  if(state==="ip"||state==="packet")return {name:"Paquet IP",parts:[ip,tcp,data]};
+  if(frames[frameState]){
+    const parts=[frames[frameState],ip,tcp,data];
+    if(state.startsWith("bits"))parts.unshift(["bits","011010…","Signal"]);
+    return {name:state.startsWith("bits")?"Bits transmis sur le support":"Trame Ethernet",parts};
+  }
+  return {name:"Données",parts:[data]};
+}
+
+function globalStopIndex(){
+  return STEPS.slice(0,currentStep).reduce((n,s)=>n+s.stops.length,0)+currentStop;
+}
+
+function totalStops(){
+  return STEPS.reduce((n,s)=>n+s.stops.length,0);
+}
+
+function buildTimeline(){
+  const deviceNames=["Client","Client","Switch SW1","Routeur R1","Routeur R2","Switch SW2","Serveur"];
+  const timeline=document.getElementById("timeline");
+  let number=0;
+  timeline.innerHTML="";
+  STEPS.forEach((stage,stageIndex)=>{
+    stage.stops.forEach((stop,stopIndex)=>{
+      number++;
+      const button=document.createElement("button");
+      const device=stop.node===3?"Lien WAN":deviceNames[stageIndex];
+      button.className="stage-btn";
+      button.dataset.step=stageIndex;
+      button.dataset.stop=stopIndex;
+      button.title=stop.title+" — "+stop.phase;
+      button.innerHTML=`<span class="num">${String(number).padStart(2,"0")} / ${totalStops()}</span><span class="stop-layer">L${stop.layer} · ${stop.phase}</span><span class="stop-device">${device}</span>`;
+      button.addEventListener("click",()=>{currentStep=stageIndex;currentStop=stopIndex;render()});
+      timeline.appendChild(button);
+    });
+  });
+}
+
+function centerActiveTimelineButton(){
+  const viewport=document.getElementById("timeline-viewport");
+  const active=document.querySelector(".stage-btn.active");
+  if(!viewport||!active)return;
+  viewport.scrollTo({left:active.offsetLeft-(viewport.clientWidth-active.offsetWidth)/2,behavior:"smooth"});
+}
+
+function alignPhysicalLayers(){
+  const network=document.querySelector(".network");
+  const firstL1=document.querySelector('.node[data-node="0"] .layer[data-layer="1"]');
+  if(!network||!firstL1)return;
+  const nr=network.getBoundingClientRect(),lr=firstL1.getBoundingClientRect();
+  const y=lr.top-nr.top+lr.height/2;
+  document.querySelectorAll(".zone-label").forEach(z=>z.style.top=(y+40)+"px");
+  network.style.height=(y+78)+"px";
+}
+
+function positionPacket(nodeIndex,layerNumber){
+  const network=document.querySelector(".network");
+  const target=document.querySelector(`.node[data-node="${nodeIndex}"] .layer[data-layer="${layerNumber}"]`);
+  const packet=document.getElementById("packet");
+  if(!network||!target)return;
+  const nr=network.getBoundingClientRect(),tr=target.getBoundingClientRect();
+  packet.style.left=(tr.left-nr.left+tr.width/2)+"px";
+  packet.style.top=(tr.top-nr.top+tr.height/2)+"px";
+}
 
 function render(){
   const f=FLOWS[currentProtocol],s=STEPS[currentStep];
-  document.getElementById("packet").style.setProperty("--packet-left",(5.5+s.node*14.82)+"%");
-  document.getElementById("packet").dataset.label="flux "+f.name;
+  const stop=s.stops[currentStop];
+  const activeNode=stop.node??s.node;
+  const activeLink=s.node===2?(currentStop<=3?0:1):s.node===4?(currentStop<=3?1:2):s.link;
+  const pdu=pduFor(stop.state,f);
+  const packet=document.getElementById("packet");
+  packet.dataset.label="L"+stop.layer+" • "+stop.phase;
+  packet.textContent=stop.state.startsWith("bits")?"01":"✉";
   document.querySelectorAll(".node").forEach((n,i)=>{
-    n.classList.toggle("active",i===s.node);
-    n.classList.toggle("passed",i<s.node);
+    n.classList.toggle("active",i===activeNode);
+    n.classList.toggle("passed",i<activeNode);
     n.querySelectorAll(".layer").forEach(layer=>{
-      layer.classList.toggle("active-layer",i===s.node&&s.layers.includes(Number(layer.dataset.layer)));
+      const layerNumber=Number(layer.dataset.layer);
+      layer.classList.toggle("active-layer",i===activeNode&&layerNumber===stop.layer);
+      layer.classList.toggle("processed-layer",i===activeNode&&layerNumber!==stop.layer&&s.stops.slice(0,currentStop).some(x=>(x.node??s.node)===activeNode&&x.layer===layerNumber));
     });
   });
-  document.querySelectorAll(".frame-card").forEach((c,i)=>c.classList.toggle("active",i===s.link));
+  document.querySelectorAll(".frame-card").forEach((c,i)=>c.classList.toggle("active",i===activeLink));
   document.querySelectorAll(".stage-btn").forEach((b,i)=>{
-    b.classList.toggle("active",i===currentStep); b.classList.toggle("done",i<currentStep);
-    b.setAttribute("aria-current",i===currentStep?"step":"false");
+    const current=globalStopIndex();
+    b.classList.toggle("active",i===current); b.classList.toggle("done",i<current);
+    b.setAttribute("aria-current",i===current?"step":"false");
   });
   document.getElementById("step-kicker").textContent=s.kicker;
   document.getElementById("step-title").textContent=s.title;
   document.getElementById("step-lead").textContent=s.lead(f);
-  document.getElementById("step-number").textContent=currentStep+1;
-  document.getElementById("previous").disabled=currentStep===0;
-  document.getElementById("next").disabled=currentStep===STEPS.length-1;
-  document.getElementById("pdu-name").textContent=s.pdu;
+  document.getElementById("layer-chip").textContent="L"+stop.layer;
+  document.getElementById("layer-phase").textContent=stop.phase;
+  document.getElementById("layer-title").textContent=stop.title;
+  document.getElementById("layer-text").textContent=stop.text(f);
+  document.getElementById("current-layer").textContent="Couche "+stop.layer;
+  document.getElementById("step-number").textContent=globalStopIndex()+1;
+  document.getElementById("step-total").textContent=totalStops();
+  document.getElementById("previous").disabled=globalStopIndex()===0;
+  document.getElementById("next").disabled=globalStopIndex()===totalStops()-1;
+  document.getElementById("pdu-name").textContent=pdu.name;
   document.getElementById("watch").innerHTML="<strong>À observer :</strong> "+s.watch;
   document.getElementById("flow-facts").innerHTML=s.facts(f).map(x=>`<div class="fact"><small>${x[0]}</small><strong>${x[1]}</strong></div>`).join("");
-  document.getElementById("process").innerHTML=s.process(f).map(x=>`<article class="process-card ${x[0]}"><span class="step-number">${x[1]}</span><h3>${x[2]}</h3><p>${x[3]}</p></article>`).join("");
-  document.getElementById("pdu-blocks").innerHTML=s.blocks(f).map(x=>`<div class="pdu-block b-${x[0]} ${x[3]||""}">${x[1]}<small>${x[2]}</small></div>`).join("");
+  document.getElementById("pdu-blocks").innerHTML=pdu.parts.map(x=>`<div class="pdu-block b-${x[0]}">${x[1]}<small>${x[2]}</small></div>`).join("");
+  requestAnimationFrame(()=>{alignPhysicalLayers();positionPacket(activeNode,stop.layer);centerActiveTimelineButton()});
+}
+
+function goDetailed(direction){
+  if(direction>0){
+    if(currentStop<STEPS[currentStep].stops.length-1)currentStop++;
+    else if(currentStep<STEPS.length-1){currentStep++;currentStop=0}
+  }else{
+    if(currentStop>0)currentStop--;
+    else if(currentStep>0){currentStep--;currentStop=STEPS[currentStep].stops.length-1}
+  }
+  render();
 }
 
 document.querySelectorAll(".protocol-btn").forEach(btn=>btn.addEventListener("click",()=>{
@@ -490,14 +655,17 @@ document.querySelectorAll(".protocol-btn").forEach(btn=>btn.addEventListener("cl
   document.querySelectorAll(".protocol-btn").forEach(b=>{const on=b===btn;b.classList.toggle("active",on);b.setAttribute("aria-pressed",on)});
   render();
 }));
-document.querySelectorAll(".stage-btn").forEach(btn=>btn.addEventListener("click",()=>{currentStep=Number(btn.dataset.step);render()}));
-document.getElementById("previous").addEventListener("click",()=>{currentStep=Math.max(0,currentStep-1);render()});
-document.getElementById("next").addEventListener("click",()=>{currentStep=Math.min(STEPS.length-1,currentStep+1);render()});
+buildTimeline();
+document.getElementById("timeline-left").addEventListener("click",()=>document.getElementById("timeline-viewport").scrollBy({left:-500,behavior:"smooth"}));
+document.getElementById("timeline-right").addEventListener("click",()=>document.getElementById("timeline-viewport").scrollBy({left:500,behavior:"smooth"}));
+document.getElementById("previous").addEventListener("click",()=>goDetailed(-1));
+document.getElementById("next").addEventListener("click",()=>goDetailed(1));
 document.addEventListener("keydown",e=>{
   if(["INPUT","TEXTAREA","BUTTON"].includes(document.activeElement.tagName))return;
-  if(e.key==="ArrowRight"){currentStep=Math.min(STEPS.length-1,currentStep+1);render()}
-  if(e.key==="ArrowLeft"){currentStep=Math.max(0,currentStep-1);render()}
+  if(e.key==="ArrowRight")goDetailed(1);
+  if(e.key==="ArrowLeft")goDetailed(-1);
 });
+window.addEventListener("resize",()=>{const s=STEPS[currentStep],stop=s.stops[currentStop];alignPhysicalLayers();positionPacket(stop.node??s.node,stop.layer)});
 render();
 </script>
 </body>

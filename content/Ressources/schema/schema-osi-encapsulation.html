@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="fr" data-view="expert">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OSI et NAT — suivre un flux SSH ou HTTP de bout en bout</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#07101f;--surface:#101b2e;--surface-2:#17243a;--surface-3:#20304a;
+  --border:#30415f;--text:#eef4ff;--muted:#a5b4cb;--blue:#60a5fa;--cyan:#22d3ee;
+  --green:#34d399;--amber:#fbbf24;--orange:#fb923c;--red:#fb7185;--violet:#a78bfa;
+  --app:#7c3aed;--tcp:#2563eb;--ip:#059669;--eth:#c76a12;--bits:#dc3545;
+  --radius:16px;--shadow:0 18px 48px rgba(0,0,0,.28);
+  --header-bg:rgba(7,16,31,.88);--note-bg:rgba(23,36,58,.72);--panel-bg:rgba(16,27,46,.94);
+  --inset-bg:#0b1628;
+  --device-bg:#0b1628;--router-bg:#10283a;--switch-bg:#24233d;--device-icon:#f4f8ff;
+  --ingress-text:#ffc28a;--decision-text:#8af0cb;--egress-text:#9ac9ff;
+  --lan-a-fill:rgba(34,211,238,.055);--lan-a-line:rgba(34,211,238,.42);
+  --wan-fill:rgba(167,139,250,.06);--wan-line:rgba(167,139,250,.46);
+  --lan-b-fill:rgba(52,211,153,.055);--lan-b-line:rgba(52,211,153,.42);
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f2f4fa;--surface:#ffffff;--surface-2:#eef1f8;--surface-3:#e2e7f3;
+  --border:#d5dbec;--text:#141b2c;--muted:#5b6785;
+  --header-bg:rgba(255,255,255,.9);--note-bg:#e7ecf9;--panel-bg:rgba(255,255,255,.96);
+  --inset-bg:#eef1f8;
+  --device-bg:#64748b;--router-bg:#5c7188;--switch-bg:#62677b;--device-icon:#ffffff;
+  --ingress-text:#b5540f;--decision-text:#0a7a56;--egress-text:#1d4ed8;
+  --lan-a-fill:rgba(8,145,178,.075);--lan-a-line:rgba(8,145,178,.48);
+  --wan-fill:rgba(109,40,217,.06);--wan-line:rgba(109,40,217,.4);
+  --lan-b-fill:rgba(5,150,105,.07);--lan-b-line:rgba(5,150,105,.44);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+  radial-gradient(circle at 15% -10%,rgba(37,99,235,.18),transparent 35rem),
+  radial-gradient(circle at 90% 10%,rgba(5,150,105,.11),transparent 28rem),
+  var(--bg);color:var(--text);font:16px/1.55 "Segoe UI",system-ui,sans-serif}
+button{font:inherit}
+.page-header{padding:.85rem clamp(1rem,2.4vw,2rem);border-bottom:1px solid var(--border);
+  background:var(--header-bg);backdrop-filter:blur(14px)}
+.header-inner{max-width:1540px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
+.eyebrow{margin:0 0 .35rem;color:var(--cyan);font-size:.76rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+h1{margin:0;font-size:clamp(1.3rem,2vw,1.85rem);line-height:1.12}
+.subtitle{margin:.25rem 0 0;color:var(--muted);font-size:.82rem}
+.header-controls{display:flex;align-items:center;justify-content:flex-end;gap:.6rem;flex-wrap:wrap}
+.theme-toggle{width:44px;height:44px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);
+  color:var(--text);font-size:1.2rem;cursor:pointer;display:grid;place-items:center;transition:.2s}
+.theme-toggle:hover{border-color:var(--cyan);color:var(--cyan)}
+.protocol-switch{display:flex;gap:.35rem;padding:.35rem;background:var(--surface-3);border:1px solid var(--border);border-radius:13px}
+.protocol-btn{min-width:100px;border:0;border-radius:9px;padding:.7rem .9rem;color:var(--muted);
+  background:transparent;font-weight:800;cursor:pointer;transition:.2s}
+.protocol-btn:hover{color:var(--text);background:var(--surface-2)}
+.protocol-btn.active{color:#06111f;background:var(--cyan);box-shadow:0 0 20px rgba(34,211,238,.22)}
+.protocol-btn small{display:block;font-size:.7rem;opacity:.75}
+
+.lesson{max-width:1700px;margin:auto;padding:.65rem clamp(.6rem,1.4vw,1.25rem) 1rem}
+.learning-note{margin-bottom:.55rem;color:var(--text);background:var(--note-bg);border:1px solid var(--border);border-radius:11px;overflow:hidden}
+.learning-note summary,.drawer-summary{display:flex;align-items:center;gap:.6rem;min-height:34px;padding:.35rem .75rem;cursor:pointer;list-style:none}
+.learning-note summary::-webkit-details-marker,.drawer-summary::-webkit-details-marker{display:none}
+.learning-note summary::before,.drawer-summary::before{content:"›";display:grid;place-items:center;width:18px;height:18px;
+  color:var(--cyan);font-size:1rem;font-weight:900;transition:transform .2s}
+.learning-note[open] summary::before,.technical-drawer[open]>.drawer-summary::before,.reference-drawer[open]>.drawer-summary::before{transform:rotate(90deg)}
+.learning-note summary strong{font-size:.78rem}.learning-note .icon{color:var(--amber)}
+.learning-note-content{padding:.25rem .75rem .6rem 2.95rem;color:var(--text);font-size:.78rem}
+.drawer-summary::after{content:"Afficher";margin-left:auto;color:var(--muted);font-size:.64rem;font-weight:800}
+details[open]>.drawer-summary::after{content:"Replier"}
+.workspace{display:grid;grid-template-columns:minmax(760px,2.25fr) minmax(320px,.72fr);gap:.65rem;align-items:start}
+.visual-panel,.explain-panel{background:var(--panel-bg);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.visual-panel{padding:.72rem;min-width:0}
+.explain-panel{position:sticky;top:.5rem;overflow:hidden}
+.panel-heading{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:.35rem}
+.panel-heading h2,.explain-head h2{font-size:1rem;margin:0}
+.direction{color:var(--muted);font-size:.78rem}
+.direction b{color:var(--green)}
+.fullscreen-btn{display:inline-flex;align-items:center;gap:.3rem;border:1px solid var(--border);border-radius:8px;padding:.38rem .6rem;background:var(--surface-2);color:var(--text);font-size:.68rem;font-weight:800;cursor:pointer}
+.fullscreen-btn:hover{border-color:var(--cyan);color:var(--cyan)}
+
+/* Réseau */
+.network-scroll{overflow-x:auto;padding:.5rem .2rem .2rem;scrollbar-color:var(--border) transparent}
+.network{position:relative;min-width:1040px;height:480px;padding:0 28px}
+.network-zone{position:absolute;top:-8px;bottom:0;z-index:0;pointer-events:none;border:1px solid transparent}
+.network-zone::after{content:"";position:absolute;inset:0;opacity:.42;
+  background:repeating-linear-gradient(135deg,transparent 0 18px,currentColor 18px 19px,transparent 19px 37px)}
+.network-zone-a{left:.5%;width:36.3%;color:var(--lan-a-line);background:var(--lan-a-fill);
+  border-color:var(--lan-a-line);border-right-width:2px;border-radius:18px 0 0 18px}
+.network-zone-wan{left:36.8%;width:26.4%;color:var(--wan-line);background:var(--wan-fill);
+  border-color:var(--wan-line);border-left:0;border-right-width:2px}
+.network-zone-b{left:63.2%;right:.5%;color:var(--lan-b-line);background:var(--lan-b-fill);
+  border-color:var(--lan-b-line);border-left:0;border-radius:0 18px 18px 0}
+.cable-canvas{position:absolute;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.nodes{position:relative;z-index:2;display:grid;grid-template-columns:1.2fr .8fr 1fr .8fr 1fr .8fr 1.2fr;align-items:start}
+.node{text-align:center;transition:.25s;opacity:.55}
+.node.active,.node.passed{opacity:1}.node.active{transform:translateY(-5px)}
+.node-icon{width:60px;height:60px;margin:auto;display:grid;place-items:center;border:2px solid var(--border);
+  position:relative;
+  border-radius:16px;background:var(--device-bg);color:var(--device-icon);font-size:1.85rem;
+  text-shadow:0 1px 3px rgba(0,0,0,.45);box-shadow:0 8px 18px rgba(0,0,0,.25);transition:.25s}
+.node.active .node-icon{border-color:var(--cyan);box-shadow:0 0 0 5px rgba(34,211,238,.1),0 0 24px rgba(34,211,238,.25)}
+.node.router .node-icon{border-radius:50%;background:var(--router-bg)}
+.node.switch .node-icon{width:52px;height:52px;margin-top:4px;margin-bottom:4px;border-radius:10px;background:var(--switch-bg)}
+.router-symbol{position:relative;width:44px;height:44px;color:var(--device-icon);font-size:1.22rem;font-weight:900}
+.router-symbol span{position:absolute;line-height:1}.router-symbol .ne{right:2px;top:0}.router-symbol .sw{left:2px;bottom:0}
+.router-symbol .nw{left:2px;top:0}.router-symbol .se{right:2px;bottom:0}
+.nic-port{position:absolute;top:50%;width:10px;height:14px;border:2px solid #cbd5e1;border-radius:3px;background:#162033;transform:translateY(-50%);box-shadow:0 0 0 2px rgba(34,211,238,.08)}
+.nic-port.in{left:-8px}.nic-port.out{right:-8px}.node.active .nic-port{border-color:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+.node-name{display:block;margin-top:.42rem;font-weight:800;font-size:.92rem;color:var(--text)}
+.node-role{height:30px;display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:.68rem;line-height:1.2}
+.node-address{display:block;height:52px;margin-top:.22rem;color:var(--text);font:600 .63rem/1.4 ui-monospace,Consolas,monospace}
+.node-address em{color:var(--muted);font-style:normal}
+.layer-stack{width:100px;height:195px;margin:.38rem auto 0;display:flex;flex-direction:column;justify-content:flex-end;gap:3px}
+.layer{min-height:23px;display:flex;align-items:center;gap:.3rem;padding:.18rem .3rem;border:1px solid rgba(255,255,255,.12);
+  border-radius:5px;color:rgba(255,255,255,.75);font-size:.66rem;font-weight:700;text-align:left;opacity:.5;transition:.25s}
+.layer b{width:14px;display:grid;place-items:center;border-radius:3px;background:rgba(0,0,0,.22);font-size:.62rem}
+.layer.l7,.layer.l6,.layer.l5{background:#4c1d95}.layer.l4{background:#1e40af}.layer.l3{background:#06624a}
+.layer.l2{background:#8a430b}.layer.l1{background:#991b1b}
+.node.active .layer{opacity:.32}
+.node .layer.active-layer{opacity:1;transform:scale(1.06);border-color:rgba(255,255,255,.65);
+  box-shadow:0 0 13px rgba(255,255,255,.18);color:#fff}
+.node .layer.processed-layer{opacity:.68}
+.node.passed .layer{opacity:.58}
+:root[data-theme="light"] .node{opacity:.74}
+:root[data-theme="light"] .node.active,:root[data-theme="light"] .node.passed{opacity:1}
+.layer-limit{margin:.35rem auto 0;color:var(--muted);font-size:.64rem;font-weight:700}
+.packet{--packet-left:5.5%;position:absolute;z-index:8;top:360px;left:var(--packet-left);
+  width:34px;height:34px;display:grid;place-items:center;border-radius:50%;background:var(--amber);
+  color:#171008;font-size:1rem;box-shadow:0 0 0 5px rgba(251,191,36,.18),0 0 24px rgba(251,191,36,.65);
+  transform:translate(-50%,-50%);transition:left .6s cubic-bezier(.2,.8,.2,1),top .45s cubic-bezier(.2,.8,.2,1)}
+.packet::after{content:attr(data-label);position:absolute;top:38px;left:50%;transform:translateX(-50%);
+  padding:.12rem .35rem;border-radius:5px;background:#07101f;white-space:nowrap;color:var(--amber);font-size:.61rem;font-weight:900}
+.zone-label{position:absolute;z-index:4;bottom:8px;padding:.24rem .62rem;border-radius:20px;
+  background:color-mix(in srgb,var(--surface) 92%,transparent);font-size:.68rem;font-weight:800;
+  box-shadow:0 4px 14px rgba(0,0,0,.14);backdrop-filter:blur(7px)}
+.zone-label::before{content:"";display:inline-block;width:7px;height:7px;margin-right:.38rem;border-radius:50%;background:currentColor}
+.zone-a{left:2%;color:var(--cyan);border:1px solid var(--lan-a-line)}
+.zone-wan{left:50%;color:var(--violet);border:1px solid var(--wan-line);transform:translateX(-50%)}
+.zone-b{right:2%;color:var(--green);border:1px solid var(--lan-b-line)}
+
+/* Tiroir des trames et du NAT */
+.technical-drawer{margin-top:.45rem;border:1px solid var(--border);border-radius:11px;background:var(--inset-bg);overflow:hidden}
+.drawer-summary{color:var(--text);font-size:.72rem;font-weight:850}
+.drawer-summary small{color:var(--muted);font-size:.62rem;font-weight:600}
+.technical-content{padding:0 .55rem .55rem}
+.link-frames{display:grid;grid-template-columns:repeat(3,1fr);gap:.55rem;margin-top:.15rem}
+.frame-card{min-width:0;padding:.7rem;border:1px solid var(--border);border-radius:12px;background:var(--inset-bg);transition:.25s}
+.frame-card.active{border-color:var(--amber);box-shadow:0 0 0 3px rgba(251,191,36,.08)}
+.frame-card h3{display:flex;justify-content:space-between;gap:.4rem;margin:0 0 .48rem;font-size:.78rem;color:var(--text)}
+.frame-card h3 span{color:var(--muted);font-weight:500}
+.mini-pdu{display:flex;min-width:0;overflow:hidden;border-radius:7px;font:700 .68rem ui-monospace,Consolas,monospace;transition:.25s}
+.mini-pdu span{padding:.42rem .28rem;text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;transition:.25s}
+.mini-eth{background:#7c3d0b;color:#ffddb3;flex:1.4}.mini-ip{background:#064e3b;color:#b7f7dd;flex:1}
+.mini-tcp{background:#1e3a8a;color:#d7e8ff;flex:.8}.mini-data{background:#4c1d95;color:#eadcff;flex:1}
+.mac-line{margin-top:.42rem;color:var(--text);font:600 .7rem/1.4 ui-monospace,Consolas,monospace}
+.mac-line b{color:var(--orange)}
+.tuple-line{display:flex;gap:.42rem;align-items:baseline;margin-top:.25rem;color:var(--text);font:600 .66rem/1.35 ui-monospace,Consolas,monospace}
+.tuple-line b{min-width:34px;color:var(--green);font-family:"Segoe UI",system-ui,sans-serif}
+.nat-overview{margin-top:.55rem;padding:.65rem;border-radius:12px;background:rgba(167,139,250,.09);border:1px solid rgba(167,139,250,.35)}
+.nat-overview-head{display:flex;justify-content:space-between;gap:.8rem;margin-bottom:.55rem;color:var(--text);font-size:.78rem}
+.nat-overview-head strong{color:var(--violet)}.nat-overview-head span{color:var(--muted);font-size:.7rem}
+.nat-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.nat-card{padding:.6rem .7rem;border:1px solid var(--border);border-radius:9px;background:var(--inset-bg)}
+.nat-card strong{display:block;color:var(--text);font-size:.72rem}.nat-card small{display:block;color:var(--muted);font-size:.63rem}
+.nat-map{margin-top:.28rem;color:var(--text);font:700 .68rem/1.45 ui-monospace,Consolas,monospace}
+.nat-map .before{color:var(--orange)}.nat-map .after{color:var(--green)}
+.nat-return{margin:.55rem 0 0;color:var(--muted);font-size:.68rem}
+.nat-return strong{color:var(--violet)}.nat-return code{color:var(--text);font-size:.67rem}
+
+/* Navigation */
+.journey-nav{display:grid;grid-template-columns:38px minmax(0,1fr) 38px;gap:.4rem;align-items:stretch;margin-top:1rem}
+.timeline-viewport{min-width:0;overflow-x:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;scroll-snap-type:x proximity}
+.timeline{display:flex;gap:.35rem;width:max-content;padding:0 .1rem .3rem}
+.timeline-arrow{border:1px solid var(--border);border-radius:9px;background:var(--surface-2);color:var(--text);
+  font-weight:900;cursor:pointer}.timeline-arrow:hover{border-color:var(--cyan);color:var(--cyan)}
+.stage-btn{position:relative;flex:0 0 126px;min-height:60px;padding:.42rem .38rem;border:1px solid var(--border);border-radius:9px;
+  color:var(--muted);background:var(--surface-2);font-size:.72rem;font-weight:700;cursor:pointer;transition:.2s;scroll-snap-align:center}
+.stage-btn:hover{color:var(--text);border-color:var(--blue)}.stage-btn.active{color:#07101f;background:var(--cyan);border-color:var(--cyan)}
+.stage-btn .num{display:block;font-size:.63rem;opacity:.75}.stage-btn .stop-layer{display:block;font-size:.85rem;font-weight:900}
+.stage-btn .stop-device{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.62rem;opacity:.85}
+.stage-btn.done:not(.active){color:var(--text);border-color:#3d5f80}
+.progress-bar{height:6px;border-radius:3px;background:var(--surface-2);overflow:hidden;margin-top:.9rem}
+.progress-fill{height:100%;width:0;background:var(--cyan);border-radius:3px;transition:width .3s ease}
+.controls{display:flex;align-items:center;justify-content:space-between;gap:.7rem;flex-wrap:wrap;margin-top:.75rem}
+.controls-nav{display:flex;align-items:center;gap:.5rem}
+.nav-btn{padding:.56rem .9rem;border:1px solid var(--border);border-radius:9px;background:var(--surface-2);
+  color:var(--text);font-weight:800;font-size:.78rem;cursor:pointer}.nav-btn:hover:not(:disabled){border-color:var(--cyan);color:var(--cyan)}
+.nav-btn:disabled{opacity:.35;cursor:not-allowed}.progress-text{color:var(--muted);font-size:.76rem}.progress-text b{color:var(--text)}
+.nav-btn#autoplay[aria-pressed="true"]{border-color:var(--cyan);color:var(--cyan)}
+
+/* Panneau explicatif */
+.explain-head{padding:.72rem .85rem;background:linear-gradient(120deg,#172b47,#111d31);border-bottom:1px solid var(--border)}
+.step-kicker{margin-bottom:.25rem;color:var(--cyan);font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.explain-head h2{font-size:1rem;line-height:1.25;color:#fff}
+.explain-body{padding:.72rem .85rem}
+.lead{margin:0 0 .6rem;color:var(--text);font-size:.8rem}
+.layer-focus{margin:0 0 .55rem;padding:.62rem .68rem;border:1px solid rgba(34,211,238,.4);border-radius:11px;
+  background:linear-gradient(120deg,rgba(8,145,178,.16),rgba(37,99,235,.1))}
+.layer-focus-top{display:flex;align-items:center;gap:.55rem;margin-bottom:.28rem}
+.layer-chip{min-width:2.2rem;padding:.22rem .4rem;border-radius:6px;background:var(--cyan);color:#06111f;
+  text-align:center;font-size:.7rem;font-weight:900}
+.layer-phase{color:var(--cyan);font-size:.67rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase}
+.layer-focus h3{margin:0 0 .18rem;font-size:.87rem;color:var(--text)}.layer-focus p{margin:0;color:var(--text);font-size:.78rem}
+.watch{margin:.5rem 0;padding:.55rem .65rem;border-left:4px solid var(--amber);background:rgba(251,191,36,.08);font-size:.72rem;color:var(--text)}
+.watch strong{color:var(--amber)}
+.flow-facts{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-bottom:.55rem}
+.fact{padding:.48rem .55rem;border:1px solid var(--border);border-radius:10px;background:var(--inset-bg)}
+.fact small{display:block;color:var(--muted);font-size:.66rem;text-transform:uppercase;letter-spacing:.07em}
+.fact strong{display:block;margin-top:.12rem;color:var(--text);font:700 .8rem ui-monospace,Consolas,monospace}
+.process{display:grid;gap:.55rem}
+.process-card{position:relative;padding:.72rem .75rem .72rem 2.8rem;border:1px solid var(--border);border-radius:11px;background:var(--surface-2)}
+.process-card .step-number{position:absolute;left:.65rem;top:.65rem;width:1.6rem;height:1.6rem;display:grid;place-items:center;
+  border-radius:50%;background:var(--surface-3);color:var(--cyan);font-weight:900;font-size:.75rem}
+.process-card h3{margin:0 0 .18rem;font-size:.82rem}.process-card p{margin:0;color:var(--text);font-size:.78rem}
+.process-card.ingress{border-left:4px solid var(--orange)}.process-card.decision{border-left:4px solid var(--green)}
+.process-card.egress{border-left:4px solid var(--blue)}
+.process-card.ingress h3{color:var(--ingress-text)}.process-card.decision h3{color:var(--decision-text)}.process-card.egress h3{color:var(--egress-text)}
+
+.pdu-now{margin-top:.55rem;padding:.58rem;border:1px solid var(--border);border-radius:11px;background:var(--inset-bg)}
+.pdu-now-title{display:flex;justify-content:space-between;gap:.7rem;margin-bottom:.55rem;color:var(--muted);font-size:.7rem}
+.pdu-now-title strong{color:var(--text)}.pdu-blocks{display:flex;min-width:0;overflow-x:auto;border-radius:8px}
+.pdu-block{min-width:72px;padding:.55rem .4rem;text-align:center;font:800 .66rem ui-monospace,Consolas,monospace}
+.pdu-block small{display:block;margin-top:.15rem;font:500 .56rem "Segoe UI",sans-serif;opacity:.8}
+.b-eth{background:#7c3d0b;color:#ffe0bd}.b-ip{background:#065f46;color:#ccfbeb}
+.b-tcp{background:#1e40af;color:#dbeafe}.b-data{background:#5b21b6;color:#ede9fe}.b-bits{background:#991b1b;color:#fee2e2}
+.removed{opacity:.26;text-decoration:line-through}.fresh{outline:2px solid var(--amber);outline-offset:-2px}
+
+.reference-drawer{margin-top:.55rem;border:1px solid var(--border);border-radius:11px;background:var(--panel-bg);overflow:hidden}
+.reference-content{padding:0 .7rem .7rem}
+.legend{display:flex;flex-wrap:wrap;gap:.55rem 1rem;margin-top:.35rem;color:var(--muted);font-size:.74rem}
+.legend span::before{content:"";display:inline-block;width:.65rem;height:.65rem;margin-right:.3rem;border-radius:2px;vertical-align:-.05rem;background:var(--c)}
+.teacher-summary{margin-top:.6rem;padding:.75rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--panel-bg)}
+.teacher-summary h2{margin:0 0 .65rem;font-size:.96rem;color:var(--text)}.summary-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.65rem}
+.summary-item{padding:.7rem;border-radius:10px;background:var(--inset-bg);border:1px solid var(--border);font-size:.78rem;color:var(--text)}
+.summary-item strong{display:block;margin-bottom:.18rem;color:var(--cyan);font-size:.8rem}
+
+/* Vue immersive du mode expert */
+.focus-callout,.focus-controls{display:none}
+.visual-panel.is-focus-mode{position:fixed;inset:0;z-index:1000;width:100vw;height:100vh;max-width:none;border:0;border-radius:0;padding:.7rem;background:var(--bg);overflow:hidden}
+.visual-panel.is-focus-mode .panel-heading{height:42px;margin:0;padding:0 .4rem}
+.visual-panel.is-focus-mode .fullscreen-btn{display:none}
+.visual-panel.is-focus-mode .link-frames,
+.visual-panel.is-focus-mode .nat-overview,
+.visual-panel.is-focus-mode .technical-drawer,
+.visual-panel.is-focus-mode .progress-bar,
+.visual-panel.is-focus-mode .journey-nav,
+.visual-panel.is-focus-mode > .controls{display:none!important}
+.visual-panel.is-focus-mode .network-scroll{height:calc(100vh - 54px);padding:1rem;display:flex;align-items:center;overflow:auto}
+.visual-panel.is-focus-mode .network{min-width:1200px;margin:auto}
+.visual-panel.is-focus-mode .focus-callout{display:block;position:absolute;z-index:20;width:min(320px,28vw);padding:.7rem .8rem;border:1px solid rgba(34,211,238,.55);border-radius:12px;background:color-mix(in srgb,var(--surface) 90%,transparent);box-shadow:0 16px 38px rgba(0,0,0,.3);backdrop-filter:blur(12px);pointer-events:none}
+.focus-callout .focus-badge{color:var(--cyan);font-size:.65rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
+.focus-callout h3{margin:.2rem 0;font-size:.9rem}.focus-callout p{margin:0;color:var(--text);font-size:.72rem;line-height:1.4}
+.focus-callout .focus-pdu{margin-top:.45rem;padding-top:.4rem;border-top:1px solid var(--border);color:var(--muted);font:700 .64rem ui-monospace,Consolas,monospace}
+.visual-panel.is-focus-mode .focus-controls{display:flex;position:fixed;z-index:30;left:50%;bottom:18px;transform:translateX(-50%);align-items:center;gap:.65rem;padding:.45rem;border:1px solid var(--border);border-radius:14px;background:color-mix(in srgb,var(--surface) 94%,transparent);box-shadow:0 12px 30px rgba(0,0,0,.3);backdrop-filter:blur(12px)}
+.focus-control-btn{border:1px solid var(--border);border-radius:9px;padding:.55rem .8rem;background:var(--surface-2);color:var(--text);font-weight:800;cursor:pointer}
+.focus-control-btn.next{min-width:140px;background:var(--cyan);color:#06111f;border-color:var(--cyan)}
+.focus-control-btn:disabled{opacity:.35}.focus-step{min-width:82px;text-align:center;color:var(--muted);font-size:.7rem}
+
+@media(max-width:1120px){
+  .workspace{grid-template-columns:1fr}.explain-panel{position:static}
+  .explain-body{display:grid;grid-template-columns:1fr 1fr;gap:.8rem 1rem}
+  .lead,.watch,.flow-facts{grid-column:1/-1}.pdu-now{margin-top:0}
+}
+@media(max-width:760px){
+  .header-inner{align-items:flex-start;flex-direction:column}.header-controls{width:100%}.protocol-switch{width:100%}.protocol-btn{flex:1}
+  .lesson{padding-inline:.6rem}.visual-panel{padding:.7rem}.link-frames{grid-template-columns:1fr}
+  .drawer-summary small{display:none}
+  .stage-btn{flex-basis:112px}.explain-body{display:block}.pdu-now{margin-top:.9rem}
+  .summary-grid{grid-template-columns:1fr 1fr}.nat-grid{grid-template-columns:1fr}
+}
+@media(min-width:1121px) and (max-height:850px){
+  .page-header{padding-block:.52rem}
+  .subtitle{display:none}
+  .lesson{padding-top:.42rem}
+  .learning-note{margin-bottom:.38rem}
+  :root[data-view="expert"] .node-icon{width:56px;height:56px}
+  :root[data-view="expert"] .node.switch .node-icon{width:48px;height:48px}
+  :root[data-view="expert"] .node-role{height:26px}
+  :root[data-view="expert"] .node-address{height:46px}
+  :root[data-view="expert"] .layer-stack{height:184px;margin-top:.28rem}
+  :root[data-view="expert"] .layer{min-height:22px;padding-block:.13rem}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="page-header">
+  <div class="header-inner">
+    <div>
+      <p class="eyebrow">Modèle OSI • Routage • NAT/PAT</p>
+      <h1>Suivre un flux réel de bout en bout</h1>
+      <p class="subtitle">Encapsulation, changements de trames et traductions d’adresses entre deux réseaux privés.</p>
+    </div>
+    <div class="header-controls">
+      <div class="protocol-switch" role="group" aria-label="Choisir le flux étudié">
+        <button class="protocol-btn active" data-protocol="ssh" aria-pressed="true">SSH<small>2222 public → 22 privé</small></button>
+        <button class="protocol-btn" data-protocol="http" aria-pressed="false">HTTP<small>8080 public → 80 privé</small></button>
+      </div>
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Basculer entre thème clair et sombre" title="Thème clair / sombre">☀</button>
+    </div>
+  </div>
+</header>
+
+<main class="lesson">
+  <details class="learning-note">
+    <summary><span class="icon">◆</span><strong>Objectif pédagogique</strong></summary>
+    <div class="learning-note-content">Suivre les couches OSI, puis observer exactement où le PAT modifie la source et où le DNAT modifie la destination.</div>
+  </details>
+
+  <div class="workspace">
+    <section class="visual-panel" aria-label="Trajet du flux">
+      <div class="panel-heading">
+        <h2>Trajet du client vers le serveur</h2>
+        <span class="direction">sens du flux <b>→</b></span>
+        <button class="fullscreen-btn" id="fullscreen-expert" type="button">⛶ Plein écran interactif</button>
+      </div>
+
+      <div class="network-scroll">
+        <div class="network">
+          <div class="network-zone network-zone-a" aria-hidden="true"></div>
+          <div class="network-zone network-zone-wan" aria-hidden="true"></div>
+          <div class="network-zone network-zone-b" aria-hidden="true"></div>
+          <canvas class="cable-canvas" id="cable-canvas" aria-hidden="true"></canvas>
+          <div class="packet" id="packet" data-label="flux SSH">✉</div>
+          <div class="nodes">
+            <div class="node client active" data-node="0">
+              <div class="node-icon">💻</div><span class="node-name">Client</span><span class="node-role">7 couches</span>
+              <span class="node-address"><em>IP</em> 192.168.1.42<br><em>MAC</em> AA:11</span>
+              <div class="layer-stack" aria-label="Couches OSI du client">
+                <span class="layer l7" data-layer="7"><b>7</b>Application</span>
+                <span class="layer l6" data-layer="6"><b>6</b>Présentation</span>
+                <span class="layer l5" data-layer="5"><b>5</b>Session</span>
+                <span class="layer l4" data-layer="4"><b>4</b>Transport</span>
+                <span class="layer l3" data-layer="3"><b>3</b>Réseau</span>
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
+            </div>
+            <div class="node switch" data-node="1">
+              <div class="node-icon">⇄</div><span class="node-name">SW1</span><span class="node-role">couches 1–2</span>
+              <span class="node-address">table MAC</span>
+              <div class="layer-stack" aria-label="Couches OSI du switch 1">
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
+              <div class="layer-limit">Ne monte pas à L3</div>
+            </div>
+            <div class="node router" data-node="2">
+              <div class="node-icon"><span class="router-symbol" aria-hidden="true"><span class="ne">↗</span><span class="sw">↙</span><span class="nw">↖</span><span class="se">↘</span></span></div><span class="node-name">R1</span><span class="node-role">routeur + PAT source</span>
+              <span class="node-address"><em>LAN</em> 192.168.1.1 / BB:11<br><em>WAN</em> 203.0.113.10 / BB:22</span>
+              <div class="layer-stack" aria-label="Couches OSI du routeur 1">
+                <span class="layer l3" data-layer="3"><b>3</b>Réseau / NAT</span>
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
+              <div class="layer-limit">PAT : IP source + port</div>
+            </div>
+            <div class="node router" data-node="3">
+              <div class="node-icon">🌐</div><span class="node-name">WAN</span><span class="node-role">plusieurs routeurs Internet</span>
+              <span class="node-address">réseau de transit</span>
+              <div class="layer-stack" aria-label="Couches du réseau de transit">
+                <span class="layer l3" data-layer="3"><b>3</b>Réseau / IP</span>
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
+              <div class="layer-limit">Sauts simplifiés</div>
+            </div>
+            <div class="node router" data-node="4">
+              <div class="node-icon"><span class="router-symbol" aria-hidden="true"><span class="ne">↗</span><span class="sw">↙</span><span class="nw">↖</span><span class="se">↘</span></span></div><span class="node-name">R2</span><span class="node-role">routeur + DNAT entrant</span>
+              <span class="node-address"><em>WAN</em> 198.51.100.20 / CC:11<br><em>LAN</em> 10.0.0.1 / CC:22</span>
+              <div class="layer-stack" aria-label="Couches OSI du routeur 2">
+                <span class="layer l3" data-layer="3"><b>3</b>Réseau / NAT</span>
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
+              <div class="layer-limit">DNAT : IP destination + port</div>
+            </div>
+            <div class="node switch" data-node="5">
+              <div class="node-icon">⇄</div><span class="node-name">SW2</span><span class="node-role">couches 1–2</span>
+              <span class="node-address">table MAC</span>
+              <div class="layer-stack" aria-label="Couches OSI du switch 2">
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
+              <div class="layer-limit">Ne monte pas à L3</div>
+            </div>
+            <div class="node server" data-node="6">
+              <div class="node-icon">▤</div><span class="node-name">Serveur</span><span class="node-role">7 couches</span>
+              <span class="node-address"><em>IP</em> 10.0.0.50<br><em>MAC</em> DD:11</span>
+              <div class="layer-stack" aria-label="Couches OSI du serveur">
+                <span class="layer l7" data-layer="7"><b>7</b>Application</span>
+                <span class="layer l6" data-layer="6"><b>6</b>Présentation</span>
+                <span class="layer l5" data-layer="5"><b>5</b>Session</span>
+                <span class="layer l4" data-layer="4"><b>4</b>Transport</span>
+                <span class="layer l3" data-layer="3"><b>3</b>Réseau</span>
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
+            </div>
+          </div>
+          <span class="zone-label zone-a">LAN A • 192.168.1.0/24</span>
+          <span class="zone-label zone-wan">Internet public • adresses d’exemple</span>
+          <span class="zone-label zone-b">LAN B • 10.0.0.0/24</span>
+          <div class="focus-callout" id="focus-callout">
+            <div class="focus-badge" id="focus-badge"></div>
+            <h3 id="focus-title"></h3>
+            <p id="focus-text"></p>
+            <div class="focus-pdu" id="focus-pdu"></div>
+          </div>
+        </div>
+      </div>
+
+      <details class="technical-drawer">
+        <summary class="drawer-summary">
+          <span>Détails des trames et traductions NAT</span>
+          <small>3 liens • PAT/SNAT • DNAT</small>
+        </summary>
+        <div class="technical-content">
+          <div class="link-frames" aria-label="Comparaison des trames sur chaque lien">
+            <article class="frame-card active" data-link="0">
+              <h3>Lien 1 • LAN A <span>Client → R1</span></h3>
+              <div class="mini-pdu"><span class="mini-eth">TRAME</span><span class="mini-ip">PAQUET</span><span class="mini-tcp">SEGMENT</span><span class="mini-data">DONNÉES</span></div>
+              <div class="mac-line"><b>MAC</b> AA:11 → BB:11</div>
+              <div class="tuple-line"><b>IP</b><span id="link0-ip"></span></div>
+              <div class="tuple-line"><b>TCP</b><span id="link0-tcp"></span></div>
+            </article>
+            <article class="frame-card" data-link="1">
+              <h3>Lien 2 • Internet <span>R1 → réseau public → R2</span></h3>
+              <div class="mini-pdu"><span class="mini-eth">NOUVELLE TRAME</span><span class="mini-ip">PAQUET</span><span class="mini-tcp">SEGMENT</span><span class="mini-data">DONNÉES</span></div>
+              <div class="mac-line"><b>MAC</b> change à chaque saut</div>
+              <div class="tuple-line"><b>IP</b><span id="link1-ip"></span></div>
+              <div class="tuple-line"><b>TCP</b><span id="link1-tcp"></span></div>
+            </article>
+            <article class="frame-card" data-link="2">
+              <h3>Lien 3 • LAN B <span>R2 → Serveur</span></h3>
+              <div class="mini-pdu"><span class="mini-eth">NOUVELLE TRAME</span><span class="mini-ip">PAQUET</span><span class="mini-tcp">SEGMENT</span><span class="mini-data">DONNÉES</span></div>
+              <div class="mac-line"><b>MAC</b> CC:22 → DD:11</div>
+              <div class="tuple-line"><b>IP</b><span id="link2-ip"></span></div>
+              <div class="tuple-line"><b>TCP</b><span id="link2-tcp"></span></div>
+            </article>
+          </div>
+
+          <div class="nat-overview">
+            <div class="nat-overview-head"><strong>Traductions NAT et état de session</strong><span>règles configurées, état créé au premier segment</span></div>
+            <div class="nat-grid">
+              <div class="nat-card pat-card">
+                <strong>R1 — PAT/SNAT source</strong><small>rend le client privé joignable dans la session</small>
+                <div class="nat-map"><span class="before" id="pat-before"></span><br>→ <span class="after" id="pat-after"></span></div>
+              </div>
+              <div class="nat-card dnat-card">
+                <strong>R2 — DNAT / redirection de port</strong><small>publie le service du serveur privé</small>
+                <div class="nat-map"><span class="before" id="dnat-before"></span><br>→ <span class="after" id="dnat-after"></span></div>
+              </div>
+            </div>
+            <p class="nat-return"><strong>Sens retour :</strong> R2 traduit la source <code id="return-r2"></code>, puis R1 traduit la destination <code id="return-r1"></code>.</p>
+          </div>
+        </div>
+      </details>
+
+      <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+      <div class="journey-nav">
+        <button class="timeline-arrow" id="timeline-left" aria-label="Faire défiler les étapes vers la gauche">‹</button>
+        <div class="timeline-viewport" id="timeline-viewport">
+          <nav class="timeline" id="timeline" aria-label="Les étapes détaillées du trajet"></nav>
+        </div>
+        <button class="timeline-arrow" id="timeline-right" aria-label="Faire défiler les étapes vers la droite">›</button>
+      </div>
+      <div class="controls">
+        <div class="controls-nav">
+          <button class="nav-btn" id="previous" disabled>← Précédent</button>
+          <button class="nav-btn" id="autoplay" type="button" aria-pressed="false">▶ Lecture auto</button>
+          <button class="nav-btn" id="next">Suivant →</button>
+        </div>
+        <span class="progress-text">Arrêt <b id="step-number">1</b> sur <span id="step-total">35</span> • <span id="current-layer">Couche 7</span></span>
+      </div>
+      <div class="focus-controls" id="focus-controls">
+        <button class="focus-control-btn" id="focus-exit" type="button">× Sortir</button>
+        <span class="focus-step" id="focus-step">1 / 35</span>
+        <button class="focus-control-btn next" id="focus-next" type="button">Suivant →</button>
+      </div>
+    </section>
+
+    <aside class="explain-panel" aria-live="polite">
+      <div class="explain-head">
+        <div class="step-kicker" id="step-kicker">Étape 1 • Client</div>
+        <h2 id="step-title">L’application crée les données</h2>
+      </div>
+      <div class="explain-body">
+        <p class="lead" id="step-lead"></p>
+        <div class="layer-focus" id="layer-focus">
+          <div class="layer-focus-top"><span class="layer-chip" id="layer-chip">L7</span><span class="layer-phase" id="layer-phase">Création</span></div>
+          <h3 id="layer-title"></h3>
+          <p id="layer-text"></p>
+        </div>
+        <div class="flow-facts" id="flow-facts"></div>
+        <div class="watch" id="watch"></div>
+        <div class="pdu-now">
+          <div class="pdu-now-title"><span>Contenu transporté à cette étape</span><strong id="pdu-name">Données</strong></div>
+          <div class="pdu-blocks" id="pdu-blocks"></div>
+        </div>
+      </div>
+    </aside>
+  </div>
+
+  <details class="reference-drawer">
+    <summary class="drawer-summary">
+      <span>Légende et synthèse formateur</span>
+      <small>couleurs • 5 idées essentielles</small>
+    </summary>
+    <div class="reference-content">
+      <div class="legend" aria-label="Légende des couleurs">
+        <span style="--c:var(--eth)">Trame Ethernet / couche 2</span>
+        <span style="--c:var(--ip)">Paquet IP / couche 3</span>
+        <span style="--c:var(--tcp)">Segment TCP / couche 4</span>
+        <span style="--c:var(--app)">Données applicatives</span>
+        <span style="--c:var(--violet)">NAT/PAT / modification IP et port</span>
+      </div>
+
+      <section class="teacher-summary">
+        <h2>Les cinq idées à faire retenir</h2>
+        <div class="summary-grid">
+          <div class="summary-item"><strong>Le switch transfère</strong>Il lit la MAC destination, mais ne remplace pas la trame.</div>
+          <div class="summary-item"><strong>Le routeur reconstruit L2</strong>Il retire l’en-tête Ethernet reçu et en crée un nouveau.</div>
+          <div class="summary-item"><strong>Les MAC sont locales</strong>Elles identifient l’émetteur et le prochain saut sur un lien.</div>
+          <div class="summary-item"><strong>Le NAT casse l’invariance IP</strong>R1 modifie la source ; R2 modifie la destination.</div>
+          <div class="summary-item"><strong>Le retour dépend de l’état NAT</strong>Les traductions inverses ramènent la réponse vers le bon client privé.</div>
+        </div>
+      </section>
+    </div>
+  </details>
+</main>
+
+<script>
+const FLOWS = {
+  ssh: {
+    name:"SSH", port:"22", publicPort:"2222", patPort:"40022", sourcePort:"51432", data:"message applicatif SSH", context:"session établie via 198.51.100.20:2222",
+    app:"Après la connexion et l’authentification, le client prépare un message de la session SSH interactive.",
+    delivery:"Le serveur remet les données au processus sshd qui écoute sur le port TCP 22."
+  },
+  http: {
+    name:"HTTP", port:"80", publicPort:"8080", patPort:"40080", sourcePort:"52118", data:"GET / HTTP/1.1", context:"connexion établie via 198.51.100.20:8080",
+    app:"Le navigateur construit une requête HTTP demandant la ressource « / » au serveur web.",
+    delivery:"Le serveur remet la requête au service web qui écoute sur le port TCP 80."
+  }
+};
+
+const STEPS = [
+  {
+    node:0, link:0, kicker:"Étape 1 • Client", title:"L’application crée les données", pdu:"Données applicatives",
+    stops:[
+      {layer:7,phase:"Création",title:"Couche 7 — Application",text:f=>f.name==="SSH"?"Le client SSH prépare les caractères ou les données échangés dans la session interactive.":"HTTP produit la requête applicative : "+f.data+".",state:"data"},
+      {layer:6,phase:"Préparation",title:"Couche 6 — Présentation",text:f=>f.name==="SSH"?"SSH chiffre et encode le contenu avant son transport.":"Le texte HTTP est encodé dans un format compréhensible par les deux applications.",state:"data"},
+      {layer:5,phase:"Dialogue",title:"Couche 5 — Session",text:f=>"La session "+f.name+" maintient le dialogue logique entre le client et le serveur.",state:"data"}
+    ],
+    lead:f=>f.app,
+    facts:f=>[["Protocole applicatif",f.name],["Donnée",f.data],["Contexte",f.context]],
+    watch:"Aucune adresse MAC ou IP n’est encore ajoutée : ce sont seulement des données applicatives."
+  },
+  {
+    node:0, link:0, kicker:"Étape 2 • Client", title:"Le client encapsule de L4 vers L2", pdu:"Trame Ethernet",
+    stops:[
+      {layer:4,phase:"Encapsulation",title:"Couche 4 — Segment TCP",text:f=>"TCP ajoute les ports "+f.sourcePort+" → "+f.publicPort+". Le client contacte le port publié par R2, pas encore le port privé du serveur.",state:"tcpInitial"},
+      {layer:3,phase:"Encapsulation",title:"Couche 3 — Paquet IP",text:()=>"IP ajoute 192.168.1.42 → 198.51.100.20. La destination est l’adresse publique de R2 ; le client ne connaît pas 10.0.0.50.",state:"ipInitial"},
+      {layer:2,phase:"Encapsulation",title:"Couche 2 — Trame Ethernet",text:()=>"Ethernet ajoute AA:11 → BB:11 et un contrôle FCS. BB:11 est la passerelle R1.",state:"frameA"},
+      {layer:1,phase:"Émission",title:"Couche 1 — Bits et signal",text:()=>"La trame devient une suite de bits portée par un signal électrique, lumineux ou radio.",state:"bitsA"}
+    ],
+    lead:f=>"Chaque couche ajoute les informations nécessaires devant les données "+f.name+".",
+    facts:f=>[["Ports TCP",f.sourcePort+" → "+f.publicPort],["Adresses IP","192.168.1.42 → 198.51.100.20"]],
+    watch:"Le client connaît uniquement l’adresse publique 198.51.100.20. L’adresse privée 10.0.0.50 est masquée derrière R2."
+  },
+  {
+    node:1, link:0, kicker:"Étape 3 • LAN A", title:"Le switch transfère la trame sans la modifier", pdu:"Trame Ethernet identique",
+    stops:[
+      {layer:1,phase:"Entrée",title:"Couche 1 — Réception du signal",text:()=>"SW1 reçoit le signal sur un port et reconstitue les bits de la trame.",state:"bitsA"},
+      {layer:2,phase:"Remontée",title:"Couche 2 — Reconstruction de la trame",text:()=>"Les bits reçus en couche 1 sont assemblés pour retrouver la trame Ethernet complète AA:11 → BB:11.",state:"frameA"},
+      {layer:2,phase:"Décision",title:"Couche 2 — Lecture de la MAC",text:()=>"SW1 lit BB:11, consulte sa table MAC et choisit le port menant à R1.",state:"frameA"},
+      {layer:1,phase:"Sortie",title:"Couche 1 — Réémission",text:()=>"La même trame est réémise sous forme de signal. Le switch ne change aucune adresse.",state:"bitsA"}
+    ],
+    lead:()=>"SW1 reçoit les bits, reconstitue la trame et travaille à la couche 2.",
+    facts:()=>[["MAC lue","BB:11"],["Action","Transfert vers R1"]],
+    watch:"Un switch ne retire pas l’en-tête Ethernet pour en fabriquer un autre. Le routeur, lui, le fera."
+  },
+  {
+    node:2, link:1, kicker:"Étape 4 • Zoom routeur R1", title:"Entrée → décision L3 → nouvelle sortie L2", pdu:"Nouvelle trame Ethernet",
+    stops:[
+      {layer:1,phase:"Entrée",title:"Couche 1 — Réception",text:()=>"L’interface LAN de R1 reçoit le signal envoyé par SW1 et reconstitue la trame.",state:"bitsA"},
+      {layer:2,phase:"Contrôle et décapsulation",title:"Couche 2 — Vérification puis retrait d’Ethernet",text:()=>"R1 vérifie BB:11 et le FCS, puis retire la trame AA:11 → BB:11. Le paquet privé 192.168.1.42 → 198.51.100.20 apparaît.",state:"packetInitial",anchor:"left"},
+      {layer:3,phase:"Routage",title:"Couche 3 — Décision vers Internet",text:()=>"R1 lit la destination publique 198.51.100.20, décrémente le TTL et choisit son interface WAN.",state:"packetInitial"},
+      {layer:3,phase:"PAT / SNAT",title:"Couche 3 + inspection L4 — Traduction de la source",text:f=>"R1 remplace 192.168.1.42:"+f.sourcePort+" par 203.0.113.10:"+f.patPort+". Il crée cette correspondance au premier SYN, puis la réutilise pour la session. Les checksums IP et TCP sont recalculés.",state:"packetPat"},
+      {layer:2,phase:"Ré-encapsulation",title:"Couche 2 — Nouvelle trame vers le FAI",text:()=>"R1 crée une trame BB:22 → GW-FAI. La MAC destination est celle du prochain routeur, pas celle de R2 à l’autre bout d’Internet.",state:"frameWanOut",anchor:"right"},
+      {layer:1,phase:"Sortie",title:"Couche 1 — Émission WAN",text:()=>"La trame du premier saut est convertie en signal et envoyée vers le routeur du fournisseur d’accès.",state:"bitsWanOut"},
+      {node:3,layer:1,phase:"Transit",title:"Internet — Sauts intermédiaires",text:f=>"Chaque routeur Internet retire et recrée sa trame locale. Le couple public reste 203.0.113.10:"+f.patPort+" → 198.51.100.20:"+f.publicPort+".",state:"bitsWan"}
+    ],
+    lead:()=>"R1 est la frontière du LAN A : il route le paquet, traduit sa source privée avec PAT, puis crée une trame pour son prochain saut Internet.",
+    facts:f=>[["Avant PAT","192.168.1.42:"+f.sourcePort],["Après PAT","203.0.113.10:"+f.patPort],["Destination","198.51.100.20:"+f.publicPort]],
+    watch:"À partir de R1, le serveur ne pourra plus voir 192.168.1.42 : il verra l’adresse publique 203.0.113.10 et le port attribué par PAT."
+  },
+  {
+    node:4, link:2, kicker:"Étape 5 • Zoom routeur R2", title:"R2 répète le même mécanisme", pdu:"Nouvelle trame Ethernet",
+    stops:[
+      {layer:1,phase:"Entrée",title:"Couche 1 — Réception WAN",text:()=>"L’interface WAN de R2 reçoit la trame du dernier routeur Internet. Sa source MAC est celle de ce dernier saut, pas celle de R1.",state:"bitsWanIn"},
+      {layer:2,phase:"Contrôle et décapsulation",title:"Couche 2 — Retrait de la dernière trame WAN",text:()=>"R2 vérifie CC:11 et le FCS, puis retire la trame GW-R2 → CC:11. Le paquet public destiné à 198.51.100.20 apparaît.",state:"packetPat",anchor:"left"},
+      {layer:3,phase:"DNAT",title:"Couche 3 + inspection L4 — Redirection vers le serveur",text:f=>"La règle de publication transforme 198.51.100.20:"+f.publicPort+" en 10.0.0.50:"+f.port+". R2 recalcule les checksums IP et TCP.",state:"packetDnat"},
+      {layer:3,phase:"Routage",title:"Couche 3 — Réseau privé directement connecté",text:()=>"Après DNAT, la destination 10.0.0.50 appartient au LAN 10.0.0.0/24. R2 choisit son interface LAN.",state:"packetDnat"},
+      {layer:2,phase:"Ré-encapsulation",title:"Couche 2 — Nouvel Ethernet",text:()=>"R2 utilise ARP si nécessaire, puis crée CC:22 → DD:11 vers le serveur.",state:"frameB",anchor:"right"},
+      {layer:1,phase:"Sortie",title:"Couche 1 — Émission LAN",text:()=>"La trame finale est convertie en signal et envoyée vers SW2.",state:"bitsB"}
+    ],
+    lead:()=>"R2 possède l’adresse publique du service. Sa règle DNAT révèle la véritable destination privée, puis le routage peut envoyer le paquet sur le LAN B.",
+    facts:f=>[["Avant DNAT","198.51.100.20:"+f.publicPort],["Après DNAT","10.0.0.50:"+f.port],["Source vue","203.0.113.10:"+f.patPort]],
+    watch:"R2 ne peut router vers 10.0.0.50 qu’après la traduction DNAT. La MAC DD:11 est ensuite résolue par ARP pour construire la trame du LAN B."
+  },
+  {
+    node:5, link:2, kicker:"Étape 6 • LAN B", title:"SW2 livre la trame au serveur", pdu:"Trame Ethernet identique",
+    stops:[
+      {layer:1,phase:"Entrée",title:"Couche 1 — Réception du signal",text:()=>"SW2 reçoit le signal de R2 et reconstitue la trame Ethernet.",state:"bitsB"},
+      {layer:2,phase:"Remontée",title:"Couche 2 — Reconstruction de la trame",text:()=>"Les bits sont regroupés pour retrouver la trame Ethernet CC:22 → DD:11.",state:"frameB"},
+      {layer:2,phase:"Décision",title:"Couche 2 — Lecture de DD:11",text:()=>"SW2 consulte sa table MAC et identifie le port sur lequel se trouve le serveur.",state:"frameB"},
+      {layer:1,phase:"Sortie",title:"Couche 1 — Transmission",text:()=>"SW2 réémet la trame sans modification vers le serveur.",state:"bitsB"}
+    ],
+    lead:()=>"SW2 voit DD:11 comme MAC destination et transfère la trame sur le port du serveur.",
+    facts:()=>[["MAC lue","DD:11"],["Action","Transfert vers serveur"]],
+    watch:"SW2 ne connaît ni l’adresse publique ni la règle DNAT : il ne voit que la trame locale CC:22 → DD:11."
+  },
+  {
+    node:6, link:2, kicker:"Étape 7 • Serveur", title:"Le serveur décapsule et livre au bon service", pdu:"Données livrées à l’application",
+    stops:[
+      {layer:1,phase:"Réception",title:"Couche 1 — Signal vers bits",text:()=>"La carte réseau du serveur reçoit le signal et reconstitue la trame.",state:"bitsB"},
+      {layer:2,phase:"Décapsulation",title:"Couche 2 — Retrait d’Ethernet",text:()=>"Le serveur vérifie DD:11 et le FCS, puis retire la trame. Il découvre un paquet provenant de l’adresse publique de R1.",state:"packetDnat"},
+      {layer:3,phase:"Décapsulation",title:"Couche 3 — Retrait d’IP",text:()=>"Il vérifie que la destination traduite 10.0.0.50 correspond à son IP, puis remet le segment à TCP.",state:"tcpDnat"},
+      {layer:4,phase:"Démultiplexage",title:"Couche 4 — Port privé du service",text:f=>"TCP utilise le port destination "+f.port+" après la redirection DNAT. Le port public "+f.publicPort+" n’existe pas sur le serveur.",state:"data"},
+      {layer:5,phase:"Dialogue",title:"Couche 5 — Session",text:f=>"La session "+f.name+" rattache les données au bon dialogue applicatif.",state:"data"},
+      {layer:6,phase:"Interprétation",title:"Couche 6 — Présentation",text:f=>f.name==="SSH"?"Le contenu SSH est déchiffré et décodé.":"Les octets sont décodés pour retrouver la requête HTTP.",state:"data"},
+      {layer:7,phase:"Livraison",title:"Couche 7 — Application",text:f=>f.delivery+" Donnée reçue : "+f.data+".",state:"data"}
+    ],
+    lead:f=>f.delivery,
+    facts:f=>[["Source observée","203.0.113.10:"+f.patPort],["Destination privée","10.0.0.50:"+f.port],["Service","TCP "+f.port+" ("+f.name+")"]],
+    watch:"Le serveur ignore l’adresse privée du client : après PAT, la source qu’il observe est 203.0.113.10."
+  }
+];
+
+let currentStep=0;
+let currentStop=0;
+let currentProtocol="ssh";
+let renderedActiveLink=0;
+let cableAnimationId=null;
+
+function pduFor(state,f){
+  const data=["data",f.data,"Données"];
+  const tuples={
+    initial:{ip:"192.168.1.42 → 198.51.100.20",tcp:f.sourcePort+" → "+f.publicPort},
+    pat:{ip:"203.0.113.10 → 198.51.100.20",tcp:f.patPort+" → "+f.publicPort},
+    dnat:{ip:"203.0.113.10 → 10.0.0.50",tcp:f.patPort+" → "+f.port}
+  };
+  const frames={
+    frameA:["eth","AA:11 → BB:11","Trame"],
+    frameWanOut:["eth","BB:22 → GW-FAI","Trame"],
+    frameWan:["eth","MAC du saut courant","Trame"],
+    frameWanIn:["eth","GW-R2 → CC:11","Trame"],
+    frameB:["eth","CC:22 → DD:11","Trame"]
+  };
+  const config={
+    frameA:["initial","frameA"],bitsA:["initial","frameA"],
+    frameWanOut:["pat","frameWanOut"],bitsWanOut:["pat","frameWanOut"],
+    bitsWan:["pat","frameWan"],bitsWanIn:["pat","frameWanIn"],frameWanIn:["pat","frameWanIn"],
+    frameB:["dnat","frameB"],bitsB:["dnat","frameB"]
+  };
+  const makePacket=kind=>[
+    ["ip",tuples[kind].ip,"Paquet"],
+    ["tcp",tuples[kind].tcp,"Segment"],
+    data
+  ];
+  if(state==="data")return {name:"Données applicatives",parts:[data]};
+  if(state==="tcpInitial")return {name:"Segment TCP vers le port public",parts:[["tcp",tuples.initial.tcp,"Segment"],data]};
+  if(state==="tcpDnat")return {name:"Segment TCP après DNAT",parts:[["tcp",tuples.dnat.tcp,"Segment"],data]};
+  if(state==="ipInitial"||state==="packetInitial")return {name:"Paquet avant NAT",parts:makePacket("initial")};
+  if(state==="packetPat")return {name:"Paquet après PAT source",parts:makePacket("pat")};
+  if(state==="packetDnat")return {name:"Paquet après DNAT destination",parts:makePacket("dnat")};
+  if(config[state]){
+    const [kind,frameName]=config[state];
+    const parts=[frames[frameName],...makePacket(kind)];
+    if(state.startsWith("bits"))parts.unshift(["bits","011010…","Signal"]);
+    return {name:state.startsWith("bits")?"Bits transmis sur le support":"Trame Ethernet",parts};
+  }
+  return {name:"Données",parts:[data]};
+}
+
+function globalStopIndex(){
+  return STEPS.slice(0,currentStep).reduce((n,s)=>n+s.stops.length,0)+currentStop;
+}
+
+function totalStops(){
+  return STEPS.reduce((n,s)=>n+s.stops.length,0);
+}
+
+function buildNetworkPorts(){
+  document.querySelectorAll(".node .node-icon").forEach((icon,index)=>{
+    if(index>0){const input=document.createElement("span");input.className="nic-port in";input.setAttribute("aria-hidden","true");icon.appendChild(input)}
+    if(index<6){const output=document.createElement("span");output.className="nic-port out";output.setAttribute("aria-hidden","true");icon.appendChild(output)}
+  });
+}
+
+function drawNetworkCables(time=0){
+  const canvas=document.getElementById("cable-canvas"),network=document.querySelector(".network");
+  if(!canvas||!network)return;
+  const dpr=window.devicePixelRatio||1,rect=network.getBoundingClientRect();
+  canvas.width=Math.max(1,Math.round(rect.width*dpr));canvas.height=Math.max(1,Math.round(rect.height*dpr));
+  canvas.style.width=rect.width+"px";canvas.style.height=rect.height+"px";
+  const ctx=canvas.getContext("2d");ctx.scale(dpr,dpr);ctx.lineCap="round";
+  const networkRect=network.getBoundingClientRect(),nodes=[...document.querySelectorAll(".node")];
+  const linkMap=[0,0,1,1,2,2];
+  for(let i=0;i<nodes.length-1;i++){
+    const a=nodes[i].querySelector(".nic-port.out").getBoundingClientRect();
+    const b=nodes[i+1].querySelector(".nic-port.in").getBoundingClientRect();
+    const x1=a.left-networkRect.left+a.width/2,y1=a.top-networkRect.top+a.height/2;
+    const x2=b.left-networkRect.left+b.width/2,y2=b.top-networkRect.top+b.height/2;
+    const active=linkMap[i]===renderedActiveLink;
+    ctx.beginPath();ctx.moveTo(x1,y1);ctx.bezierCurveTo(x1+(x2-x1)*.35,y1+16,x1+(x2-x1)*.65,y2+16,x2,y2);
+    ctx.strokeStyle=active?"#22d3ee":"#64748b";ctx.lineWidth=active?4:2;ctx.globalAlpha=active?1:.42;
+    ctx.setLineDash(active?[11,8]:[]);ctx.lineDashOffset=active?-(time/35):0;ctx.stroke();
+  }
+  ctx.globalAlpha=1;ctx.setLineDash([]);
+}
+
+function animateCables(){
+  cancelAnimationFrame(cableAnimationId);
+  const reduced=window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const loop=time=>{
+    drawNetworkCables(time);
+    if(document.querySelector(".visual-panel").classList.contains("is-focus-mode")&&!reduced)cableAnimationId=requestAnimationFrame(loop);
+  };
+  cableAnimationId=requestAnimationFrame(loop);
+}
+
+function renderNatDetails(f){
+  const values={
+    "link0-ip":"192.168.1.42 → 198.51.100.20",
+    "link0-tcp":f.sourcePort+" → "+f.publicPort,
+    "link1-ip":"203.0.113.10 → 198.51.100.20",
+    "link1-tcp":f.patPort+" → "+f.publicPort,
+    "link2-ip":"203.0.113.10 → 10.0.0.50",
+    "link2-tcp":f.patPort+" → "+f.port,
+    "pat-before":"192.168.1.42:"+f.sourcePort,
+    "pat-after":"203.0.113.10:"+f.patPort,
+    "dnat-before":"198.51.100.20:"+f.publicPort,
+    "dnat-after":"10.0.0.50:"+f.port,
+    "return-r2":"10.0.0.50:"+f.port+" → 198.51.100.20:"+f.publicPort,
+    "return-r1":"203.0.113.10:"+f.patPort+" → 192.168.1.42:"+f.sourcePort
+  };
+  Object.entries(values).forEach(([id,value])=>document.getElementById(id).textContent=value);
+}
+
+function buildTimeline(){
+  const deviceNames=["Client","Client","Switch SW1","Routeur R1","Routeur R2","Switch SW2","Serveur"];
+  const timeline=document.getElementById("timeline");
+  let number=0;
+  timeline.innerHTML="";
+  STEPS.forEach((stage,stageIndex)=>{
+    stage.stops.forEach((stop,stopIndex)=>{
+      number++;
+      const button=document.createElement("button");
+      const device=stop.node===3?"Lien WAN":deviceNames[stageIndex];
+      button.className="stage-btn";
+      button.dataset.step=stageIndex;
+      button.dataset.stop=stopIndex;
+      button.title=stop.title+" — "+stop.phase;
+      button.innerHTML=`<span class="num">${String(number).padStart(2,"0")} / ${totalStops()}</span><span class="stop-layer">L${stop.layer} · ${stop.phase}</span><span class="stop-device">${device}</span>`;
+      button.addEventListener("click",()=>{stopAutoplay();currentStep=stageIndex;currentStop=stopIndex;render()});
+      timeline.appendChild(button);
+    });
+  });
+}
+
+function centerActiveTimelineButton(){
+  const viewport=document.getElementById("timeline-viewport");
+  const active=document.querySelector(".stage-btn.active");
+  if(!viewport||!active)return;
+  viewport.scrollTo({left:active.offsetLeft-(viewport.clientWidth-active.offsetWidth)/2,behavior:"smooth"});
+}
+
+function alignPhysicalLayers(){
+  const network=document.querySelector(".network");
+  const firstL1=document.querySelector('.node[data-node="0"] .layer[data-layer="1"]');
+  if(!network||!firstL1)return;
+  const nr=network.getBoundingClientRect(),lr=firstL1.getBoundingClientRect();
+  const y=lr.top-nr.top+lr.height/2;
+  network.style.height=(y+86)+"px";
+}
+
+function packetAnchorFor(s,idx){
+  const stop=s.stops[idx];
+  if(stop.anchor)return stop.anchor;
+  const node=stop.node??s.node;
+  const layer=stop.layer;
+  let start=idx,end=idx;
+  while(start>0){
+    const p=s.stops[start-1];
+    if((p.node??s.node)===node&&p.layer===layer)start--;else break;
+  }
+  while(end<s.stops.length-1){
+    const n=s.stops[end+1];
+    if((n.node??s.node)===node&&n.layer===layer)end++;else break;
+  }
+  if(start!==end)return idx===start?"left":idx===end?"right":"center";
+  if(/Entrée|Réception/.test(stop.phase))return "left";
+  if(/Sortie|Émission/.test(stop.phase))return "right";
+  return "center";
+}
+
+function positionPacket(nodeIndex,layerNumber,anchor){
+  const network=document.querySelector(".network");
+  const target=document.querySelector(`.node[data-node="${nodeIndex}"] .layer[data-layer="${layerNumber}"]`);
+  const packet=document.getElementById("packet");
+  if(!network||!target)return;
+  const nr=network.getBoundingClientRect(),tr=target.getBoundingClientRect();
+  const xRatio=anchor==="left"?.18:anchor==="right"?.82:.5;
+  packet.style.left=(tr.left-nr.left+tr.width*xRatio)+"px";
+  packet.style.top=(tr.top-nr.top+tr.height/2)+"px";
+}
+
+function positionFocusCallout(nodeIndex,layerNumber){
+  const panel=document.querySelector(".visual-panel"),callout=document.getElementById("focus-callout");
+  if(!panel.classList.contains("is-focus-mode")||!callout)return;
+  const network=document.querySelector(".network"),target=document.querySelector(`.node[data-node="${nodeIndex}"] .layer[data-layer="${layerNumber}"]`);
+  if(!network||!target)return;
+  const nr=network.getBoundingClientRect(),tr=target.getBoundingClientRect();
+  const width=callout.offsetWidth||300,height=callout.offsetHeight||130;
+  let x=nodeIndex<=2?tr.right-nr.left+22:tr.left-nr.left-width-22;
+  if(nodeIndex===3)x=tr.left-nr.left+tr.width/2-width/2;
+  let y=tr.top-nr.top-height/2;
+  x=Math.max(10,Math.min(nr.width-width-10,x));y=Math.max(86,Math.min(nr.height-height-70,y));
+  callout.style.left=x+"px";callout.style.top=y+"px";
+}
+
+function scrollActiveNodeIntoView(){
+  const scrollBox=document.querySelector(".network-scroll");
+  const active=document.querySelector(".node.active");
+  if(!scrollBox||!active)return;
+  const boxRect=scrollBox.getBoundingClientRect(),nodeRect=active.getBoundingClientRect();
+  const target=scrollBox.scrollLeft+(nodeRect.left-boxRect.left)-(boxRect.width-nodeRect.width)/2;
+  scrollBox.scrollTo({left:target,behavior:"smooth"});
+}
+
+function render(){
+  const f=FLOWS[currentProtocol],s=STEPS[currentStep];
+  const stop=s.stops[currentStop];
+  const activeNode=stop.node??s.node;
+  const activeLink=s.node===2?(currentStop<=2?0:1):s.node===4?(currentStop<=3?1:2):s.link;
+  const pdu=pduFor(stop.state,f);
+  const packet=document.getElementById("packet");
+  renderedActiveLink=activeLink;
+  const natKind=/PAT/.test(stop.phase)?"pat":/DNAT/.test(stop.phase)?"dnat":"none";
+  document.documentElement.setAttribute("data-nat-focus",natKind==="none"?"false":"true");
+  document.documentElement.setAttribute("data-nat-kind",natKind);
+  packet.dataset.label="L"+stop.layer+" • "+stop.phase;
+  packet.textContent=stop.state.startsWith("bits")?"01":"✉";
+  document.querySelectorAll(".node").forEach((n,i)=>{
+    n.classList.toggle("active",i===activeNode);
+    n.classList.toggle("passed",i<activeNode);
+    n.querySelectorAll(".layer").forEach(layer=>{
+      const layerNumber=Number(layer.dataset.layer);
+      layer.classList.toggle("active-layer",i===activeNode&&layerNumber===stop.layer);
+      layer.classList.toggle("processed-layer",i===activeNode&&layerNumber!==stop.layer&&s.stops.slice(0,currentStop).some(x=>(x.node??s.node)===activeNode&&x.layer===layerNumber));
+    });
+  });
+  document.querySelectorAll(".frame-card").forEach((c,i)=>c.classList.toggle("active",i===activeLink));
+  document.querySelectorAll(".stage-btn").forEach((b,i)=>{
+    const current=globalStopIndex();
+    b.classList.toggle("active",i===current); b.classList.toggle("done",i<current);
+    b.setAttribute("aria-current",i===current?"step":"false");
+  });
+  document.getElementById("step-kicker").textContent=s.kicker;
+  document.getElementById("step-title").textContent=s.title;
+  document.getElementById("step-lead").textContent=s.lead(f);
+  document.getElementById("layer-chip").textContent="L"+stop.layer;
+  document.getElementById("layer-phase").textContent=stop.phase;
+  document.getElementById("layer-title").textContent=stop.title;
+  document.getElementById("layer-text").textContent=stop.text(f);
+  document.getElementById("current-layer").textContent="Couche "+stop.layer;
+  document.getElementById("step-number").textContent=globalStopIndex()+1;
+  document.getElementById("step-total").textContent=totalStops();
+  document.getElementById("previous").disabled=globalStopIndex()===0;
+  document.getElementById("next").disabled=globalStopIndex()===totalStops()-1;
+  document.getElementById("pdu-name").textContent=pdu.name;
+  document.getElementById("watch").innerHTML="<strong>À observer :</strong> "+s.watch;
+  document.getElementById("flow-facts").innerHTML=s.facts(f).map(x=>`<div class="fact"><small>${x[0]}</small><strong>${x[1]}</strong></div>`).join("");
+  document.getElementById("pdu-blocks").innerHTML=pdu.parts.map(x=>`<div class="pdu-block b-${x[0]}">${x[1]}<small>${x[2]}</small></div>`).join("");
+  document.getElementById("focus-badge").textContent="L"+stop.layer+" • "+stop.phase;
+  document.getElementById("focus-title").textContent=stop.title;
+  document.getElementById("focus-text").textContent=stop.text(f);
+  document.getElementById("focus-pdu").textContent=pdu.parts.filter(x=>x[0]!=="bits").map(x=>x[2]+" : "+x[1]).join("  •  ");
+  document.getElementById("focus-step").textContent=(globalStopIndex()+1)+" / "+totalStops();
+  document.getElementById("focus-next").disabled=globalStopIndex()===totalStops()-1;
+  renderNatDetails(f);
+  document.getElementById("progress-fill").style.width=((globalStopIndex()+1)/totalStops()*100)+"%";
+  requestAnimationFrame(()=>{alignPhysicalLayers();positionPacket(activeNode,stop.layer,packetAnchorFor(s,currentStop));positionFocusCallout(activeNode,stop.layer);drawNetworkCables(performance.now());centerActiveTimelineButton();scrollActiveNodeIntoView()});
+}
+
+function goDetailed(direction){
+  if(direction>0){
+    if(currentStop<STEPS[currentStep].stops.length-1)currentStop++;
+    else if(currentStep<STEPS.length-1){currentStep++;currentStop=0}
+  }else{
+    if(currentStop>0)currentStop--;
+    else if(currentStep>0){currentStep--;currentStop=STEPS[currentStep].stops.length-1}
+  }
+  render();
+}
+
+// ─── LECTURE AUTOMATIQUE ────────────────────────────────────────────────────
+let autoplayTimer=null;
+function stopAutoplay(){
+  if(autoplayTimer){clearInterval(autoplayTimer);autoplayTimer=null}
+  const btn=document.getElementById("autoplay");
+  if(!btn)return;
+  btn.textContent="▶ Lecture auto";
+  btn.setAttribute("aria-pressed","false");
+}
+function startAutoplay(){
+  const btn=document.getElementById("autoplay");
+  btn.textContent="⏸ Pause";
+  btn.setAttribute("aria-pressed","true");
+  autoplayTimer=setInterval(()=>{
+    if(globalStopIndex()>=totalStops()-1){stopAutoplay();return}
+    goDetailed(1);
+  },2200);
+}
+
+// ─── VUE IMMERSIVE ──────────────────────────────────────────────────────────
+async function enterFocusMode(){
+  stopAutoplay();
+  const panel=document.querySelector(".visual-panel");
+  panel.classList.add("is-focus-mode");
+  try{if(panel.requestFullscreen)await panel.requestFullscreen()}catch(e){}
+  render();animateCables();
+}
+async function exitFocusMode(){
+  const panel=document.querySelector(".visual-panel");
+  if(document.fullscreenElement){try{await document.exitFullscreen()}catch(e){}}
+  panel.classList.remove("is-focus-mode");
+  cancelAnimationFrame(cableAnimationId);
+  render();
+}
+document.addEventListener("fullscreenchange",()=>{
+  if(!document.fullscreenElement){
+    document.querySelector(".visual-panel").classList.remove("is-focus-mode");
+    cancelAnimationFrame(cableAnimationId);render();
+  }
+});
+
+// ─── THÈME CLAIR / SOMBRE ───────────────────────────────────────────────────
+const THEME_KEY="osi-schema-theme";
+function applyTheme(theme){
+  document.documentElement.setAttribute("data-theme",theme);
+  const btn=document.getElementById("theme-toggle");
+  btn.textContent=theme==="light"?"🌙":"☀";
+  btn.title=theme==="light"?"Passer en thème sombre":"Passer en thème clair";
+}
+applyTheme(localStorage.getItem(THEME_KEY)||"dark");
+document.getElementById("theme-toggle").addEventListener("click",()=>{
+  const next=document.documentElement.getAttribute("data-theme")==="light"?"dark":"light";
+  localStorage.setItem(THEME_KEY,next);
+  applyTheme(next);
+});
+
+document.querySelectorAll(".protocol-btn").forEach(btn=>btn.addEventListener("click",()=>{
+  currentProtocol=btn.dataset.protocol;
+  document.querySelectorAll(".protocol-btn").forEach(b=>{const on=b===btn;b.classList.toggle("active",on);b.setAttribute("aria-pressed",on)});
+  render();
+}));
+buildNetworkPorts();
+buildTimeline();
+document.getElementById("fullscreen-expert").addEventListener("click",enterFocusMode);
+document.getElementById("focus-exit").addEventListener("click",exitFocusMode);
+document.getElementById("focus-next").addEventListener("click",()=>goDetailed(1));
+document.getElementById("timeline-left").addEventListener("click",()=>document.getElementById("timeline-viewport").scrollBy({left:-500,behavior:"smooth"}));
+document.getElementById("timeline-right").addEventListener("click",()=>document.getElementById("timeline-viewport").scrollBy({left:500,behavior:"smooth"}));
+document.getElementById("previous").addEventListener("click",()=>{stopAutoplay();goDetailed(-1)});
+document.getElementById("next").addEventListener("click",()=>{stopAutoplay();goDetailed(1)});
+document.getElementById("autoplay").addEventListener("click",()=>{autoplayTimer?stopAutoplay():startAutoplay()});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape"&&document.querySelector(".visual-panel").classList.contains("is-focus-mode")){exitFocusMode();return}
+  if(["INPUT","TEXTAREA","BUTTON"].includes(document.activeElement.tagName))return;
+  if(e.key==="ArrowRight"){stopAutoplay();goDetailed(1)}
+  if(e.key==="ArrowLeft"){stopAutoplay();goDetailed(-1)}
+  if(e.key===" "&&document.querySelector(".visual-panel").classList.contains("is-focus-mode")){e.preventDefault();goDetailed(1)}
+});
+window.addEventListener("resize",()=>{const s=STEPS[currentStep],stop=s.stops[currentStop];alignPhysicalLayers();positionPacket(stop.node??s.node,stop.layer,packetAnchorFor(s,currentStop));positionFocusCallout(stop.node??s.node,stop.layer);drawNetworkCables(performance.now())});
+render();
+</script>
+</body>
+</html>
