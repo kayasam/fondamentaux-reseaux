@@ -1,4 +1,5 @@
 @use "./variables.scss" as *;
+@use "./network.scss";
 
 @media all and ($desktop) {
   .page > #quartz-body > .sidebar {
@@ -6,6 +7,12 @@
   }
 }
 
+body[data-slug="index"] .article-title,
+body[data-slug="index"] .content-meta,
+body[data-slug="index"] .note-properties,
+body[data-slug="index"] article .markdown-preview-view > h1:first-child,
+body[data-slug$="/index"] .note-properties,
+body[data-slug$="/index"] .content-meta,
 body[data-slug$="/index"] article .markdown-preview-view > h1:first-child {
   display: none;
 }
@@ -71,7 +78,11 @@ article.revision-index .markdown-preview-view > h1:first-of-type {
   border-radius: 1rem;
   color: var(--dark);
   background:
-    radial-gradient(circle at 95% 0, color-mix(in srgb, var(--secondary) 20%, transparent), transparent 16rem),
+    radial-gradient(
+      circle at 95% 0,
+      color-mix(in srgb, var(--secondary) 20%, transparent),
+      transparent 16rem
+    ),
     color-mix(in srgb, var(--secondary) 8%, var(--light));
   box-shadow: 0 0.65rem 1.8rem rgb(0 0 0 / 8%);
 }
