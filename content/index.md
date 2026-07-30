@@ -105,7 +105,7 @@ description: Support de formation consacré aux fondamentaux des réseaux inform
   <div class="obsidian-download__icon" aria-hidden="true">⬇</div>
   <div class="obsidian-download__content">
     <strong>Emporter toute la formation</strong>
-    <span>Cours, travaux pratiques et illustrations — prêts à ouvrir dans Obsidian.</span>
+    <span>Cours Markdown, exercices, HTML interactifs et illustrations — sans les fichiers techniques de Quartz.</span>
   </div>
   <a class="obsidian-download__button" href="./fondamentaux-reseaux-obsidian.zip" download>Télécharger le ZIP</a>
 </div>

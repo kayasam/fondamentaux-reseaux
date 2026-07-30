@@ -5,14 +5,8 @@ title: 02. Couche liaison
 # Couche 2 : la couche liaison
 
 > [!TIP] Ressources du chapitre
-> - <a href="https://kayasam.github.io/fondamentaux-reseaux/02-couche-liaison/02-couche-liaison-interactif.html" target="_blank">Ouvrir le cours interactif</a>
-> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison.md" download>Télécharger ce cours en Markdown</a>
-> - [[02-couche-liaison/tp/01-hub-switch-duplex|01 - Hub, switch et duplex]]
-> - [[02-couche-liaison/tp/02-vlan-segmentation|02 - VLAN et segmentation (débutant)]]
-> - [[02-couche-liaison/tp/03-vlan-access-trunk|03 - VLAN : ports access et trunk]]
-> - [[02-couche-liaison/tp/04-vlan-trunk-stp|04 - VLAN, trunk et STP (avancé)]]
-> - [[02-couche-liaison/tp/05-lacp|05 - Agrégation de liens LACP]]
-> - [[02-couche-liaison/tp/06-lldp|06 - Découverte des voisins avec LLDP]]
+> - <a class="chapter-resource chapter-resource--download" href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison.md" download>Télécharger le cours en Markdown</a>
+> - [[02-couche-liaison/tp/index|Exercices pratiques]]
 > - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 
 > [!NOTE] Objectifs

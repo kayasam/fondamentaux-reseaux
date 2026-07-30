@@ -106,7 +106,24 @@ jobs:
           cp content/Ressources/index-protocoles-et-notions* download/Fondamentaux-Reseaux/Ressources/
           cp content/Ressources/cisco-packet-tracer-commandes.md download/Fondamentaux-Reseaux/Ressources/
           cd download
-          zip -qr ../public/fondamentaux-reseaux-obsidian.zip Fondamentaux-Reseaux
+          archive="../public/fondamentaux-reseaux-obsidian.zip"
+          zip -qr "$archive" Fondamentaux-Reseaux
+
+          markdown_count="$(unzip -Z1 "$archive" | grep -cE '\.md$' || true)"
+          html_count="$(unzip -Z1 "$archive" | grep -cE '\.html$' || true)"
+          quartz_count="$(unzip -Z1 "$archive" | grep -cE '(^|/)(public|quartz|\.quartz)/' || true)"
+
+          if [ "$markdown_count" -eq 0 ] || [ "$html_count" -eq 0 ]; then
+            echo "Archive incomplète : Markdown=$markdown_count, HTML=$html_count"
+            exit 1
+          fi
+
+          if [ "$quartz_count" -gt 0 ]; then
+            echo "L'archive contient des fichiers techniques générés par Quartz."
+            exit 1
+          fi
+
+          echo "Archive vérifiée : $markdown_count fichiers Markdown et $html_count fichiers HTML pédagogiques."
 
       - name: Upload website
         uses: actions/upload-pages-artifact@v3

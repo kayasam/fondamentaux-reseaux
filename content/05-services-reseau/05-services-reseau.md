@@ -5,11 +5,8 @@ title: 05. Couches hautes et services
 # Couches hautes : les services réseau
 
 > [!TIP] Ressources du chapitre
-> - <a href="https://kayasam.github.io/fondamentaux-reseaux/05-services-reseau/05-services-reseau-interactif.html" target="_blank">Ouvrir le cours interactif</a>
-> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/05-services-reseau.md" download>Télécharger ce cours en Markdown</a>
-> - [[05-services-reseau/tp/01-debutant|TP débutant]]
-> - [[05-services-reseau/tp/02-avance|TP avancé]]
-> - [[05-services-reseau/tp/04-dhcp-dns-packet-tracer|TP Packet Tracer : DHCP et DNS]]
+> - <a class="chapter-resource chapter-resource--download" href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/05-services-reseau.md" download>Télécharger le cours en Markdown</a>
+> - [[05-services-reseau/tp/index|Exercices pratiques]]
 > - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 
 Les couches précédentes permettent de transmettre des données jusqu'au bon programme. La couche application définit maintenant **ce que les programmes se disent** et comment ils rendent un service à l'utilisateur.

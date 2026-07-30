@@ -5,12 +5,10 @@ title: 00. Introduction aux réseaux
 # Chapitre 0 : introduction aux réseaux
 
 > [!TIP] Ressources du chapitre
-> - <a href="https://kayasam.github.io/fondamentaux-reseaux/00-introduction-reseaux/00-introduction-reseaux-interactif.html" target="_blank">Ouvrir le cours interactif</a>
-> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/00-introduction-reseaux.md" download>Télécharger ce cours en Markdown</a>
-> - <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/schema/schema-osi-encapsulation.html" target="_blank">Explorer le schéma OSI interactif</a>
-> - <a href="https://kayasam.github.io/fondamentaux-reseaux/00-introduction-reseaux/nat-traduction-adresses.html" target="_blank">Explorer le schéma NAT interactif</a>
-> - [[00-introduction-reseaux/tp/01-debutant|TP débutant]]
-> - [[00-introduction-reseaux/tp/02-avance|TP avancé]]
+> - <a class="chapter-resource chapter-resource--download" href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/00-introduction-reseaux.md" download>Télécharger le cours en Markdown</a>
+> - [[00-introduction-reseaux/tp/index|Exercices pratiques]]
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/schema/schema-osi-encapsulation.html" target="_blank">Schéma OSI animé</a>
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/00-introduction-reseaux/nat-traduction-adresses.html" target="_blank">Schéma NAT animé</a>
 
 > [!NOTE] Objectifs
 > À la fin de ce chapitre, vous saurez identifier les éléments d'un réseau, distinguer LAN et WAN, comparer les principales architectures et topologies, replacer un protocole dans le modèle OSI et expliquer l'encapsulation d'un message.

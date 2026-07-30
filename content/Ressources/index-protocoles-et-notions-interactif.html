@@ -666,13 +666,13 @@
     "use strict";
 
     const chapterInfo = {
-      "0": { title: "Introduction aux réseaux", href: "../00-introduction-reseaux/00-introduction-reseaux-interactif.html" },
-      "1": { title: "Couche physique", href: "../01-couche-physique/01-couche-physique-interactif.html" },
-      "2": { title: "Couche liaison", href: "../02-couche-liaison/02-couche-liaison-interactif.html" },
-      "3": { title: "Couche réseau", href: "../03-couche-reseau/03-couche-reseau-interactif.html" },
-      "4": { title: "Couche transport", href: "../04-couche-transport/04-couche-transport-interactif.html" },
-      "5": { title: "Couche applicative", href: "../05-services-reseau/05-services-reseau-interactif.html" },
-      "6": { title: "Sécurité et accès réseau", href: "../06-securite-et-acces/06-securite-et-acces-interactif.html" }
+      "0": { title: "Introduction aux réseaux", href: "../00-introduction-reseaux/" },
+      "1": { title: "Couche physique", href: "../01-couche-physique/" },
+      "2": { title: "Couche liaison", href: "../02-couche-liaison/" },
+      "3": { title: "Couche réseau", href: "../03-couche-reseau/" },
+      "4": { title: "Couche transport", href: "../04-couche-transport/" },
+      "5": { title: "Couches hautes et services", href: "../05-services-reseau/" },
+      "6": { title: "Sécurité réseau", href: "../06-securite-et-acces/" }
     };
 
     const layerLabels = {
@@ -873,7 +873,14 @@
       activeFilter: document.querySelector("#activeFilter")
     };
 
-    let favorites = new Set(JSON.parse(localStorage.getItem("reseaux-index-favoris") || "[]"));
+    let savedFavorites = [];
+    try {
+      const parsedFavorites = JSON.parse(localStorage.getItem("reseaux-index-favoris") || "[]");
+      savedFavorites = Array.isArray(parsedFavorites) ? parsedFavorites : [];
+    } catch {
+      localStorage.removeItem("reseaux-index-favoris");
+    }
+    let favorites = new Set(savedFavorites);
     let visibleEntries = [...entries];
     let currentQuiz = null;
 

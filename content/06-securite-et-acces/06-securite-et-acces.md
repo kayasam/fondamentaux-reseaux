@@ -5,12 +5,9 @@ title: 06. Sécurité réseau
 # Sécurité réseau et contrôle des accès
 
 > [!TIP] Ressources du chapitre
-> - <a href="https://kayasam.github.io/fondamentaux-reseaux/06-securite-et-acces/06-securite-et-acces-interactif.html" target="_blank">Ouvrir le cours interactif</a>
-> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/06-securite-et-acces.md" download>Télécharger ce cours en Markdown</a>
-> - [[06-securite-et-acces/tp/01-debutant|TP débutant]]
-> - [[06-securite-et-acces/tp/02-avance|TP avancé]]
+> - <a class="chapter-resource chapter-resource--download" href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/06-securite-et-acces.md" download>Télécharger le cours en Markdown</a>
+> - [[06-securite-et-acces/tp/index|Exercices pratiques]]
 > - [[06-securite-et-acces/note-nat|Note complémentaire sur le NAT]]
-> - [[06-securite-et-acces/tp/04-route-par-defaut-nat-pat|TP Packet Tracer : route par défaut et NAT/PAT]]
 > - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 
 Un réseau fonctionnel n'est pas automatiquement un réseau sûr. Chaque service accessible crée une possibilité d'usage légitime, mais aussi une **surface d'attaque**.
