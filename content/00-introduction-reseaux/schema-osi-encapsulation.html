@@ -48,7 +48,7 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
 
 /* Réseau */
 .network-scroll{overflow-x:auto;padding:1rem .25rem .4rem;scrollbar-color:var(--border) transparent}
-.network{position:relative;min-width:850px;height:246px;padding:0 28px}
+.network{position:relative;min-width:1040px;height:480px;padding:0 28px}
 .backbone{position:absolute;left:7%;right:7%;top:118px;height:5px;border-radius:9px;
   background:linear-gradient(90deg,#4f81bd 0 28%,#f59e0b 28% 70%,#4f81bd 70% 100%);
   box-shadow:0 0 14px rgba(96,165,250,.22)}
@@ -63,15 +63,26 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
 .node.switch .node-icon{width:58px;height:58px;margin-top:5px;border-radius:10px;background:#24233d}
 .node-name{display:block;margin-top:.42rem;font-weight:800;font-size:.85rem}
 .node-role{display:block;color:var(--muted);font-size:.67rem}
-.node-address{display:block;margin-top:.32rem;color:#c7d7ed;font:600 .63rem/1.45 ui-monospace,Consolas,monospace}
+.node-address{display:block;min-height:40px;margin-top:.32rem;color:#c7d7ed;font:600 .63rem/1.45 ui-monospace,Consolas,monospace}
 .node-address em{color:var(--muted);font-style:normal}
+.layer-stack{width:104px;margin:.55rem auto 0;display:flex;flex-direction:column;gap:3px}
+.layer{min-height:25px;display:flex;align-items:center;gap:.3rem;padding:.22rem .32rem;border:1px solid rgba(255,255,255,.12);
+  border-radius:5px;color:rgba(255,255,255,.55);font-size:.57rem;font-weight:700;text-align:left;opacity:.35;transition:.25s}
+.layer b{width:14px;display:grid;place-items:center;border-radius:3px;background:rgba(0,0,0,.22);font-size:.55rem}
+.layer.l7,.layer.l6,.layer.l5{background:#4c1d95}.layer.l4{background:#1e40af}.layer.l3{background:#06624a}
+.layer.l2{background:#8a430b}.layer.l1{background:#991b1b}
+.node.active .layer{opacity:.18}
+.node .layer.active-layer{opacity:1;transform:scale(1.06);border-color:rgba(255,255,255,.65);
+  box-shadow:0 0 13px rgba(255,255,255,.18);color:#fff}
+.node.passed .layer{opacity:.48}
+.layer-limit{margin:.35rem auto 0;color:var(--muted);font-size:.57rem;font-weight:700}
 .packet{--packet-left:5.5%;position:absolute;z-index:5;top:99px;left:var(--packet-left);
   width:42px;height:42px;display:grid;place-items:center;border-radius:50%;background:var(--amber);
   color:#171008;font-size:1.2rem;box-shadow:0 0 0 5px rgba(251,191,36,.18),0 0 24px rgba(251,191,36,.65);
   transform:translateX(-50%);transition:left .65s cubic-bezier(.2,.8,.2,1)}
 .packet::after{content:attr(data-label);position:absolute;top:46px;left:50%;transform:translateX(-50%);
   white-space:nowrap;color:var(--amber);font-size:.67rem;font-weight:800}
-.zone-label{position:absolute;top:214px;padding:.2rem .55rem;border-radius:20px;color:var(--muted);
+.zone-label{position:absolute;top:447px;padding:.2rem .55rem;border-radius:20px;color:var(--muted);
   background:#0b1628;border:1px solid var(--border);font-size:.64rem;font-weight:700}
 .zone-a{left:9%}.zone-wan{left:45%}.zone-b{right:9%}
 
@@ -190,30 +201,74 @@ h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
             <div class="node client active" data-node="0">
               <div class="node-icon">💻</div><span class="node-name">Client</span><span class="node-role">7 couches</span>
               <span class="node-address"><em>IP</em> 192.168.1.42<br><em>MAC</em> AA:11</span>
+              <div class="layer-stack" aria-label="Couches OSI du client">
+                <span class="layer l7" data-layer="7"><b>7</b>Application</span>
+                <span class="layer l6" data-layer="6"><b>6</b>Présentation</span>
+                <span class="layer l5" data-layer="5"><b>5</b>Session</span>
+                <span class="layer l4" data-layer="4"><b>4</b>Transport</span>
+                <span class="layer l3" data-layer="3"><b>3</b>Réseau</span>
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
             </div>
             <div class="node switch" data-node="1">
               <div class="node-icon">⇄</div><span class="node-name">SW1</span><span class="node-role">couches 1–2</span>
               <span class="node-address">table MAC</span>
+              <div class="layer-stack" aria-label="Couches OSI du switch 1">
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
+              <div class="layer-limit">Ne monte pas à L3</div>
             </div>
             <div class="node router" data-node="2">
               <div class="node-icon">↗</div><span class="node-name">R1</span><span class="node-role">couches 1–3</span>
               <span class="node-address"><em>LAN</em> BB:11<br><em>WAN</em> BB:22</span>
+              <div class="layer-stack" aria-label="Couches OSI du routeur 1">
+                <span class="layer l3" data-layer="3"><b>3</b>Réseau / IP</span>
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
+              <div class="layer-limit">Décision en L3</div>
             </div>
             <div class="node switch" data-node="3">
               <div class="node-icon">≋</div><span class="node-name">WAN</span><span class="node-role">lien intermédiaire</span>
               <span class="node-address">réseau transit</span>
+              <div class="layer-stack" aria-label="Couches du lien intermédiaire">
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
             </div>
             <div class="node router" data-node="4">
               <div class="node-icon">↘</div><span class="node-name">R2</span><span class="node-role">couches 1–3</span>
               <span class="node-address"><em>WAN</em> CC:11<br><em>LAN</em> CC:22</span>
+              <div class="layer-stack" aria-label="Couches OSI du routeur 2">
+                <span class="layer l3" data-layer="3"><b>3</b>Réseau / IP</span>
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
+              <div class="layer-limit">Décision en L3</div>
             </div>
             <div class="node switch" data-node="5">
               <div class="node-icon">⇄</div><span class="node-name">SW2</span><span class="node-role">couches 1–2</span>
               <span class="node-address">table MAC</span>
+              <div class="layer-stack" aria-label="Couches OSI du switch 2">
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
+              <div class="layer-limit">Ne monte pas à L3</div>
             </div>
             <div class="node server" data-node="6">
               <div class="node-icon">▤</div><span class="node-name">Serveur</span><span class="node-role">7 couches</span>
               <span class="node-address"><em>IP</em> 10.0.0.50<br><em>MAC</em> DD:11</span>
+              <div class="layer-stack" aria-label="Couches OSI du serveur">
+                <span class="layer l7" data-layer="7"><b>7</b>Application</span>
+                <span class="layer l6" data-layer="6"><b>6</b>Présentation</span>
+                <span class="layer l5" data-layer="5"><b>5</b>Session</span>
+                <span class="layer l4" data-layer="4"><b>4</b>Transport</span>
+                <span class="layer l3" data-layer="3"><b>3</b>Réseau</span>
+                <span class="layer l2" data-layer="2"><b>2</b>Liaison</span>
+                <span class="layer l1" data-layer="1"><b>1</b>Physique</span>
+              </div>
             </div>
           </div>
           <span class="zone-label zone-a">LAN A • 192.168.1.0/24</span>
@@ -313,7 +368,7 @@ const FLOWS = {
 
 const STEPS = [
   {
-    node:0, link:0, kicker:"Étape 1 • Client", title:"L’application crée les données", pdu:"Données applicatives",
+    node:0, layers:[7,6,5], link:0, kicker:"Étape 1 • Client", title:"L’application crée les données", pdu:"Données applicatives",
     lead:f=>f.app,
     facts:f=>[["Protocole applicatif",f.name],["Donnée",f.data]],
     process:f=>[
@@ -324,7 +379,7 @@ const STEPS = [
     blocks:f=>[["data",f.data,"Données"]]
   },
   {
-    node:0, link:0, kicker:"Étape 2 • Client", title:"Le client encapsule de L4 vers L2", pdu:"Trame Ethernet",
+    node:0, layers:[7,6,5,4,3,2,1], link:0, kicker:"Étape 2 • Client", title:"Le client encapsule de L4 vers L2", pdu:"Trame Ethernet",
     lead:f=>"Chaque couche ajoute les informations nécessaires devant les données "+f.name+".",
     facts:f=>[["Ports TCP",f.sourcePort+" → "+f.port],["Adresses IP","192.168.1.42 → 10.0.0.50"]],
     process:f=>[
@@ -336,7 +391,7 @@ const STEPS = [
     blocks:f=>[["eth","AA:11 → BB:11","Ethernet"],["ip",".1.42 → .0.50","IP"],["tcp",f.sourcePort+" → "+f.port,"TCP"],["data",f.data,"Données"]]
   },
   {
-    node:1, link:0, kicker:"Étape 3 • LAN A", title:"Le switch transfère la trame sans la modifier", pdu:"Trame Ethernet identique",
+    node:1, layers:[2,1], link:0, kicker:"Étape 3 • LAN A", title:"Le switch transfère la trame sans la modifier", pdu:"Trame Ethernet identique",
     lead:()=>"SW1 reçoit les bits, reconstitue la trame et travaille à la couche 2.",
     facts:()=>[["MAC lue","BB:11"],["Action","Transfert vers R1"]],
     process:()=>[
@@ -348,7 +403,7 @@ const STEPS = [
     blocks:f=>[["eth","AA:11 → BB:11","Ethernet"],["ip",".1.42 → .0.50","IP"],["tcp",f.sourcePort+" → "+f.port,"TCP"],["data",f.data,"Données"]]
   },
   {
-    node:2, link:1, kicker:"Étape 4 • Zoom routeur R1", title:"Entrée → décision L3 → nouvelle sortie L2", pdu:"Nouvelle trame Ethernet",
+    node:2, layers:[3,2,1], link:1, kicker:"Étape 4 • Zoom routeur R1", title:"Entrée → décision L3 → nouvelle sortie L2", pdu:"Nouvelle trame Ethernet",
     lead:()=>"R1 ne peut pas réutiliser la trame du LAN A sur le réseau de transit. Il conserve le paquet IP, mais remplace son enveloppe Ethernet.",
     facts:()=>[["Trame entrante","AA:11 → BB:11"],["Trame sortante","BB:22 → CC:11"]],
     process:()=>[
@@ -360,7 +415,7 @@ const STEPS = [
     blocks:f=>[["eth","AA:11 → BB:11","ancien Ethernet","removed"],["eth","BB:22 → CC:11","nouvel Ethernet","fresh"],["ip",".1.42 → .0.50","IP"],["tcp",f.sourcePort+" → "+f.port,"TCP"],["data",f.data,"Données"]]
   },
   {
-    node:4, link:2, kicker:"Étape 5 • Zoom routeur R2", title:"R2 répète le même mécanisme", pdu:"Nouvelle trame Ethernet",
+    node:4, layers:[3,2,1], link:2, kicker:"Étape 5 • Zoom routeur R2", title:"R2 répète le même mécanisme", pdu:"Nouvelle trame Ethernet",
     lead:()=>"R2 reçoit la trame du transit. Le réseau 10.0.0.0/24 est directement connecté à son interface LAN.",
     facts:()=>[["Trame entrante","BB:22 → CC:11"],["Trame sortante","CC:22 → DD:11"]],
     process:()=>[
@@ -372,7 +427,7 @@ const STEPS = [
     blocks:f=>[["eth","BB:22 → CC:11","ancien Ethernet","removed"],["eth","CC:22 → DD:11","nouvel Ethernet","fresh"],["ip",".1.42 → .0.50","IP"],["tcp",f.sourcePort+" → "+f.port,"TCP"],["data",f.data,"Données"]]
   },
   {
-    node:5, link:2, kicker:"Étape 6 • LAN B", title:"SW2 livre la trame au serveur", pdu:"Trame Ethernet identique",
+    node:5, layers:[2,1], link:2, kicker:"Étape 6 • LAN B", title:"SW2 livre la trame au serveur", pdu:"Trame Ethernet identique",
     lead:()=>"SW2 voit DD:11 comme MAC destination et transfère la trame sur le port du serveur.",
     facts:()=>[["MAC lue","DD:11"],["Action","Transfert vers serveur"]],
     process:()=>[
@@ -384,7 +439,7 @@ const STEPS = [
     blocks:f=>[["eth","CC:22 → DD:11","Ethernet"],["ip",".1.42 → .0.50","IP"],["tcp",f.sourcePort+" → "+f.port,"TCP"],["data",f.data,"Données"]]
   },
   {
-    node:6, link:2, kicker:"Étape 7 • Serveur", title:"Le serveur décapsule et livre au bon service", pdu:"Données livrées à l’application",
+    node:6, layers:[1,2,3,4,5,6,7], link:2, kicker:"Étape 7 • Serveur", title:"Le serveur décapsule et livre au bon service", pdu:"Données livrées à l’application",
     lead:f=>f.delivery,
     facts:f=>[["IP vérifiée","10.0.0.50"],["Port vérifié","TCP "+f.port+" ("+f.name+")"]],
     process:f=>[
@@ -408,6 +463,9 @@ function render(){
   document.querySelectorAll(".node").forEach((n,i)=>{
     n.classList.toggle("active",i===s.node);
     n.classList.toggle("passed",i<s.node);
+    n.querySelectorAll(".layer").forEach(layer=>{
+      layer.classList.toggle("active-layer",i===s.node&&s.layers.includes(Number(layer.dataset.layer)));
+    });
   });
   document.querySelectorAll(".frame-card").forEach((c,i)=>c.classList.toggle("active",i===s.link));
   document.querySelectorAll(".stage-btn").forEach((b,i)=>{
