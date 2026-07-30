@@ -7,6 +7,7 @@ title: 01. Couche physique
 > [!TIP] Ressources du chapitre
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/01-couche-physique/01-couche-physique-interactif.html" target="_blank">Ouvrir le cours interactif</a>
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/01-couche-physique.md" download>Télécharger ce cours en Markdown</a>
+> - [[01-couche-physique/01-couche-physique-jeu.html|🎮 Mini-jeu de révision : SIGNAL — Niveau 1]]
 > - [[01-couche-physique/tp/01-debutant|TP débutant]]
 > - [[01-couche-physique/tp/02-avance|TP avancé]]
 > - [[01-couche-physique/tp/04-projet-mairie-cablage|TP Packet Tracer : projet de câblage d’une mairie]]

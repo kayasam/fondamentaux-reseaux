@@ -472,10 +472,14 @@ code{font-family:'Consolas','Cascadia Code',monospace;font-size:.88rem;color:#a8
 curl -I https://203.0.113.10
 
 # Linux — test du port seul, sans dépendre d'un protocole applicatif
-nmap -p 443 203.0.113.10</code></pre><button class="copy-btn" onclick="copyCode(this)">Copier</button></div>
+nmap -p 443 203.0.113.10
+
+# Linux — alternative légère, souvent déjà installée (netcat-openbsd)
+nc -zv 203.0.113.10 443</code></pre><button class="copy-btn" onclick="copyCode(this)">Copier</button></div>
     <ul class="diag-opts">
       <li><code>-I</code> (curl) : ne récupère que les en-têtes HTTP, pas la page entière → confirme qu'un serveur web répond bien sur ce port.</li>
       <li><code>-p 443</code> (nmap) : limite le scan à ce port précis → répond <code>open</code>, <code>closed</code> ou <code>filtered</code>.</li>
+      <li><code>-z</code> (nc) : ne fait que tester la connexion, sans envoyer de données. <code>-v</code> : affiche le résultat (succès/échec).</li>
     </ul>
     <div class="code-block"><pre><code># Windows PowerShell
 Test-NetConnection 203.0.113.10 -Port 443</code></pre><button class="copy-btn" onclick="copyCode(this)">Copier</button></div>
@@ -483,8 +487,8 @@ Test-NetConnection 203.0.113.10 -Port 443</code></pre><button class="copy-btn" o
       <li><code>-Port 443</code> : port à tester → la commande tente une connexion TCP et renvoie <code>TcpTestSucceeded : True/False</code>.</li>
     </ul>
     <div class="callout note" style="margin-top:.8rem">
-      <div class="callout-title">Pourquoi pas telnet / nc ?</div>
-      Ces outils historiques ne sont plus installés par défaut sur la plupart des systèmes récents. <code>nmap</code>, <code>curl</code> et <code>Test-NetConnection</code> couvrent les mêmes besoins et sont les outils réellement utilisés aujourd'hui.
+      <div class="callout-title">Et telnet / nc ?</div>
+      <code>telnet</code> n'est presque plus jamais installé par défaut et transmet en clair : à éviter. <code>nc</code> (paquet <code>netcat-openbsd</code>) est en revanche souvent déjà présent sur Debian/Ubuntu selon le profil d'installation — vérifiez avec <code>which nc</code>, sinon <code>apt install netcat-openbsd</code>. Sur une image minimale (conteneur, cloud), il faut en général l'installer explicitement.
     </div>
   </div>
 

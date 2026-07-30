@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAT — traduire les adresses IP</title>
+<style>
+:root{
+  color-scheme:dark;
+  --bg:#07101f;--surface:#101b2e;--surface-2:#17243a;--surface-3:#20304a;
+  --border:#30415f;--text:#eef4ff;--muted:#a5b4cb;--cyan:#22d3ee;
+  --green:#34d399;--amber:#fbbf24;--orange:#fb923c;--red:#fb7185;--blue:#60a5fa;
+  --private:#60a5fa;--public:#fb923c;
+  --radius:16px;--shadow:0 18px 48px rgba(0,0,0,.28);
+  --header-bg:rgba(7,16,31,.88);--note-bg:rgba(23,36,58,.72);--panel-bg:rgba(16,27,46,.94);--inset-bg:#0b1628;
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f2f4fa;--surface:#ffffff;--surface-2:#eef1f8;--surface-3:#e2e7f3;
+  --border:#d5dbec;--text:#141b2c;--muted:#5b6785;
+  --header-bg:rgba(255,255,255,.9);--note-bg:#e7ecf9;--panel-bg:rgba(255,255,255,.96);--inset-bg:#eef1f8;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:
+  radial-gradient(circle at 15% -10%,rgba(96,165,250,.16),transparent 35rem),
+  radial-gradient(circle at 90% 10%,rgba(251,146,60,.12),transparent 28rem),
+  var(--bg);color:var(--text);font:16px/1.55 "Segoe UI",system-ui,sans-serif}
+button{font:inherit}
+.page-header{padding:1.5rem clamp(1rem,3vw,3rem);border-bottom:1px solid var(--border);background:var(--header-bg);backdrop-filter:blur(14px)}
+.header-inner{max-width:1400px;margin:auto;display:flex;align-items:center;justify-content:space-between;gap:1.5rem}
+.eyebrow{margin:0 0 .35rem;color:var(--cyan);font-size:.76rem;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.25rem);line-height:1.12}
+.subtitle{margin:.45rem 0 0;color:var(--muted);font-size:.95rem}
+.theme-toggle{width:44px;height:44px;border:1px solid var(--border);border-radius:12px;background:var(--surface-2);
+  color:var(--text);font-size:1.2rem;cursor:pointer;display:grid;place-items:center;transition:.2s;flex:0 0 auto}
+.theme-toggle:hover{border-color:var(--cyan);color:var(--cyan)}
+
+.lesson{max-width:1400px;margin:auto;padding:1.25rem clamp(.8rem,2vw,2rem) 2rem}
+.learning-note{display:flex;align-items:flex-start;gap:.7rem;margin-bottom:1rem;padding:.8rem 1rem;
+  color:var(--text);background:var(--note-bg);border:1px solid var(--border);border-radius:12px}
+.learning-note strong{color:var(--text)}.learning-note .icon{color:var(--amber)}
+.contrast-note{display:flex;align-items:flex-start;gap:.7rem;margin-bottom:1rem;padding:.8rem 1rem;
+  color:var(--text);background:rgba(251,146,60,.1);border:1px solid rgba(251,146,60,.3);border-radius:12px;font-size:.92rem}
+.contrast-note strong{color:var(--public)}
+
+.workspace{display:grid;grid-template-columns:minmax(660px,1.6fr) minmax(340px,.9fr);gap:1rem;align-items:start}
+.visual-panel,.explain-panel{background:var(--panel-bg);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+.visual-panel{padding:1rem;min-width:0}
+.explain-panel{position:sticky;top:1rem;overflow:hidden}
+.panel-heading{display:flex;justify-content:space-between;align-items:center;gap:1rem;margin-bottom:.8rem}
+.panel-heading h2,.explain-head h2{font-size:1rem;margin:0}
+.direction{color:var(--muted);font-size:.78rem}
+
+/* Réseau */
+.network-scroll{overflow-x:auto;padding:.5rem .25rem 1rem}
+.network{position:relative;min-width:620px}
+.nodes{position:relative;z-index:2;display:grid;grid-template-columns:1.1fr 1fr .8fr 1fr;align-items:start;gap:.5rem}
+.node-col{text-align:center;transition:.25s;opacity:.5}
+.node-col.active{opacity:1}
+.client-pair{display:flex;justify-content:center;gap:.6rem}
+.node-icon{width:64px;height:64px;margin:auto;display:grid;place-items:center;border:2px solid var(--border);
+  border-radius:16px;background:#0b1628;font-size:1.7rem;box-shadow:0 8px 18px rgba(0,0,0,.25);transition:.25s}
+.node-icon.round{border-radius:50%;background:#10283a}
+.node-icon.small{width:44px;height:44px;font-size:1.2rem;opacity:.55}
+.node-col.active .node-icon{border-color:var(--cyan);box-shadow:0 0 0 5px rgba(34,211,238,.1),0 0 22px rgba(34,211,238,.25)}
+.node-name{display:block;margin-top:.4rem;font-weight:800;font-size:.85rem;color:var(--text)}
+.node-name.small{font-size:.68rem;font-weight:700;opacity:.7}
+.node-role{display:block;color:var(--muted);font-size:.68rem}
+.node-address{display:block;margin-top:.3rem;font:600 .68rem/1.5 ui-monospace,Consolas,monospace}
+.node-address.private{color:var(--private)}
+.node-address.public{color:var(--public)}
+.node-address em{color:var(--muted);font-style:normal}
+.packet{position:absolute;z-index:8;top:34px;left:10%;width:32px;height:32px;display:grid;place-items:center;
+  border-radius:50%;background:var(--amber);color:#171008;font-size:.95rem;
+  box-shadow:0 0 0 5px rgba(251,191,36,.18),0 0 22px rgba(251,191,36,.65);
+  transform:translate(-50%,-50%);transition:left .6s cubic-bezier(.2,.8,.2,1)}
+.packet::after{content:attr(data-label);position:absolute;top:36px;left:50%;transform:translateX(-50%);
+  padding:.12rem .4rem;border-radius:5px;background:#07101f;white-space:nowrap;color:var(--amber);font-size:.62rem;font-weight:900}
+
+.addr-flow{display:flex;align-items:center;justify-content:center;gap:.6rem;margin-top:1.4rem;flex-wrap:wrap}
+.addr-box{padding:.55rem .8rem;border-radius:10px;font:700 .82rem ui-monospace,Consolas,monospace;border:2px solid}
+.addr-box.private{background:rgba(96,165,250,.12);border-color:var(--private);color:var(--private)}
+.addr-box.public{background:rgba(251,146,60,.12);border-color:var(--public);color:var(--public)}
+.addr-arrow{color:var(--muted);font-size:1.3rem}
+
+/* Table de traduction NAT */
+.nat-table-wrap{margin-top:1.2rem}
+.nat-table-title{display:flex;align-items:center;gap:.5rem;margin-bottom:.5rem;font-size:.85rem;font-weight:800;color:var(--text)}
+.nat-table-title .dot{width:.6rem;height:.6rem;border-radius:50%;background:var(--public)}
+table.nat-table{width:100%;border-collapse:collapse;font-size:.78rem}
+table.nat-table th{background:var(--surface-2);color:var(--muted);text-align:left;padding:.5rem .6rem;font-weight:700;border:1px solid var(--border)}
+table.nat-table td{padding:.5rem .6rem;border:1px solid var(--border);font:600 .78rem ui-monospace,Consolas,monospace;color:var(--text)}
+table.nat-table tr.nat-row-inactive{opacity:.45}
+table.nat-table tr.nat-row-highlight td{background:rgba(251,191,36,.1);border-color:var(--amber)}
+table.nat-table td.private-cell{color:var(--private)}
+table.nat-table td.public-cell{color:var(--public)}
+table.nat-table tr.nat-row-empty td{color:var(--muted);font-style:italic;opacity:.6}
+
+/* Navigation */
+.journey-nav{display:grid;grid-template-columns:repeat(10,1fr);gap:.35rem;margin-top:1.3rem}
+.stage-btn{position:relative;min-height:52px;padding:.35rem .3rem;border:1px solid var(--border);border-radius:9px;
+  color:var(--muted);background:var(--surface-2);font-size:.62rem;font-weight:700;cursor:pointer;transition:.2s}
+.stage-btn:hover{color:var(--text);border-color:var(--blue)}
+.stage-btn.active{color:#07101f;background:var(--cyan);border-color:var(--cyan)}
+.stage-btn.done:not(.active){color:var(--text);border-color:#3d5f80}
+.stage-btn .num{display:block;font-size:.58rem;opacity:.75}
+.controls{display:flex;align-items:center;justify-content:space-between;gap:.7rem;margin-top:.85rem}
+.nav-btn{padding:.56rem .9rem;border:1px solid var(--border);border-radius:9px;background:var(--surface-2);
+  color:var(--text);font-weight:800;font-size:.78rem;cursor:pointer}
+.nav-btn:hover:not(:disabled){border-color:var(--cyan);color:var(--cyan)}
+.nav-btn:disabled{opacity:.35;cursor:not-allowed}
+.progress-text{color:var(--muted);font-size:.76rem}.progress-text b{color:var(--text)}
+
+/* Panneau explicatif */
+.explain-head{padding:1rem 1.1rem;background:linear-gradient(120deg,#172b47,#111d31);border-bottom:1px solid var(--border)}
+.step-kicker{margin-bottom:.25rem;color:var(--cyan);font-size:.68rem;font-weight:900;letter-spacing:.1em;text-transform:uppercase}
+.explain-head h2{font-size:1.1rem;line-height:1.3;color:#fff}
+.explain-body{padding:1rem 1.1rem}
+.lead{margin:0 0 .9rem;color:var(--text);font-size:.92rem}
+.watch{margin:.7rem 0;padding:.7rem .8rem;border-left:4px solid var(--amber);background:rgba(251,191,36,.08);font-size:.78rem;color:var(--text)}
+.watch strong{color:var(--amber)}
+.flow-facts{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.9rem}
+.fact{padding:.6rem .7rem;border:1px solid var(--border);border-radius:10px;background:var(--inset-bg)}
+.fact small{display:block;color:var(--muted);font-size:.66rem;text-transform:uppercase;letter-spacing:.07em}
+.fact strong{display:block;margin-top:.12rem;color:var(--text);font:700 .8rem ui-monospace,Consolas,monospace}
+
+.legend{display:flex;flex-wrap:wrap;gap:.55rem 1.2rem;margin-top:1rem;color:var(--muted);font-size:.74rem}
+.legend span::before{content:"";display:inline-block;width:.65rem;height:.65rem;margin-right:.3rem;border-radius:2px;vertical-align:-.05rem;background:var(--c)}
+.teacher-summary{margin-top:1rem;padding:1rem;border:1px solid var(--border);border-radius:var(--radius);background:var(--panel-bg)}
+.teacher-summary h2{margin:0 0 .65rem;font-size:.96rem;color:var(--text)}
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem}
+.summary-item{padding:.7rem;border-radius:10px;background:var(--inset-bg);border:1px solid var(--border);font-size:.78rem;color:var(--text)}
+.summary-item strong{display:block;margin-bottom:.18rem;color:var(--cyan);font-size:.8rem}
+
+@media(max-width:1120px){
+  .workspace{grid-template-columns:1fr}.explain-panel{position:static}
+}
+@media(max-width:760px){
+  .header-inner{flex-wrap:wrap}
+  .lesson{padding-inline:.6rem}.visual-panel{padding:.7rem}
+  .journey-nav{grid-template-columns:repeat(5,1fr)}
+  .summary-grid{grid-template-columns:1fr 1fr}
+  .addr-flow{flex-direction:column}
+}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+</style>
+</head>
+<body>
+<header class="page-header">
+  <div class="header-inner">
+    <div>
+      <p class="eyebrow">Modèle OSI • Traduction d'adresses (NAT / PAT)</p>
+      <h1>Le NAT : une IP publique pour plusieurs machines</h1>
+      <p class="subtitle">Ici, contrairement au schéma précédent, l'adresse IP change en cours de route.</p>
+    </div>
+    <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Basculer entre thème clair et sombre" title="Thème clair / sombre">☀</button>
+  </div>
+</header>
+
+<main class="lesson">
+  <div class="learning-note">
+    <span class="icon">◆</span>
+    <span><strong>Objectif :</strong> comprendre pourquoi un routeur NAT doit traduire à la fois l'IP <em>et</em> le port, et pourquoi il garde une table pour faire le chemin inverse.</span>
+  </div>
+  <div class="contrast-note">
+    <span>⇄</span>
+    <span><strong>Rappel du schéma OSI :</strong> là-bas, l'IP restait identique de bout en bout et seules les adresses MAC changeaient à chaque saut. Ici, c'est l'inverse : l'IP (et le port) changent au passage du routeur NAT.</span>
+  </div>
+
+  <div class="workspace">
+    <section class="visual-panel" aria-label="Trajet du flux avec traduction NAT">
+      <div class="panel-heading">
+        <h2>Trajet du client vers le serveur public</h2>
+        <span class="direction">sens du flux →</span>
+      </div>
+
+      <div class="network-scroll">
+        <div class="network">
+          <div class="packet" id="packet" data-label="requête">✉</div>
+          <div class="nodes">
+            <div class="node-col active" data-node="0">
+              <div class="client-pair">
+                <div>
+                  <div class="node-icon">💻</div>
+                  <span class="node-name">Client A</span>
+                </div>
+                <div>
+                  <div class="node-icon small">💻</div>
+                  <span class="node-name small">Client B</span>
+                </div>
+              </div>
+              <span class="node-role">réseau privé</span>
+              <span class="node-address private">192.168.1.42:51432</span>
+            </div>
+            <div class="node-col" data-node="1">
+              <div class="node-icon round">📡</div>
+              <span class="node-name">Routeur NAT</span>
+              <span class="node-role">traduit IP + port</span>
+              <span class="node-address private"><em>LAN</em> 192.168.1.1</span><br>
+              <span class="node-address public"><em>WAN</em> 203.0.113.5</span>
+            </div>
+            <div class="node-col" data-node="2">
+              <div class="node-icon round">🌐</div>
+              <span class="node-name">Internet</span>
+              <span class="node-role">ne voit que le public</span>
+            </div>
+            <div class="node-col" data-node="3">
+              <div class="node-icon">▤</div>
+              <span class="node-name">Serveur</span>
+              <span class="node-role">public</span>
+              <span class="node-address public">203.0.113.10:443</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="addr-flow" id="addr-flow"></div>
+
+      <div class="nat-table-wrap">
+        <div class="nat-table-title"><span class="dot"></span>Table de traduction du routeur NAT</div>
+        <table class="nat-table">
+          <thead><tr><th>Machine</th><th>Adresse privée</th><th>Adresse publique traduite</th></tr></thead>
+          <tbody id="nat-table-body"></tbody>
+        </table>
+      </div>
+
+      <div class="journey-nav" id="journey-nav"></div>
+      <div class="controls">
+        <button class="nav-btn" id="previous" disabled>← Précédent</button>
+        <span class="progress-text">Étape <b id="step-number">1</b> sur <span id="step-total">10</span></span>
+        <button class="nav-btn" id="next">Suivant →</button>
+      </div>
+    </section>
+
+    <aside class="explain-panel" aria-live="polite">
+      <div class="explain-head">
+        <div class="step-kicker" id="step-kicker">Étape 1 • Client A</div>
+        <h2 id="step-title"></h2>
+      </div>
+      <div class="explain-body">
+        <p class="lead" id="step-lead"></p>
+        <div class="flow-facts" id="flow-facts"></div>
+        <div class="watch" id="watch"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="legend" aria-label="Légende des couleurs">
+    <span style="--c:var(--private)">Adresse privée (RFC 1918)</span>
+    <span style="--c:var(--public)">Adresse publique</span>
+  </div>
+
+  <section class="teacher-summary">
+    <h2>Les quatre idées à faire retenir</h2>
+    <div class="summary-grid">
+      <div class="summary-item"><strong>NAT traduit IP + port</strong>Pas seulement l'adresse : le port aussi, sinon impossible de distinguer deux machines internes.</div>
+      <div class="summary-item"><strong>Une IP publique, plusieurs machines</strong>Client A et Client B partagent 203.0.113.5, mais avec des ports différents (PAT).</div>
+      <div class="summary-item"><strong>La table est indispensable</strong>Sans elle, le routeur ne saurait pas à qui livrer la réponse au retour.</div>
+      <div class="summary-item"><strong>Le serveur ne voit jamais le privé</strong>Il ne connaît que 203.0.113.5:40001, jamais 192.168.1.42.</div>
+    </div>
+  </section>
+</main>
+
+<script>
+const NAT_TABLE = [
+  {client:"Client A",private:"192.168.1.42:51432",public:"203.0.113.5:40001"},
+  {client:"Client B",private:"192.168.1.55:53210",public:"203.0.113.5:40002"}
+];
+
+const STEPS=[
+  {
+    node:0, kicker:"Étape 1 • Client A", title:"Le client prépare sa requête",
+    lead:"Client A veut joindre le serveur public 203.0.113.10 sur le port 443. Il connaît sa propre adresse privée, mais pas encore ce que verra le serveur.",
+    facts:[["Source (privée)","192.168.1.42:51432"],["Destination","203.0.113.10:443"]],
+    watch:"192.168.1.42 est une adresse privée (RFC 1918) : elle n'existe que sur ce réseau local, elle n'est pas routable sur Internet.",
+    flow:["192.168.1.42:51432","→","203.0.113.10:443"],flowClass:["private","","public"],
+    table:"none"
+  },
+  {
+    node:1, kicker:"Étape 2 • Routeur NAT", title:"Le paquet arrive côté LAN",
+    lead:"Le routeur NAT reçoit le paquet sur son interface privée. Avant de le transmettre vers Internet, il doit décider par quelle adresse publique le remplacer.",
+    facts:[["Interface d'entrée","LAN 192.168.1.1"],["Source reçue","192.168.1.42:51432"]],
+    watch:"Tant qu'on est côté LAN, l'adresse est encore celle du client. Rien n'est traduit pour l'instant.",
+    flow:["192.168.1.42:51432","→","203.0.113.10:443"],flowClass:["private","","public"],
+    table:"none"
+  },
+  {
+    node:1, kicker:"Étape 3 • Routeur NAT", title:"Traduction : IP et port sont réécrits",
+    lead:"Le routeur remplace la source privée par sa propre adresse publique et un port temporaire, puis note cette correspondance dans sa table de traduction.",
+    facts:[["Avant","192.168.1.42:51432"],["Après","203.0.113.5:40001"]],
+    watch:"Le routeur crée une ligne dans sa table : c'est la seule façon dont il pourra reconnaître la réponse plus tard.",
+    flow:["192.168.1.42:51432","→","203.0.113.5:40001"],flowClass:["private","","public"],
+    table:"a"
+  },
+  {
+    node:2, kicker:"Étape 4 • Internet", title:"Le paquet traduit voyage",
+    lead:"Sur Internet, seule l'adresse publique circule. Le serveur — et tout équipement entre les deux — n'a aucune connaissance de l'adresse privée d'origine.",
+    facts:[["Source vue sur Internet","203.0.113.5:40001"],["Destination","203.0.113.10:443"]],
+    watch:"Client B, sur le même réseau, pourrait envoyer un paquet au même instant : lui aussi sortirait avec l'IP 203.0.113.5, mais un port différent.",
+    flow:["203.0.113.5:40001","→","203.0.113.10:443"],flowClass:["public","","public"],
+    table:"a"
+  },
+  {
+    node:3, kicker:"Étape 5 • Serveur", title:"Le serveur répond à l'adresse publique",
+    lead:"Le serveur reçoit la requête et répond simplement à l'adresse d'où elle semble venir : 203.0.113.5:40001. Il ne peut pas faire autrement.",
+    facts:[["Le serveur connaît","203.0.113.5:40001"],["Le serveur ignore","192.168.1.42"]],
+    watch:"C'est le point clé : le serveur ne pourrait de toute façon pas router un paquet vers 192.168.1.42, cette adresse n'existe pas sur Internet.",
+    flow:["203.0.113.10:443","→","203.0.113.5:40001"],flowClass:["public","","public"],
+    table:"a"
+  },
+  {
+    node:2, kicker:"Étape 6 • Internet (retour)", title:"La réponse revient vers l'IP publique",
+    lead:"La réponse traverse Internet en sens inverse, toujours adressée à 203.0.113.5:40001 — l'adresse publique du routeur NAT, avec le port qu'il avait choisi.",
+    facts:[["Destination du retour","203.0.113.5:40001"]],
+    watch:"Sans la table de traduction, ce paquet arriverait au routeur… sans que celui-ci sache à quel client privé le remettre.",
+    flow:["203.0.113.10:443","→","203.0.113.5:40001"],flowClass:["public","","public"],
+    table:"a"
+  },
+  {
+    node:1, kicker:"Étape 7 • Routeur NAT", title:"Retour : consultation de la table",
+    lead:"Le routeur reçoit le paquet sur son interface publique, destiné à 203.0.113.5:40001. Il consulte sa table de traduction pour retrouver le bon client.",
+    facts:[["Reçu pour","203.0.113.5:40001"],["Trouvé dans la table","192.168.1.42:51432"]],
+    watch:"C'est exactement la ligne créée à l'étape 3 qui est relue ici. Sans elle, ce paquet serait rejeté.",
+    flow:["203.0.113.10:443","→","203.0.113.5:40001"],flowClass:["public","","public"],
+    table:"a-match"
+  },
+  {
+    node:1, kicker:"Étape 8 • Routeur NAT", title:"Retraduction vers l'adresse privée",
+    lead:"Le routeur réécrit la destination : l'adresse publique 203.0.113.5:40001 redevient l'adresse privée 192.168.1.42:51432 de Client A.",
+    facts:[["Avant","203.0.113.5:40001"],["Après","192.168.1.42:51432"]],
+    watch:"L'opération est symétrique à celle de l'étape 3, mais dans l'autre sens et sur l'adresse de destination.",
+    flow:["203.0.113.10:443","→","192.168.1.42:51432"],flowClass:["public","","private"],
+    table:"a"
+  },
+  {
+    node:0, kicker:"Étape 9 • Client A", title:"Livraison finale au client",
+    lead:"Client A reçoit la réponse sur son adresse privée habituelle, comme si la traduction n'avait jamais eu lieu. Tout le mécanisme NAT lui est invisible.",
+    facts:[["Reçu sur","192.168.1.42:51432"],["Depuis (vu localement)","203.0.113.10:443"]],
+    watch:"Le client n'a jamais eu besoin de connaître sa propre adresse publique : c'est entièrement le rôle du routeur.",
+    flow:["203.0.113.10:443","→","192.168.1.42:51432"],flowClass:["public","","private"],
+    table:"a"
+  },
+  {
+    node:1, kicker:"Étape 10 • Récapitulatif", title:"Pourquoi le port fait toute la différence",
+    lead:"Client A et Client B partagent la même IP publique 203.0.113.5. Sans le port de traduction, le routeur ne pourrait jamais savoir laquelle des deux machines doit recevoir chaque réponse.",
+    facts:[["Client A","203.0.113.5:40001"],["Client B","203.0.113.5:40002"]],
+    watch:"C'est ce qu'on appelle le PAT (Port Address Translation) : une seule IP publique, mais des ports différents pour multiplexer plusieurs machines internes.",
+    flow:["192.168.1.42 et .55","→","203.0.113.5"],flowClass:["private","","public"],
+    table:"both"
+  }
+];
+
+let currentStep=0;
+
+function renderTable(mode){
+  const body=document.getElementById("nat-table-body");
+  if(mode==="none"){
+    body.innerHTML=`<tr class="nat-row-empty"><td colspan="3">Table vide pour l'instant — aucune traduction n'a encore eu lieu.</td></tr>`;
+    return;
+  }
+  const rows=NAT_TABLE.map((r,i)=>{
+    const isA=i===0;
+    let cls="";
+    if(mode==="a"&&!isA)cls="nat-row-inactive";
+    if(mode==="a-match"&&isA)cls="nat-row-highlight";
+    if(mode==="a-match"&&!isA)cls="nat-row-inactive";
+    if(mode==="both")cls="";
+    if(mode==="a"&&isA)cls="";
+    return `<tr class="${cls}"><td>${r.client}</td><td class="private-cell">${r.private}</td><td class="public-cell">${r.public}</td></tr>`;
+  }).join("");
+  body.innerHTML=rows;
+}
+
+function buildNav(){
+  const nav=document.getElementById("journey-nav");
+  nav.innerHTML="";
+  STEPS.forEach((s,i)=>{
+    const btn=document.createElement("button");
+    btn.className="stage-btn";
+    btn.innerHTML=`<span class="num">${i+1}</span>${s.kicker.split("• ")[1]||""}`;
+    btn.addEventListener("click",()=>{currentStep=i;render()});
+    nav.appendChild(btn);
+  });
+}
+
+function positionPacket(nodeIndex){
+  const network=document.querySelector(".network");
+  const target=document.querySelector(`.node-col[data-node="${nodeIndex}"] .node-icon`);
+  const packet=document.getElementById("packet");
+  if(!network||!target)return;
+  const nr=network.getBoundingClientRect(),tr=target.getBoundingClientRect();
+  packet.style.left=(tr.left-nr.left+tr.width/2)+"px";
+}
+
+function render(){
+  const s=STEPS[currentStep];
+  document.querySelectorAll(".node-col").forEach((n,i)=>n.classList.toggle("active",i===s.node));
+  document.querySelectorAll(".stage-btn").forEach((b,i)=>{
+    b.classList.toggle("active",i===currentStep);
+    b.classList.toggle("done",i<currentStep);
+  });
+  document.getElementById("step-kicker").textContent=s.kicker;
+  document.getElementById("step-title").textContent=s.title;
+  document.getElementById("step-lead").textContent=s.lead;
+  document.getElementById("watch").innerHTML="<strong>À observer :</strong> "+s.watch;
+  document.getElementById("flow-facts").innerHTML=s.facts.map(x=>`<div class="fact"><small>${x[0]}</small><strong>${x[1]}</strong></div>`).join("");
+  document.getElementById("addr-flow").innerHTML=`<span class="addr-box ${s.flowClass[0]}">${s.flow[0]}</span><span class="addr-arrow">→</span><span class="addr-box ${s.flowClass[2]}">${s.flow[2]}</span>`;
+  document.getElementById("step-number").textContent=currentStep+1;
+  document.getElementById("previous").disabled=currentStep===0;
+  document.getElementById("next").disabled=currentStep===STEPS.length-1;
+  renderTable(s.table);
+  const packet=document.getElementById("packet");
+  packet.dataset.label=s.kicker.split("• ")[1]||"";
+  requestAnimationFrame(()=>positionPacket(s.node));
+}
+
+function go(direction){
+  const next=currentStep+direction;
+  if(next>=0&&next<STEPS.length){currentStep=next;render()}
+}
+
+document.getElementById("previous").addEventListener("click",()=>go(-1));
+document.getElementById("next").addEventListener("click",()=>go(1));
+document.addEventListener("keydown",e=>{
+  if(["INPUT","TEXTAREA","BUTTON"].includes(document.activeElement.tagName))return;
+  if(e.key==="ArrowRight")go(1);
+  if(e.key==="ArrowLeft")go(-1);
+});
+window.addEventListener("resize",()=>positionPacket(STEPS[currentStep].node));
+
+const THEME_KEY="nat-schema-theme";
+function applyTheme(theme){
+  document.documentElement.setAttribute("data-theme",theme);
+  const btn=document.getElementById("theme-toggle");
+  btn.textContent=theme==="light"?"🌙":"☀";
+  btn.title=theme==="light"?"Passer en thème sombre":"Passer en thème clair";
+}
+applyTheme(localStorage.getItem(THEME_KEY)||"dark");
+document.getElementById("theme-toggle").addEventListener("click",()=>{
+  const next=document.documentElement.getAttribute("data-theme")==="light"?"dark":"light";
+  localStorage.setItem(THEME_KEY,next);
+  applyTheme(next);
+});
+
+buildNav();
+render();
+</script>
+</body>
+</html>

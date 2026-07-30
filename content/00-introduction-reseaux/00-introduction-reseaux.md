@@ -8,6 +8,7 @@ title: 00. Introduction aux réseaux
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/00-introduction-reseaux/00-introduction-reseaux-interactif.html" target="_blank">Ouvrir le cours interactif</a>
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/00-introduction-reseaux.md" download>Télécharger ce cours en Markdown</a>
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/schema/schema-osi-encapsulation.html" target="_blank">Explorer le schéma OSI interactif</a>
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/00-introduction-reseaux/nat-traduction-adresses.html" target="_blank">Explorer le schéma NAT interactif</a>
 > - [[00-introduction-reseaux/tp/01-debutant|TP débutant]]
 > - [[00-introduction-reseaux/tp/02-avance|TP avancé]]
 
