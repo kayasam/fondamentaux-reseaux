@@ -1,8 +1,8 @@
 ---
-title: 05. Couche application
+title: 05. Couches hautes et services
 ---
 
-# Couche application : les services réseau
+# Couches hautes : les services réseau
 
 > [!TIP] Ressources du chapitre
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/05-services-reseau/05-services-reseau-interactif.html" target="_blank">Ouvrir le cours interactif</a>

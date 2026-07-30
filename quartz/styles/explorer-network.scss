@@ -1,0 +1,274 @@
+@use "./variables.scss" as *;
+
+.explorer-content {
+  --explorer-intro: #1768ac;
+  --explorer-l1: #d7474c;
+  --explorer-l2: #d77b16;
+  --explorer-l3: #32875d;
+  --explorer-l4: #148da3;
+  --explorer-upper: #7158d9;
+  --explorer-security: #b83c78;
+  --explorer-resources: #197d83;
+}
+
+.explorer-content ul.explorer-ul > li > .folder-container {
+  --chapter-accent: var(--secondary);
+  --chapter-icon: "•";
+  position: relative;
+  display: flex;
+  gap: 0.5rem;
+  min-height: 2.65rem;
+  align-items: center;
+  margin: 0.22rem 0;
+  padding: 0.38rem 0.35rem 0.38rem 0.42rem;
+  border: 1px solid color-mix(in srgb, var(--chapter-accent) 15%, var(--lightgray));
+  border-left: 3px solid var(--chapter-accent);
+  border-radius: 0.72rem;
+  background: color-mix(in srgb, var(--chapter-accent) 5%, var(--light));
+  transition:
+    border-color 150ms ease,
+    background-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
+}
+
+.explorer-content ul.explorer-ul > li > .folder-container:hover {
+  border-color: color-mix(in srgb, var(--chapter-accent) 35%, var(--lightgray));
+  background: color-mix(in srgb, var(--chapter-accent) 10%, var(--light));
+  box-shadow: 0 0.35rem 0.8rem rgb(13 38 67 / 7%);
+  transform: translateX(2px);
+}
+
+.explorer-content ul.explorer-ul > li > .folder-container::before {
+  display: grid;
+  width: 1.82rem;
+  height: 1.82rem;
+  flex: 0 0 1.82rem;
+  place-items: center;
+  border-radius: 0.52rem;
+  color: #fff;
+  background: var(--chapter-accent);
+  box-shadow: 0 0.3rem 0.65rem color-mix(in srgb, var(--chapter-accent) 23%, transparent);
+  content: var(--chapter-icon);
+  font-family: "Segoe UI Symbol", "Segoe UI Emoji", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.explorer-content ul.explorer-ul > li > .folder-container > div {
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.explorer-content ul.explorer-ul > li > .folder-container .folder-button {
+  display: flex;
+  width: 100%;
+  gap: 0.4rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.explorer-content ul.explorer-ul > li > .folder-container .folder-title {
+  color: var(--dark);
+  font-size: 0.82rem;
+  font-weight: 720;
+  line-height: 1.18;
+}
+
+.explorer-content ul.explorer-ul > li > .folder-container .folder-button::after {
+  flex: 0 0 auto;
+  padding: 0.12rem 0.3rem;
+  border: 1px solid color-mix(in srgb, var(--chapter-accent) 25%, transparent);
+  border-radius: 99px;
+  color: var(--chapter-accent);
+  background: color-mix(in srgb, var(--chapter-accent) 8%, transparent);
+  content: var(--chapter-layer, "");
+  font-family: var(--codeFont);
+  font-size: 0.54rem;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+  line-height: 1.25;
+  white-space: nowrap;
+}
+
+.explorer-content ul.explorer-ul > li > .folder-container > .folder-icon {
+  order: 3;
+  width: 0.68rem;
+  height: 0.68rem;
+  flex: 0 0 0.68rem;
+  margin: 0 0.08rem 0 0.02rem;
+  color: color-mix(in srgb, var(--chapter-accent) 65%, var(--darkgray));
+  opacity: 0.72;
+}
+
+.explorer-content ul.explorer-ul > li > [data-folderpath^="00-introduction-reseaux/"] {
+  --chapter-accent: var(--explorer-intro);
+  --chapter-icon: "◎";
+  --chapter-layer: "DÉPART";
+}
+
+.explorer-content ul.explorer-ul > li > [data-folderpath^="01-couche-physique/"] {
+  --chapter-accent: var(--explorer-l1);
+  --chapter-icon: "ϟ";
+  --chapter-layer: "L1";
+}
+
+.explorer-content ul.explorer-ul > li > [data-folderpath^="02-couche-liaison/"] {
+  --chapter-accent: var(--explorer-l2);
+  --chapter-icon: "⛓";
+  --chapter-layer: "L2";
+}
+
+.explorer-content ul.explorer-ul > li > [data-folderpath^="03-couche-reseau/"] {
+  --chapter-accent: var(--explorer-l3);
+  --chapter-icon: "↗";
+  --chapter-layer: "L3";
+}
+
+.explorer-content ul.explorer-ul > li > [data-folderpath^="04-couche-transport/"] {
+  --chapter-accent: var(--explorer-l4);
+  --chapter-icon: "⇄";
+  --chapter-layer: "L4";
+}
+
+.explorer-content ul.explorer-ul > li > [data-folderpath^="05-services-reseau/"] {
+  --chapter-accent: var(--explorer-upper);
+  --chapter-icon: "▤";
+  --chapter-layer: "L5–7";
+}
+
+.explorer-content ul.explorer-ul > li > [data-folderpath^="06-securite-et-acces/"] {
+  --chapter-accent: var(--explorer-security);
+  --chapter-icon: "⛨";
+  --chapter-layer: "TRANSVERSE";
+}
+
+.explorer-content ul.explorer-ul > li > [data-folderpath^="ressources/"] {
+  --chapter-accent: var(--explorer-resources);
+  --chapter-icon: "✦";
+  --chapter-layer: "OUTILS";
+}
+
+body[data-slug^="00-introduction-reseaux/"]
+  .explorer-content
+  [data-folderpath^="00-introduction-reseaux/"],
+body[data-slug^="01-couche-physique/"] .explorer-content [data-folderpath^="01-couche-physique/"],
+body[data-slug^="02-couche-liaison/"] .explorer-content [data-folderpath^="02-couche-liaison/"],
+body[data-slug^="03-couche-reseau/"] .explorer-content [data-folderpath^="03-couche-reseau/"],
+body[data-slug^="04-couche-transport/"] .explorer-content [data-folderpath^="04-couche-transport/"],
+body[data-slug^="05-services-reseau/"] .explorer-content [data-folderpath^="05-services-reseau/"],
+body[data-slug^="06-securite-et-acces/"]
+  .explorer-content
+  [data-folderpath^="06-securite-et-acces/"],
+body[data-slug^="ressources/"] .explorer-content [data-folderpath^="ressources/"] {
+  border-color: color-mix(in srgb, var(--chapter-accent) 44%, var(--lightgray));
+  background: color-mix(in srgb, var(--chapter-accent) 13%, var(--light));
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--chapter-accent) 8%, transparent);
+}
+
+.explorer-content [data-folderpath="ressources/jeux/index"],
+.explorer-content [data-folderpath="ressources/schema/index"] {
+  --resource-accent: var(--explorer-resources);
+  position: relative;
+  display: flex;
+  gap: 0.45rem;
+  align-items: center;
+  margin: 0.22rem 0;
+  padding: 0.34rem 0.3rem;
+  border-radius: 0.58rem;
+  background: color-mix(in srgb, var(--resource-accent) 6%, var(--light));
+}
+
+.explorer-content [data-folderpath="ressources/jeux/index"]::before,
+.explorer-content [data-folderpath="ressources/schema/index"]::before {
+  display: grid;
+  width: 1.55rem;
+  height: 1.55rem;
+  flex: 0 0 1.55rem;
+  place-items: center;
+  border-radius: 0.43rem;
+  color: var(--resource-accent);
+  background: color-mix(in srgb, var(--resource-accent) 13%, var(--light));
+  content: var(--resource-icon);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+.explorer-content [data-folderpath="ressources/jeux/index"] {
+  --resource-accent: #704ce0;
+  --resource-icon: "🎮";
+}
+
+.explorer-content [data-folderpath="ressources/schema/index"] {
+  --resource-accent: #078a94;
+  --resource-icon: "⌁";
+}
+
+.explorer-content [data-folderpath="ressources/jeux/index"] > .folder-icon,
+.explorer-content [data-folderpath="ressources/schema/index"] > .folder-icon {
+  order: 3;
+  margin: 0 0.1rem 0 auto;
+  opacity: 0.6;
+}
+
+.explorer-content [data-folderpath="ressources/jeux/index"] .folder-title,
+.explorer-content [data-folderpath="ressources/schema/index"] .folder-title {
+  color: var(--dark);
+  font-size: 0.79rem;
+}
+
+.explorer-content a.nav-file-title[href$="/ressources/cisco-packet-tracer-commandes"],
+.explorer-content a.nav-file-title[href$="/ressources/index-protocoles-et-notions"] {
+  display: grid;
+  grid-template-columns: 1.55rem minmax(0, 1fr);
+  gap: 0.45rem;
+  align-items: center;
+  margin: 0.22rem 0;
+  padding: 0.34rem 0.3rem;
+  border-radius: 0.58rem;
+  color: var(--dark);
+  background: color-mix(in srgb, var(--explorer-resources) 5%, var(--light));
+  font-size: 0.77rem;
+  line-height: 1.25;
+  text-decoration: none;
+}
+
+.explorer-content a.nav-file-title[href$="/ressources/cisco-packet-tracer-commandes"]::before,
+.explorer-content a.nav-file-title[href$="/ressources/index-protocoles-et-notions"]::before {
+  display: grid;
+  width: 1.55rem;
+  height: 1.55rem;
+  place-items: center;
+  border-radius: 0.43rem;
+  color: var(--file-accent);
+  background: color-mix(in srgb, var(--file-accent) 13%, var(--light));
+  content: var(--file-icon);
+  font-family: var(--codeFont);
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.explorer-content a.nav-file-title[href$="/ressources/cisco-packet-tracer-commandes"] {
+  --file-accent: #d2741a;
+  --file-icon: ">_";
+}
+
+.explorer-content a.nav-file-title[href$="/ressources/index-protocoles-et-notions"] {
+  --file-accent: #1768ac;
+  --file-icon: "⌕";
+}
+
+@media all and ($mobile) {
+  .explorer-content ul.explorer-ul {
+    padding-inline: 0.8rem;
+  }
+
+  .explorer-content ul.explorer-ul > li > .folder-container {
+    min-height: 3rem;
+  }
+
+  .explorer-content ul.explorer-ul > li > .folder-container .folder-title {
+    font-size: 0.9rem;
+  }
+}
