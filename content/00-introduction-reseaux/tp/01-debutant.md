@@ -3,6 +3,10 @@ title: "TP débutant : topologies et modèle OSI"
 ---
 
 # TP 00 - Topologies et modele OSI - Version debutant
+
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/00-introduction-reseaux/tp/01-debutant.md" download>Télécharger ce TP en Markdown</a>
+
 > Chapitre associé : [[00-introduction-reseaux]]
 
 ## Objectifs

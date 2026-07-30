@@ -1,5 +1,9 @@
 # TP 1 – Projet : Réseau de la mairie de Bourg
 
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/01-couche-physique/tp/04-projet-mairie-cablage.md" download>Télécharger ce TP en Markdown</a>
+
+
 ### Cahier des charges
 
 La mairie de Bourg souhaite modéliser son **réseau interne** dans Cisco Packet Tracer.

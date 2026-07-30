@@ -3,6 +3,10 @@ title: "TP débutant : NAT et accès sécurisé"
 ---
 
 # TP 06 - NAT et acces securise - Version debutant
+
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/06-securite-et-acces/tp/01-debutant.md" download>Télécharger ce TP en Markdown</a>
+
 > Chapitre associé : [[06-securite-et-acces]]
 
 ## Objectifs

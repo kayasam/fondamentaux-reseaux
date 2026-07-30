@@ -3,6 +3,10 @@ title: "TP avancé : couche physique et câblage"
 ---
 
 # TP 01 - Couche physique et cablage - Version avancee
+
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/01-couche-physique/tp/02-avance.md" download>Télécharger ce TP en Markdown</a>
+
 > Chapitre associé : [[01-couche-physique]]
 
 ## Objectifs

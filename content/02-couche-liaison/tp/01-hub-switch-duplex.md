@@ -4,6 +4,10 @@ title: "01 - Hub, switch et duplex"
 
 # TP 01 - Hub vs switch et notions de duplex
 
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison/tp/01-hub-switch-duplex.md" download>Télécharger ce TP en Markdown</a>
+
+
 ## Objectifs
 
 - Observer les différences de comportement entre un **hub** et un **switch**.

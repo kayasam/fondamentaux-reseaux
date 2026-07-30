@@ -5,6 +5,10 @@ publier: true
 
 # TP 04 - Correction
 
+> [!TIP] Ressource de la correction
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison/tp/04-vlan-trunk-stp-correction.md" download>Télécharger cette correction en Markdown</a>
+
+
 > Correction du TP : [[04-vlan-trunk-stp]]
 
 ## Partie 1 - Topologie

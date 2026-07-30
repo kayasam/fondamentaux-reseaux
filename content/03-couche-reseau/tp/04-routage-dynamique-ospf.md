@@ -2,7 +2,11 @@
 title: "TP complémentaire : routage dynamique"
 ---
 
-# TP 03B - Routage dynamique et notions avancees - Version avancee
+# TP 04 - Routage dynamique OSPF et IPv6
+
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/03-couche-reseau/tp/04-routage-dynamique-ospf.md" download>Télécharger ce TP en Markdown</a>
+
 > Chapitre associé : [[03-couche-reseau]]
 
 ## Objectifs

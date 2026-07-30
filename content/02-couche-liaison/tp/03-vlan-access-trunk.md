@@ -4,6 +4,10 @@ title: "03 - VLAN : ports access et trunk"
 
 # TP 3.1 — VLAN de base (mode access)
 
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison/tp/03-vlan-access-trunk.md" download>Télécharger ce TP en Markdown</a>
+
+
 ### Table d’adressage
 
 |Nom|Type|Adresse IP|VLAN|Port connecté|

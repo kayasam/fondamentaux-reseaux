@@ -7,11 +7,10 @@ title: 03. Couche réseau
 > [!TIP] Ressources du chapitre
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/03-couche-reseau/03-couche-reseau-interactif.html" target="_blank">Ouvrir le cours interactif</a>
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/03-couche-reseau.md" download>Télécharger ce cours en Markdown</a>
-> - [[03-couche-reseau/tp/01-debutant|TP complémentaire : ARP, VLSM et IPv6]]
-> - [[03-couche-reseau/tp/02-avance|TP complémentaire : routage dynamique]]
-> - [[03-couche-reseau/tp/04-plages-ipv4|TP guidé : plages IPv4]]
-> - [[03-couche-reseau/tp/05-plan-adressage-vlsm|TP : plan d’adressage VLSM]]
-> - [[03-couche-reseau/tp/06-routage-ipv4|TP Packet Tracer : routage IPv4]]
+> - [[03-couche-reseau/tp/01-plages-ipv4|TP 1 : plages IPv4, CIDR et broadcast]]
+> - [[03-couche-reseau/tp/02-plan-adressage-vlsm|TP 2 : plan d’adressage VLSM]]
+> - [[03-couche-reseau/tp/03-routage-ipv4-statique|TP 3 : routage IPv4 statique (Packet Tracer)]]
+> - [[03-couche-reseau/tp/04-routage-dynamique-ospf|TP 4 : routage dynamique OSPF et IPv6]]
 > - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 
 Les trames Ethernet étudiées au chapitre 2 circulent dans un réseau local. Pour atteindre un autre réseau, il faut une adresse logique et des équipements capables de choisir un chemin : c'est le rôle de la **couche réseau**.

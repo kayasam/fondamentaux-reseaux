@@ -3,6 +3,10 @@ title: "TP avancé : DHCP, DNS et HTTP"
 ---
 
 # TP 05 - DHCP, DNS et web - Version avancee
+
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/05-services-reseau/tp/02-avance.md" download>Télécharger ce TP en Markdown</a>
+
 > Chapitre associé : [[05-services-reseau]]
 
 ## Objectifs

@@ -3,6 +3,10 @@ title: "TP avancé : NAT, DMZ et filtrage"
 ---
 
 # TP 06 - NAT, DMZ et filtrage - Version avancee
+
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/06-securite-et-acces/tp/02-avance.md" download>Télécharger ce TP en Markdown</a>
+
 > Chapitre associé : [[06-securite-et-acces]]
 
 ## Objectifs

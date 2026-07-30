@@ -3,6 +3,10 @@ title: "04 - VLAN, trunk et STP (avancé)"
 ---
 
 # TP 04 - VLAN, trunk et STP - Version avancee
+
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison/tp/04-vlan-trunk-stp.md" download>Télécharger ce TP en Markdown</a>
+
 > Chapitre associé : [[02-couche-liaison]]
 
 ## Objectifs

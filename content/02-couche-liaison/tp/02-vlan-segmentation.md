@@ -3,6 +3,10 @@ title: "02 - VLAN et segmentation (débutant)"
 ---
 
 # TP 02 - VLAN et segmentation - Version debutant
+
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison/tp/02-vlan-segmentation.md" download>Télécharger ce TP en Markdown</a>
+
 > Chapitre associé : [[02-couche-liaison]]
 
 ## Objectifs

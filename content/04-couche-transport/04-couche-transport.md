@@ -22,6 +22,11 @@ Un serveur peut faire fonctionner simultanément un site web, un service SSH et 
 > [!NOTE] Objectifs
 > À la fin de ce chapitre, vous saurez expliquer le rôle des ports, différencier TCP et UDP, lire un échange TCP simple et diagnostiquer l'accessibilité d'un service.
 
+> [!TIP] Vidéo (5 min) — Ports et protocoles
+> Un résumé visuel avant d'entrer dans le détail, par Cookie Connecté :
+>
+> https://www.youtube.com/watch?v=YSl6bordSh8
+
 ---
 
 ## 4.1 — De la machine à l'application
@@ -98,6 +103,10 @@ Une application peut produire davantage de données que le réseau ne peut en tr
 - le paquet IP est ensuite encapsulé dans une trame adaptée à la liaison.
 
 ![transport-segmentation-encapsulation.svg](Ressources/images/transport-segmentation-encapsulation.svg)
+
+L'exemple ci-dessus segmente un seul flux TCP. En réalité, un poste encapsule simultanément plusieurs protocoles applicatifs (certains sur TCP, d'autres sur UDP), et la machine distante effectue l'opération inverse : elle **décapsule** en remontant les couches.
+
+![transport-encapsulation-bidirectionnelle.svg](Ressources/images/transport-encapsulation-bidirectionnelle.svg)
 
 > [!IMPORTANT] Ne pas confondre les unités
 > - **Données** à la couche application ;

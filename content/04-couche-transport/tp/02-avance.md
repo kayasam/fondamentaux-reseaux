@@ -3,6 +3,10 @@ title: "TP avancé : TCP, UDP et diagnostic"
 ---
 
 # TP 04 - TCP, UDP et diagnostic - Version avancee
+
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/04-couche-transport/tp/02-avance.md" download>Télécharger ce TP en Markdown</a>
+
 > Chapitre associé : [[04-couche-transport]]
 
 ## Objectifs

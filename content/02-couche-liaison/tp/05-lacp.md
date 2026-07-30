@@ -4,6 +4,10 @@ title: "05 - Agrégation de liens LACP"
 
 # TP 05 - Agrégation de liens (LACP)
 
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison/tp/05-lacp.md" download>Télécharger ce TP en Markdown</a>
+
+
 ###  Commandes utilisables
 
 ```

@@ -5,6 +5,10 @@ publier: true
 
 # TP 03 - Correction
 
+> [!TIP] Ressource de la correction
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison/tp/03-vlan-access-trunk-correction.md" download>Télécharger cette correction en Markdown</a>
+
+
 > Correction du TP : [[03-vlan-access-trunk]]
 
 ## Partie A - VLAN de base en mode access

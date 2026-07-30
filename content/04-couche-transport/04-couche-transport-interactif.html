@@ -64,6 +64,23 @@ code{font-family:'Consolas','Cascadia Code',monospace;font-size:.88rem;color:#a8
 .vs-stat .label{color:var(--text-dim)}.vs-stat .value{font-weight:600}
 .vs-divider{display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;color:var(--text-dim);padding:0 .8rem}
 
+/* ── DIAGNOSTIC INTERACTIF ── */
+.diag-container{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:0;align-items:center;margin:1.3rem 0}
+.diag-node{background:var(--surface);border:2px solid var(--border);border-radius:var(--radius);padding:1.1rem .8rem;text-align:center;cursor:pointer;transition:all .2s}
+.diag-node:hover{border-color:var(--accent)}
+.diag-node.active{border-color:var(--accent);background:var(--surface2)}
+.diag-node h4{font-size:1.05rem;color:var(--text);margin-bottom:.3rem}
+.diag-node p{font-size:.8rem;color:var(--text-dim);margin:0}
+.diag-arrow{text-align:center;font-size:1.5rem;color:var(--text-dim);padding:0 .6rem}
+.diag-info{display:none;background:var(--surface2);border:1px solid var(--accent);border-radius:var(--radius);padding:1.1rem 1.3rem;margin:1rem 0 1.6rem}
+.diag-info.visible{display:block}
+.diag-info h5{color:var(--accent2);font-size:.95rem;margin-bottom:.5rem}
+.diag-opts{list-style:none;margin:.7rem 0 0;padding:0}
+.diag-opts li{font-size:.85rem;color:var(--text-dim);margin-bottom:.4rem;padding-left:1.1rem;position:relative}
+.diag-opts li::before{content:"–";position:absolute;left:0;color:var(--accent)}
+.diag-opts code{color:#a8d8ff;background:var(--code-bg);padding:.1rem .35rem;border-radius:4px;font-size:.82rem}
+@media(max-width:700px){.diag-container{grid-template-columns:1fr}.diag-arrow{display:none}}
+
 /* ── FILTER / RECAP ── */
 .filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1rem}
 .filter-btn{background:var(--surface);border:1px solid var(--border);color:var(--text-dim);padding:.35rem .85rem;border-radius:20px;font-size:.82rem;cursor:pointer;transition:all .2s}
@@ -82,6 +99,12 @@ code{font-family:'Consolas','Cascadia Code',monospace;font-size:.88rem;color:#a8
 .btn-restart{background:var(--accent);color:#000;border:none;padding:.6rem 1.4rem;border-radius:8px;font-weight:700;cursor:pointer;margin-top:1rem;font-size:.9rem}.btn-restart:hover{background:var(--accent2)}
 
 @media(max-width:600px){.vs-container{grid-template-columns:1fr}.vs-divider{padding:.5rem 0}.frame-field{min-width:50px;padding:.5rem .3rem}.frame-field .ff-name{font-size:.65rem}}
+
+/* ── VIDEO & DIAGRAM ── */
+.video-wrap{position:relative;padding-bottom:56.25%;height:0;overflow:hidden;margin:1rem 0 1.5rem;border-radius:var(--radius);border:1px solid var(--border)}
+.video-wrap iframe{position:absolute;top:0;left:0;width:100%;height:100%;border:0}
+.diagram-wrap{margin:1rem 0 1.5rem;overflow-x:auto}
+.diagram-wrap img{max-width:100%;height:auto;display:block;margin:0 auto}
 </style>
 <link rel="stylesheet" href="../Ressources/html-assets/course-common.css">
 <script src="../Ressources/html-assets/course-common.js" defer></script>
@@ -117,6 +140,11 @@ code{font-family:'Consolas','Cascadia Code',monospace;font-size:.88rem;color:#a8
   </ul>
 
   <p>Une <strong>socket</strong> = adresse IP + port. Exemple : <code>192.168.1.10:443</code> identifie un serveur HTTPS.</p>
+
+  <h3>Vidéo (5 min) — Ports et protocoles</h3>
+  <div class="video-wrap">
+    <iframe src="https://www.youtube.com/embed/YSl6bordSh8?si=VZRRR0KvINPGS0Gb" title="Ports et protocoles - Cookie Connecté" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  </div>
 
   <h2>TCP vs UDP — comparaison</h2>
 
@@ -180,6 +208,12 @@ code{font-family:'Consolas','Cascadia Code',monospace;font-size:.88rem;color:#a8
   <div class="callout note">
     <div class="callout-title">Session réseau</div>
     Un serveur <strong>écoute</strong> sur un port fixe (ex. 443). Le client utilise un <strong>port temporaire</strong> (ex. 51324) pour la réponse. La session est identifiée par le quadruplet : <code>IP src + port src + IP dst + port dst</code>.
+  </div>
+
+  <h2>Encapsulation et décapsulation</h2>
+  <p>Côté client, chaque couche <strong>ajoute</strong> son en-tête en descendant (encapsulation). Côté serveur, chaque couche <strong>retire</strong> le sien en remontant (décapsulation) :</p>
+  <div class="diagram-wrap">
+    <img src="../../Ressources/images/transport-encapsulation-bidirectionnelle.svg" alt="Encapsulation côté client et décapsulation côté serveur, pour des protocoles TCP (HTTP, SMTP) et UDP (DNS, DHCP)">
   </div>
 </div>
 
@@ -412,15 +446,81 @@ code{font-family:'Consolas','Cascadia Code',monospace;font-size:.88rem;color:#a8
 <div id="tab-diag" class="tab-content">
 
   <h2>Outils de diagnostic couche 4</h2>
+  <p>Un diagnostic couche 4 se joue à trois endroits différents. Cliquez sur un poste pour voir quelle commande lancer, où, et ce qu'elle répond :</p>
 
-  <h3>netstat / ss — voir les connexions actives</h3>
-  <div class="code-block"><pre><code>netstat -an       # Toutes les connexions (Windows / Linux)
-netstat -tulnp    # Linux : ports en écoute + processus
-ss -tulnp         # Linux : version moderne de netstat</code></pre><button class="copy-btn" onclick="copyCode(this)">Copier</button></div>
+  <div class="diag-container">
+    <div class="diag-node" id="diagn-client" onclick="showDiagInfo('client')">
+      <h4>CLIENT</h4>
+      <p>Le port distant est-il joignable ?</p>
+    </div>
+    <div class="diag-arrow">→</div>
+    <div class="diag-node" id="diagn-reseau" onclick="showDiagInfo('reseau')">
+      <h4>RÉSEAU</h4>
+      <p>Que voit-on passer sur le fil ?</p>
+    </div>
+    <div class="diag-arrow">→</div>
+    <div class="diag-node" id="diagn-serveur" onclick="showDiagInfo('serveur')">
+      <h4>SERVEUR</h4>
+      <p>Le service écoute-t-il vraiment ?</p>
+    </div>
+  </div>
 
-  <h3>telnet / nc — tester un port distant</h3>
-  <div class="code-block"><pre><code>telnet 192.168.1.10 80   # Teste le port 80
-nc -zv 192.168.1.10 443  # Test TCP rapide (Linux)</code></pre><button class="copy-btn" onclick="copyCode(this)">Copier</button></div>
+  <div class="diag-info" id="diagi-client">
+    <h5>Sur le poste CLIENT — tester un port distant</h5>
+    <p>À taper sur la machine qui essaie de contacter le service, pas sur le serveur.</p>
+    <div class="code-block"><pre><code># Linux — test applicatif (le service HTTP répond-il vraiment ?)
+curl -I https://203.0.113.10
+
+# Linux — test du port seul, sans dépendre d'un protocole applicatif
+nmap -p 443 203.0.113.10</code></pre><button class="copy-btn" onclick="copyCode(this)">Copier</button></div>
+    <ul class="diag-opts">
+      <li><code>-I</code> (curl) : ne récupère que les en-têtes HTTP, pas la page entière → confirme qu'un serveur web répond bien sur ce port.</li>
+      <li><code>-p 443</code> (nmap) : limite le scan à ce port précis → répond <code>open</code>, <code>closed</code> ou <code>filtered</code>.</li>
+    </ul>
+    <div class="code-block"><pre><code># Windows PowerShell
+Test-NetConnection 203.0.113.10 -Port 443</code></pre><button class="copy-btn" onclick="copyCode(this)">Copier</button></div>
+    <ul class="diag-opts">
+      <li><code>-Port 443</code> : port à tester → la commande tente une connexion TCP et renvoie <code>TcpTestSucceeded : True/False</code>.</li>
+    </ul>
+    <div class="callout note" style="margin-top:.8rem">
+      <div class="callout-title">Pourquoi pas telnet / nc ?</div>
+      Ces outils historiques ne sont plus installés par défaut sur la plupart des systèmes récents. <code>nmap</code>, <code>curl</code> et <code>Test-NetConnection</code> couvrent les mêmes besoins et sont les outils réellement utilisés aujourd'hui.
+    </div>
+  </div>
+
+  <div class="diag-info" id="diagi-reseau">
+    <h5>Entre les deux — observer les échanges (Wireshark)</h5>
+    <p>À lancer sur un poste qui peut capturer le trafic (le client, le serveur, ou un équipement intermédiaire en miroir de port).</p>
+    <div class="code-block"><pre><code>tcp.port == 443
+tcp.flags.syn == 1
+udp.port == 53</code></pre><button class="copy-btn" onclick="copyCode(this)">Copier</button></div>
+    <ul class="diag-opts">
+      <li><code>tcp.port == 443</code> : n'affiche que les paquets liés à ce port, dans les deux sens.</li>
+      <li><code>tcp.flags.syn == 1</code> : isole les segments d'ouverture de connexion (handshake).</li>
+      <li><code>udp.port == 53</code> : isole les échanges DNS.</li>
+    </ul>
+  </div>
+
+  <div class="diag-info" id="diagi-serveur">
+    <h5>Sur le poste SERVEUR — vérifier qu'un service écoute</h5>
+    <p>À taper sur la machine qui est censée héberger le service, avant même de tester depuis le client.</p>
+    <div class="code-block"><pre><code># Linux
+ss -lntup</code></pre><button class="copy-btn" onclick="copyCode(this)">Copier</button></div>
+    <ul class="diag-opts">
+      <li><code>-l</code> : uniquement les sockets en écoute (listening).</li>
+      <li><code>-n</code> : adresses et ports en numérique, sans résolution DNS (plus rapide).</li>
+      <li><code>-t</code> : connexions TCP.</li>
+      <li><code>-u</code> : connexions UDP.</li>
+      <li><code>-p</code> : affiche le processus qui écoute sur chaque port.</li>
+    </ul>
+    <div class="code-block"><pre><code># Windows PowerShell
+Get-NetTCPConnection -State Listen
+Get-NetUDPEndpoint</code></pre><button class="copy-btn" onclick="copyCode(this)">Copier</button></div>
+    <ul class="diag-opts">
+      <li><code>-State Listen</code> : ne garde que les connexions TCP en attente d'une connexion entrante.</li>
+      <li><code>Get-NetUDPEndpoint</code> : liste les ports UDP ouverts (UDP n'a pas d'état « Listen »).</li>
+    </ul>
+  </div>
 
   <h2>États TCP courants</h2>
   <div class="table-wrap">
@@ -519,6 +619,15 @@ function showTab(id){document.querySelectorAll('.tab-content').forEach(function(
 function copyCode(btn){var pre=btn.previousElementSibling;navigator.clipboard.writeText(pre.textContent).then(function(){btn.textContent='Copié !';btn.classList.add('copied');setTimeout(function(){btn.textContent='Copier';btn.classList.remove('copied')},2000)})}
 
 // ─── SEGMENT FIELDS ─────────────────────────────────────────────────────────
+// ─── DIAGNOSTIC ─────────────────────────────────────────────────────────────
+function showDiagInfo(id){
+  var info=document.getElementById('diagi-'+id);
+  var vis=info.classList.contains('visible');
+  document.querySelectorAll('#tab-diag .diag-info').forEach(function(f){f.classList.remove('visible')});
+  document.querySelectorAll('#tab-diag .diag-node').forEach(function(f){f.classList.remove('active')});
+  if(!vis){info.classList.add('visible');event.currentTarget.classList.add('active')}
+}
+
 function showSegInfo(proto,id){
   var prefix=proto==='tcp'?'tcpi-':'udpi-';
   var frameId=proto==='tcp'?'tcp-frame':'udp-frame';

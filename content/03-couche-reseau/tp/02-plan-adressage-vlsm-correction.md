@@ -1,11 +1,15 @@
 ---
-title: Correction 05 - Plan d'adressage VLSM
+title: Correction 02 - Plan d'adressage VLSM
 publier: true
 ---
 
-# TP 05 - Correction
+# TP 02 - Correction
 
-> Correction du TP : [[05-plan-adressage-vlsm]]
+> [!TIP] Ressource de la correction
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/03-couche-reseau/tp/02-plan-adressage-vlsm-correction.md" download>Télécharger cette correction en Markdown</a>
+
+
+> Correction du TP : [[02-plan-adressage-vlsm]]
 
 ## Étape 1 — Masque nécessaire par besoin
 

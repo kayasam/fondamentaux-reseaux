@@ -1,5 +1,9 @@
 # TP 5.5 – Route par défaut et NAT (PAT)
 
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/06-securite-et-acces/tp/04-route-par-defaut-nat-pat.md" download>Télécharger ce TP en Markdown</a>
+
+
 ## Objectifs
 
 - Configurer une route statique par défaut.

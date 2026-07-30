@@ -5,6 +5,10 @@ publier: true
 
 # TP 06 - Correction
 
+> [!TIP] Ressource de la correction
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison/tp/06-lldp-correction.md" download>Télécharger cette correction en Markdown</a>
+
+
 > Correction du TP : [[06-lldp]]
 
 ## Partie 1 - Activation de LLDP

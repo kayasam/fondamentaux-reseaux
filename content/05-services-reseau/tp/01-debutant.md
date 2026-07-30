@@ -3,6 +3,10 @@ title: "TP débutant : DHCP et DNS"
 ---
 
 # TP 05 - DHCP et DNS - Version debutant
+
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/05-services-reseau/tp/01-debutant.md" download>Télécharger ce TP en Markdown</a>
+
 > Chapitre associé : [[05-services-reseau]]
 
 ## Objectifs

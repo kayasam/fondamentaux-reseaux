@@ -4,6 +4,10 @@ title: "06 - Découverte des voisins avec LLDP"
 
 # TP 06 - Protocole de découverte LLDP
 
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison/tp/06-lldp.md" download>Télécharger ce TP en Markdown</a>
+
+
 ###  Commandes utilisables
 
 ```

@@ -1,5 +1,9 @@
 # TP 4.2 — Plan d’adressage avec VLSM
 
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/03-couche-reseau/tp/02-plan-adressage-vlsm.md" download>Télécharger ce TP en Markdown</a>
+
+
 ## Objectifs
 
 - Concevoir un plan d’adressage **hiérarchique et optimisé**.

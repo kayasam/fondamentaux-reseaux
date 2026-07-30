@@ -3,6 +3,10 @@ title: "TP avancé : topologies et modèle OSI"
 ---
 
 # TP 00 - Topologies et modele OSI - Version avancee
+
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/00-introduction-reseaux/tp/02-avance.md" download>Télécharger ce TP en Markdown</a>
+
 > Chapitre associé : [[00-introduction-reseaux]]
 
 ## Objectifs

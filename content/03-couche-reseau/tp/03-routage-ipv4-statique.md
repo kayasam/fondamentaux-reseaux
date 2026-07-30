@@ -1,5 +1,9 @@
 # TP 4.7 — Routage IPv4 de base
 
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/03-couche-reseau/tp/03-routage-ipv4-statique.md" download>Télécharger ce TP en Markdown</a>
+
+
 ##  Commandes utiles
 
 ```

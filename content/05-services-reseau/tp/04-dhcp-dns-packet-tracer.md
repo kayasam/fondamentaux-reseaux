@@ -1,5 +1,9 @@
 # TP 6.2 — DHCP et DNS sur le LAN Administration
 
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/05-services-reseau/tp/04-dhcp-dns-packet-tracer.md" download>Télécharger ce TP en Markdown</a>
+
+
 ## Objectif
 
 Configurer un **serveur** dans le **LAN Administration** pour fournir :

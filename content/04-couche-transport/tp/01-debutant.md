@@ -3,6 +3,10 @@ title: "TP débutant : TCP, UDP et ports"
 ---
 
 # TP 04 - TCP, UDP et ports - Version debutant
+
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/04-couche-transport/tp/01-debutant.md" download>Télécharger ce TP en Markdown</a>
+
 > Chapitre associé : [[04-couche-transport]]
 
 ## Objectifs

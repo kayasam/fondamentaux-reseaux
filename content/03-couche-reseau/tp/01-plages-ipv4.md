@@ -1,5 +1,9 @@
 # TP 4.2 simplifié — Comprendre les plages IP et les broadcast
 
+> [!TIP] Ressource du TP
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/03-couche-reseau/tp/01-plages-ipv4.md" download>Télécharger ce TP en Markdown</a>
+
+
 ### Objectif
 
 - Comprendre ce qu’est un **réseau**, une **plage d’hôtes** et un **broadcast**

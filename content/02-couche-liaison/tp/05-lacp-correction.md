@@ -5,6 +5,10 @@ publier: true
 
 # TP 05 - Correction
 
+> [!TIP] Ressource de la correction
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison/tp/05-lacp-correction.md" download>Télécharger cette correction en Markdown</a>
+
+
 > Correction du TP : [[05-lacp]]
 
 ## Partie 1 - Mise en place

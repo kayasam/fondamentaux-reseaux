@@ -5,6 +5,10 @@ publier: true
 
 # TP 01 - Correction
 
+> [!TIP] Ressource de la correction
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison/tp/01-hub-switch-duplex-correction.md" download>Télécharger cette correction en Markdown</a>
+
+
 > Correction du TP : [[01-hub-switch-duplex]]
 
 ## Partie 1 - Hub
