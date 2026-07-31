@@ -62,6 +62,24 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
 .pat-step strong{color:var(--text)}
 @media(max-width:760px){.nat-intro,.pat-steps{grid-template-columns:1fr}.pat-stage{grid-template-columns:1fr}.pat-arrow{transform:rotate(90deg);min-height:34px}.pat-flow{grid-template-columns:1fr}.pat-flow-arrow{transform:rotate(90deg);text-align:center}}
 
+/* Atelier NAT — progression par usages et quadruplets */
+.nat-workshop{--sketch-red:#ef4444;--sketch-blue:#3b82f6;--sketch-green:#16a36a;--sketch-yellow:#d97706}
+.nat-lead{font-size:1.02rem;max-width:760px}.quad-definition{display:grid;grid-template-columns:auto 1fr;gap:.75rem;align-items:center;background:var(--surface);border:1px dashed var(--accent);border-radius:12px;padding:.85rem 1rem;margin:1rem 0}
+.quad-definition strong{color:var(--accent2)}.quad-formula{font-family:Consolas,monospace;font-size:.8rem;background:var(--code-bg);border-radius:8px;padding:.5rem .75rem;color:var(--text);text-align:center;white-space:nowrap;overflow-x:auto}
+.nat-lesson-tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:.6rem;margin:1.4rem 0 1rem}
+.nat-lesson-tab{border:1px solid var(--border);border-radius:12px;background:var(--surface);color:var(--text-dim);padding:.85rem .7rem;cursor:pointer;text-align:left;transition:.2s}
+.nat-lesson-tab span{display:block;color:var(--text);font-weight:750;margin-bottom:.15rem}.nat-lesson-tab small{display:block;line-height:1.35}.nat-lesson-tab:hover{border-color:var(--accent)}.nat-lesson-tab.active{background:color-mix(in srgb,var(--accent) 13%,var(--surface));border-color:var(--accent);box-shadow:0 0 0 2px color-mix(in srgb,var(--accent) 16%,transparent)}
+.nat-lesson-panel{display:none}.nat-lesson-panel.active{display:block}.nat-panel-head{margin-bottom:1rem}.nat-panel-head h3{font-size:1.2rem;color:var(--text);margin:.2rem 0}.nat-panel-head p{color:var(--text-dim);margin:0}
+.sketch-board{position:relative;overflow:hidden;background:var(--surface);border:2px solid var(--border);border-radius:18px;padding:.75rem;margin:1rem 0;box-shadow:3px 4px 0 color-mix(in srgb,var(--border) 70%,transparent)}
+.sketch-board::before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.24;background:repeating-linear-gradient(0deg,transparent 0 27px,color-mix(in srgb,var(--accent) 15%,transparent) 28px 29px)}
+.sketch-board svg{position:relative;width:100%;height:auto;display:block}.sketch-line{fill:none;stroke:var(--text-dim);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}.sketch-device{fill:var(--surface2);stroke:var(--text);stroke-width:2.5}.sketch-label{fill:var(--text);font:700 15px 'Segoe Print','Comic Sans MS',cursive}.sketch-small{fill:var(--text-dim);font:12px 'Segoe Print','Comic Sans MS',cursive}.sketch-public{fill:var(--sketch-blue)}.sketch-private{fill:var(--sketch-red)}
+.flow-out,.flow-in{transition:opacity .25s,stroke-width .25s}.nat-lesson-panel[data-direction="out"] .flow-in{opacity:.12}.nat-lesson-panel[data-direction="in"] .flow-out{opacity:.12}.nat-lesson-panel[data-direction="out"] .flow-out,.nat-lesson-panel[data-direction="in"] .flow-in{opacity:1;stroke-width:4}.client-one,.client-two{transition:opacity .2s}.nat-lesson-panel[data-client="1"] .client-two{opacity:.25}.nat-lesson-panel[data-client="2"] .client-one{opacity:.25}
+.scenario-controls{display:flex;gap:.55rem;flex-wrap:wrap;margin:1rem 0}.scenario-btn{background:var(--surface2);border:1px solid var(--border);color:var(--text);border-radius:999px;padding:.5rem .85rem;cursor:pointer;font-size:.82rem}.scenario-btn:hover{border-color:var(--accent)}.scenario-btn.active{background:var(--accent);border-color:var(--accent);color:#08111d;font-weight:750}
+.quadruplet-stage{display:grid;grid-template-columns:1fr 54px 1fr;gap:.7rem;align-items:stretch;margin:1rem 0}.quad-card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:.8rem}.quad-card h4{font-size:.82rem;color:var(--text-dim);margin:0 0 .65rem;text-transform:uppercase;letter-spacing:.05em}.quad-grid{display:grid;grid-template-columns:1.18fr .65fr 1.18fr .65fr;gap:.4rem}.quad-field{position:relative;background:var(--code-bg);border:1px solid transparent;border-radius:9px;padding:.55rem .3rem;min-width:0}.quad-field small{display:block;min-height:1.4rem;color:var(--text-dim);font-size:.62rem;line-height:1.1;white-space:normal}.quad-value{display:block;color:var(--text);font:700 .7rem Consolas,monospace;overflow-wrap:anywhere}.quad-field.change-origin{border-style:dashed;border-color:var(--sketch-red)}.quad-field.is-change{border-color:var(--sketch-blue);background:color-mix(in srgb,var(--sketch-blue) 13%,var(--code-bg));box-shadow:inset 0 -3px 0 var(--sketch-blue)}.quad-field.is-change::after{content:"Δ";position:absolute;right:.25rem;top:.18rem;color:var(--sketch-blue);font-size:.72rem;font-weight:900}.quad-field.is-same::after{content:"=";position:absolute;right:.3rem;top:.18rem;color:var(--success);font-size:.75rem;font-weight:850}.translation-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--accent);font-size:1.6rem;font-weight:850;text-align:center}.translation-glyph{display:block}.translation-arrow small{font-size:.62rem;color:var(--text-dim);line-height:1.2}
+.translation-table{margin-top:1rem}.translation-table caption{text-align:left;color:var(--text);font-weight:750;margin-bottom:.45rem}.translation-table tr.entry-hidden{display:none}.translation-table tr.entry-focus td{background:color-mix(in srgb,var(--accent) 12%,var(--surface2))}.translation-table code{white-space:nowrap}.scenario-explain{background:var(--code-bg);border-left:4px solid var(--accent);border-radius:9px;padding:.75rem .9rem;color:var(--text);min-height:3.2rem}.change-legend{display:flex;gap:1rem;flex-wrap:wrap;color:var(--text-dim);font-size:.76rem;margin:.55rem 0}.change-legend i{display:inline-block;width:.75rem;height:.75rem;border-radius:3px;margin-right:.3rem;vertical-align:-.08rem}.change-legend .legend-before{border:1px dashed var(--sketch-red)}.change-legend .legend-after{background:var(--sketch-blue)}.change-legend .legend-same{background:var(--success)}
+.bonus-note{border:1px dashed var(--border);border-radius:12px;padding:.85rem 1rem;color:var(--text-dim);margin-top:1rem}.bonus-note strong{color:var(--text)}
+@media(max-width:760px){.nat-lesson-tabs{grid-template-columns:1fr}.nat-lesson-tab{text-align:center}.quad-definition{grid-template-columns:1fr}.quad-formula{font-size:.72rem}.quadruplet-stage{grid-template-columns:1fr}.translation-arrow{min-height:52px;transform:none}.translation-glyph{transform:rotate(90deg);line-height:1}.quad-grid{grid-template-columns:1fr 1fr}.quad-value{font-size:.79rem}.quad-field{padding:.55rem .5rem}.sketch-board{padding:.25rem}.sketch-label{font-size:12px}.sketch-small{font-size:10px}}
+
 /* FW rules interactive */
 .fw-rules{margin:1.2rem 0}.fw-rule{display:grid;grid-template-columns:60px 1fr 80px;gap:.6rem;align-items:center;padding:.6rem .8rem;border:1px solid var(--border);background:var(--surface);transition:all .3s;font-size:.88rem}
 .fw-rule:first-child{border-radius:var(--radius) var(--radius) 0 0}.fw-rule:last-child{border-radius:0 0 var(--radius) var(--radius)}.fw-rule+.fw-rule{border-top:none}
@@ -111,6 +129,134 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
 <!-- TAB 1 : NAT / PAT                                                        -->
 <!-- ═══════════════════════════════════════════════════════════════════════════ -->
 <div id="tab-nat" class="tab-content active">
+
+  <section class="nat-workshop" aria-labelledby="nat-workshop-title">
+    <h2 id="nat-workshop-title">Comprendre le NAT par la table de translation</h2>
+    <p class="nat-lead">Le routeur ne « devine » pas où renvoyer les réponses : il <strong>modifie un quadruplet</strong>, mémorise la correspondance dans sa <strong>table de translation</strong>, puis effectue l'opération inverse au retour.</p>
+
+    <div class="quad-definition">
+      <strong>Un quadruplet identifie un flux</strong>
+      <div class="quad-formula">[ IP source : port source ] → [ IP destination : port destination ]</div>
+    </div>
+
+    <div class="nat-lesson-tabs" role="tablist" aria-label="Parcours NAT">
+      <button class="nat-lesson-tab active" role="tab" aria-selected="true" aria-controls="nat-lesson-pat" onclick="natLessonTab('pat',this)"><span>1. Sortir vers Internet</span><small>PAT / SNAT — cas le plus courant</small></button>
+      <button class="nat-lesson-tab" role="tab" aria-selected="false" aria-controls="nat-lesson-dnat" onclick="natLessonTab('dnat',this)"><span>2. Publier un service</span><small>DNAT — redirection de port</small></button>
+      <button class="nat-lesson-tab" role="tab" aria-selected="false" aria-controls="nat-lesson-static" onclick="natLessonTab('static',this)"><span>3. Cas 1:1</span><small>NAT statique — complément</small></button>
+    </div>
+
+    <!-- PARCOURS 1 : PAT / SNAT -->
+    <section id="nat-lesson-pat" class="nat-lesson-panel active" role="tabpanel" data-direction="out" data-client="1">
+      <div class="nat-panel-head">
+        <h3>PAT : plusieurs machines, une seule IP publique</h3>
+        <p>Observez d'abord PC1, puis PC2. Le routeur traduit la <strong>source</strong> à l'aller et utilise sa table pour traduire la <strong>destination</strong> au retour.</p>
+      </div>
+
+      <div class="sketch-board">
+        <svg viewBox="0 0 900 280" role="img" aria-label="Deux ordinateurs privés communiquent avec un serveur web à travers un routeur PAT">
+          <defs>
+            <marker id="sketch-arrow-red" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9" fill="none" stroke="#ef4444" stroke-width="1.8"/></marker>
+            <marker id="sketch-arrow-blue" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9" fill="none" stroke="#3b82f6" stroke-width="1.8"/></marker>
+          </defs>
+          <g class="client-one">
+            <rect class="sketch-device" x="38" y="42" width="105" height="62" rx="5"/><path class="sketch-line" d="M48 52 L133 52 L133 91 L48 91 Z M70 104 L65 116 L116 116 L110 104"/>
+            <text class="sketch-label" x="90" y="136" text-anchor="middle">PC1</text><text class="sketch-small sketch-private" x="90" y="154" text-anchor="middle">192.168.1.10</text>
+          </g>
+          <g class="client-two">
+            <rect class="sketch-device" x="38" y="176" width="105" height="62" rx="5"/><path class="sketch-line" d="M48 186 L133 186 L133 225 L48 225 Z M70 238 L65 250 L116 250 L110 238"/>
+            <text class="sketch-label" x="90" y="270" text-anchor="middle">PC2 — 192.168.1.20</text>
+          </g>
+          <g>
+            <path class="sketch-device" d="M356 104 Q365 91 379 104 L389 61 M407 104 L407 55 M430 104 L443 65 L458 104 Z"/><rect class="sketch-device" x="338" y="104" width="132" height="65" rx="12"/><circle cx="361" cy="139" r="4" fill="var(--success)"/><circle cx="379" cy="139" r="4" fill="var(--success)"/>
+            <text class="sketch-label" x="404" y="193" text-anchor="middle">Routeur PAT</text><text class="sketch-small" x="404" y="211" text-anchor="middle">LAN 192.168.1.1</text><text class="sketch-small sketch-public" x="404" y="228" text-anchor="middle">WAN 203.0.113.1</text>
+          </g>
+          <g>
+            <path class="sketch-device" d="M735 80 L790 50 L845 80 L845 190 L790 220 L735 190 Z M735 80 L790 110 L845 80 M790 110 L790 220 M748 129 L777 145 M803 145 L831 129 M748 164 L777 180 M803 180 L831 164"/>
+            <text class="sketch-label" x="790" y="245" text-anchor="middle">Serveur Web</text><text class="sketch-small" x="790" y="263" text-anchor="middle">93.184.216.34:443</text>
+          </g>
+          <path class="sketch-line flow-out client-one" d="M145 82 C225 77 276 108 338 128" stroke="#ef4444" marker-end="url(#sketch-arrow-red)"/>
+          <path class="sketch-line flow-out client-two" d="M145 205 C225 203 278 168 338 151" stroke="#ef4444" marker-end="url(#sketch-arrow-red)"/>
+          <path class="sketch-line flow-out" d="M470 129 C565 101 646 107 733 126" stroke="#3b82f6" marker-end="url(#sketch-arrow-blue)"/>
+          <path class="sketch-line flow-in" d="M733 165 C637 190 555 187 470 156" stroke="#3b82f6" marker-end="url(#sketch-arrow-blue)"/>
+          <path class="sketch-line flow-in client-one" d="M338 145 C267 128 222 105 145 94" stroke="#ef4444" marker-end="url(#sketch-arrow-red)"/>
+          <path class="sketch-line flow-in client-two" d="M338 160 C267 181 222 209 145 217" stroke="#ef4444" marker-end="url(#sketch-arrow-red)"/>
+          <text class="sketch-small" x="238" y="33" text-anchor="middle">socket privée</text><text class="sketch-small" x="595" y="78" text-anchor="middle">socket publique</text>
+        </svg>
+      </div>
+
+      <div class="scenario-controls" aria-label="Étapes PAT">
+        <button class="scenario-btn active" data-step="p1out" onclick="natScenarioStep('pat','p1out',this)">1. PC1 envoie</button>
+        <button class="scenario-btn" data-step="p2out" onclick="natScenarioStep('pat','p2out',this)">2. PC2 envoie</button>
+        <button class="scenario-btn" data-step="p1in" onclick="natScenarioStep('pat','p1in',this)">3. Réponse vers PC1</button>
+        <button class="scenario-btn" data-step="p2in" onclick="natScenarioStep('pat','p2in',this)">4. Réponse vers PC2</button>
+      </div>
+
+      <div class="quadruplet-stage">
+        <article class="quad-card"><h4 data-role="before-title">Avant le routeur</h4><div class="quad-grid">
+          <div class="quad-field"><small>IP source</small><span class="quad-value" data-phase="before" data-field="sip"></span></div>
+          <div class="quad-field"><small>Port source</small><span class="quad-value" data-phase="before" data-field="sport"></span></div>
+          <div class="quad-field"><small>IP destination</small><span class="quad-value" data-phase="before" data-field="dip"></span></div>
+          <div class="quad-field"><small>Port destination</small><span class="quad-value" data-phase="before" data-field="dport"></span></div>
+        </div></article>
+        <div class="translation-arrow"><span class="translation-glyph">→</span><small>traduction<br>du routeur</small></div>
+        <article class="quad-card"><h4 data-role="after-title">Après le routeur</h4><div class="quad-grid">
+          <div class="quad-field"><small>IP source</small><span class="quad-value" data-phase="after" data-field="sip"></span></div>
+          <div class="quad-field"><small>Port source</small><span class="quad-value" data-phase="after" data-field="sport"></span></div>
+          <div class="quad-field"><small>IP destination</small><span class="quad-value" data-phase="after" data-field="dip"></span></div>
+          <div class="quad-field"><small>Port destination</small><span class="quad-value" data-phase="after" data-field="dport"></span></div>
+        </div></article>
+      </div>
+      <div class="change-legend"><span><i class="legend-before"></i>champ observé avant traduction</span><span><i class="legend-after"></i>champ modifié par le routeur</span><span><i class="legend-same"></i>champ inchangé</span></div>
+      <div class="scenario-explain" data-role="explain"></div>
+
+      <div class="table-wrap translation-table"><table>
+        <caption>Table PAT conservée par le routeur</caption>
+        <thead><tr><th>Socket privée (LAN)</th><th>Socket publique (WAN)</th><th>Destination du flux</th></tr></thead>
+        <tbody>
+          <tr data-entry="1"><td><code>192.168.1.10:51532</code></td><td><code>203.0.113.1:10001</code></td><td><code>93.184.216.34:443</code></td></tr>
+          <tr data-entry="2" class="entry-hidden"><td><code>192.168.1.20:51533</code></td><td><code>203.0.113.1:10002</code></td><td><code>93.184.216.34:443</code></td></tr>
+        </tbody>
+      </table></div>
+      <div class="bonus-note"><strong>Masquerade sous Linux :</strong> c'est une façon automatique d'appliquer ce SNAT/PAT avec l'adresse de l'interface de sortie. Le mécanisme pédagogique reste le même.</div>
+    </section>
+
+    <!-- PARCOURS 2 : DNAT -->
+    <section id="nat-lesson-dnat" class="nat-lesson-panel" role="tabpanel" data-direction="in" data-client="1">
+      <div class="nat-panel-head"><h3>DNAT : publier un serveur interne</h3><p>Une règle connue à l'avance associe une socket publique à une socket privée. À l'aller, le routeur modifie la <strong>destination</strong>.</p></div>
+      <div class="sketch-board"><svg viewBox="0 0 900 260" role="img" aria-label="Un client Internet accède à un serveur privé grâce à une redirection DNAT">
+        <defs><marker id="dnat-arrow" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9" fill="none" stroke="#3b82f6" stroke-width="1.8"/></marker><marker id="dnat-return" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 L9 4.5 L0 9" fill="none" stroke="#ef4444" stroke-width="1.8"/></marker></defs>
+        <g><rect class="sketch-device" x="38" y="80" width="120" height="72" rx="7"/><path class="sketch-line" d="M49 92 L147 92 L147 137 L49 137 Z M78 152 L70 167 L128 167 L120 152"/><text class="sketch-label" x="98" y="194" text-anchor="middle">Client Internet</text><text class="sketch-small" x="98" y="213" text-anchor="middle">198.51.100.42</text></g>
+        <g><rect class="sketch-device" x="363" y="71" width="150" height="90" rx="17"/><path class="sketch-line" d="M380 96 L495 96 M380 120 L495 120"/><text class="sketch-label" x="438" y="190" text-anchor="middle">Pare-feu DNAT</text><text class="sketch-small sketch-public" x="438" y="211" text-anchor="middle">203.0.113.1:8443</text></g>
+        <g><path class="sketch-device" d="M738 64 L792 42 L846 64 L846 171 L792 194 L738 171 Z M738 64 L792 88 L846 64 M792 88 L792 194"/><text class="sketch-label" x="792" y="220" text-anchor="middle">Serveur privé</text><text class="sketch-small sketch-private" x="792" y="239" text-anchor="middle">192.168.1.50:443</text></g>
+        <path class="sketch-line flow-in" d="M160 104 C244 81 297 84 361 107" stroke="#3b82f6" marker-end="url(#dnat-arrow)"/><path class="sketch-line flow-in" d="M514 108 C597 82 659 86 736 109" stroke="#3b82f6" marker-end="url(#dnat-arrow)"/>
+        <path class="sketch-line flow-out" d="M736 145 C648 174 591 171 514 143" stroke="#ef4444" marker-end="url(#dnat-return)"/><path class="sketch-line flow-out" d="M361 143 C285 169 235 166 160 139" stroke="#ef4444" marker-end="url(#dnat-return)"/>
+      </svg></div>
+      <div class="scenario-controls"><button class="scenario-btn active" data-step="request" onclick="natScenarioStep('dnat','request',this)">1. Requête entrante</button><button class="scenario-btn" data-step="response" onclick="natScenarioStep('dnat','response',this)">2. Réponse sortante</button></div>
+      <div class="quadruplet-stage">
+        <article class="quad-card"><h4 data-role="before-title"></h4><div class="quad-grid"><div class="quad-field"><small>IP source</small><span class="quad-value" data-phase="before" data-field="sip"></span></div><div class="quad-field"><small>Port source</small><span class="quad-value" data-phase="before" data-field="sport"></span></div><div class="quad-field"><small>IP destination</small><span class="quad-value" data-phase="before" data-field="dip"></span></div><div class="quad-field"><small>Port destination</small><span class="quad-value" data-phase="before" data-field="dport"></span></div></div></article>
+        <div class="translation-arrow"><span class="translation-glyph">→</span><small>traduction<br>du routeur</small></div>
+        <article class="quad-card"><h4 data-role="after-title"></h4><div class="quad-grid"><div class="quad-field"><small>IP source</small><span class="quad-value" data-phase="after" data-field="sip"></span></div><div class="quad-field"><small>Port source</small><span class="quad-value" data-phase="after" data-field="sport"></span></div><div class="quad-field"><small>IP destination</small><span class="quad-value" data-phase="after" data-field="dip"></span></div><div class="quad-field"><small>Port destination</small><span class="quad-value" data-phase="after" data-field="dport"></span></div></div></article>
+      </div>
+      <div class="change-legend"><span><i class="legend-after"></i>champ modifié</span><span><i class="legend-same"></i>champ inchangé</span></div><div class="scenario-explain" data-role="explain"></div>
+      <div class="table-wrap translation-table"><table><caption>Règle de publication</caption><thead><tr><th>Socket publique</th><th>Socket privée publiée</th><th>Action</th></tr></thead><tbody><tr class="entry-focus"><td><code>203.0.113.1:8443</code></td><td><code>192.168.1.50:443</code></td><td>Traduire IP et port de destination</td></tr></tbody></table></div>
+    </section>
+
+    <!-- PARCOURS 3 : NAT STATIQUE -->
+    <section id="nat-lesson-static" class="nat-lesson-panel" role="tabpanel" data-direction="out" data-client="1">
+      <div class="nat-panel-head"><h3>NAT statique 1:1 : un mapping spécialisé</h3><p>Une IP privée est associée durablement à une IP publique dédiée. Ce n'est pas obsolète, mais c'est moins fréquent pour les postes utilisateurs car chaque machine consomme une adresse IPv4 publique.</p></div>
+      <div class="callout warn"><div class="callout-title">À placer après PAT et DNAT</div>Ce mécanisme sert encore pour certaines DMZ, appliances et architectures cloud. Pour un cours de fondamentaux, il doit rester un complément et non le point de départ.</div>
+      <div class="scenario-controls"><button class="scenario-btn active" data-step="out" onclick="natScenarioStep('static','out',this)">1. Flux sortant</button><button class="scenario-btn" data-step="in" onclick="natScenarioStep('static','in',this)">2. Flux entrant</button></div>
+      <div class="quadruplet-stage">
+        <article class="quad-card"><h4 data-role="before-title"></h4><div class="quad-grid"><div class="quad-field"><small>IP source</small><span class="quad-value" data-phase="before" data-field="sip"></span></div><div class="quad-field"><small>Port source</small><span class="quad-value" data-phase="before" data-field="sport"></span></div><div class="quad-field"><small>IP destination</small><span class="quad-value" data-phase="before" data-field="dip"></span></div><div class="quad-field"><small>Port destination</small><span class="quad-value" data-phase="before" data-field="dport"></span></div></div></article>
+        <div class="translation-arrow"><span class="translation-glyph">→</span><small>mapping<br>fixe 1:1</small></div>
+        <article class="quad-card"><h4 data-role="after-title"></h4><div class="quad-grid"><div class="quad-field"><small>IP source</small><span class="quad-value" data-phase="after" data-field="sip"></span></div><div class="quad-field"><small>Port source</small><span class="quad-value" data-phase="after" data-field="sport"></span></div><div class="quad-field"><small>IP destination</small><span class="quad-value" data-phase="after" data-field="dip"></span></div><div class="quad-field"><small>Port destination</small><span class="quad-value" data-phase="after" data-field="dport"></span></div></div></article>
+      </div>
+      <div class="change-legend"><span><i class="legend-after"></i>seule l'adresse IP change</span><span><i class="legend-same"></i>les ports restent identiques</span></div><div class="scenario-explain" data-role="explain"></div>
+      <div class="table-wrap translation-table"><table><caption>Mapping permanent</caption><thead><tr><th>IP privée</th><th>IP publique dédiée</th><th>Coût</th></tr></thead><tbody><tr class="entry-focus"><td><code>192.168.1.60</code></td><td><code>203.0.113.60</code></td><td>1 adresse publique pour 1 machine</td></tr></tbody></table></div>
+    </section>
+  </section>
+
+  <div class="nat-legacy" hidden>
 
   <h2>NAT — Network Address Translation</h2>
 
@@ -458,6 +604,7 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</code></pre>
     <div class="callout-title">Rappel</div>
     NAT n'est <strong>pas un mécanisme de sécurité</strong> à lui seul, même s'il masque les IPs internes. C'est le <strong>pare-feu</strong> qui filtre réellement le trafic.
   </div>
+  </div><!-- /.nat-legacy -->
 </div>
 
 <!-- ═══════════════════════════════════════════════════════════════════════════ -->
@@ -1569,6 +1716,53 @@ iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</code></pre>
 
 <script>
 function showTab(id){document.querySelectorAll('.tab-content').forEach(function(e){e.classList.remove('active')});document.querySelectorAll('nav button').forEach(function(e){e.classList.remove('active')});document.getElementById('tab-'+id).classList.add('active');event.target.classList.add('active')}
+
+// ─── ATELIER NAT : ON RÉAFFICHE LE QUADRUPLET À CHAQUE ÉTAPE ───────────────
+var natWorkshopScenarios={
+  pat:{
+    p1out:{direction:'out',client:'1',rows:1,focus:1,beforeTitle:'LAN — avant PAT',afterTitle:'WAN — après PAT',changes:['sip','sport'],before:{sip:'192.168.1.10',sport:'51532',dip:'93.184.216.34',dport:'443'},after:{sip:'203.0.113.1',sport:'10001',dip:'93.184.216.34',dport:'443'},explain:'<strong>PC1 sort :</strong> le routeur remplace les deux champs de la <strong>source</strong>. La destination <code>93.184.216.34:443</code> ne change pas. Il ajoute ensuite la correspondance <code>192.168.1.10:51532 ↔ 203.0.113.1:10001</code> dans sa table.'},
+    p2out:{direction:'out',client:'2',rows:2,focus:2,beforeTitle:'LAN — avant PAT',afterTitle:'WAN — après PAT',changes:['sip','sport'],before:{sip:'192.168.1.20',sport:'51533',dip:'93.184.216.34',dport:'443'},after:{sip:'203.0.113.1',sport:'10002',dip:'93.184.216.34',dport:'443'},explain:'<strong>PC2 sort :</strong> il partage la même IP publique que PC1, mais reçoit le port public <code>10002</code>. C’est ce port différent qui permet au routeur de distinguer les deux connexions.'},
+    p1in:{direction:'in',client:'1',rows:2,focus:1,beforeTitle:'WAN — réponse reçue',afterTitle:'LAN — réponse livrée',changes:['dip','dport'],before:{sip:'93.184.216.34',sport:'443',dip:'203.0.113.1',dport:'10001'},after:{sip:'93.184.216.34',sport:'443',dip:'192.168.1.10',dport:'51532'},explain:'<strong>Réponse pour PC1 :</strong> le serveur répond à la socket publique <code>203.0.113.1:10001</code>. Le routeur consulte sa table puis restaure la <strong>destination privée</strong> <code>192.168.1.10:51532</code>.'},
+    p2in:{direction:'in',client:'2',rows:2,focus:2,beforeTitle:'WAN — réponse reçue',afterTitle:'LAN — réponse livrée',changes:['dip','dport'],before:{sip:'93.184.216.34',sport:'443',dip:'203.0.113.1',dport:'10002'},after:{sip:'93.184.216.34',sport:'443',dip:'192.168.1.20',dport:'51533'},explain:'<strong>Réponse pour PC2 :</strong> le port public <code>10002</code> sélectionne la deuxième ligne de la table. Le paquet est livré à <code>192.168.1.20:51533</code>, jamais à PC1.'}
+  },
+  dnat:{
+    request:{direction:'in',client:'1',beforeTitle:'Internet — avant DNAT',afterTitle:'LAN — après DNAT',changes:['dip','dport'],before:{sip:'198.51.100.42',sport:'49152',dip:'203.0.113.1',dport:'8443'},after:{sip:'198.51.100.42',sport:'49152',dip:'192.168.1.50',dport:'443'},explain:'<strong>Requête entrante :</strong> la source Internet reste identique. La règle DNAT remplace la <strong>destination publique</strong> <code>203.0.113.1:8443</code> par la <strong>destination privée</strong> <code>192.168.1.50:443</code>.'},
+    response:{direction:'out',client:'1',beforeTitle:'LAN — réponse du serveur',afterTitle:'Internet — après traduction inverse',changes:['sip','sport'],before:{sip:'192.168.1.50',sport:'443',dip:'198.51.100.42',dport:'49152'},after:{sip:'203.0.113.1',sport:'8443',dip:'198.51.100.42',dport:'49152'},explain:'<strong>Réponse sortante :</strong> le routeur effectue l’opération inverse pour que le client voie toujours le service comme <code>203.0.113.1:8443</code>. Cette fois, ce sont les champs de <strong>source</strong> qui sont restaurés.'}
+  },
+  static:{
+    out:{direction:'out',client:'1',beforeTitle:'LAN — avant mapping',afterTitle:'WAN — après mapping',changes:['sip'],before:{sip:'192.168.1.60',sport:'51532',dip:'93.184.216.34',dport:'443'},after:{sip:'203.0.113.60',sport:'51532',dip:'93.184.216.34',dport:'443'},explain:'<strong>Flux sortant :</strong> l’adresse source privée devient toujours <code>203.0.113.60</code>. Contrairement au PAT montré plus haut, le port source reste ici <code>51532</code>.'},
+    in:{direction:'in',client:'1',beforeTitle:'WAN — avant mapping',afterTitle:'LAN — après mapping',changes:['dip'],before:{sip:'198.51.100.42',sport:'49152',dip:'203.0.113.60',dport:'443'},after:{sip:'198.51.100.42',sport:'49152',dip:'192.168.1.60',dport:'443'},explain:'<strong>Flux entrant :</strong> l’IP publique dédiée <code>203.0.113.60</code> désigne toujours la même machine privée <code>192.168.1.60</code>. Le port ne change pas dans cet exemple 1:1.'}
+  }
+};
+
+function natLessonTab(id,btn){
+  document.querySelectorAll('.nat-lesson-panel').forEach(function(p){p.classList.remove('active')});
+  document.querySelectorAll('.nat-lesson-tab').forEach(function(b){b.classList.remove('active');b.setAttribute('aria-selected','false')});
+  document.getElementById('nat-lesson-'+id).classList.add('active');btn.classList.add('active');btn.setAttribute('aria-selected','true');
+}
+
+function natScenarioStep(panelId,stepId,btn){
+  var panel=document.getElementById('nat-lesson-'+panelId),data=natWorkshopScenarios[panelId][stepId];
+  panel.dataset.direction=data.direction;panel.dataset.client=data.client||'1';
+  panel.querySelector('[data-role="before-title"]').textContent=data.beforeTitle;
+  panel.querySelector('[data-role="after-title"]').textContent=data.afterTitle;
+  panel.querySelectorAll('.quad-field').forEach(function(field){field.classList.remove('change-origin','is-change','is-same')});
+  panel.querySelectorAll('[data-phase][data-field]').forEach(function(value){
+    var phase=value.dataset.phase,field=value.dataset.field;value.textContent=data[phase][field];
+    var box=value.parentElement,isChanged=data.changes.indexOf(field)!==-1;
+    if(phase==='before'&&isChanged)box.classList.add('change-origin');
+    if(phase==='after')box.classList.add(isChanged?'is-change':'is-same');
+  });
+  panel.querySelector('[data-role="explain"]').innerHTML=data.explain;
+  panel.querySelectorAll('.scenario-btn').forEach(function(b){b.classList.toggle('active',b.dataset.step===stepId)});
+  if(panelId==='pat'){
+    panel.querySelectorAll('[data-entry]').forEach(function(row){
+      var n=Number(row.dataset.entry);row.classList.toggle('entry-hidden',n>data.rows);row.classList.toggle('entry-focus',n===data.focus);
+    });
+  }
+}
+
+natScenarioStep('pat','p1out');natScenarioStep('dnat','request');natScenarioStep('static','out');
 
 // ─── NAT/PAT INTERACTIVE ────────────────────────────────────────────────────
 var natInfo={
