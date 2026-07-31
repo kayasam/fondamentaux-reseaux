@@ -27,13 +27,13 @@ Cette page rassemble deux façons d’apprendre : le parcours scénarisé **NetQ
 ## Cours interactifs par chapitre
 
 <div class="interactive-list">
-  <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/00-introduction-reseaux-interactif.html" target="_blank"><b>00</b><span><strong>Introduction aux réseaux</strong><small>Équipements, topologies, OSI et TCP/IP</small></span><i>↗</i></a>
-  <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/01-couche-physique-interactif.html" target="_blank"><b>01</b><span><strong>Couche physique</strong><small>Supports, signaux, connecteurs et débits</small></span><i>↗</i></a>
-  <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/02-couche-liaison-interactif.html" target="_blank"><b>02</b><span><strong>Couche liaison</strong><small>Ethernet, MAC, commutation et VLAN</small></span><i>↗</i></a>
-  <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/03-couche-reseau-interactif.html" target="_blank"><b>03</b><span><strong>Couche réseau</strong><small>Adressage IP, sous-réseaux et routage</small></span><i>↗</i></a>
-  <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/04-couche-transport-interactif.html" target="_blank"><b>04</b><span><strong>Couche transport</strong><small>Ports, TCP, UDP et fiabilité</small></span><i>↗</i></a>
-  <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/05-services-reseau-interactif.html" target="_blank"><b>05</b><span><strong>Couche application</strong><small>DHCP, DNS, HTTP, HTTPS et services</small></span><i>↗</i></a>
-  <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/06-securite-et-acces-interactif.html" target="_blank"><b>06</b><span><strong>Sécurité réseau</strong><small>ACL, NAT/PAT, VPN et authentification</small></span><i>↗</i></a>
+  <a href="https://kayasam.github.io/fondamentaux-reseaux/00-introduction-reseaux/00-introduction-reseaux-interactif.html" target="_blank"><b>00</b><span><strong>Introduction aux réseaux</strong><small>Équipements, topologies, OSI et TCP/IP</small></span><i>↗</i></a>
+  <a href="https://kayasam.github.io/fondamentaux-reseaux/01-couche-physique/01-couche-physique-interactif.html" target="_blank"><b>01</b><span><strong>Couche physique</strong><small>Supports, signaux, connecteurs et débits</small></span><i>↗</i></a>
+  <a href="https://kayasam.github.io/fondamentaux-reseaux/02-couche-liaison/02-couche-liaison-interactif.html" target="_blank"><b>02</b><span><strong>Couche liaison</strong><small>Ethernet, MAC, commutation et VLAN</small></span><i>↗</i></a>
+  <a href="https://kayasam.github.io/fondamentaux-reseaux/03-couche-reseau/03-couche-reseau-interactif.html" target="_blank"><b>03</b><span><strong>Couche réseau</strong><small>Adressage IP, sous-réseaux et routage</small></span><i>↗</i></a>
+  <a href="https://kayasam.github.io/fondamentaux-reseaux/04-couche-transport/04-couche-transport-interactif.html" target="_blank"><b>04</b><span><strong>Couche transport</strong><small>Ports, TCP, UDP et fiabilité</small></span><i>↗</i></a>
+  <a href="https://kayasam.github.io/fondamentaux-reseaux/05-services-reseau/05-services-reseau-interactif.html" target="_blank"><b>05</b><span><strong>Couche application</strong><small>DHCP, DNS, HTTP, HTTPS et services</small></span><i>↗</i></a>
+  <a href="https://kayasam.github.io/fondamentaux-reseaux/06-securite-et-acces/06-securite-et-acces-interactif.html" target="_blank"><b>06</b><span><strong>Sécurité réseau</strong><small>ACL, NAT/PAT, VPN et authentification</small></span><i>↗</i></a>
 </div>
 
 > [!NOTE]
