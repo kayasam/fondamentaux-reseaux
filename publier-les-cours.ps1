@@ -1,5 +1,6 @@
 param(
-  [string]$Message
+  [string]$Message,
+  [switch]$PrepareOnly
 )
 
 $ErrorActionPreference = "Stop"
@@ -133,10 +134,12 @@ Get-ChildItem -LiteralPath $stagingCourses -Recurse -File -Filter "*.md" | ForEa
     [Text.RegularExpressions.RegexOptions]::IgnoreCase
   )
   $updated = $updated.Replace("[[cours/", "[[")
+  $updated = $updated.Replace("[[jeux/", "[[Ressources/jeux/")
 
   $relativeMarkdownPath = [IO.Path]::GetRelativePath($stagingCourses, $markdownFile.FullName).Replace("\", "/")
   if (
     $relativeMarkdownPath -match '^[^/]+/tp/.+\.md$' -and
+    $markdownFile.Name -ne "index.md" -and
     $updated -notmatch 'https://kayasam\.github\.io/fondamentaux-reseaux/telechargements/.+\.md'
   ) {
     $isCorrection = $markdownFile.Name -like "*correction*.md"
@@ -165,6 +168,16 @@ Get-ChildItem -LiteralPath $stagingCourses -Recurse -File -Filter "*.html" | For
   $htmlFile = $_
   $original = [IO.File]::ReadAllText($htmlFile.FullName)
   $updated = $original.Replace("../../Ressources/html-assets/", "../Ressources/html-assets/")
+
+  if ($updated -ne $original) {
+    [IO.File]::WriteAllText($htmlFile.FullName, $updated, $utf8WithoutBom)
+  }
+}
+
+Get-ChildItem -LiteralPath $destinationGames -File -Filter "*.html" | ForEach-Object {
+  $htmlFile = $_
+  $original = [IO.File]::ReadAllText($htmlFile.FullName)
+  $updated = $original.Replace("../Ressources/html-assets/", "../../Ressources/html-assets/")
 
   if ($updated -ne $original) {
     [IO.File]::WriteAllText($htmlFile.FullName, $updated, $utf8WithoutBom)
@@ -238,6 +251,15 @@ foreach ($chapterName in $publishedChapterNames) {
   Copy-MirroredDirectory `
     -Source (Join-Path $stagingCourses $chapterName) `
     -Destination (Join-Path $destinationContent $chapterName)
+}
+
+if ($PrepareOnly) {
+  if (Test-Path -LiteralPath $stagingRoot) {
+    Remove-Item -LiteralPath $stagingRoot -Recurse -Force
+  }
+  Write-Host ""
+  Write-Host "Préparation terminée sans commit ni envoi Git." -ForegroundColor Green
+  exit 0
 }
 
 Push-Location $projectRoot

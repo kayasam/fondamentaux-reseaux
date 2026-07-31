@@ -222,6 +222,19 @@ article .callout:has(a.chapter-resource) a[href*="/tp/"]::before {
   font-size: 0.9rem;
 }
 
+article .callout:has(a.chapter-resource) a[href*="-interactif.html"] {
+  --action-accent: #7452d6;
+}
+
+article .callout:has(a.chapter-resource) a[href*="-interactif.html"]::before {
+  content: "▣" !important;
+  font-size: 0.92rem;
+}
+
+article .callout:has(a.chapter-resource) a[href*="-jeu.html"] {
+  --action-accent: #d56b1f;
+}
+
 article .callout:has(a.chapter-resource) a[href*="jeu"]::before {
   content: "▶" !important;
 }

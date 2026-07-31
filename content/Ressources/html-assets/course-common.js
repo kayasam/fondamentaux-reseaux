@@ -2,11 +2,22 @@
   const STORAGE_PREFIX = 'cours-html:';
   const path = location.pathname.replace(/\\/g, '/');
   const isIndex = /\/?index\.html?$/.test(path) || path.endsWith('/cours-html/');
+  const isGame = /-jeu\.html?$/.test(path);
+  const root = document.documentElement;
+
+  root.classList.add(isGame ? 'course-game' : 'course-interactive');
 
   function rootPrefix() {
     return path.includes('/bash/') || path.includes('/linux-initiation/') || path.includes('/mininotes/') || path.includes('/fondamentaux-reseaux/')
       ? '../'
       : '';
+  }
+
+  function homeHref() {
+    if (path.includes('/ressources/jeux/') || path.includes('/Ressources/jeux/')) {
+      return '../../index.html';
+    }
+    return rootPrefix() + 'index.html';
   }
 
   function storageKey(name) {
@@ -45,6 +56,22 @@
     }
   }
 
+  function applyTheme(theme) {
+    const nextTheme = theme === 'dark' ? 'dark' : 'light';
+    root.dataset.courseTheme = nextTheme;
+    return nextTheme;
+  }
+
+  function initialTheme() {
+    const saved = readText('theme');
+    if (saved === 'light' || saved === 'dark') return saved;
+    return window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+      ? 'dark'
+      : 'light';
+  }
+
+  applyTheme(initialTheme());
+
   function markVisited() {
     if (isIndex) return;
     const visited = readStore('visited', {});
@@ -57,10 +84,34 @@
     if (isIndex || document.querySelector('.course-home-link')) return;
     const link = document.createElement('a');
     link.className = 'course-home-link';
-    link.href = rootPrefix() + 'index.html';
+    link.href = homeHref();
     link.setAttribute('aria-label', 'Retourner a la page d accueil des cours');
     link.textContent = '← Accueil';
     document.body.appendChild(link);
+  }
+
+  function addThemeToggle() {
+    if (document.querySelector('.course-theme-toggle')) return;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'course-theme-toggle';
+
+    const updateLabel = () => {
+      const dark = root.dataset.courseTheme === 'dark';
+      button.textContent = dark ? '☀ Thème clair' : '☾ Thème sombre';
+      button.setAttribute('aria-label', dark ? 'Activer le thème clair' : 'Activer le thème sombre');
+      button.setAttribute('aria-pressed', String(dark));
+    };
+
+    button.addEventListener('click', () => {
+      const next = root.dataset.courseTheme === 'dark' ? 'light' : 'dark';
+      applyTheme(next);
+      writeText('theme', next);
+      updateLabel();
+    });
+
+    updateLabel();
+    document.body.appendChild(button);
   }
 
   function markIndexCards() {
@@ -144,6 +195,7 @@
   document.addEventListener('DOMContentLoaded', () => {
     markVisited();
     addHomeLink();
+    addThemeToggle();
     markIndexCards();
     improveClickableElements();
     rememberTabs();

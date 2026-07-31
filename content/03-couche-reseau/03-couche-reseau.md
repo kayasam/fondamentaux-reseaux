@@ -6,7 +6,9 @@ title: 03. Couche réseau
 
 > [!TIP] Ressources du chapitre
 > - <a class="chapter-resource chapter-resource--download" href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/03-couche-reseau.md" download>Télécharger le cours en Markdown</a>
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/03-couche-reseau/03-couche-reseau-interactif.html" target="_blank">Ouvrir le cours interactif</a>
 > - [[03-couche-reseau/tp/index|Exercices pratiques]]
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/03-couche-reseau-jeu.html" target="_blank">Jeu de révision : SIGNAL — Niveau 3</a>
 > - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 
 Les trames Ethernet étudiées au chapitre 2 circulent dans un réseau local. Pour atteindre un autre réseau, il faut une adresse logique et des équipements capables de choisir un chemin : c'est le rôle de la **couche réseau**.

@@ -6,7 +6,9 @@ title: 00. Introduction aux réseaux
 
 > [!TIP] Ressources du chapitre
 > - <a class="chapter-resource chapter-resource--download" href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/00-introduction-reseaux.md" download>Télécharger le cours en Markdown</a>
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/00-introduction-reseaux/00-introduction-reseaux-interactif.html" target="_blank">Ouvrir le cours interactif</a>
 > - [[00-introduction-reseaux/tp/index|Exercices pratiques]]
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/00-introduction-reseaux-jeu.html" target="_blank">Jeu de révision : SIGNAL — Niveau 0</a>
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/schema/schema-osi-encapsulation.html" target="_blank">Schéma OSI animé</a>
 > - <a href="https://kayasam.github.io/fondamentaux-reseaux/00-introduction-reseaux/nat-traduction-adresses.html" target="_blank">Schéma NAT animé</a>
 

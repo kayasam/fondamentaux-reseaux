@@ -6,7 +6,9 @@ title: 06. Sécurité réseau
 
 > [!TIP] Ressources du chapitre
 > - <a class="chapter-resource chapter-resource--download" href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/06-securite-et-acces.md" download>Télécharger le cours en Markdown</a>
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/06-securite-et-acces/06-securite-et-acces-interactif.html" target="_blank">Ouvrir le cours interactif</a>
 > - [[06-securite-et-acces/tp/index|Exercices pratiques]]
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/06-securite-et-acces-jeu.html" target="_blank">Jeu de révision : SIGNAL — Niveau 6</a>
 > - [[06-securite-et-acces/note-nat|Note complémentaire sur le NAT]]
 > - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 

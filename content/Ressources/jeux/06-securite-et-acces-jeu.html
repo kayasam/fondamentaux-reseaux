@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIGNAL — Niveau 3 : Couche réseau</title>
+<title>SIGNAL — Niveau 6 : Sécurité et accès</title>
 <style>
 :root{
   color-scheme:light;
@@ -145,46 +145,14 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
   .stage{padding:16px}
 }
 </style>
+<link rel="stylesheet" href="../../Ressources/html-assets/course-common.css">
+<script src="../../Ressources/html-assets/course-common.js" defer></script>
 </head>
 <body>
 
 <!-- bibliothèque d'icônes réutilisées via <use> -->
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
 <defs>
-<symbol id="ic-pc" viewBox="0 0 64 64">
-  <rect x="10" y="14" width="34" height="24" rx="3" fill="#ffffff" stroke="#2b2140" stroke-width="3.2"/>
-  <line x1="10" y1="32" x2="44" y2="32" stroke="#2b2140" stroke-width="2"/>
-  <path d="M4 46 L50 46 L44 38 L10 38 Z" fill="#e3f4ff" stroke="#2b2140" stroke-width="3.2" stroke-linejoin="round"/>
-</symbol>
-<symbol id="ic-switch" viewBox="0 0 64 64">
-  <rect x="6" y="18" width="52" height="28" rx="6" fill="#ffffff" stroke="#2b2140" stroke-width="3.2"/>
-  <line x1="14" y1="40" x2="20" y2="40" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
-  <line x1="26" y1="40" x2="32" y2="40" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
-  <line x1="38" y1="40" x2="44" y2="40" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
-  <line x1="50" y1="40" x2="56" y2="40" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="50" cy="26" r="4" fill="#ff5a5f" stroke="#2b2140" stroke-width="2"/>
-</symbol>
-<symbol id="ic-router" viewBox="0 0 64 64">
-  <rect x="8" y="24" width="48" height="24" rx="6" fill="#ffffff" stroke="#2b2140" stroke-width="3.2"/>
-  <line x1="16" y1="42" x2="22" y2="42" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
-  <line x1="28" y1="42" x2="34" y2="42" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
-  <line x1="40" y1="42" x2="46" y2="42" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
-  <path d="M20 24 Q20 10 32 10 Q44 10 44 24" fill="none" stroke="#4fb3ff" stroke-width="3" stroke-linecap="round"/>
-  <path d="M32 4 L38 12 L26 12 Z" fill="#4fb3ff"/>
-  <circle cx="14" cy="30" r="2.4" fill="#33c98d"/>
-</symbol>
-<symbol id="ic-cloud" viewBox="0 0 64 64">
-  <path d="M18 44 Q8 44 8 34 Q8 25 18 25 Q19 14 32 14 Q44 14 46 25 Q56 25 56 35 Q56 44 46 44 Z" fill="#e3f4ff" stroke="#2b2140" stroke-width="3.2" stroke-linejoin="round"/>
-  <circle cx="24" cy="34" r="2" fill="#4fb3ff"/><circle cx="34" cy="30" r="2" fill="#4fb3ff"/><circle cx="42" cy="36" r="2" fill="#4fb3ff"/>
-  <line x1="24" y1="34" x2="34" y2="30" stroke="#4fb3ff" stroke-width="1.6"/><line x1="34" y1="30" x2="42" y2="36" stroke="#4fb3ff" stroke-width="1.6"/>
-</symbol>
-<symbol id="ic-ttl" viewBox="0 0 64 64">
-  <path d="M16 8 H48 V16 Q48 26 32 32 Q16 26 16 16 Z" fill="#e3f4ff" stroke="#2b2140" stroke-width="3"/>
-  <path d="M16 56 H48 V48 Q48 38 32 32 Q16 38 16 48 Z" fill="#e3f4ff" stroke="#2b2140" stroke-width="3"/>
-  <line x1="14" y1="8" x2="50" y2="8" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
-  <line x1="14" y1="56" x2="50" y2="56" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="32" cy="32" r="2.4" fill="#ff5a5f"/>
-</symbol>
 <symbol id="ic-firewall" viewBox="0 0 64 64">
   <rect x="6" y="10" width="52" height="44" rx="4" fill="#fff3e0" stroke="#2b2140" stroke-width="3.2"/>
   <line x1="6" y1="24" x2="58" y2="24" stroke="#2b2140" stroke-width="2.2"/>
@@ -196,43 +164,56 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
   <line x1="52" y1="38" x2="52" y2="54" stroke="#2b2140" stroke-width="2.2"/>
   <path d="M40 44 L34 52 L40 52 L36 60 L48 48 L42 48 Z" fill="#ff5a5f" stroke="#2b2140" stroke-width="1.6" stroke-linejoin="round"/>
 </symbol>
-<symbol id="ic-ping" viewBox="0 0 64 64">
-  <circle cx="32" cy="32" r="4" fill="#4fb3ff"/>
-  <circle cx="32" cy="32" r="12" fill="none" stroke="#4fb3ff" stroke-width="2.4" opacity=".7"/>
-  <circle cx="32" cy="32" r="20" fill="none" stroke="#4fb3ff" stroke-width="2.4" opacity=".45"/>
-  <circle cx="32" cy="32" r="28" fill="none" stroke="#4fb3ff" stroke-width="2.4" opacity=".25"/>
+<symbol id="ic-dmz" viewBox="0 0 64 64">
+  <rect x="4" y="8" width="56" height="48" rx="8" fill="none" stroke="#7a6f8c" stroke-width="2.2" stroke-dasharray="4 4"/>
+  <rect x="20" y="18" width="24" height="30" rx="4" fill="#ffffff" stroke="#2b2140" stroke-width="2.8"/>
+  <rect x="24" y="24" width="16" height="5" rx="1.5" fill="#e3f4ff" stroke="#2b2140" stroke-width="1.6"/>
+  <rect x="24" y="32" width="16" height="5" rx="1.5" fill="#e3f4ff" stroke="#2b2140" stroke-width="1.6"/>
+  <circle cx="38" cy="41" r="1.6" fill="#ff5a5f"/>
 </symbol>
-<symbol id="ic-traceroute" viewBox="0 0 64 64">
-  <circle cx="8" cy="48" r="5" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
-  <circle cx="30" cy="26" r="5" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
-  <circle cx="52" cy="40" r="5" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
-  <circle cx="60" cy="14" r="5" fill="#e1f8ee" stroke="#33c98d" stroke-width="2.4"/>
-  <path d="M8 48 L30 26 L52 40 L60 14" fill="none" stroke="#4fb3ff" stroke-width="2.2" stroke-dasharray="3 4" stroke-linecap="round"/>
+<symbol id="ic-vpn" viewBox="0 0 64 64">
+  <path d="M32 6 L54 14 V30 Q54 48 32 58 Q10 48 10 30 V14 Z" fill="#e3f4ff" stroke="#2b2140" stroke-width="3"/>
+  <rect x="24" y="30" width="16" height="14" rx="3" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
+  <path d="M27 30 V25 Q27 20 32 20 Q37 20 37 25 V30" fill="none" stroke="#2b2140" stroke-width="2.4"/>
 </symbol>
-<symbol id="ic-arp" viewBox="0 0 64 64">
-  <rect x="4" y="24" width="20" height="16" rx="4" fill="#e3f4ff" stroke="#2b2140" stroke-width="2.6"/>
-  <circle cx="14" cy="32" r="3" fill="#4fb3ff"/>
-  <path d="M26 32 L38 32" stroke="#2b2140" stroke-width="2.2" stroke-dasharray="2 3"/>
-  <path d="M33 27 L38 32 L33 37" fill="none" stroke="#2b2140" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M40 24 L58 24 L58 34 L49 39 L40 34 Z" fill="#fff3e0" stroke="#2b2140" stroke-width="2.4" stroke-linejoin="round"/>
+<symbol id="ic-mfa" viewBox="0 0 64 64">
+  <rect x="8" y="14" width="22" height="36" rx="4" fill="#ffffff" stroke="#2b2140" stroke-width="2.8"/>
+  <line x1="14" y1="42" x2="24" y2="42" stroke="#2b2140" stroke-width="2.2" stroke-linecap="round"/>
+  <circle cx="46" cy="24" r="8" fill="#ffcb3d" stroke="#2b2140" stroke-width="2.4"/>
+  <circle cx="46" cy="24" r="3" fill="#2b2140"/>
+  <line x1="46" y1="32" x2="46" y2="46" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
+  <line x1="46" y1="40" x2="52" y2="40" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
+  <line x1="46" y1="46" x2="51" y2="46" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
 </symbol>
-<symbol id="ic-route-static" viewBox="0 0 64 64">
-  <line x1="20" y1="10" x2="20" y2="58" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
-  <path d="M20 18 L46 18 L38 26 L46 34 L20 34 Z" fill="#4fb3ff" stroke="#2b2140" stroke-width="2.4" stroke-linejoin="round"/>
+<symbol id="ic-wifi" viewBox="0 0 64 64">
+  <rect x="20" y="42" width="24" height="10" rx="3" fill="#ffffff" stroke="#2b2140" stroke-width="3"/>
+  <circle cx="32" cy="47" r="2" fill="#33c98d"/>
+  <path d="M22 38 Q32 28 42 38" fill="none" stroke="#4fb3ff" stroke-width="4" stroke-linecap="round"/>
+  <path d="M14 30 Q32 12 50 30" fill="none" stroke="#4fb3ff" stroke-width="4" stroke-linecap="round" opacity=".75"/>
+  <path d="M6 22 Q32 -4 58 22" fill="none" stroke="#4fb3ff" stroke-width="4" stroke-linecap="round" opacity=".5"/>
 </symbol>
-<symbol id="ic-ospf" viewBox="0 0 64 64">
-  <path d="M8 28 L32 12 L56 28 V56 H8 Z" fill="#e3f4ff" stroke="#2b2140" stroke-width="2.8" stroke-linejoin="round"/>
-  <rect x="26" y="36" width="12" height="20" fill="#ffffff" stroke="#2b2140" stroke-width="2.2"/>
-  <circle cx="32" cy="26" r="4" fill="#4fb3ff" stroke="#2b2140" stroke-width="1.8"/>
+<symbol id="ic-proxy" viewBox="0 0 64 64">
+  <circle cx="8" cy="32" r="6" fill="#e3f4ff" stroke="#2b2140" stroke-width="2.4"/>
+  <rect x="24" y="22" width="16" height="20" rx="4" fill="#ffffff" stroke="#2b2140" stroke-width="2.6"/>
+  <circle cx="56" cy="32" r="6" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
+  <path d="M14 32 L24 32" stroke="#4fb3ff" stroke-width="2.4" stroke-linecap="round"/>
+  <path d="M40 32 L50 32" stroke="#4fb3ff" stroke-width="2.4" stroke-linecap="round"/>
+  <circle cx="32" cy="30" r="3" fill="#8b7cf6"/>
 </symbol>
-<symbol id="ic-bgp" viewBox="0 0 64 64">
-  <circle cx="32" cy="32" r="24" fill="none" stroke="#2b2140" stroke-width="2.4"/>
-  <circle cx="16" cy="20" r="5" fill="#ffffff" stroke="#2b2140" stroke-width="2.2"/>
-  <circle cx="48" cy="20" r="5" fill="#ffffff" stroke="#2b2140" stroke-width="2.2"/>
-  <circle cx="32" cy="50" r="5" fill="#ffffff" stroke="#2b2140" stroke-width="2.2"/>
-  <line x1="16" y1="20" x2="48" y2="20" stroke="#4fb3ff" stroke-width="2"/>
-  <line x1="16" y1="20" x2="32" y2="50" stroke="#4fb3ff" stroke-width="2"/>
-  <line x1="48" y1="20" x2="32" y2="50" stroke="#4fb3ff" stroke-width="2"/>
+<symbol id="ic-ids" viewBox="0 0 64 64">
+  <path d="M4 32 Q32 12 60 32 Q32 52 4 32 Z" fill="#e3f4ff" stroke="#2b2140" stroke-width="2.8" stroke-linejoin="round"/>
+  <circle cx="32" cy="32" r="8" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
+  <circle cx="32" cy="32" r="3" fill="#ff5a5f"/>
+</symbol>
+<symbol id="ic-acl" viewBox="0 0 64 64">
+  <rect x="10" y="6" width="44" height="52" rx="5" fill="#ffffff" stroke="#2b2140" stroke-width="3"/>
+  <path d="M18 18 L22 22 L28 14" fill="none" stroke="#33c98d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="34" y1="18" x2="46" y2="18" stroke="#2b2140" stroke-width="2.2" stroke-linecap="round"/>
+  <path d="M18 34 L22 38 L28 30" fill="none" stroke="#33c98d" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <line x1="34" y1="34" x2="46" y2="34" stroke="#2b2140" stroke-width="2.2" stroke-linecap="round"/>
+  <line x1="18" y1="46" x2="22" y2="50" stroke="#ff5a5f" stroke-width="2.6" stroke-linecap="round"/>
+  <line x1="22" y1="46" x2="18" y2="50" stroke="#ff5a5f" stroke-width="2.6" stroke-linecap="round"/>
+  <line x1="34" y1="48" x2="46" y2="48" stroke="#2b2140" stroke-width="2.2" stroke-linecap="round"/>
 </symbol>
 </defs>
 </svg>
@@ -268,7 +249,7 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
     </div>
     <div class="bubble">
       <span class="speaker">Naya — exploratrice réseau</span>
-      <p id="dialogue">Prêt·e à faire voyager les paquets ? Adressage, routage et diagnostic t'attendent.</p>
+      <p id="dialogue">Dernière ligne droite ! Prêt·e à verrouiller le campus : pare-feu, VPN et contrôle d'accès ?</p>
     </div>
     <div class="badges">
       <div class="badge-pill"><span>Score</span><b id="hud-score">0</b></div>
@@ -291,41 +272,41 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
       <!-- INTRO -->
       <section id="screen-intro">
         <p class="eyebrow">Mission d'ouverture</p>
-        <h1 class="title">Les paquets s'égarent</h1>
-        <p class="lede">Naya te confie le routage du campus. Deux petites épreuves, entièrement à cliquer sur des schémas.</p>
+        <h1 class="title">Le campus doit se verrouiller</h1>
+        <p class="lede">Naya te confie la sécurité du campus. Deux petites épreuves, entièrement à cliquer sur des schémas.</p>
         <div class="intro-list">
-          <div><b>1</b> Diagnostique la couche réseau — clique directement sur le schéma du réseau</div>
-          <div><b>2</b> Choisis le bon outil ou protocole — clique sur la bonne icône avant la fin du chrono</div>
+          <div><b>1</b> Diagnostique la sécurité — clique directement sur le schéma du réseau</div>
+          <div><b>2</b> Choisis le bon mécanisme — clique sur la bonne icône avant la fin du chrono</div>
         </div>
         <button class="start-btn" id="btn-start" type="button">Lancer l'épreuve →</button>
       </section>
 
       <!-- PHASE A : SCHEMA + PINS -->
       <section id="screen-match" class="hidden">
-        <p class="eyebrow">Épreuve 1 / 2 — Diagnostique la couche réseau</p>
+        <p class="eyebrow">Épreuve 1 / 2 — Diagnostique la sécurité</p>
         <h1 class="title">Clique sur le schéma</h1>
         <div class="progress-dots" id="match-dots"></div>
         <div class="scene-wrap">
           <svg class="scene" viewBox="0 0 800 260" aria-hidden="true">
             <line x1="40" y1="190" x2="760" y2="190" stroke="#ecdfc8" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>
-            <use href="#ic-pc" x="40" y="70" width="100" height="100"/>
-            <use href="#ic-switch" x="195" y="70" width="100" height="100"/>
-            <use href="#ic-router" x="350" y="70" width="100" height="100"/>
-            <use href="#ic-ttl" x="505" y="70" width="100" height="100"/>
-            <use href="#ic-firewall" x="660" y="70" width="100" height="100"/>
+            <use href="#ic-firewall" x="40" y="70" width="100" height="100"/>
+            <use href="#ic-dmz" x="195" y="70" width="100" height="100"/>
+            <use href="#ic-vpn" x="350" y="70" width="100" height="100"/>
+            <use href="#ic-mfa" x="505" y="70" width="100" height="100"/>
+            <use href="#ic-wifi" x="660" y="70" width="100" height="100"/>
           </svg>
-          <button class="pin" data-hotspot="pc" style="left:11.3%;top:46.2%" type="button" title="Zone cliquable"></button>
-          <button class="pin" data-hotspot="switch" style="left:30.6%;top:46.2%" type="button" title="Zone cliquable"></button>
-          <button class="pin" data-hotspot="routeur" style="left:50%;top:46.2%" type="button" title="Zone cliquable"></button>
-          <button class="pin" data-hotspot="ttl" style="left:69.4%;top:46.2%" type="button" title="Zone cliquable"></button>
-          <button class="pin" data-hotspot="firewall" style="left:88.8%;top:46.2%" type="button" title="Zone cliquable"></button>
+          <button class="pin" data-hotspot="firewall" style="left:11.3%;top:46.2%" type="button" title="Zone cliquable"></button>
+          <button class="pin" data-hotspot="dmz" style="left:30.6%;top:46.2%" type="button" title="Zone cliquable"></button>
+          <button class="pin" data-hotspot="vpn" style="left:50%;top:46.2%" type="button" title="Zone cliquable"></button>
+          <button class="pin" data-hotspot="mfa" style="left:69.4%;top:46.2%" type="button" title="Zone cliquable"></button>
+          <button class="pin" data-hotspot="wifi" style="left:88.8%;top:46.2%" type="button" title="Zone cliquable"></button>
         </div>
         <div class="legend">
-          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-pc"/></svg>Poste (masque IP)</span>
-          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-switch"/></svg>Réseau local (ARP)</span>
-          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-router"/></svg>Routeur (table de routage)</span>
-          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-ttl"/></svg>Compteur TTL</span>
-          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-firewall"/></svg>Pare-feu (ICMP)</span>
+          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-firewall"/></svg>Pare-feu (ACL)</span>
+          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-dmz"/></svg>DMZ (serveur exposé)</span>
+          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-vpn"/></svg>Tunnel VPN</span>
+          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-mfa"/></svg>Authentification (MFA)</span>
+          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-wifi"/></svg>Wi-Fi (chiffrement)</span>
         </div>
         <div class="feedback-line" id="match-feedback"></div>
       </section>
@@ -333,18 +314,18 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
       <!-- TRANSITION -->
       <section id="screen-transition" class="hidden">
         <p class="eyebrow">Épreuve 1 terminée</p>
-        <h1 class="title">Routage rétabli !</h1>
-        <p class="lede">Reste à choisir le bon outil ou protocole avant que le chrono ne s'épuise.</p>
+        <h1 class="title">Campus verrouillé !</h1>
+        <p class="lede">Reste à choisir le bon mécanisme de sécurité avant que le chrono ne s'épuise.</p>
         <button class="next-btn" id="btn-to-quiz" type="button">Passer à l'épreuve 2 →</button>
       </section>
 
       <!-- PHASE B : ICONES CHRONO -->
       <section id="screen-quiz" class="hidden">
-        <p class="eyebrow">Épreuve 2 / 2 — Outils et protocoles de routage</p>
+        <p class="eyebrow">Épreuve 2 / 2 — Mécanismes de sécurité</p>
         <h1 class="title">Clique sur la bonne icône</h1>
         <div class="progress-dots" id="quiz-dots"></div>
         <div class="timer-track"><div class="timer-fill" id="timer-fill"></div></div>
-        <div class="context-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><use id="quiz-context-use" href="#ic-router"/></svg></div>
+        <div class="context-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><use id="quiz-context-use" href="#ic-firewall"/></svg></div>
         <div class="icon-options" id="quiz-options"></div>
         <div class="feedback-line" id="quiz-feedback"></div>
       </section>
@@ -362,7 +343,7 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
           <div class="btn-row">
             <button class="retry-btn" id="btn-retry" type="button">↻ Rejouer</button>
           </div>
-          <div class="next-level">Niveau 4 — Couche transport : ouvre 04-couche-transport-jeu.html pour continuer.</div>
+          <div class="next-level">Bravo, tu as terminé les 7 niveaux de Fondamentaux Réseaux ! Relis le cours ou rejoue pour battre ton record.</div>
         </div>
       </section>
 
@@ -372,33 +353,33 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
 
 <script>
 const $=id=>document.getElementById(id);
-const BEST_KEY="signal-l3-best-score";
+const BEST_KEY="signal-l6-best-score";
 
 /* ---------- contenu pédagogique ---------- */
 const SYMPTOMS=[
-  {spot:"pc",text:"Le masque de sous-réseau du poste ne correspond pas à celui de la passerelle : impossible de la joindre.",explain:"L'adresse IP, le masque et la passerelle doivent appartenir au même sous-réseau."},
-  {spot:"switch",text:"La requête ARP reste sans réponse : l'adresse MAC associée à cette IP demeure introuvable.",explain:"ARP traduit une adresse IP en adresse MAC sur le réseau local."},
-  {spot:"routeur",text:"Aucune route vers ce réseau distant : le paquet est rejeté faute de correspondance dans la table.",explain:"Une route statique ou dynamique doit exister vers chaque réseau distant."},
-  {spot:"ttl",text:"Le TTL du paquet atteint zéro avant d'arriver à destination : trop de sauts sur le trajet.",explain:"Chaque routeur décrémente le TTL ; à zéro, le paquet est détruit (ICMP Time Exceeded)."},
-  {spot:"firewall",text:"Un pare-feu en bordure de site bloque les messages ICMP echo : le ping ne reçoit aucune réponse.",explain:"Le filtrage ICMP est fréquent en bordure de réseau ; ce n'est pas toujours une panne."},
+  {spot:"firewall",text:"Le pare-feu autorise un flux entrant qui n'est pas strictement nécessaire, à l'encontre du moindre privilège.",explain:"Toute règle inutile élargit la surface d'attaque : n'autoriser que ce qui est requis."},
+  {spot:"dmz",text:"Le serveur web exposé sur Internet est placé directement sur le réseau interne, sans zone tampon.",explain:"Un service public doit être isolé dans une DMZ, séparée du réseau interne sensible."},
+  {spot:"vpn",text:"Le tunnel distant transporte les identifiants en clair, sans chiffrement.",explain:"Un VPN doit chiffrer l'ensemble du trafic entre les deux extrémités du tunnel."},
+  {spot:"mfa",text:"Un compte administrateur se connecte à distance avec un simple mot de passe, sans second facteur.",explain:"La MFA (authentification multifacteur) protège les comptes sensibles même si le mot de passe fuite."},
+  {spot:"wifi",text:"Le point d'accès Wi-Fi utilise encore un chiffrement WEP, cassable en quelques minutes.",explain:"Utiliser WPA2/WPA3 ; le WEP est obsolète et non sécurisé."},
 ];
 
 const ICONS={
-  "Ping":{sym:"ic-ping"},
-  "Traceroute":{sym:"ic-traceroute"},
-  "ARP":{sym:"ic-arp"},
-  "Route statique":{sym:"ic-route-static"},
-  "OSPF":{sym:"ic-ospf"},
-  "BGP":{sym:"ic-bgp"},
+  "Pare-feu":{sym:"ic-firewall"},
+  "VPN":{sym:"ic-vpn"},
+  "Proxy":{sym:"ic-proxy"},
+  "IDS":{sym:"ic-ids"},
+  "MFA":{sym:"ic-mfa"},
+  "ACL":{sym:"ic-acl"},
 };
 
 const QUIZ=[
-  {q:"Vérifier si une machine distante répond et mesurer le temps d'aller-retour.",correct:"Ping",options:["Ping","Traceroute","ARP","Route statique"],glyph:"ic-pc"},
-  {q:"Lister chaque routeur traversé jusqu'à la destination, saut par saut.",correct:"Traceroute",options:["Traceroute","Ping","ARP","BGP"],glyph:"ic-router"},
-  {q:"Retrouver l'adresse MAC correspondant à une adresse IP sur le réseau local.",correct:"ARP",options:["ARP","Ping","Traceroute","Route statique"],glyph:"ic-switch"},
-  {q:"Un petit réseau avec une seule sortie possible vers Internet : une seule ligne à écrire.",correct:"Route statique",options:["Route statique","OSPF","BGP","ARP"],glyph:"ic-route-static"},
-  {q:"Plusieurs routeurs internes à l'entreprise doivent apprendre automatiquement le meilleur chemin.",correct:"OSPF",options:["OSPF","BGP","Route statique","Ping"],glyph:"ic-ospf"},
-  {q:"Deux opérateurs Internet échangent leurs routes à l'échelle mondiale.",correct:"BGP",options:["BGP","OSPF","Route statique","Traceroute"],glyph:"ic-cloud"},
+  {q:"Filtre les flux entrants et sortants selon des règles précises.",correct:"Pare-feu",options:["Pare-feu","VPN","Proxy","IDS"],glyph:"ic-firewall"},
+  {q:"Chiffre un tunnel entre deux sites distants pour protéger les données en transit.",correct:"VPN",options:["VPN","Pare-feu","Proxy","ACL"],glyph:"ic-dmz"},
+  {q:"Relaie les requêtes web des clients vers Internet, en masquant leur adresse IP.",correct:"Proxy",options:["Proxy","VPN","IDS","ACL"],glyph:"ic-wifi"},
+  {q:"Détecte une activité suspecte et alerte, sans bloquer le trafic lui-même.",correct:"IDS",options:["IDS","Pare-feu","Proxy","MFA"],glyph:"ic-mfa"},
+  {q:"Exige un second facteur en plus du mot de passe pour se connecter.",correct:"MFA",options:["MFA","ACL","VPN","IDS"],glyph:"ic-firewall"},
+  {q:"Définit précisément qui a le droit de faire quoi sur une ressource.",correct:"ACL",options:["ACL","MFA","Proxy","Pare-feu"],glyph:"ic-dmz"},
 ];
 
 /* ---------- état ---------- */
@@ -591,7 +572,7 @@ function showResults(){
   $("res-accuracy").textContent=accuracy+"%";
   $("res-best").textContent=fmtScore(Number(localStorage.getItem(BEST_KEY)||0));
   $("res-stars").textContent=score>=1300?"★★★":score>=800?"★★☆":"★☆☆";
-  setMascot(score>=1300?"Mission parfaite, tu es prêt·e pour la suite !":"Belle mission, on peut encore progresser !",'happy');
+  setMascot(score>=1300?"Mission parfaite, le campus est totalement sécurisé !":"Belle mission, on peut encore progresser !",'happy');
   updateHud();
 }
 
@@ -600,7 +581,7 @@ function resetGame(){
   score=0;streak=0;wrongCount=0;totalAnswers=0;matchRound=0;quizIndex=0;quizLocked=false;
   clearInterval(quizTimer);
   buildWavePaths();updateHud();
-  setMascot("Prêt·e à faire voyager les paquets ? Adressage, routage et diagnostic t'attendent.");
+  setMascot("Dernière ligne droite ! Prêt·e à verrouiller le campus : pare-feu, VPN et contrôle d'accès ?");
   showScreen("screen-intro");
 }
 

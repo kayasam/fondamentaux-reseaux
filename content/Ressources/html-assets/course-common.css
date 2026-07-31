@@ -3,6 +3,118 @@
   --course-home-border: rgba(255, 255, 255, .16);
   --course-home-text: #eef2ff;
   --course-focus: #fbbf24;
+  --course-font: "Segoe UI Variable Text", "Aptos", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --course-code-font: "Cascadia Code", "Cascadia Mono", "Consolas", monospace;
+}
+
+html.course-interactive[data-course-theme="light"] {
+  color-scheme: light;
+  --bg: #f5f7fb;
+  --surface: #ffffff;
+  --surface2: #eaf0f8;
+  --border: #cbd5e1;
+  --accent: #2563eb;
+  --accent2: #1d4ed8;
+  --warn: #9a6700;
+  --danger: #c2414b;
+  --success: #16734c;
+  --text: #172033;
+  --text-dim: #526077;
+  --code-bg: #e8eef6;
+}
+
+html.course-interactive[data-course-theme="dark"] {
+  color-scheme: dark;
+  --bg: #0d1119;
+  --surface: #171c27;
+  --surface2: #222938;
+  --border: #3d465b;
+  --accent: #79b8ff;
+  --accent2: #a8ccff;
+  --warn: #f5bd45;
+  --danger: #ff858b;
+  --success: #66d7a2;
+  --text: #f0f4ff;
+  --text-dim: #b8c2d8;
+  --code-bg: #111722;
+}
+
+html.course-game[data-course-theme="light"] {
+  color-scheme: light;
+  --paper: #fff8ec;
+  --panel: #ffffff;
+  --panel-soft: #fff3e0;
+  --ink: #2b2140;
+  --muted: #655b77;
+  --line: #dfcfb4;
+}
+
+html.course-game[data-course-theme="dark"] {
+  color-scheme: dark;
+  --paper: #0f131d;
+  --panel: #181e2a;
+  --panel-soft: #222a39;
+  --ink: #f4f1ff;
+  --muted: #c1bad2;
+  --line: #465069;
+  --blue: #6bc2ff;
+  --blue-soft: #18324a;
+  --yellow: #f4ca55;
+  --red: #ff7d82;
+  --mint: #50d9a5;
+  --mint-soft: #173c32;
+  --pink: #ff92a5;
+  --pink-soft: #482533;
+  --violet: #afa3ff;
+}
+
+html body,
+html button,
+html input,
+html select,
+html textarea {
+  font-family: var(--course-font);
+  font-variant-ligatures: common-ligatures;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+html code,
+html pre,
+html .topo-diagram {
+  font-family: var(--course-code-font);
+}
+
+html.course-interactive[data-course-theme="light"] code {
+  color: #0b4f85;
+}
+
+html.course-interactive[data-course-theme="light"] .callout.note {
+  background: #e7f0ff;
+}
+
+html.course-interactive[data-course-theme="light"] .callout.tip {
+  background: #e8f7ef;
+}
+
+html.course-interactive[data-course-theme="light"] .callout.warn {
+  background: #fff4ce;
+}
+
+html.course-interactive[data-course-theme="light"] .callout.danger {
+  background: #ffe9ea;
+}
+
+html.course-game[data-course-theme="dark"] .scene-wrap {
+  background: linear-gradient(180deg, #232c3b, #171d29);
+}
+
+html.course-game[data-course-theme="dark"] svg text[fill="#2b2140"] {
+  fill: var(--ink);
+}
+
+html.course-game[data-course-theme="dark"] svg [stroke="#2b2140"] {
+  stroke: var(--ink);
 }
 
 .course-home-link {
@@ -30,7 +142,32 @@
   transform: translateY(-1px);
 }
 
+.course-theme-toggle {
+  position: fixed;
+  right: 1rem;
+  bottom: 1rem;
+  z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  min-height: 2.35rem;
+  padding: .55rem .85rem;
+  border: 1px solid var(--course-home-border);
+  border-radius: 999px;
+  background: var(--course-home-bg);
+  color: var(--course-home-text);
+  font: 650 .86rem/1 var(--course-font);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .26);
+  backdrop-filter: blur(12px);
+}
+
+.course-theme-toggle:hover {
+  border-color: rgba(255, 255, 255, .34);
+  transform: translateY(-1px);
+}
+
 .course-home-link:focus-visible,
+.course-theme-toggle:focus-visible,
 a:focus-visible,
 button:focus-visible,
 [role="button"]:focus-visible,
@@ -71,6 +208,11 @@ textarea:focus-visible {
     left: .75rem;
     bottom: .75rem;
     max-width: calc(100vw - 1.5rem);
+  }
+
+  .course-theme-toggle {
+    right: .75rem;
+    bottom: .75rem;
   }
 }
 

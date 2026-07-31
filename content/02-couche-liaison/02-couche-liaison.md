@@ -6,7 +6,9 @@ title: 02. Couche liaison
 
 > [!TIP] Ressources du chapitre
 > - <a class="chapter-resource chapter-resource--download" href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/02-couche-liaison.md" download>Télécharger le cours en Markdown</a>
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/02-couche-liaison/02-couche-liaison-interactif.html" target="_blank">Ouvrir le cours interactif</a>
 > - [[02-couche-liaison/tp/index|Exercices pratiques]]
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/02-couche-liaison-jeu.html" target="_blank">Jeu de révision : SIGNAL — Niveau 2</a>
 > - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 
 > [!NOTE] Objectifs

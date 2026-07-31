@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SIGNAL — Niveau 1 : Couche physique</title>
+<title>SIGNAL — Niveau 2 : Couche liaison</title>
 <style>
 :root{
   color-scheme:light;
@@ -87,7 +87,7 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
 /* ---------- épreuve 1 : schéma + pins ---------- */
 .scene-wrap{position:relative;width:100%;border:2px solid var(--line);border-radius:18px;overflow:hidden;
   background:linear-gradient(180deg,#fdfcf7,#f6f0e0)}
-.scene{width:100%;height:auto;aspect-ratio:800/320;display:block}
+.scene{width:100%;height:auto;aspect-ratio:800/260;display:block}
 .pin{position:absolute;transform:translate(-50%,-50%);width:34px;height:34px;border-radius:50%;background:#fff;
   border:3px solid var(--ink);display:grid;place-items:center;font-weight:900;font-size:.85rem;color:var(--red);
   box-shadow:0 4px 10px rgba(43,33,64,.18);animation:pulse 1.8s ease-in-out infinite}
@@ -145,6 +145,8 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
   .stage{padding:16px}
 }
 </style>
+<link rel="stylesheet" href="../../Ressources/html-assets/course-common.css">
+<script src="../../Ressources/html-assets/course-common.js" defer></script>
 </head>
 <body>
 
@@ -164,22 +166,6 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
   <line x1="50" y1="40" x2="56" y2="40" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
   <circle cx="50" cy="26" r="4" fill="#ff5a5f" stroke="#2b2140" stroke-width="2"/>
 </symbol>
-<symbol id="ic-elec" viewBox="0 0 64 64">
-  <rect x="10" y="6" width="44" height="52" rx="6" fill="#fff3e0" stroke="#2b2140" stroke-width="3.2"/>
-  <line x1="32" y1="6" x2="32" y2="58" stroke="#2b2140" stroke-width="2" stroke-dasharray="1 5"/>
-  <rect x="16" y="16" width="10" height="16" rx="3" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
-  <circle cx="21" cy="20" r="2" fill="#2b2140"/>
-  <rect x="38" y="16" width="10" height="16" rx="3" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
-  <circle cx="43" cy="28" r="2" fill="#2b2140"/>
-  <path d="M30 38 L24 48 L30 48 L26 56 L38 44 L32 44 Z" fill="#ffcb3d" stroke="#2b2140" stroke-width="1.8" stroke-linejoin="round"/>
-</symbol>
-<symbol id="ic-rack" viewBox="0 0 64 64">
-  <rect x="8" y="6" width="40" height="52" rx="5" fill="#ffffff" stroke="#2b2140" stroke-width="3.2"/>
-  <rect x="14" y="14" width="28" height="7" rx="2" fill="#e3f4ff" stroke="#2b2140" stroke-width="2"/>
-  <rect x="14" y="26" width="28" height="7" rx="2" fill="#e3f4ff" stroke="#2b2140" stroke-width="2"/>
-  <rect x="14" y="38" width="28" height="7" rx="2" fill="#e3f4ff" stroke="#2b2140" stroke-width="2"/>
-  <circle cx="46" cy="17" r="2" fill="#33c98d"/><circle cx="46" cy="29" r="2" fill="#33c98d"/><circle cx="46" cy="41" r="2" fill="#ff5a5f"/>
-</symbol>
 <symbol id="ic-wifi" viewBox="0 0 64 64">
   <rect x="20" y="42" width="24" height="10" rx="3" fill="#ffffff" stroke="#2b2140" stroke-width="3"/>
   <circle cx="32" cy="47" r="2" fill="#33c98d"/>
@@ -187,75 +173,61 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
   <path d="M14 30 Q32 12 50 30" fill="none" stroke="#4fb3ff" stroke-width="4" stroke-linecap="round" opacity=".75"/>
   <path d="M6 22 Q32 -4 58 22" fill="none" stroke="#4fb3ff" stroke-width="4" stroke-linecap="round" opacity=".5"/>
 </symbol>
-<symbol id="ic-nfc" viewBox="0 0 64 64">
-  <rect x="8" y="6" width="26" height="44" rx="6" fill="#ffffff" stroke="#2b2140" stroke-width="3.2"/>
-  <line x1="14" y1="42" x2="28" y2="42" stroke="#2b2140" stroke-width="2.4" stroke-linecap="round"/>
-  <path d="M40 20 Q46 26 40 32" fill="none" stroke="#8b7cf6" stroke-width="3.2" stroke-linecap="round"/>
-  <path d="M46 14 Q56 26 46 38" fill="none" stroke="#8b7cf6" stroke-width="3.2" stroke-linecap="round" opacity=".7"/>
-  <path d="M52 8 Q66 26 52 44" fill="none" stroke="#8b7cf6" stroke-width="3.2" stroke-linecap="round" opacity=".45"/>
+<symbol id="ic-loop" viewBox="0 0 64 64">
+  <rect x="4" y="23" width="22" height="18" rx="4" fill="#ffffff" stroke="#2b2140" stroke-width="2.8"/>
+  <rect x="38" y="23" width="22" height="18" rx="4" fill="#ffffff" stroke="#2b2140" stroke-width="2.8"/>
+  <path d="M26 27 Q32 15 38 27" fill="none" stroke="#4fb3ff" stroke-width="3" stroke-linecap="round"/>
+  <path d="M26 37 Q32 49 38 37" fill="none" stroke="#4fb3ff" stroke-width="3" stroke-linecap="round"/>
+  <path d="M26 4 L38 4 L32 16 Z" fill="#ffcb3d" stroke="#2b2140" stroke-width="1.8" stroke-linejoin="round"/>
+  <rect x="30.6" y="6" width="2.8" height="5" rx="1.4" fill="#2b2140"/>
+  <circle cx="32" cy="13" r="1.4" fill="#2b2140"/>
 </symbol>
-<symbol id="ic-bluetooth" viewBox="0 0 64 64">
-  <circle cx="32" cy="32" r="26" fill="#e3f4ff" stroke="#2b2140" stroke-width="3"/>
-  <path d="M32 14 V50 L44 40 L28 28 L44 24 L28 36" fill="none" stroke="#2b6cb0" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
+<symbol id="ic-vlan" viewBox="0 0 64 64">
+  <rect x="6" y="20" width="40" height="24" rx="5" fill="#ffffff" stroke="#2b2140" stroke-width="2.8"/>
+  <line x1="12" y1="38" x2="18" y2="38" stroke="#2b2140" stroke-width="2.6" stroke-linecap="round"/>
+  <line x1="24" y1="38" x2="30" y2="38" stroke="#2b2140" stroke-width="2.6" stroke-linecap="round"/>
+  <line x1="36" y1="38" x2="42" y2="38" stroke="#2b2140" stroke-width="2.6" stroke-linecap="round"/>
+  <path d="M46 26 L60 26 L60 36 L52 40 L46 36 Z" fill="#8b7cf6" stroke="#2b2140" stroke-width="2" stroke-linejoin="round"/>
+  <circle cx="51" cy="31" r="1.6" fill="#ffffff"/>
 </symbol>
-<symbol id="ic-console" viewBox="0 0 64 64">
-  <rect x="4" y="24" width="14" height="14" rx="3" fill="#ffffff" stroke="#2b2140" stroke-width="3"/>
-  <line x1="8" y1="24" x2="8" y2="18" stroke="#2b2140" stroke-width="2.2" stroke-linecap="round"/>
-  <line x1="14" y1="24" x2="14" y2="18" stroke="#2b2140" stroke-width="2.2" stroke-linecap="round"/>
-  <path d="M18 31 C 28 31 26 20 38 20" fill="none" stroke="#4fb3ff" stroke-width="4" stroke-linecap="round"/>
-  <rect x="36" y="8" width="24" height="30" rx="5" fill="#2b2140"/>
-  <path d="M42 18 L48 22 L42 26" fill="none" stroke="#4fb3ff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
-  <line x1="50" y1="26" x2="55" y2="26" stroke="#4fb3ff" stroke-width="2.6" stroke-linecap="round"/>
+<symbol id="ic-unicast" viewBox="0 0 64 64">
+  <circle cx="12" cy="32" r="8" fill="#e3f4ff" stroke="#2b2140" stroke-width="2.6"/>
+  <circle cx="52" cy="32" r="8" fill="#ffffff" stroke="#2b2140" stroke-width="2.6"/>
+  <path d="M22 32 L42 32" stroke="#4fb3ff" stroke-width="3" stroke-linecap="round"/>
+  <path d="M37 27 L44 32 L37 37" fill="none" stroke="#4fb3ff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
 </symbol>
-<symbol id="ic-cable" viewBox="0 0 64 64">
-  <rect x="4" y="24" width="16" height="18" rx="3" fill="#eef1f8" stroke="#2b2140" stroke-width="3.2"/>
-  <rect x="8" y="18" width="3" height="6" fill="#d4af37"/>
-  <rect x="13" y="18" width="3" height="6" fill="#d4af37"/>
-  <rect x="7" y="42" width="10" height="5" rx="1.5" fill="#eef1f8" stroke="#2b2140" stroke-width="2.4"/>
-  <path d="M20 33 C 36 33 32 14 50 14" fill="none" stroke="#5c7a9e" stroke-width="4.6" stroke-linecap="round"/>
+<symbol id="ic-broadcast" viewBox="0 0 64 64">
+  <circle cx="10" cy="32" r="7" fill="#e3f4ff" stroke="#2b2140" stroke-width="2.6"/>
+  <circle cx="52" cy="10" r="6" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
+  <circle cx="56" cy="32" r="6" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
+  <circle cx="52" cy="54" r="6" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
+  <line x1="17" y1="28" x2="46" y2="14" stroke="#ff5a5f" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="17" y1="32" x2="50" y2="32" stroke="#ff5a5f" stroke-width="2.4" stroke-linecap="round"/>
+  <line x1="17" y1="36" x2="46" y2="50" stroke="#ff5a5f" stroke-width="2.4" stroke-linecap="round"/>
 </symbol>
-<symbol id="ic-cable-shield" viewBox="0 0 64 64">
-  <rect x="4" y="24" width="16" height="18" rx="3" fill="#eef1f8" stroke="#2b2140" stroke-width="3.2"/>
-  <rect x="8" y="18" width="3" height="6" fill="#d4af37"/>
-  <rect x="13" y="18" width="3" height="6" fill="#d4af37"/>
-  <rect x="7" y="42" width="10" height="5" rx="1.5" fill="#eef1f8" stroke="#2b2140" stroke-width="2.4"/>
-  <path d="M20 33 C 36 33 32 14 50 14" fill="none" stroke="#5c7a9e" stroke-width="4.6" stroke-linecap="round"/>
-  <path d="M26 32 C 38 30 36 18 48 16" fill="none" stroke="#7a6f8c" stroke-width="2" stroke-dasharray="2 3" stroke-linecap="round"/>
-  <path d="M46 6 L58 6 L58 14 Q52 20 46 14 Z" fill="#e1f8ee" stroke="#33c98d" stroke-width="2.4" stroke-linejoin="round"/>
+<symbol id="ic-multicast" viewBox="0 0 64 64">
+  <circle cx="10" cy="32" r="7" fill="#e3f4ff" stroke="#2b2140" stroke-width="2.6"/>
+  <circle cx="52" cy="10" r="6" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
+  <circle cx="56" cy="32" r="6" fill="#e1f8ee" stroke="#33c98d" stroke-width="2.4"/>
+  <circle cx="52" cy="54" r="6" fill="#e1f8ee" stroke="#33c98d" stroke-width="2.4"/>
+  <line x1="17" y1="28" x2="46" y2="14" stroke="#dcd4e8" stroke-width="2.2" stroke-linecap="round" stroke-dasharray="1 4"/>
+  <line x1="17" y1="32" x2="50" y2="32" stroke="#33c98d" stroke-width="2.6" stroke-linecap="round"/>
+  <line x1="17" y1="36" x2="46" y2="50" stroke="#33c98d" stroke-width="2.6" stroke-linecap="round"/>
 </symbol>
-<symbol id="ic-fiber" viewBox="0 0 64 64">
-  <rect x="4" y="26" width="16" height="14" rx="3" fill="#ffffff" stroke="#2b2140" stroke-width="3.2"/>
-  <rect x="8" y="20" width="8" height="6" rx="1.5" fill="#ffcb3d" stroke="#2b2140" stroke-width="2"/>
-  <path d="M20 33 C 34 33 32 16 48 16" fill="none" stroke="#ffcb3d" stroke-width="3" stroke-linecap="round"/>
-  <circle cx="48" cy="16" r="5" fill="#fff6dc" stroke="#ffcb3d" stroke-width="2"/>
-  <path d="M48 8 L48 4 M55 12 L58 9 M55 20 L58 23" stroke="#ffcb3d" stroke-width="2" stroke-linecap="round"/>
+<symbol id="ic-stp" viewBox="0 0 64 64">
+  <rect x="4" y="23" width="22" height="18" rx="4" fill="#ffffff" stroke="#2b2140" stroke-width="2.8"/>
+  <rect x="38" y="23" width="22" height="18" rx="4" fill="#ffffff" stroke="#2b2140" stroke-width="2.8"/>
+  <line x1="26" y1="32" x2="38" y2="32" stroke="#33c98d" stroke-width="3" stroke-linecap="round"/>
+  <path d="M26 20 Q32 8 38 20" fill="none" stroke="#7a6f8c" stroke-width="2.4" stroke-linecap="round" stroke-dasharray="1 4"/>
+  <line x1="28" y1="12" x2="36" y2="18" stroke="#ff5a5f" stroke-width="3" stroke-linecap="round"/>
+  <line x1="36" y1="12" x2="28" y2="18" stroke="#ff5a5f" stroke-width="3" stroke-linecap="round"/>
 </symbol>
-<symbol id="ic-desk" viewBox="0 0 64 64">
-  <rect x="8" y="34" width="48" height="6" fill="#ffffff" stroke="#2b2140" stroke-width="3"/>
-  <line x1="12" y1="40" x2="12" y2="54" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
-  <line x1="52" y1="40" x2="52" y2="54" stroke="#2b2140" stroke-width="3" stroke-linecap="round"/>
-  <rect x="20" y="10" width="24" height="18" rx="2" fill="#e3f4ff" stroke="#2b2140" stroke-width="3"/>
-  <line x1="32" y1="28" x2="32" y2="34" stroke="#2b2140" stroke-width="3"/>
-</symbol>
-<symbol id="ic-distance" viewBox="0 0 64 64">
-  <rect x="4" y="14" width="14" height="34" rx="2" fill="#e3f4ff" stroke="#2b2140" stroke-width="3"/>
-  <rect x="7" y="19" width="3" height="3" fill="#2b2140"/><rect x="12" y="19" width="3" height="3" fill="#2b2140"/>
-  <rect x="7" y="27" width="3" height="3" fill="#2b2140"/><rect x="12" y="27" width="3" height="3" fill="#2b2140"/>
-  <rect x="7" y="35" width="3" height="3" fill="#2b2140"/><rect x="12" y="35" width="3" height="3" fill="#2b2140"/>
-  <rect x="46" y="14" width="14" height="34" rx="2" fill="#ffe7ec" stroke="#2b2140" stroke-width="3"/>
-  <rect x="49" y="19" width="3" height="3" fill="#2b2140"/><rect x="54" y="19" width="3" height="3" fill="#2b2140"/>
-  <rect x="49" y="27" width="3" height="3" fill="#2b2140"/><rect x="54" y="27" width="3" height="3" fill="#2b2140"/>
-  <rect x="49" y="35" width="3" height="3" fill="#2b2140"/><rect x="54" y="35" width="3" height="3" fill="#2b2140"/>
-  <line x1="20" y1="34" x2="44" y2="34" stroke="#2b2140" stroke-width="2.4" stroke-dasharray="4 4"/>
-  <line x1="20" y1="28" x2="20" y2="40" stroke="#2b2140" stroke-width="2.4"/>
-  <line x1="44" y1="28" x2="44" y2="40" stroke="#2b2140" stroke-width="2.4"/>
-</symbol>
-<symbol id="ic-door" viewBox="0 0 64 64">
-  <rect x="14" y="6" width="30" height="52" rx="4" fill="#fff3e0" stroke="#2b2140" stroke-width="3.2"/>
-  <circle cx="38" cy="32" r="2.4" fill="#2b2140"/>
-  <rect x="46" y="22" width="12" height="18" rx="3" fill="#ffffff" stroke="#2b2140" stroke-width="2.6"/>
-  <circle cx="52" cy="31" r="2" fill="#33c98d"/>
-  <rect x="2" y="44" width="14" height="9" rx="2" fill="#8b7cf6" stroke="#2b2140" stroke-width="2" transform="rotate(-12 9 48)"/>
+<symbol id="ic-lacp" viewBox="0 0 64 64">
+  <rect x="2" y="26" width="14" height="12" rx="3" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
+  <rect x="2" y="42" width="14" height="12" rx="3" fill="#ffffff" stroke="#2b2140" stroke-width="2.4"/>
+  <path d="M16 32 Q30 32 34 32" stroke="#4fb3ff" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <path d="M16 48 Q30 48 34 32" stroke="#4fb3ff" stroke-width="3" stroke-linecap="round" fill="none"/>
+  <rect x="34" y="24" width="26" height="16" rx="5" fill="#e1f8ee" stroke="#33c98d" stroke-width="2.6"/>
 </symbol>
 </defs>
 </svg>
@@ -291,7 +263,7 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
     </div>
     <div class="bubble">
       <span class="speaker">Naya — exploratrice réseau</span>
-      <p id="dialogue">Salut ! Prêt·e à remettre la couche 1 du campus en état ?</p>
+      <p id="dialogue">Prêt·e à sécuriser la couche liaison ? Trames, adresses MAC et switches n'auront plus de secret.</p>
     </div>
     <div class="badges">
       <div class="badge-pill"><span>Score</span><b id="hud-score">0</b></div>
@@ -314,56 +286,41 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
       <!-- INTRO -->
       <section id="screen-intro">
         <p class="eyebrow">Mission d'ouverture</p>
-        <h1 class="title">Le campus a perdu son signal</h1>
-        <p class="lede">Naya te fait visiter la salle réseau. Deux petites épreuves, entièrement à cliquer sur des schémas.</p>
+        <h1 class="title">Le campus perd ses trames</h1>
+        <p class="lede">Naya te confie le réseau local. Deux petites épreuves, entièrement à cliquer sur des schémas.</p>
         <div class="intro-list">
-          <div><b>1</b> Repère la panne — clique directement sur le schéma du réseau</div>
-          <div><b>2</b> Choisis ton support — clique sur la bonne icône avant la fin du chrono</div>
+          <div><b>1</b> Diagnostique la couche liaison — clique directement sur le schéma du réseau</div>
+          <div><b>2</b> Choisis le bon mécanisme — clique sur la bonne icône avant la fin du chrono</div>
         </div>
         <button class="start-btn" id="btn-start" type="button">Lancer l'épreuve →</button>
       </section>
 
       <!-- PHASE A : SCHEMA + PINS -->
       <section id="screen-match" class="hidden">
-        <p class="eyebrow">Épreuve 1 / 2 — Repère la panne</p>
+        <p class="eyebrow">Épreuve 1 / 2 — Diagnostique la couche liaison</p>
         <h1 class="title">Clique sur le schéma</h1>
         <div class="progress-dots" id="match-dots"></div>
         <div class="scene-wrap">
-          <svg class="scene" viewBox="0 0 800 320" aria-hidden="true">
-            <line x1="20" y1="272" x2="780" y2="272" stroke="#ecdfc8" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>
-            <use href="#ic-wifi" x="685" y="18" width="70" height="70"/>
-            <rect x="668" y="20" width="112" height="220" rx="12" fill="#eef2f8" fill-opacity=".72" stroke="#2b2140" stroke-width="3"/>
-            <line x1="668" y1="60" x2="780" y2="60" stroke="#dfe7f2" stroke-width="2"/>
-            <line x1="668" y1="100" x2="780" y2="100" stroke="#dfe7f2" stroke-width="2"/>
-            <line x1="668" y1="140" x2="780" y2="140" stroke="#dfe7f2" stroke-width="2"/>
-            <line x1="668" y1="180" x2="780" y2="180" stroke="#dfe7f2" stroke-width="2"/>
-            <line x1="668" y1="220" x2="780" y2="220" stroke="#dfe7f2" stroke-width="2"/>
-            <use href="#ic-pc" x="30" y="160" width="90" height="90"/>
-            <path d="M130 205 C 190 205 200 130 245 112 S 300 150 335 150 S 400 150 420 148" fill="none" stroke="#d98a4b" stroke-width="4.4" stroke-linecap="round"/>
-            <use href="#ic-elec" x="205" y="30" width="80" height="80"/>
-            <use href="#ic-switch" x="400" y="88" width="100" height="100"/>
-            <line x1="500" y1="140" x2="585" y2="140" stroke="#4fb3ff" stroke-width="4.4" stroke-linecap="round"/>
-            <use href="#ic-rack" x="580" y="95" width="90" height="90"/>
-            <circle cx="655" cy="128" r="2.6" fill="#ff7d94"/><circle cx="662" cy="120" r="1.9" fill="#ff7d94"/><circle cx="648" cy="118" r="1.7" fill="#ff7d94"/>
-            <line x1="70" y1="252" x2="70" y2="264" stroke="#2b2140" stroke-width="2.4"/>
-            <line x1="620" y1="252" x2="620" y2="264" stroke="#2b2140" stroke-width="2.4"/>
-            <line x1="70" y1="258" x2="620" y2="258" stroke="#2b2140" stroke-width="2" stroke-dasharray="6 6"/>
-            <text x="345" y="248" text-anchor="middle" font-size="15" fill="#2b2140" font-family="system-ui,sans-serif" font-weight="700">≈ 150 m</text>
+          <svg class="scene" viewBox="0 0 800 260" aria-hidden="true">
+            <line x1="40" y1="190" x2="760" y2="190" stroke="#ecdfc8" stroke-width="3" stroke-dasharray="2 10" stroke-linecap="round"/>
+            <use href="#ic-pc" x="40" y="70" width="100" height="100"/>
+            <use href="#ic-switch" x="195" y="70" width="100" height="100"/>
+            <use href="#ic-loop" x="350" y="70" width="100" height="100"/>
+            <use href="#ic-vlan" x="505" y="70" width="100" height="100"/>
+            <use href="#ic-wifi" x="660" y="70" width="100" height="100"/>
           </svg>
-          <button class="pin" data-hotspot="power" style="left:59.7%;top:40.3%" type="button" title="Zone cliquable"></button>
-          <button class="pin" data-hotspot="elec" style="left:31.3%;top:29.7%" type="button" title="Zone cliquable"></button>
-          <button class="pin" data-hotspot="fiber" style="left:81.9%;top:38.1%" type="button" title="Zone cliquable"></button>
-          <button class="pin" data-hotspot="wifi" style="left:90%;top:16.6%" type="button" title="Zone cliquable"></button>
-          <button class="pin" data-hotspot="distance" style="left:43.1%;top:80.6%" type="button" title="Zone cliquable"></button>
+          <button class="pin" data-hotspot="pc" style="left:11.3%;top:46.2%" type="button" title="Zone cliquable"></button>
+          <button class="pin" data-hotspot="switch" style="left:30.6%;top:46.2%" type="button" title="Zone cliquable"></button>
+          <button class="pin" data-hotspot="loop" style="left:50%;top:46.2%" type="button" title="Zone cliquable"></button>
+          <button class="pin" data-hotspot="vlan" style="left:69.4%;top:46.2%" type="button" title="Zone cliquable"></button>
+          <button class="pin" data-hotspot="wifi" style="left:88.8%;top:46.2%" type="button" title="Zone cliquable"></button>
         </div>
         <div class="legend">
-          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-pc"/></svg>Poste de travail</span>
-          <span><i class="legend-swatch" style="background:#d98a4b"></i>Câble cuivre</span>
-          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-elec"/></svg>Tableau électrique</span>
-          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-switch"/></svg>Switch</span>
-          <span><i class="legend-swatch" style="background:#4fb3ff"></i>Liaison montante</span>
-          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-rack"/></svg>Baie serveur</span>
-          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-wifi"/></svg>Point d'accès Wi-Fi</span>
+          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-pc"/></svg>Poste (adresse MAC)</span>
+          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-switch"/></svg>Switch (table MAC)</span>
+          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-loop"/></svg>Boucle réseau (STP)</span>
+          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-vlan"/></svg>Port trunk (VLAN)</span>
+          <span><svg viewBox="0 0 64 64" aria-hidden="true"><use href="#ic-wifi"/></svg>Wi-Fi (CSMA/CA)</span>
         </div>
         <div class="feedback-line" id="match-feedback"></div>
       </section>
@@ -371,18 +328,18 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
       <!-- TRANSITION -->
       <section id="screen-transition" class="hidden">
         <p class="eyebrow">Épreuve 1 terminée</p>
-        <h1 class="title">Diagnostic posé, réseau stabilisé</h1>
-        <p class="lede">Il reste à équiper le campus avec les bons supports avant que le chrono ne s'épuise.</p>
+        <h1 class="title">Couche liaison stabilisée !</h1>
+        <p class="lede">Reste à choisir le bon mécanisme de transmission avant que le chrono ne s'épuise.</p>
         <button class="next-btn" id="btn-to-quiz" type="button">Passer à l'épreuve 2 →</button>
       </section>
 
       <!-- PHASE B : ICONES CHRONO -->
       <section id="screen-quiz" class="hidden">
-        <p class="eyebrow">Épreuve 2 / 2 — Choisis ton support</p>
+        <p class="eyebrow">Épreuve 2 / 2 — Trames et mécanismes</p>
         <h1 class="title">Clique sur la bonne icône</h1>
         <div class="progress-dots" id="quiz-dots"></div>
         <div class="timer-track"><div class="timer-fill" id="timer-fill"></div></div>
-        <div class="context-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><use id="quiz-context-use" href="#ic-desk"/></svg></div>
+        <div class="context-icon"><svg viewBox="0 0 64 64" aria-hidden="true"><use id="quiz-context-use" href="#ic-switch"/></svg></div>
         <div class="icon-options" id="quiz-options"></div>
         <div class="feedback-line" id="quiz-feedback"></div>
       </section>
@@ -400,7 +357,7 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
           <div class="btn-row">
             <button class="retry-btn" id="btn-retry" type="button">↻ Rejouer</button>
           </div>
-          <div class="next-level">Niveau 2 — Couche liaison : ouvre 02-couche-liaison-jeu.html pour continuer.</div>
+          <div class="next-level">Niveau 3 — Couche réseau : ouvre 03-couche-reseau-jeu.html pour continuer.</div>
         </div>
       </section>
 
@@ -410,35 +367,33 @@ h1.title{margin:.35rem 0 .55rem;font-size:1.2rem}
 
 <script>
 const $=id=>document.getElementById(id);
-const BEST_KEY="signal-l1-best-score";
+const BEST_KEY="signal-l2-best-score";
 
 /* ---------- contenu pédagogique ---------- */
 const SYMPTOMS=[
-  {spot:"power",text:"Le voyant de lien reste éteint alors que câble et port sont connus comme fonctionnels ailleurs.",explain:"Suspecter l'interface réseau ou son alimentation."},
-  {spot:"elec",text:"Une trame passe mal sur un câble réseau qui longe un tableau électrique, plié en angle serré.",explain:"Écarter le câble des sources électriques et respecter le rayon de courbure."},
-  {spot:"fiber",text:"La liaison fibre devient instable juste après un nettoyage du local technique.",explain:"Nettoyer et vérifier l'état du connecteur optique."},
-  {spot:"wifi",text:"Le Wi-Fi rame uniquement dans la pièce située derrière un mur en béton.",explain:"Rapprocher ou déplacer le point d'accès, limiter les obstacles."},
-  {spot:"distance",text:"Un lien Cat5e de 150 mètres relie deux salles très éloignées l'une de l'autre.",explain:"Revenir sous 100 m ou ajouter un équipement intermédiaire."},
+  {spot:"pc",text:"Deux machines répondent avec la même adresse MAC : le switch ne sait plus par quel port les joindre.",explain:"Chaque carte réseau doit posséder une adresse MAC unique sur le segment."},
+  {spot:"switch",text:"La table d'adresses MAC déborde et le switch inonde (flood) les trames sur tous les ports.",explain:"Le switch apprend les adresses MAC par port ; une table saturée dégrade les performances."},
+  {spot:"loop",text:"Un second câble entre deux switches crée une boucle : les trames tournent en rond et saturent le lien.",explain:"Le Spanning Tree Protocol (STP) doit bloquer logiquement le lien redondant."},
+  {spot:"vlan",text:"Un port configuré en trunk laisse passer un VLAN qui ne devrait pas y circuler.",explain:"Vérifier la liste des VLAN autorisés sur le port trunk (802.1Q)."},
+  {spot:"wifi",text:"Le point d'accès Wi-Fi doit écouter le support avant d'émettre pour éviter les collisions radio.",explain:"Le Wi-Fi utilise CSMA/CA (évitement de collision), pas CSMA/CD comme l'Ethernet filaire."},
 ];
 
 const ICONS={
-  "Cuivre UTP Cat6":{sym:"ic-cable"},
-  "Cuivre blindé S/FTP":{sym:"ic-cable-shield"},
-  "Fibre monomode":{sym:"ic-fiber",badge:"SM"},
-  "Fibre multimode":{sym:"ic-fiber",badge:"MM"},
-  "Wi-Fi":{sym:"ic-wifi"},
-  "Bluetooth":{sym:"ic-bluetooth"},
-  "NFC":{sym:"ic-nfc"},
-  "Câble console RJ45":{sym:"ic-console"},
+  "Unicast":{sym:"ic-unicast"},
+  "Broadcast":{sym:"ic-broadcast"},
+  "Multicast":{sym:"ic-multicast"},
+  "STP (Spanning Tree)":{sym:"ic-stp"},
+  "VLAN (802.1Q)":{sym:"ic-vlan"},
+  "LACP":{sym:"ic-lacp"},
 };
 
 const QUIZ=[
-  {q:"Relier un poste de travail au switch de l'étage, 40 mètres de câble.",correct:"Cuivre UTP Cat6",options:["Cuivre UTP Cat6","Fibre monomode","NFC","Câble console RJ45"],glyph:"ic-desk"},
-  {q:"Relier deux bâtiments du campus distants de 3 kilomètres.",correct:"Fibre monomode",options:["Fibre monomode","Cuivre UTP Cat6","Bluetooth","Wi-Fi"],glyph:"ic-distance"},
-  {q:"Relier deux switches voisins dans la même baie, budget serré.",correct:"Fibre multimode",options:["Fibre multimode","NFC","Bluetooth","Câble console RJ45"],glyph:"ic-rack"},
-  {q:"Salle très perturbée électriquement, câbles courts, cuivre imposé.",correct:"Cuivre blindé S/FTP",options:["Cuivre blindé S/FTP","Cuivre UTP Cat6","NFC","Bluetooth"],glyph:"ic-elec"},
-  {q:"Badge sans contact pour ouvrir une porte du campus.",correct:"NFC",options:["NFC","Bluetooth","Wi-Fi","Fibre multimode"],glyph:"ic-door"},
-  {q:"Réseau Wi-Fi du campus pour la mobilité des étudiants.",correct:"Wi-Fi",options:["Wi-Fi","Câble console RJ45","Fibre monomode","NFC"],glyph:"ic-wifi"},
+  {q:"Une trame doit atteindre une seule machine précisément identifiée.",correct:"Unicast",options:["Unicast","Broadcast","Multicast","VLAN (802.1Q)"],glyph:"ic-pc"},
+  {q:"Une trame doit atteindre toutes les machines du réseau local, sans exception.",correct:"Broadcast",options:["Broadcast","Unicast","Multicast","LACP"],glyph:"ic-switch"},
+  {q:"Une trame doit atteindre un groupe d'abonnés précis, ni un seul ni tous.",correct:"Multicast",options:["Multicast","Broadcast","Unicast","STP (Spanning Tree)"],glyph:"ic-wifi"},
+  {q:"Un lien redondant entre deux switches doit être bloqué pour éviter une boucle.",correct:"STP (Spanning Tree)",options:["STP (Spanning Tree)","Unicast","LACP","VLAN (802.1Q)"],glyph:"ic-loop"},
+  {q:"Isoler le trafic de deux services sur les mêmes switches, sans câblage supplémentaire.",correct:"VLAN (802.1Q)",options:["VLAN (802.1Q)","Broadcast","LACP","Multicast"],glyph:"ic-vlan"},
+  {q:"Cumuler plusieurs liens physiques en un seul lien logique plus rapide.",correct:"LACP",options:["LACP","STP (Spanning Tree)","Unicast","VLAN (802.1Q)"],glyph:"ic-switch"},
 ];
 
 /* ---------- état ---------- */
@@ -534,7 +489,7 @@ function onPinClick(e){
     pin.classList.add("wrong");
     setMascot("Pas encore par là…",'oops');
     $("match-feedback").className="feedback-line bad";
-    $("match-feedback").textContent="Ce n'est pas la bonne zone pour ce symptôme. Réessaie.";
+    $("match-feedback").textContent="Ce n'est pas le bon élément pour ce symptôme. Réessaie.";
     setTimeout(()=>pin.classList.remove("wrong"),350);
     updateHud();
   }
@@ -640,7 +595,7 @@ function resetGame(){
   score=0;streak=0;wrongCount=0;totalAnswers=0;matchRound=0;quizIndex=0;quizLocked=false;
   clearInterval(quizTimer);
   buildWavePaths();updateHud();
-  setMascot("Salut ! Prêt·e à remettre la couche 1 du campus en état ?");
+  setMascot("Prêt·e à sécuriser la couche liaison ? Trames, adresses MAC et switches n'auront plus de secret.");
   showScreen("screen-intro");
 }
 

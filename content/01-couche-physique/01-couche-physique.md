@@ -6,8 +6,9 @@ title: 01. Couche physique
 
 > [!TIP] Ressources du chapitre
 > - <a class="chapter-resource chapter-resource--download" href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/01-couche-physique.md" download>Télécharger le cours en Markdown</a>
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/01-couche-physique/01-couche-physique-interactif.html" target="_blank">Ouvrir le cours interactif</a>
 > - [[01-couche-physique/tp/index|Exercices pratiques]]
-> - [[01-couche-physique/01-couche-physique-jeu.html|🎮 Mini-jeu de révision : SIGNAL — Niveau 1]]
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/01-couche-physique-jeu.html" target="_blank">Jeu de révision : SIGNAL — Niveau 1</a>
 > - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 
 > [!NOTE] Objectifs

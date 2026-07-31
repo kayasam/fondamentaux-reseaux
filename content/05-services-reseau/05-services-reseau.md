@@ -6,7 +6,9 @@ title: 05. Couches hautes et services
 
 > [!TIP] Ressources du chapitre
 > - <a class="chapter-resource chapter-resource--download" href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/05-services-reseau.md" download>Télécharger le cours en Markdown</a>
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/05-services-reseau/05-services-reseau-interactif.html" target="_blank">Ouvrir le cours interactif</a>
 > - [[05-services-reseau/tp/index|Exercices pratiques]]
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/05-services-reseau-jeu.html" target="_blank">Jeu de révision : SIGNAL — Niveau 5</a>
 > - [[Ressources/cisco-packet-tracer-commandes|Fiche pratique Cisco CLI]]
 
 Les couches précédentes permettent de transmettre des données jusqu'au bon programme. La couche application définit maintenant **ce que les programmes se disent** et comment ils rendent un service à l'utilisateur.

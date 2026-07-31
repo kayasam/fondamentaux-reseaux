@@ -6,7 +6,9 @@ title: 04. Couche transport
 
 > [!TIP] Ressources du chapitre
 > - <a class="chapter-resource chapter-resource--download" href="https://kayasam.github.io/fondamentaux-reseaux/telechargements/04-couche-transport.md" download>Télécharger le cours en Markdown</a>
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/04-couche-transport/04-couche-transport-interactif.html" target="_blank">Ouvrir le cours interactif</a>
 > - [[04-couche-transport/tp/index|Exercices pratiques]]
+> - <a href="https://kayasam.github.io/fondamentaux-reseaux/ressources/jeux/04-couche-transport-jeu.html" target="_blank">Jeu de révision : SIGNAL — Niveau 4</a>
 
 Au chapitre précédent, la couche réseau a permis d'acheminer un paquet IP jusqu'à la **bonne machine**. Il reste cependant une question : à quelle application faut-il remettre les données ?
 
