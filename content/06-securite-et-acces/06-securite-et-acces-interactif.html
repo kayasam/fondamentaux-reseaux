@@ -34,6 +34,34 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
 .nd-btn:hover{background:var(--accent);color:#000;border-color:var(--accent)}.nd-btn.active{background:var(--accent);color:#000;font-weight:600}
 .nd-msg{font-size:.88rem;color:var(--text);margin-top:.8rem;padding:.6rem;background:var(--code-bg);border-radius:6px;min-height:2.5rem}
 
+/* NAT / PAT — lecture identique en thème clair et sombre */
+.nat-intro{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:1.2rem 0 1.6rem}
+.nat-kind{background:var(--surface);border:1px solid var(--border);border-top:4px solid var(--accent);border-radius:var(--radius);padding:1rem}
+.nat-kind:nth-child(2){border-top-color:var(--warn)}.nat-kind:nth-child(3){border-top-color:var(--success)}
+.nat-kind strong{display:block;color:var(--text);margin-bottom:.3rem}.nat-kind p{color:var(--text-dim);font-size:.86rem;line-height:1.5;margin:0}
+.nat-kind .nat-direction{display:inline-block;margin-bottom:.55rem;padding:.15rem .5rem;border-radius:999px;background:var(--code-bg);color:var(--accent2);font:700 .75rem Consolas,monospace}
+.pat-stage{display:grid;grid-template-columns:1fr 52px 1.05fr 52px 1fr;align-items:stretch;gap:.55rem;margin:1rem 0}
+.pat-zone,.pat-router,.pat-server{background:var(--surface2);border:1px solid var(--border);border-radius:12px;padding:1rem;text-align:center}
+.pat-zone{border-color:var(--accent)}.pat-router{border-color:var(--success)}.pat-server{border-color:var(--warn)}
+.pat-title{display:block;color:var(--text);font-weight:750;margin-bottom:.2rem}.pat-sub{display:block;color:var(--text-dim);font-size:.8rem}
+.pat-icon{display:grid;place-items:center;width:44px;height:44px;margin:0 auto .55rem;border-radius:12px;background:var(--code-bg);color:var(--accent2);font-size:1.45rem}
+.pat-router .pat-icon{color:var(--success)}.pat-server .pat-icon{color:var(--warn)}
+.pat-arrow{display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--text-dim);font-size:1.45rem;font-weight:800}.pat-arrow small{font-size:.67rem;font-weight:600;white-space:nowrap}
+.pat-interfaces{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin-top:.7rem}
+.pat-interface{background:var(--code-bg);border-radius:7px;padding:.45rem .3rem;font-size:.72rem;color:var(--text-dim)}
+.pat-interface code{display:block;margin-top:.15rem;font-size:.76rem}
+.pat-flows{display:grid;gap:.55rem;margin:1rem 0}
+.pat-flow{display:grid;grid-template-columns:1fr auto 1fr auto 1fr;gap:.55rem;align-items:center;background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--accent);border-radius:9px;padding:.7rem;cursor:pointer;transition:opacity .2s,border-color .2s,transform .2s}
+.pat-flow:nth-child(2){border-left-color:var(--warn)}.pat-flow:nth-child(3){border-left-color:var(--success)}
+.pat-flow:hover{border-color:var(--accent);transform:translateY(-1px)}.pat-flow code{white-space:nowrap}
+.pat-flow .translated{color:var(--warn);font-weight:700}.pat-flow .unchanged{color:var(--text-dim);font-size:.76rem}
+.pat-flow-arrow{color:var(--text-dim);font-weight:800}
+.pat-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem;margin:1rem 0}
+.pat-step{position:relative;background:var(--surface);border:1px solid var(--border);border-radius:9px;padding:.85rem .75rem .75rem 2.6rem;color:var(--text-dim);font-size:.82rem;line-height:1.45}
+.pat-step b{position:absolute;left:.7rem;top:.7rem;display:grid;place-items:center;width:1.35rem;height:1.35rem;border-radius:50%;background:var(--accent);color:#08111d}
+.pat-step strong{color:var(--text)}
+@media(max-width:760px){.nat-intro,.pat-steps{grid-template-columns:1fr}.pat-stage{grid-template-columns:1fr}.pat-arrow{transform:rotate(90deg);min-height:34px}.pat-flow{grid-template-columns:1fr}.pat-flow-arrow{transform:rotate(90deg);text-align:center}}
+
 /* FW rules interactive */
 .fw-rules{margin:1.2rem 0}.fw-rule{display:grid;grid-template-columns:60px 1fr 80px;gap:.6rem;align-items:center;padding:.6rem .8rem;border:1px solid var(--border);background:var(--surface);transition:all .3s;font-size:.88rem}
 .fw-rule:first-child{border-radius:var(--radius) var(--radius) 0 0}.fw-rule:last-child{border-radius:0 0 var(--radius) var(--radius)}.fw-rule+.fw-rule{border-top:none}
@@ -90,69 +118,29 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
     <iframe src="https://www.youtube.com/embed/jq3SLuhIyPI?si=vZMBwiXtA9aKlOSl" title="YouTube video player" allowfullscreen></iframe>
   </div>
 
-  <p><strong>NAT</strong> (Network Address Translation) désigne une famille de mécanismes qui <strong>modifient une adresse IP</strong> dans un paquet. Il sert notamment à faire communiquer un réseau privé avec Internet, mais aussi à publier des services internes.</p>
-  <p>Pour ne pas mélanger les notions, il faut classer le NAT selon <strong>deux axes différents</strong> : la <strong>direction</strong> de la traduction (source ou destination) et le <strong>type de correspondance</strong> utilisé (statique, dynamique ou avec les ports).</p>
+  <p><strong>NAT</strong> (Network Address Translation) est le nom général donné à la traduction d'adresses. Pour comprendre un schéma, posez une seule question : <strong>quel champ du paquet le routeur modifie-t-il ?</strong></p>
 
-  <div class="net-diagram">
-    <svg viewBox="0 0 760 330" xmlns="http://www.w3.org/2000/svg">
-      <!-- Root -->
-      <rect x="305" y="8" width="150" height="36" rx="8" fill="#12141f" stroke="#60a5fa" stroke-width="2"/>
-      <text x="380" y="31" fill="#93c5fd" font-size="13" font-weight="700" text-anchor="middle">NAT</text>
-      <text x="380" y="72" fill="#7880a0" font-size="8.5" text-anchor="middle" font-style="italic">une traduction d'adresse IP peut se décrire avec deux questions</text>
+  <div class="nat-intro">
+    <article class="nat-kind">
+      <span class="nat-direction">LAN → Internet</span>
+      <strong>PAT : le cas courant</strong>
+      <p>Le routeur modifie la <strong>source</strong> et utilise les ports pour partager une seule IP publique.</p>
+    </article>
+    <article class="nat-kind">
+      <span class="nat-direction">Internet → LAN</span>
+      <strong>DNAT : publier un service</strong>
+      <p>Le routeur modifie la <strong>destination</strong> pour rediriger un port public vers un serveur privé.</p>
+    </article>
+    <article class="nat-kind">
+      <span class="nat-direction">1 privée ↔ 1 publique</span>
+      <strong>NAT statique : mapping fixe</strong>
+      <p>Une machine reçoit une IP publique dédiée. Le mapping reste identique dans le temps.</p>
+    </article>
+  </div>
 
-      <!-- Branches from root -->
-      <line x1="340" y1="44" x2="210" y2="105" stroke="#4caf82" stroke-width="2"/>
-      <line x1="420" y1="44" x2="550" y2="105" stroke="#f59e0b" stroke-width="2"/>
-
-      <!-- Axis 1 -->
-      <rect x="55" y="102" width="310" height="42" rx="8" fill="#0e2018" stroke="#4caf82" stroke-width="2"/>
-      <text x="210" y="120" fill="#6ee7b7" font-size="10.5" font-weight="700" text-anchor="middle">Axe 1 — Quelle adresse est traduite ?</text>
-      <text x="210" y="135" fill="#6ee7b7" font-size="8" text-anchor="middle" opacity=".75">source ou destination</text>
-
-      <line x1="150" y1="144" x2="125" y2="185" stroke="#4caf82" stroke-width="1.5" stroke-dasharray="4 3"/>
-      <line x1="270" y1="144" x2="295" y2="185" stroke="#4caf82" stroke-width="1.5" stroke-dasharray="4 3"/>
-
-      <rect x="45" y="185" width="160" height="54" rx="6" fill="#12141f" stroke="#4caf82" stroke-width="1.5"/>
-      <text x="125" y="205" fill="#6ee7b7" font-size="9.5" font-weight="700" text-anchor="middle">SNAT</text>
-      <text x="125" y="220" fill="#6ee7b7" font-size="7.5" text-anchor="middle" opacity=".8">traduit la source</text>
-      <text x="125" y="232" fill="#7880a0" font-size="7" text-anchor="middle">LAN → Internet</text>
-
-      <rect x="215" y="185" width="160" height="54" rx="6" fill="#12141f" stroke="#f59e0b" stroke-width="1.5"/>
-      <text x="295" y="205" fill="#fbbf24" font-size="9.5" font-weight="700" text-anchor="middle">DNAT</text>
-      <text x="295" y="220" fill="#fbbf24" font-size="7.5" text-anchor="middle" opacity=".8">traduit la destination</text>
-      <text x="295" y="232" fill="#7880a0" font-size="7" text-anchor="middle">Internet → LAN</text>
-
-      <!-- Axis 2 -->
-      <rect x="395" y="102" width="310" height="42" rx="8" fill="#1e1800" stroke="#f59e0b" stroke-width="2"/>
-      <text x="550" y="120" fill="#fbbf24" font-size="10.5" font-weight="700" text-anchor="middle">Axe 2 — Comment associe-t-on les adresses ?</text>
-      <text x="550" y="135" fill="#fbbf24" font-size="8" text-anchor="middle" opacity=".75">mapping fixe, pool ou ports</text>
-
-      <line x1="455" y1="144" x2="455" y2="185" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 3"/>
-      <line x1="550" y1="144" x2="550" y2="185" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 3"/>
-      <line x1="645" y1="144" x2="670" y2="260" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="4 3"/>
-
-      <rect x="385" y="185" width="140" height="54" rx="6" fill="#12141f" stroke="#a855f7" stroke-width="1.5"/>
-      <text x="455" y="205" fill="#d8b4fe" font-size="9.5" font-weight="700" text-anchor="middle">Statique</text>
-      <text x="455" y="220" fill="#d8b4fe" font-size="7.5" text-anchor="middle" opacity=".8">1 privée ↔ 1 publique</text>
-      <text x="455" y="232" fill="#7880a0" font-size="7" text-anchor="middle">mapping fixe</text>
-
-      <rect x="530" y="185" width="140" height="54" rx="6" fill="#12141f" stroke="#60a5fa" stroke-width="1.5"/>
-      <text x="600" y="205" fill="#93c5fd" font-size="9.5" font-weight="700" text-anchor="middle">Dynamique</text>
-      <text x="600" y="220" fill="#93c5fd" font-size="7.5" text-anchor="middle" opacity=".8">pool d'IPs publiques</text>
-      <text x="600" y="232" fill="#7880a0" font-size="7" text-anchor="middle">mapping temporaire</text>
-
-      <rect x="600" y="260" width="140" height="46" rx="6" fill="#12141f" stroke="#e05c5c" stroke-width="1.5"/>
-      <text x="670" y="278" fill="#fca5a5" font-size="9.5" font-weight="700" text-anchor="middle">PAT / NAPT</text>
-      <text x="670" y="292" fill="#fca5a5" font-size="7.5" text-anchor="middle" opacity=".8">IP + ports</text>
-
-      <rect x="420" y="260" width="160" height="46" rx="6" fill="rgba(76,175,130,.08)" stroke="#4caf82" stroke-width="1.2" stroke-dasharray="4 3"/>
-      <text x="500" y="278" fill="#6ee7b7" font-size="9" font-weight="700" text-anchor="middle">Masquerade</text>
-      <text x="500" y="292" fill="#7880a0" font-size="7.5" text-anchor="middle">SNAT auto sous Linux</text>
-
-      <!-- Legend -->
-      <text x="210" y="278" fill="#7880a0" font-size="8.5" text-anchor="middle" font-style="italic">SNAT / DNAT disent quelle adresse change</text>
-      <text x="210" y="296" fill="#7880a0" font-size="8.5" text-anchor="middle" font-style="italic">Statique / dynamique / PAT disent comment on associe</text>
-    </svg>
+  <div class="callout tip">
+    <div class="callout-title">À retenir d'abord</div>
+    Sur une box Internet, « faire du NAT » signifie presque toujours faire du <strong>PAT sortant</strong> : plusieurs machines privées partagent l'unique IP publique du routeur.
   </div>
 
   <h2>NAT Statique (mapping 1:1)</h2>
@@ -179,9 +167,9 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
       <g transform="translate(80,68)"><use href="#spc"/></g>
       <text x="80" y="96" fill="#93c5fd" font-size="8" text-anchor="middle">192.168.1.10</text>
       <g transform="translate(170,68)"><use href="#spc"/></g>
-      <text x="170" y="96" fill="#93c5fd" font-size="8" text-anchor="middle">192.168.1.11</text>
+      <text x="170" y="96" fill="#93c5fd" font-size="8" text-anchor="middle">192.168.1.20</text>
       <g transform="translate(125,170)"><use href="#spc"/></g>
-      <text x="125" y="198" fill="#93c5fd" font-size="8" text-anchor="middle">192.168.1.12</text>
+      <text x="125" y="198" fill="#93c5fd" font-size="8" text-anchor="middle">192.168.1.30</text>
 
       <!-- Router -->
       <g transform="translate(310,120)"><use href="#srtr"/></g>
@@ -197,7 +185,7 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
         <path d="M 96,66 C 160,60 230,70 288,108" stroke="#f87171" stroke-width="2.5" fill="none"/>
         <path d="M 332,106 C 390,88 455,62 525,55" stroke="#f87171" stroke-width="2.5" fill="none" marker-end="url(#sa1)"/>
         <rect x="540" y="43" width="130" height="22" rx="5" fill="#12141f" stroke="#f87171" stroke-width="1.2"/>
-        <text x="605" y="58" fill="#f87171" font-size="8.5" font-weight="600" text-anchor="middle">80.12.45.20</text>
+        <text x="605" y="58" fill="#f87171" font-size="8.5" font-weight="600" text-anchor="middle">203.0.113.10</text>
       </g>
 
       <!-- Flow 2: blue → IP publique dédiée -->
@@ -205,7 +193,7 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
         <path d="M 186,66 C 215,72 260,95 288,115" stroke="#93c5fd" stroke-width="2.5" fill="none"/>
         <path d="M 332,118 C 400,118 465,118 525,118" stroke="#93c5fd" stroke-width="2.5" fill="none" marker-end="url(#sa2)"/>
         <rect x="540" y="107" width="130" height="22" rx="5" fill="#12141f" stroke="#93c5fd" stroke-width="1.2"/>
-        <text x="605" y="122" fill="#93c5fd" font-size="8.5" font-weight="600" text-anchor="middle">80.12.45.21</text>
+        <text x="605" y="122" fill="#93c5fd" font-size="8.5" font-weight="600" text-anchor="middle">203.0.113.20</text>
       </g>
 
       <!-- Flow 3: green → IP publique dédiée -->
@@ -213,7 +201,7 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
         <path d="M 141,168 C 195,168 250,150 288,135" stroke="#6ee7b7" stroke-width="2.5" fill="none"/>
         <path d="M 332,135 C 390,152 455,175 525,183" stroke="#6ee7b7" stroke-width="2.5" fill="none" marker-end="url(#sa3)"/>
         <rect x="540" y="172" width="130" height="22" rx="5" fill="#12141f" stroke="#6ee7b7" stroke-width="1.2"/>
-        <text x="605" y="187" fill="#6ee7b7" font-size="8.5" font-weight="600" text-anchor="middle">80.12.45.22</text>
+        <text x="605" y="187" fill="#6ee7b7" font-size="8.5" font-weight="600" text-anchor="middle">203.0.113.30</text>
       </g>
 
       <!-- Warning: 3 IPs needed -->
@@ -226,8 +214,8 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
 
     <div class="nd-controls">
       <button class="nd-btn" onclick="snatFlow(1)">Flux 1 — PC .1.10</button>
-      <button class="nd-btn" onclick="snatFlow(2)">Flux 2 — PC .1.11</button>
-      <button class="nd-btn" onclick="snatFlow(3)">Flux 3 — PC .1.12</button>
+      <button class="nd-btn" onclick="snatFlow(2)">Flux 2 — PC .1.20</button>
+      <button class="nd-btn" onclick="snatFlow(3)">Flux 3 — PC .1.30</button>
       <button class="nd-btn" onclick="snatFlow(0)">Tout afficher</button>
     </div>
     <div class="nd-msg" id="snat-msg">Cliquez sur un flux pour voir un exemple de SNAT statique sortant.</div>
@@ -249,78 +237,59 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
   </div>
 
   <h2>PAT — Port Address Translation (NAT Overload)</h2>
-  <p>Le <strong>PAT</strong> évite d'avoir une IP publique par machine en partageant <strong>une seule IP publique</strong> entre plusieurs machines internes. Il différencie les flux grâce aux <strong>numéros de port</strong>. C'est le cas le plus courant pour donner Internet à un LAN (box Internet, Hyper-V, routeurs d'entreprise) :</p>
+  <p>Le <strong>PAT</strong> permet à plusieurs machines de partager <strong>une seule IP publique</strong>. Le routeur attribue à chaque connexion un port public unique et mémorise la correspondance dans sa table PAT.</p>
 
   <div class="net-diagram" id="nat-diagram">
-    <p style="color:var(--text-dim);margin-bottom:.6rem;font-size:.9rem">Cliquez sur un flux pour voir la traduction des sockets :</p>
-    <svg viewBox="0 0 730 280" xmlns="http://www.w3.org/2000/svg">
-      <style>.nat-flow{transition:opacity .3s}.nat-flow:hover{filter:brightness(1.4)}</style>
-      <defs>
-        <g id="nat-pc"><rect x="-16" y="-16" width="32" height="24" rx="3" fill="#1a1d27" stroke="#60a5fa" stroke-width="1.5"/><rect x="-12" y="-12" width="24" height="16" rx="1" fill="#0a0e1a"/><rect x="-3" y="8" width="6" height="4" fill="#60a5fa" stroke="none"/><rect x="-7" y="12" width="14" height="2" rx="1" fill="#60a5fa" stroke="none"/></g>
-        <g id="nat-router"><circle cx="0" cy="0" r="22" fill="#064e3b" stroke="#059669" stroke-width="2"/><polygon points="0,-16 4,-9 -4,-9" fill="#6ee7b7"/><polygon points="0,16 4,9 -4,9" fill="#6ee7b7"/><polygon points="-16,0 -9,-4 -9,4" fill="#6ee7b7"/><polygon points="16,0 9,-4 9,4" fill="#6ee7b7"/><line x1="0" y1="-10" x2="0" y2="10" stroke="#6ee7b7" stroke-width="1.5"/><line x1="-10" y1="0" x2="10" y2="0" stroke="#6ee7b7" stroke-width="1.5"/></g>
-        <marker id="ah1" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#f87171"/></marker>
-        <marker id="ah2" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#93c5fd"/></marker>
-        <marker id="ah3" markerWidth="8" markerHeight="6" refX="7" refY="3" orient="auto"><polygon points="0,0 8,3 0,6" fill="#6ee7b7"/></marker>
-      </defs>
+    <div class="pat-stage" aria-label="Chemin d'une connexion PAT">
+      <div class="pat-zone">
+        <span class="pat-icon">💻</span><span class="pat-title">Réseau privé</span><span class="pat-sub">192.168.1.0/24</span>
+      </div>
+      <div class="pat-arrow">→<small>requête</small></div>
+      <div class="pat-router">
+        <span class="pat-icon">⇄</span><span class="pat-title">Routeur / pare-feu PAT</span>
+        <div class="pat-interfaces">
+          <span class="pat-interface">Interface interne<code>192.168.1.1</code></span>
+          <span class="pat-interface">Interface publique<code>203.0.113.1</code></span>
+        </div>
+      </div>
+      <div class="pat-arrow">→<small>Internet</small></div>
+      <div class="pat-server">
+        <span class="pat-icon">☁</span><span class="pat-title">Serveur Web</span><span class="pat-sub"><code>93.184.216.34:443</code></span>
+      </div>
+    </div>
 
-      <!-- LAN zone -->
-      <rect x="10" y="10" width="215" height="250" rx="10" fill="rgba(96,165,250,.04)" stroke="#60a5fa" stroke-width="1" stroke-dasharray="4 4" opacity=".4"/>
-      <text x="118" y="28" fill="#60a5fa" font-size="9" text-anchor="middle" font-weight="600" opacity=".6">Réseau privé (192.168.1.0/24)</text>
-
-      <!-- PCs (static) -->
-      <g transform="translate(80,75)"><use href="#nat-pc"/></g>
-      <text x="80" y="103" fill="#93c5fd" font-size="8" text-anchor="middle">192.168.1.10</text>
-      <g transform="translate(170,75)"><use href="#nat-pc"/></g>
-      <text x="170" y="103" fill="#93c5fd" font-size="8" text-anchor="middle">192.168.1.11</text>
-      <g transform="translate(125,190)"><use href="#nat-pc"/></g>
-      <text x="125" y="218" fill="#93c5fd" font-size="8" text-anchor="middle">192.168.1.12</text>
-
-      <!-- Router (static) -->
-      <g transform="translate(310,140)"><use href="#nat-router"/></g>
-      <text x="310" y="173" fill="#6ee7b7" font-size="10" font-weight="700" text-anchor="middle">Routeur NAT</text>
-      <text x="310" y="185" fill="#6ee7b7" font-size="8" text-anchor="middle" opacity=".6">80.12.45.20</text>
-
-      <!-- PAT box (static) -->
-      <rect x="370" y="123" width="62" height="32" rx="6" fill="#12141f" stroke="#f59e0b" stroke-width="1.5"/>
-      <text x="401" y="138" fill="#fbbf24" font-size="9" font-weight="700" text-anchor="middle">PAT</text>
-      <text x="401" y="150" fill="#fbbf24" font-size="7" text-anchor="middle">traduction</text>
-
-      <!-- Internet (static) -->
-      <line x1="640" y1="140" x2="665" y2="140" stroke="#7880a0" stroke-width="2"/>
-      <text x="695" y="144" fill="#7880a0" font-size="10" font-weight="700" text-anchor="middle">Internet</text>
-
-      <!-- Flow 1: red — PC .1.10 → Web (HTTPS) -->
-      <g id="nat-f1" class="nat-flow" onclick="natFlow(1)" style="cursor:pointer" opacity=".35">
-        <path d="M 96,73 C 160,68 230,90 288,127" stroke="#f87171" stroke-width="2.5" fill="none"/>
-        <path d="M 332,126 C 385,110 460,85 540,70" stroke="#f87171" stroke-width="2.5" fill="none" marker-end="url(#ah1)"/>
-        <text x="555" y="70" fill="#f87171" font-size="8.5" font-weight="600">80.12.45.20:<tspan fill="#fca5a5">61001</tspan></text>
-      </g>
-
-      <!-- Flow 2: blue — PC .1.11 → Web (HTTPS) -->
-      <g id="nat-f2" class="nat-flow" onclick="natFlow(2)" style="cursor:pointer" opacity=".35">
-        <path d="M 186,73 C 215,78 260,105 288,136" stroke="#93c5fd" stroke-width="2.5" fill="none"/>
-        <path d="M 332,139 C 410,139 475,139 548,139" stroke="#93c5fd" stroke-width="2.5" fill="none" marker-end="url(#ah2)"/>
-        <text x="555" y="139" fill="#93c5fd" font-size="8.5" font-weight="600">80.12.45.20:<tspan fill="#a5b4fc">61002</tspan></text>
-      </g>
-
-      <!-- Flow 3: green — PC .1.12 → DNS -->
-      <g id="nat-f3" class="nat-flow" onclick="natFlow(3)" style="cursor:pointer" opacity=".35">
-        <path d="M 141,188 C 195,188 250,170 288,155" stroke="#6ee7b7" stroke-width="2.5" fill="none"/>
-        <path d="M 332,155 C 385,172 460,200 540,215" stroke="#6ee7b7" stroke-width="2.5" fill="none" marker-end="url(#ah3)"/>
-        <text x="555" y="215" fill="#6ee7b7" font-size="8.5" font-weight="600">80.12.45.20:<tspan fill="#86efac">61003</tspan></text>
-      </g>
-
-      <!-- Subtitle -->
-      <text x="365" y="260" fill="#7880a0" font-size="9" text-anchor="middle" font-style="italic">3 machines privées → 1 seule IP publique, différenciées par le port</text>
-    </svg>
+    <p style="color:var(--text-dim);margin:.9rem 0 .45rem;font-size:.9rem">Cliquez sur une ligne : la <strong>source</strong> change, la <strong>destination reste identique</strong>.</p>
+    <div class="pat-flows">
+      <div id="nat-f1" class="pat-flow" onclick="natFlow(1)">
+        <strong>PC1</strong><code>192.168.1.10:51532</code><span class="pat-flow-arrow">→</span><code class="translated">203.0.113.1:10001</code><code>93.184.216.34:443</code>
+      </div>
+      <div id="nat-f2" class="pat-flow" onclick="natFlow(2)">
+        <strong>PC2</strong><code>192.168.1.20:51533</code><span class="pat-flow-arrow">→</span><code class="translated">203.0.113.1:10002</code><code>93.184.216.34:443</code>
+      </div>
+      <div id="nat-f3" class="pat-flow" onclick="natFlow(3)">
+        <strong>PC3</strong><code>192.168.1.30:51534</code><span class="pat-flow-arrow">→</span><code class="translated">203.0.113.1:10003</code><code>93.184.216.34:443</code>
+      </div>
+    </div>
 
     <div class="nd-controls">
-      <button class="nd-btn" onclick="natFlow(1)">Flux 1 — PC .1.10 (HTTPS)</button>
-      <button class="nd-btn" onclick="natFlow(2)">Flux 2 — PC .1.11 (HTTPS)</button>
-      <button class="nd-btn" onclick="natFlow(3)">Flux 3 — PC .1.12 (DNS)</button>
+      <button class="nd-btn" onclick="natFlow(1)">Flux 1 — PC1</button>
+      <button class="nd-btn" onclick="natFlow(2)">Flux 2 — PC2</button>
+      <button class="nd-btn" onclick="natFlow(3)">Flux 3 — PC3</button>
       <button class="nd-btn" onclick="natFlow(0)">Tout afficher</button>
     </div>
     <div class="nd-msg" id="nat-msg">Cliquez sur un flux pour voir le détail de la traduction PAT.</div>
+  </div>
+
+  <div class="pat-steps">
+    <div class="pat-step"><b>1</b><strong>Le PC envoie</strong><br>une requête HTTPS avec sa socket privée.</div>
+    <div class="pat-step"><b>2</b><strong>Le routeur traduit</strong><br>la source en IP publique + port unique.</div>
+    <div class="pat-step"><b>3</b><strong>Le serveur répond</strong><br>à la socket publique du routeur.</div>
+    <div class="pat-step"><b>4</b><strong>La table PAT retrouve</strong><br>la machine et son port d'origine.</div>
+  </div>
+
+  <div class="callout note">
+    <div class="callout-title">Lecture du chemin retour</div>
+    Une réponse destinée à <code>203.0.113.1:10001</code> est renvoyée à <code>192.168.1.10:51532</code>. Sans le port public unique, le routeur ne saurait pas à quelle machine livrer la réponse.
   </div>
 
   <h2>DNAT — Destination NAT (Port Forwarding)</h2>
@@ -343,14 +312,14 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
       <text x="95" y="28" fill="#7880a0" font-size="9" text-anchor="middle" font-weight="600" opacity=".6">Depuis Internet</text>
 
       <!-- Public IP:port labels -->
-      <text x="95" y="72" fill="#fbbf24" font-size="9" font-weight="600" text-anchor="middle">80.12.45.20:<tspan fill="#fca5a5" font-weight="700">80</tspan></text>
-      <text x="95" y="132" fill="#fbbf24" font-size="9" font-weight="600" text-anchor="middle">80.12.45.20:<tspan fill="#fca5a5" font-weight="700">22</tspan></text>
-      <text x="95" y="192" fill="#fbbf24" font-size="9" font-weight="600" text-anchor="middle">80.12.45.20:<tspan fill="#fca5a5" font-weight="700">25</tspan></text>
+      <text x="95" y="72" fill="#fbbf24" font-size="9" font-weight="600" text-anchor="middle">203.0.113.1:<tspan fill="#fca5a5" font-weight="700">80</tspan></text>
+      <text x="95" y="132" fill="#fbbf24" font-size="9" font-weight="600" text-anchor="middle">203.0.113.1:<tspan fill="#fca5a5" font-weight="700">22</tspan></text>
+      <text x="95" y="192" fill="#fbbf24" font-size="9" font-weight="600" text-anchor="middle">203.0.113.1:<tspan fill="#fca5a5" font-weight="700">25</tspan></text>
 
       <!-- Router -->
       <g transform="translate(330,130)"><use href="#drtr"/></g>
       <text x="330" y="163" fill="#6ee7b7" font-size="10" font-weight="700" text-anchor="middle">Routeur</text>
-      <text x="330" y="175" fill="#6ee7b7" font-size="8" text-anchor="middle" opacity=".6">80.12.45.20</text>
+      <text x="330" y="175" fill="#6ee7b7" font-size="8" text-anchor="middle" opacity=".6">203.0.113.1</text>
 
       <!-- DNAT box -->
       <rect x="380" y="113" width="65" height="32" rx="6" fill="#12141f" stroke="#f59e0b" stroke-width="1.5"/>
@@ -416,8 +385,8 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
       <rect x="20" y="28" width="180" height="140" rx="10" fill="rgba(96,165,250,.04)" stroke="#60a5fa" stroke-width="1" stroke-dasharray="4 4"/>
       <text x="110" y="50" fill="#60a5fa" font-size="10" font-weight="700" text-anchor="middle">LAN privé</text>
       <text x="110" y="82" fill="#93c5fd" font-size="9" text-anchor="middle">192.168.1.10</text>
-      <text x="110" y="106" fill="#93c5fd" font-size="9" text-anchor="middle">192.168.1.11</text>
-      <text x="110" y="130" fill="#93c5fd" font-size="9" text-anchor="middle">192.168.1.12</text>
+      <text x="110" y="106" fill="#93c5fd" font-size="9" text-anchor="middle">192.168.1.20</text>
+      <text x="110" y="130" fill="#93c5fd" font-size="9" text-anchor="middle">192.168.1.30</text>
 
       <rect x="280" y="48" width="170" height="100" rx="12" fill="#12141f" stroke="#4caf82" stroke-width="2"/>
       <text x="365" y="72" fill="#6ee7b7" font-size="11" font-weight="700" text-anchor="middle">Routeur Linux</text>
@@ -428,7 +397,7 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
       <rect x="530" y="28" width="180" height="140" rx="10" fill="rgba(245,158,11,.04)" stroke="#f59e0b" stroke-width="1" stroke-dasharray="4 4"/>
       <text x="620" y="50" fill="#fbbf24" font-size="10" font-weight="700" text-anchor="middle">Internet</text>
       <text x="620" y="94" fill="#fbbf24" font-size="9" text-anchor="middle">IP de eth0</text>
-      <text x="620" y="116" fill="#fbbf24" font-size="9" text-anchor="middle">ex. 80.12.45.20</text>
+      <text x="620" y="116" fill="#fbbf24" font-size="9" text-anchor="middle">ex. 203.0.113.1</text>
 
       <path d="M 200,98 C 230,98 250,98 280,98" stroke="#93c5fd" stroke-width="2.5" fill="none" marker-end="url(#ma)"/>
       <path d="M 450,98 C 485,98 500,98 530,98" stroke="#6ee7b7" stroke-width="2.5" fill="none" marker-end="url(#ma)"/>
@@ -439,7 +408,7 @@ pre{background:var(--code-bg);border:1px solid var(--border);border-radius:var(-
   </div>
 
   <pre><code># SNAT classique : l'adresse publique est écrite explicitement
-iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source 80.12.45.20
+iptables -t nat -A POSTROUTING -o eth0 -j SNAT --to-source 203.0.113.1
 
 # Masquerade : Linux prend automatiquement l'adresse de eth0
 iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE</code></pre>
@@ -1603,31 +1572,31 @@ function showTab(id){document.querySelectorAll('.tab-content').forEach(function(
 
 // ─── NAT/PAT INTERACTIVE ────────────────────────────────────────────────────
 var natInfo={
-  1:'<strong style="color:#f87171">▶ Flux 1 — PC .1.10 accède à un serveur web (HTTPS)</strong><br><br>'
+  1:'<strong style="color:var(--accent2)">▶ Flux 1 — PC1 accède au serveur web</strong><br><br>'
    +'<span style="color:#93c5fd;font-weight:600">Avant NAT (socket privée) :</span><br>'
-   +'&emsp;Source : <code>192.168.1.10 : 51230</code> &nbsp;→&nbsp; Destination : <code>93.184.216.34 : 443</code><br><br>'
+   +'&emsp;Source : <code>192.168.1.10:51532</code> &nbsp;→&nbsp; Destination : <code>93.184.216.34:443</code><br><br>'
    +'<span style="color:#fbbf24;font-weight:600">Après PAT (socket publique) :</span><br>'
-   +'&emsp;Source : <code style="color:#f87171">80.12.45.20 : 61001</code> <span style="color:#f87171;font-size:.82rem">← traduit</span> &nbsp;→&nbsp; Destination : <code>93.184.216.34 : 443</code> <span style="color:var(--text-dim);font-size:.82rem">← inchangé</span><br><br>'
-   +'<span style="color:var(--text-dim)">Le routeur remplace l\'IP source privée (<code>192.168.1.10</code>) par son IP publique (<code>80.12.45.20</code>) et le port source (<code>51230</code>) par un port unique (<code>61001</code>). La destination ne change pas. Grâce à ce port, le routeur sait renvoyer la réponse au bon PC.</span>',
-  2:'<strong style="color:#93c5fd">▶ Flux 2 — PC .1.11 accède au même serveur web (HTTPS)</strong><br><br>'
+   +'&emsp;Source : <code style="color:#fbbf24">203.0.113.1:10001</code> <strong>← traduit</strong> &nbsp;→&nbsp; Destination : <code>93.184.216.34:443</code> <span style="color:var(--text-dim)">← inchangée</span><br><br>'
+   +'<span style="color:var(--text-dim)">Au retour, la réponse adressée à <code>203.0.113.1:10001</code> est remise à <code>192.168.1.10:51532</code> grâce à la table PAT.</span>',
+  2:'<strong style="color:var(--accent2)">▶ Flux 2 — PC2 accède au même serveur web</strong><br><br>'
    +'<span style="color:#93c5fd;font-weight:600">Avant NAT (socket privée) :</span><br>'
-   +'&emsp;Source : <code>192.168.1.11 : 51231</code> &nbsp;→&nbsp; Destination : <code>93.184.216.34 : 443</code><br><br>'
+   +'&emsp;Source : <code>192.168.1.20:51533</code> &nbsp;→&nbsp; Destination : <code>93.184.216.34:443</code><br><br>'
    +'<span style="color:#fbbf24;font-weight:600">Après PAT (socket publique) :</span><br>'
-   +'&emsp;Source : <code style="color:#93c5fd">80.12.45.20 : 61002</code> <span style="color:#93c5fd;font-size:.82rem">← traduit</span> &nbsp;→&nbsp; Destination : <code>93.184.216.34 : 443</code> <span style="color:var(--text-dim);font-size:.82rem">← inchangé</span><br><br>'
-   +'<span style="color:var(--text-dim)"><strong>Même IP publique</strong> que le flux 1, mais un <strong>port différent</strong> (<code>61002</code> au lieu de <code>61001</code>). C\'est ainsi que le PAT distingue les deux flux : une seule IP publique, mais un port unique par connexion.</span>',
-  3:'<strong style="color:#6ee7b7">▶ Flux 3 — PC .1.12 fait une requête DNS</strong><br><br>'
+   +'&emsp;Source : <code style="color:#fbbf24">203.0.113.1:10002</code> <strong>← traduit</strong> &nbsp;→&nbsp; Destination : <code>93.184.216.34:443</code> <span style="color:var(--text-dim)">← inchangée</span><br><br>'
+   +'<span style="color:var(--text-dim)">Même IP publique que PC1, mais un <strong>port public différent</strong>. C\'est ce numéro qui sépare les deux connexions.</span>',
+  3:'<strong style="color:var(--accent2)">▶ Flux 3 — PC3 accède au même serveur web</strong><br><br>'
    +'<span style="color:#93c5fd;font-weight:600">Avant NAT (socket privée) :</span><br>'
-   +'&emsp;Source : <code>192.168.1.12 : 51232</code> &nbsp;→&nbsp; Destination : <code>8.8.8.8 : 53</code><br><br>'
+   +'&emsp;Source : <code>192.168.1.30:51534</code> &nbsp;→&nbsp; Destination : <code>93.184.216.34:443</code><br><br>'
    +'<span style="color:#fbbf24;font-weight:600">Après PAT (socket publique) :</span><br>'
-   +'&emsp;Source : <code style="color:#6ee7b7">80.12.45.20 : 61003</code> <span style="color:#6ee7b7;font-size:.82rem">← traduit</span> &nbsp;→&nbsp; Destination : <code>8.8.8.8 : 53</code> <span style="color:var(--text-dim);font-size:.82rem">← inchangé</span><br><br>'
-   +'<span style="color:var(--text-dim)">Ce flux va vers un serveur <strong>DNS</strong> (destination différente des flux web). Le routeur attribue le port <code>61003</code>. Sa <strong>table NAT</strong> contient maintenant 3 entrées pour retrouver chaque PC à la réponse.</span>'
+   +'&emsp;Source : <code style="color:#fbbf24">203.0.113.1:10003</code> <strong>← traduit</strong> &nbsp;→&nbsp; Destination : <code>93.184.216.34:443</code> <span style="color:var(--text-dim)">← inchangée</span><br><br>'
+   +'<span style="color:var(--text-dim)">La table contient maintenant trois correspondances. Une seule IP publique suffit, car les ports <code>10001</code>, <code>10002</code> et <code>10003</code> sont différents.</span>'
 };
 function natFlow(id){
-  for(var i=1;i<=3;i++){document.getElementById('nat-f'+i).setAttribute('opacity',id===0?'.5':i===id?'1':'.1')}
+  for(var i=1;i<=3;i++){document.getElementById('nat-f'+i).style.opacity=id===0?'1':i===id?'1':'.22'}
   var btns=document.querySelectorAll('#nat-diagram .nd-btn');
   btns.forEach(function(b){b.classList.remove('active')});
   if(id>0&&id<=3)btns[id-1].classList.add('active');else if(id===0)btns[3].classList.add('active');
-  document.getElementById('nat-msg').innerHTML=id===0?'Cliquez sur un flux pour voir le détail de la traduction PAT.':natInfo[id];
+  document.getElementById('nat-msg').innerHTML=id===0?'Les trois sources privées deviennent trois sockets publiques distinctes ; la destination reste <code>93.184.216.34:443</code>.':natInfo[id];
 }
 
 // ─── SNAT INTERACTIVE ───────────────────────────────────────────────────────
@@ -1636,19 +1605,19 @@ var snatInfo={
    +'<span style="color:#93c5fd;font-weight:600">Avant traduction :</span><br>'
    +'&emsp;Source : <code>192.168.1.10 : 51230</code> &nbsp;→&nbsp; Dest : <code>93.184.216.34 : 443</code><br><br>'
    +'<span style="color:#d8b4fe;font-weight:600">Après NAT statique :</span><br>'
-   +'&emsp;Source : <code style="color:#f87171">80.12.45.20 : 51230</code> <span style="color:#f87171;font-size:.82rem">← IP traduite, port identique !</span> &nbsp;→&nbsp; Dest : <code>93.184.216.34 : 443</code><br><br>'
-   +'<span style="color:var(--text-dim)">Dans cet exemple de <strong>SNAT statique</strong>, l\'IP source privée devient une IP publique fixe. Le port reste identique, car on montre ici un mapping 1:1 sans PAT. La machine <code>.1.10</code> est associée <strong>en permanence</strong> à l\'IP publique <code>80.12.45.20</code>.</span>',
-  2:'<strong style="color:#93c5fd">▶ Flux 2 — PC .1.11 accède au web</strong><br><br>'
+   +'&emsp;Source : <code style="color:#f87171">203.0.113.10 : 51230</code> <span style="color:#f87171;font-size:.82rem">← IP traduite, port identique !</span> &nbsp;→&nbsp; Dest : <code>93.184.216.34 : 443</code><br><br>'
+   +'<span style="color:var(--text-dim)">Dans cet exemple de <strong>SNAT statique</strong>, l\'IP source privée devient une IP publique fixe. Le port reste identique, car on montre ici un mapping 1:1 sans PAT. La machine <code>.1.10</code> est associée <strong>en permanence</strong> à l\'IP publique <code>203.0.113.10</code>.</span>',
+  2:'<strong style="color:#93c5fd">▶ Flux 2 — PC .1.20 accède au web</strong><br><br>'
    +'<span style="color:#93c5fd;font-weight:600">Avant traduction :</span><br>'
-   +'&emsp;Source : <code>192.168.1.11 : 51231</code> &nbsp;→&nbsp; Dest : <code>93.184.216.34 : 443</code><br><br>'
+   +'&emsp;Source : <code>192.168.1.20 : 51231</code> &nbsp;→&nbsp; Dest : <code>93.184.216.34 : 443</code><br><br>'
    +'<span style="color:#d8b4fe;font-weight:600">Après NAT statique :</span><br>'
-   +'&emsp;Source : <code style="color:#93c5fd">80.12.45.21 : 51231</code> <span style="color:#93c5fd;font-size:.82rem">← une AUTRE IP publique !</span> &nbsp;→&nbsp; Dest : <code>93.184.216.34 : 443</code><br><br>'
-   +'<span style="color:var(--text-dim)">Chaque machine a besoin de <strong>sa propre IP publique</strong> (<code>.21</code> ≠ <code>.20</code>). C\'est la limitation majeure : il faut <strong>autant d\'IPs publiques que de machines</strong>. Coûteux et irréaliste avec la pénurie IPv4.</span>',
-  3:'<strong style="color:#6ee7b7">▶ Flux 3 — PC .1.12 fait du DNS</strong><br><br>'
+   +'&emsp;Source : <code style="color:#93c5fd">203.0.113.20 : 51231</code> <span style="color:#93c5fd;font-size:.82rem">← une AUTRE IP publique !</span> &nbsp;→&nbsp; Dest : <code>93.184.216.34 : 443</code><br><br>'
+   +'<span style="color:var(--text-dim)">Chaque machine a besoin de <strong>sa propre IP publique</strong> (<code>203.0.113.20</code> ≠ <code>203.0.113.10</code>). C\'est la limitation majeure : il faut <strong>autant d\'IPs publiques que de machines</strong>.</span>',
+  3:'<strong style="color:#6ee7b7">▶ Flux 3 — PC .1.30 fait du DNS</strong><br><br>'
    +'<span style="color:#93c5fd;font-weight:600">Avant traduction :</span><br>'
-   +'&emsp;Source : <code>192.168.1.12 : 51232</code> &nbsp;→&nbsp; Dest : <code>8.8.8.8 : 53</code><br><br>'
+   +'&emsp;Source : <code>192.168.1.30 : 51232</code> &nbsp;→&nbsp; Dest : <code>8.8.8.8 : 53</code><br><br>'
    +'<span style="color:#d8b4fe;font-weight:600">Après NAT statique :</span><br>'
-   +'&emsp;Source : <code style="color:#6ee7b7">80.12.45.22 : 51232</code> <span style="color:#6ee7b7;font-size:.82rem">← 3ème IP publique</span> &nbsp;→&nbsp; Dest : <code>8.8.8.8 : 53</code><br><br>'
+   +'&emsp;Source : <code style="color:#6ee7b7">203.0.113.30 : 51232</code> <span style="color:#6ee7b7;font-size:.82rem">← 3ème IP publique</span> &nbsp;→&nbsp; Dest : <code>8.8.8.8 : 53</code><br><br>'
    +'<span style="color:var(--text-dim)">3 machines = 3 IPs publiques ! Avec 100 postes, il faudrait 100 IPs. C\'est pour ça que le <strong>PAT</strong> a été inventé : partager <strong>une seule IP</strong> entre toutes les machines en différenciant par les <strong>ports</strong>.</span>'
 };
 function snatFlow(id){
@@ -1663,19 +1632,19 @@ function snatFlow(id){
 var dnatInfo={
   1:'<strong style="color:#f87171">▶ Requête HTTP (port 80) → Serveur Web</strong><br><br>'
    +'<span style="color:#fbbf24;font-weight:600">Avant DNAT (vu depuis Internet) :</span><br>'
-   +'&emsp;Source : <code>203.0.113.42 : 49152</code> &nbsp;→&nbsp; Dest : <code>80.12.45.20 : 80</code><br><br>'
+   +'&emsp;Source : <code>198.51.100.42 : 49152</code> &nbsp;→&nbsp; Dest : <code>203.0.113.1 : 80</code><br><br>'
    +'<span style="color:#d8b4fe;font-weight:600">Après DNAT (routeur redirige) :</span><br>'
-   +'&emsp;Source : <code>203.0.113.42 : 49152</code> <span style="color:var(--text-dim);font-size:.82rem">← inchangée</span> &nbsp;→&nbsp; Dest : <code style="color:#f87171">192.168.1.50 : 80</code> <span style="color:#f87171;font-size:.82rem">← IP destination traduite !</span><br><br>'
+   +'&emsp;Source : <code>198.51.100.42 : 49152</code> <span style="color:var(--text-dim);font-size:.82rem">← inchangée</span> &nbsp;→&nbsp; Dest : <code style="color:#f87171">192.168.1.50 : 80</code> <span style="color:#f87171;font-size:.82rem">← IP destination traduite !</span><br><br>'
    +'<span style="color:var(--text-dim)">C\'est l\'<strong>inverse du SNAT</strong> : ici c\'est l\'<strong>IP de destination</strong> qui est traduite. Le routeur redirige le trafic entrant sur le port 80 vers le serveur web interne. C\'est le principe du <strong>port forwarding</strong>.</span>',
   2:'<strong style="color:#93c5fd">▶ Requête SSH (port 22) → Serveur SSH</strong><br><br>'
    +'<span style="color:#fbbf24;font-weight:600">Avant DNAT :</span><br>'
-   +'&emsp;Source : <code>198.51.100.8 : 52340</code> &nbsp;→&nbsp; Dest : <code>80.12.45.20 : 22</code><br><br>'
+   +'&emsp;Source : <code>198.51.100.8 : 52340</code> &nbsp;→&nbsp; Dest : <code>203.0.113.1 : 22</code><br><br>'
    +'<span style="color:#d8b4fe;font-weight:600">Après DNAT :</span><br>'
    +'&emsp;Source : <code>198.51.100.8 : 52340</code> <span style="color:var(--text-dim);font-size:.82rem">← inchangée</span> &nbsp;→&nbsp; Dest : <code style="color:#93c5fd">192.168.1.60 : 22</code> <span style="color:#93c5fd;font-size:.82rem">← redirigé vers un autre serveur</span><br><br>'
    +'<span style="color:var(--text-dim)">Le port 22 est redirigé vers le serveur SSH (<code>.1.60</code>), différent du serveur web (<code>.1.50</code>). Chaque <strong>port = un serveur interne</strong> différent. On ne peut pas rediriger un même port vers deux machines.</span>',
   3:'<strong style="color:#6ee7b7">▶ Requête SMTP (port 25) → Serveur Mail</strong><br><br>'
    +'<span style="color:#fbbf24;font-weight:600">Avant DNAT :</span><br>'
-   +'&emsp;Source : <code>192.0.2.100 : 61200</code> &nbsp;→&nbsp; Dest : <code>80.12.45.20 : 25</code><br><br>'
+   +'&emsp;Source : <code>192.0.2.100 : 61200</code> &nbsp;→&nbsp; Dest : <code>203.0.113.1 : 25</code><br><br>'
    +'<span style="color:#d8b4fe;font-weight:600">Après DNAT :</span><br>'
    +'&emsp;Source : <code>192.0.2.100 : 61200</code> <span style="color:var(--text-dim);font-size:.82rem">← inchangée</span> &nbsp;→&nbsp; Dest : <code style="color:#6ee7b7">192.168.1.70 : 25</code> <span style="color:#6ee7b7;font-size:.82rem">← 3ème serveur interne</span><br><br>'
    +'<span style="color:var(--text-dim)">Le DNAT permet d\'<strong>héberger plusieurs services</strong> (web, SSH, mail) derrière <strong>une seule IP publique</strong>. Le routeur consulte le port de destination pour savoir vers quel serveur rediriger.</span>'
@@ -1864,13 +1833,13 @@ function vpnFlow(id){
 var dmzInfo={
   1:'<strong style="color:#4caf82">✓ Internet → Pare-feu → Serveur Web en DMZ</strong><br><br>'
    +'<span style="color:#93c5fd;font-weight:600">Paquet :</span><br>'
-   +'&emsp;Source : <code>203.0.113.42 : 49200</code> → Dest : <code>80.12.45.20 : 443</code><br>'
+   +'&emsp;Source : <code>198.51.100.42 : 49200</code> → Dest : <code>203.0.113.1 : 443</code><br>'
    +'&emsp;Direction : <strong>Internet → DMZ</strong><br><br>'
    +'<span style="color:#4caf82;font-weight:600">→ AUTORISÉ : le pare-feu laisse passer le HTTPS vers la DMZ</span><br><br>'
    +'<span style="color:var(--text-dim)">C\'est le fonctionnement normal : les utilisateurs Internet accèdent au serveur web en DMZ. Le pare-feu autorise les ports 80/443 <strong>uniquement vers la DMZ</strong>, pas vers le LAN.</span>',
   2:'<strong style="color:#e05c5c">✗ Internet → Pare-feu → LAN (BLOQUÉ)</strong><br><br>'
    +'<span style="color:#93c5fd;font-weight:600">Paquet :</span><br>'
-   +'&emsp;Source : <code>203.0.113.42 : 55000</code> → Dest : <code>192.168.1.50 : 3389</code><br>'
+   +'&emsp;Source : <code>198.51.100.42 : 55000</code> → Dest : <code>192.168.1.50 : 3389</code><br>'
    +'&emsp;Direction : <strong>Internet → LAN</strong> (tentative d\'accès direct)<br><br>'
    +'<span style="color:#e05c5c;font-weight:600">→ BLOQUÉ : le pare-feu interdit tout accès direct au LAN depuis Internet</span><br><br>'
    +'<span style="color:var(--text-dim)">C\'est <strong>tout l\'intérêt de la DMZ</strong> : les services exposés sont dans la DMZ, le LAN reste isolé. Même si un attaquant compromet un serveur DMZ, il ne peut pas atteindre directement les postes ou la BDD interne.</span>',
@@ -1911,13 +1880,13 @@ var fwDiagInfo={
    +'<span style="color:var(--text-dim)">SSH est autorisé <strong>uniquement depuis le réseau admin</strong> (10.0.0.0/24). Un poste hors de ce réseau serait bloqué. C\'est le principe du <strong>filtrage par IP source</strong>.</span>',
   4:'<strong style="color:#e05c5c">✗ BLOQUÉ — RDP depuis Internet</strong><br><br>'
    +'<span style="color:#93c5fd;font-weight:600">Paquet :</span><br>'
-   +'&emsp;Source : <code>203.0.113.42 : 61000</code> &nbsp;→&nbsp; Dest : <code>80.12.45.20 : 3389</code><br>'
+   +'&emsp;Source : <code>198.51.100.42 : 61000</code> &nbsp;→&nbsp; Dest : <code>203.0.113.1 : 3389</code><br>'
    +'&emsp;Protocole : <code>TCP</code> — Direction : <strong>entrant</strong> (Internet → LAN)<br><br>'
    +'<span style="color:#e05c5c;font-weight:600">→ Règle 4 : DENY port 3389 entrant</span><br><br>'
    +'<span style="color:var(--text-dim)">RDP (Bureau à distance) exposé sur Internet = <strong>porte d\'entrée favorite des attaquants</strong> (brute-force, ransomware). Cette règle bloque explicitement tout accès RDP depuis l\'extérieur.</span>',
   5:'<strong style="color:#f59e0b">✗ BLOQUÉ — Telnet (deny all)</strong><br><br>'
    +'<span style="color:#93c5fd;font-weight:600">Paquet :</span><br>'
-   +'&emsp;Source : <code>198.51.100.8 : 55000</code> &nbsp;→&nbsp; Dest : <code>80.12.45.20 : 23</code><br>'
+   +'&emsp;Source : <code>198.51.100.8 : 55000</code> &nbsp;→&nbsp; Dest : <code>203.0.113.1 : 23</code><br>'
    +'&emsp;Protocole : <code>TCP</code> — Direction : <strong>entrant</strong> (Internet → LAN)<br><br>'
    +'<span style="color:#f59e0b;font-weight:600">→ Règle 5 : DENY * (deny all — règle par défaut)</span><br><br>'
    +'<span style="color:var(--text-dim)">Aucune règle spécifique ne correspond → la <strong>règle par défaut bloque</strong>. C\'est le principe du <strong>deny all</strong> : tout ce qui n\'est pas explicitement autorisé est interdit. Telnet est en plus non chiffré et ne devrait jamais être exposé.</span>'
