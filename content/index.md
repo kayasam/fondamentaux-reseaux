@@ -99,6 +99,18 @@ description: Support de formation consacré aux fondamentaux des réseaux inform
   </a>
 </div>
 
+## Évaluation finale
+
+<div class="experience-grid">
+  <a class="experience-card experience-card--revision" href="./quiz-final/quiz-final.html">
+    <span class="experience-card__icon" aria-hidden="true">✓</span>
+    <span class="experience-card__eyebrow">40 questions · 50 minutes</span>
+    <strong>Quiz final — Fondamentaux réseaux</strong>
+    <span>Évaluer vos acquis sur les sept chapitres, puis consulter votre score et le corrigé expliqué.</span>
+    <b>Commencer le quiz →</b>
+  </a>
+</div>
+
 ## Emporter la formation
 
 <div class="obsidian-download">

@@ -224,7 +224,7 @@ Write-Host "$hiddenDocuments document(s) conservé(s) uniquement dans le coffre.
 Write-Host "5/6 - Organisation des chapitres à la racine du site..."
 $publishedChapterNames = @(
   Get-ChildItem -LiteralPath $stagingCourses -Directory |
-    Where-Object { $_.Name -match '^\d{2}-' } |
+    Where-Object { $_.Name -match '^\d{2}-' -or $_.Name -eq 'quiz-final' } |
     Select-Object -ExpandProperty Name
 )
 
