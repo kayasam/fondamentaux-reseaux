@@ -102,7 +102,7 @@ description: Support de formation consacré aux fondamentaux des réseaux inform
 ## Évaluation finale
 
 <div class="experience-grid">
-  <a class="experience-card experience-card--revision" href="./quiz-final/quiz-final.html">
+  <a class="experience-card experience-card--revision" href="https://kayasam.github.io/fondamentaux-reseaux/quiz-final/quiz-final.html">
     <span class="experience-card__icon" aria-hidden="true">✓</span>
     <span class="experience-card__eyebrow">40 questions · 50 minutes</span>
     <strong>Quiz final — Fondamentaux réseaux</strong>

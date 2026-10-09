@@ -6,7 +6,7 @@ publier: true
 # Quiz final — Fondamentaux réseaux
 
 > [!TIP] Version interactive
-> [Ouvrir le quiz HTML](quiz-final.html) — progression sauvegardée, score et corrigé après validation.
+> [Ouvrir le quiz HTML](https://kayasam.github.io/fondamentaux-reseaux/quiz-final/quiz-final.html) — progression sauvegardée, score et corrigé après validation.
 
 **Nom et prénom :** ____________________
 
